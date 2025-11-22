@@ -8,6 +8,7 @@
 /bazel-out
 
 # dependencies
+.angular
 /node_modules
 
 # profiling files
