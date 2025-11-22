@@ -1,9 +1,12 @@
+import { NgClass } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'mat-animated-icon',
   templateUrl: './mat-animated-icon.component.html',
-  styleUrls: ['./mat-animated-icon.component.scss']
+  styleUrls: ['./mat-animated-icon.component.scss'],
+  imports:[MatIcon, NgClass],
 })
 export class MatAnimatedIconComponent implements OnInit {
 

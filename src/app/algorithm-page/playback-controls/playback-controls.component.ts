@@ -1,13 +1,25 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { PlaybackService } from '../services/playback/playback.service';
+import { MatSlider } from '@angular/material/slider';
+import { MatIcon } from '@angular/material/icon';
+import { MatAnimatedIconComponent } from '../mat-animated-icon/mat-animated-icon.component';
+import { NgClass } from '@angular/common';
+import { FormsModule, NgModel } from '@angular/forms';
 
 declare var anime: any;
 
 @Component({
   selector: 'playback-controls',
   templateUrl: './playback-controls.component.html',
-  styleUrls: ['./playback-controls.component.scss']
+  styleUrls: ['./playback-controls.component.scss'],
+  imports:[
+    MatAnimatedIconComponent,
+    MatIcon,
+    MatSlider,
+    NgClass,
+    FormsModule,
+  ],
 })
 export class PlaybackControlsComponent implements OnInit {
 
@@ -17,7 +29,7 @@ export class PlaybackControlsComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  
   formatLabel(value: number) {
 
     // pause

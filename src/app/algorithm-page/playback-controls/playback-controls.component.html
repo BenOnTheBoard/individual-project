@@ -21,7 +21,7 @@
                         min="50"
                         max="3000"
                         value="2500"
-                        (input)="this.updateSpeed(timeSlider.value)"></mat-slider>
+                        (input)="updateSpeed($event.value)"></mat-slider>
                         <span style="padding-top: 4px" class="mt-2 ml-2">Fast</span>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                         #slider
                         thumbLabel
                         [(ngModel)]="this.playback.stepCounter"
-                        (input)="this.playback.onSliderChange(slider.value)"
+                        (input)="playback.onSliderChange($event.value)"
                         tickInterval="1"
                         min="0"
                         max={{this.playback.numCommands}}></mat-slider>

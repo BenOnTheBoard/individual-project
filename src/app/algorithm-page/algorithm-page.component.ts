@@ -1,16 +1,22 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTooltip } from '@angular/material/tooltip';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { NgClass } from '@angular/common';
+import { AgentTitlesComponent } from './animation-container/agent-titles/agent-titles.component';
+import { PlaybackControlsComponent } from './playback-controls/playback-controls.component';
 import { Router } from '@angular/router';
 import { AlgorithmRetrievalService } from '../algorithm-retrieval.service';
 import { UtilsService } from '../utils/utils.service';
 import { AnimationGuideDialogComponent } from './animation-guide-dialog/animation-guide-dialog.component';
 import { AlgorithmAnimationService } from './animations/algorithm-animation.service';
 import { CanvasService } from './services/canvas/canvas.service';
-import { EditPreferencesDialogComponent } from './edit-preferences-dialog/edit-preferences-dialog/edit-preferences-dialog.component';
+import { EditPreferencesDialogComponent } from './edit-preferences-dialog/edit-preferences-dialog.component';
 import { PlaybackService } from './services/playback/playback.service';
+import { InfoSidebarComponent } from './info-sidebar/info-sidebar.component';
 declare var $: any;  // declaring jquery for use in this file
-
 
 // -------------------------------------------------- FILE DESCRIPTION
 
@@ -64,7 +70,16 @@ Functions in this file:
 @Component({
   selector: 'algorithm-page',
   templateUrl: './algorithm-page.component.html',
-  styleUrls: ['./algorithm-page.component.scss']
+  styleUrls: ['./algorithm-page.component.scss'],
+  imports: [
+    MatIcon,
+    MatTooltip,
+    NgClass,
+    SidebarComponent,
+    InfoSidebarComponent,
+    AgentTitlesComponent,
+    PlaybackControlsComponent,
+  ]
 })
 export class AlgorithmPageComponent implements OnInit {
 

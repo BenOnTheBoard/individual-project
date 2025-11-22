@@ -6,11 +6,23 @@ import { UtilsService } from 'src/app/utils/utils.service';
 import { AlgorithmAnimationService } from '../animations/algorithm-animation.service';
 import { CanvasService } from '../services/canvas/canvas.service';
 import { PlaybackService } from '../services/playback/playback.service';
+import { AlgDescriptionComponent } from './alg-description/alg-description.component';
+import { PseudocodeComponent } from './pseudocode/pseudocode.component';
+import { FreeAgentsComponent} from './free-agents/free-agents.component';
+import { ExecutionLogComponent } from './execution-log/execution-log.component';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  styleUrls: ['./sidebar.component.scss'],
+  imports: [
+    ExecutionLogComponent,
+    FreeAgentsComponent,
+    PseudocodeComponent,
+    AlgDescriptionComponent,
+    NgClass,
+  ]
 })
 export class SidebarComponent implements OnInit {
 

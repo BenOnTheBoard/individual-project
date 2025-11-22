@@ -1,15 +1,17 @@
 import { Component, HostListener, Inject, Input, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
-import { CanvasService } from '../../services/canvas/canvas.service';
-import { PlaybackService } from '../../services/playback/playback.service';
+import { CanvasService } from '../services/canvas/canvas.service';
+import { PlaybackService } from '../services/playback/playback.service';
+import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-edit-preferences-dialog',
   templateUrl: './edit-preferences-dialog.component.html',
-  styleUrls: ['./edit-preferences-dialog.component.scss']
+  styleUrls: ['./edit-preferences-dialog.component.scss'],
+  imports:[MatLabel, MatFormField, MatError, ReactiveFormsModule, FormsModule]
 })
 export class EditPreferencesDialogComponent implements OnInit {
 

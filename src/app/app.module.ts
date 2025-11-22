@@ -22,7 +22,6 @@ import { MatAnimatedIconComponent } from './algorithm-page/mat-animated-icon/mat
 import { PlaybackControlsComponent } from './algorithm-page/playback-controls/playback-controls.component';
 import { CodeDisplayComponent } from './algorithm-page/code-display/code-display.component';
 import { HomePageComponent } from './home-page/home-page.component';
-import { AngularResizedEventModule } from 'angular-resize-event';
 import { HomeContentComponent } from './home-page/home-content/home-content.component';
 import { AboutContentComponent } from './home-page/about-content/about-content.component';
 import { AlgorithmContentComponent } from './home-page/algorithm-content/algorithm-content.component';
@@ -31,7 +30,7 @@ import { AlgorithmCardComponent } from './home-page/algorithm-content/algorithm-
 import { IconBannerComponent } from './home-page/icon-banner/icon-banner.component';
 import { FeedbackBannerComponent } from './home-page/feedback-banner/feedback-banner.component';
 import { NavbarComponent } from './home-page/navbar/navbar.component';
-import { EditPreferencesDialogComponent } from './algorithm-page/edit-preferences-dialog/edit-preferences-dialog/edit-preferences-dialog.component';
+import { EditPreferencesDialogComponent } from './algorithm-page/edit-preferences-dialog/edit-preferences-dialog.component';
 import { AnimationGuideDialogComponent } from './algorithm-page/animation-guide-dialog/animation-guide-dialog.component';
 import { SidebarComponent } from './algorithm-page/sidebar/sidebar.component';
 import { AlgDescriptionComponent } from './algorithm-page/sidebar/alg-description/alg-description.component';
@@ -43,9 +42,10 @@ import { AnimationContainerComponent } from './algorithm-page/animation-containe
 import { AgentTitlesComponent } from './algorithm-page/animation-container/agent-titles/agent-titles.component';
 import { CanvasDisplayComponent } from './algorithm-page/animation-container/canvas-display/canvas-display.component';
 import { InfoSidebarComponent } from './algorithm-page/info-sidebar/info-sidebar.component';
+import { RouterModule, RouterOutlet } from '@angular/router';
 
 @NgModule({
-  declarations: [
+  imports: [
     AppComponent,
     AlgorithmPageComponent,
     MatAnimatedIconComponent,
@@ -71,9 +71,7 @@ import { InfoSidebarComponent } from './algorithm-page/info-sidebar/info-sidebar
     AnimationContainerComponent,
     AgentTitlesComponent,
     CanvasDisplayComponent,
-    InfoSidebarComponent
-  ],
-  imports: [
+    InfoSidebarComponent,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -90,7 +88,9 @@ import { InfoSidebarComponent } from './algorithm-page/info-sidebar/info-sidebar
     MatSnackBarModule,
     FormsModule,
     ReactiveFormsModule,
-    AngularResizedEventModule
+    RouterModule,
+    RouterOutlet,
+    MatFormField,
   ],
 
 

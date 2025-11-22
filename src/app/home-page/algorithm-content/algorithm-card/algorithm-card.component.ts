@@ -1,9 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { FormControl, FormGroupDirective, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { Algorithm } from '../../../Algorithm';
+import { MatError, MatLabel, MatFormField } from '@angular/material/form-field';
+
 
 declare var anime: any;
 
@@ -19,20 +21,21 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 @Component({
   selector: 'algorithm-card',
   templateUrl: './algorithm-card.component.html',
-  styleUrls: ['./algorithm-card.component.scss', '../../home-page.component.scss', '../../home-content/home-content.component.scss']
+  styleUrls: ['./algorithm-card.component.scss', '../../home-page.component.scss', '../../home-content/home-content.component.scss'],
+  imports:[MatError, MatLabel, MatFormField, ReactiveFormsModule, FormsModule]
 })
 export class AlgorithmCardComponent implements OnInit {
 
   @Input() algorithm: Algorithm;
 
 
-  numberOfGroup1Agents = new FormControl('', [
+  numberOfGroup1Agents = new FormControl<number |null>(null, [
     Validators.required,
     Validators.min(1),
     Validators.max(9),
   ]);
 
-  numberOfGroup2Agents = new FormControl('', [
+  numberOfGroup2Agents = new FormControl<number|null>(null, [
     Validators.required,
     Validators.min(1),
     Validators.max(9)
@@ -93,7 +96,7 @@ export class AlgorithmCardComponent implements OnInit {
     }
 
 
-    if (this.numberOfGroup2Agents.value == '') {
+    if (this.numberOfGroup2Agents.value) {
       this.algorithmService.numberOfGroup2Agents = this.numberOfGroup1Agents.value;
 
       

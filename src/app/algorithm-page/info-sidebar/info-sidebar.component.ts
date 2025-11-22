@@ -6,11 +6,13 @@ import { UtilsService } from 'src/app/utils/utils.service';
 import { AlgorithmAnimationService } from '../animations/algorithm-animation.service';
 import { CanvasService } from '../services/canvas/canvas.service';
 import { PlaybackService } from '../services/playback/playback.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-info-sidebar',
   templateUrl: './info-sidebar.component.html',
-  styleUrls: ['./info-sidebar.component.scss']
+  styleUrls: ['./info-sidebar.component.scss'],
+  imports:[NgClass],
 })
 export class InfoSidebarComponent implements OnInit {
 

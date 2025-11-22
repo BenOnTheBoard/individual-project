@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { simpleFadeAnimation } from 'src/app/animations/fadeAnimation';
+import { AlgorithmCardComponent } from './algorithm-card/algorithm-card.component';
 
 @Component({
   selector: 'app-algorithm-content',
@@ -8,7 +9,8 @@ import { simpleFadeAnimation } from 'src/app/animations/fadeAnimation';
   styleUrls: ['./algorithm-content.component.scss', '../home-page.component.scss', '../home-content/home-content.component.scss'],
   animations: [
     simpleFadeAnimation
-  ]
+  ],
+  imports:[AlgorithmCardComponent],
 })
 export class AlgorithmContentComponent implements OnInit {
 
