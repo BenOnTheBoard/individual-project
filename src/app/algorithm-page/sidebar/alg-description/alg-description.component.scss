@@ -1,8 +1,8 @@
-@import "_colors", "_fonts";
-
+@use "_colors";
+@use "_fonts";
 
 #descriptionDiv {
-    height:114px
+    height: 114px;
 }
 
 #algorithmDescription {

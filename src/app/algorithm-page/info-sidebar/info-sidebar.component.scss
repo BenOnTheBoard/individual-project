@@ -1,44 +1,41 @@
-@import "_colors", "_fonts";
-  
-  /*
+@use "_colors";
+@use "_fonts";
+
+/*
    * Sidebar
    */
-  
-
 
 // to put on right side of screen
 
-  .infosidebar {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 100; /* Behind the navbar */
-    padding: 0;
-    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-  }
-  
-  .infosidebar-sticky {
-    background-color: rgb(241, 241, 241);
-    color: black;
-    position: absolute;
-    top: 48px; /* Height of navbar */
-    height: calc(100vh - 48px);
-    padding-top: .5rem;
-    overflow-x: hidden;
-    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-    width: 100%;
-  }
-  
-  .infotext {
-    margin: 3%;
+.infosidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 0;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
+}
 
+.infosidebar-sticky {
+  background-color: rgb(241, 241, 241);
+  color: black;
+  position: absolute;
+  top: 48px; /* Height of navbar */
+  height: calc(100vh - 48px);
+  padding-top: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  width: 100%;
+}
 
-  }
+.infotext {
+  margin: 3%;
+}
 
-  #infosidebarContent {
-    height: 100%;
-    display: grid;
-    grid-template-rows: 0.2fr 0.15fr 0.1fr 2fr;
-    grid-auto-rows: minmax(100px, auto);
-  }
+#infosidebarContent {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 0.2fr 0.15fr 0.1fr 2fr;
+  grid-auto-rows: minmax(100px, auto);
+}

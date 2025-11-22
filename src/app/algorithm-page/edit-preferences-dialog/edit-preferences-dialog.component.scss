@@ -1,37 +1,36 @@
 .parent {
-    margin: 0px;
-    padding: 5px;
-    text-align: center;
-  }
-  .child {
-    display: inline-block;
-    vertical-align: middle;
-    padding-right: 12px 
-  }
+  margin: 0px;
+  padding: 5px;
+  text-align: center;
+}
+.child {
+  display: inline-block;
+  vertical-align: middle;
+  padding-right: 12px;
+}
 
+.custom-field {
+  appearance: none;
+  background: #f2f2f2;
+  // padding: 12px;
+  border-radius: 4px;
+  width: 200px;
+  font-size: 16px;
+  border: 2px solid #ddd;
+  font-weight: 400;
+}
 
-  .custom-field {
-    appearance: none;
-    background: #f2f2f2;
-    // padding: 12px;
-    border-radius: 4px;
-    width: 200px;
-    font-size: 16px;
-    border: 2px solid #ddd;
-    font-weight: 400;
-  }
+.labels {
+  font-size: 18px;
+  // font-weight: bold;
+}
 
-  .labels {
-    font-size: 18px;
-    // font-weight: bold;
-  }
+.buttons {
+  width: 100px;
+}
 
-  .buttons {
-    width: 100px;
-   }
-    
-        .action_btn {
-    width: 100px;
-    margin: 0 auto;
-    display: inline;}
-    
+.action_btn {
+  width: 100px;
+  margin: 0 auto;
+  display: inline;
+}
