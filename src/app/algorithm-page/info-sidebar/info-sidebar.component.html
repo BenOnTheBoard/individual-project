@@ -1,8 +1,9 @@
 <nav class="d-none infosidebar" [ngClass]="{'col-md-3 d-md-block': !this.showInfo}">
-    <div class="infosidebar-sticky shadow-lg">
-      <div *ngIf="this.algorithmService.currentAlgorithm.name" class="grid-container-algorithm infotext" id="infosidebarContent">
+  <div class="infosidebar-sticky shadow-lg">
+    <div *ngIf="this.algorithmService.currentAlgorithm.name" class="grid-container-algorithm infotext"
+      id="infosidebarContent">
 
-        <!-- This file contains the information for all the explanations on the sidebar 
+      <!-- This file contains the information for all the explanations on the sidebar 
       
             SMP
             EGS SMP
@@ -11,411 +12,466 @@
             SR 
             SPA
         -->
-        
-        <h1 id="title_main" class="title center">{{ this.algorithmService.currentAlgorithm.name }}</h1>
 
-        <!-- STABLE MARRIAGE  -->
-        <div *ngIf="this.algorithmService.currentAlgorithm.id == 'smp-man-gs'">   
-          <div>       
-            <h2 id="title">Set Up</h2>
-            <p>
-              The goal of the algorithm is to match two groups of people into pairs, where each agent has an ordered preference of 
-              the agents within the other group. This is done with the Extended Gale-Shapley Algorithm, where a stable matching 
-              is guaranteed.
-            </p>
+      <h1 id="title_main" class="title center">{{ this.algorithmService.currentAlgorithm.name }}</h1>
 
-            <p>
-              The set up for this Algorithm is 2 equal groups of people that is <strong>n</strong> long, 
-              in this case - men and woman. 
-            </p> 
-          </div>
+      <!-- STABLE MARRIAGE  -->
+      <div *ngIf="this.algorithmService.currentAlgorithm.id == 'smp-man-gs'">
+        <div>
+          <h2 id="title">Set Up</h2>
+          <p>
+            The goal of the algorithm is to match two groups of people into pairs, where each agent has an ordered
+            preference of
+            the agents within the other group. This is done with the Extended Gale-Shapley Algorithm, where a stable
+            matching
+            is guaranteed.
+          </p>
 
-          <div>
-            <h2>How it Works</h2>
-              <p>
-                To produce a stable matching, the algorithm works using the code to the left. Each agent 
-                has the following properties. 
-              </p>
-                <ul>
-                  <li><strong>Preference Ranking - </strong>this is a list that orders the other group of people from most preferable to least preferable.</li>
-                  <li><strong>Current Matching - </strong>this is the agent in the other group that they are proposed to.</li>
-                </ul>
-              
-
-              <p>
-                The algorithm works by selecting a man that is not matched with anyone, the man
-                proposes to their highest-ranked women, if that woman is free or the man is more preferable
-                to their current matching, then they are matched, and the man the woman was previously
-                matched with is set to be free (not matched). This is repeated until all men and women are matched.
-              </p>
-
-              <p>
-                In this version, it is biased towards the men and is known as man-orientated, and the produced
-                matching is known as the man-optimal matching, this version is shown in code. To
-                reverse this and create the woman-optimal matching, then the positions are simply switched 
-                and the woman will be the one doing the proposing. 
-              </p>
-
-          </div>
+          <p>
+            The set up for this Algorithm is 2 equal groups of people that is <strong>n</strong> long,
+            in this case - men and woman.
+          </p>
         </div>
 
-         <!-- STABLE MARRIAGE  -->
-        <div *ngIf="this.algorithmService.currentAlgorithm.id == 'smp-man-egs'">   
-          <div>       
-            <h2 id="title">Set Up</h2>
-            <p>
-              The goal of the algorithm is to match two groups of people into pairs, where each agent has an ordered preference of 
-              the agents within the other group. This is done with the Extended Gale-Shapley Algorithm, where a stable matching 
-              is guaranteed.
-            </p>
+        <div>
+          <h2>How it Works</h2>
+          <p>
+            To produce a stable matching, the algorithm works using the code to the left. Each agent
+            has the following properties.
+          </p>
+          <ul>
+            <li><strong>Preference Ranking - </strong>this is a list that orders the other group of people from most
+              preferable to least preferable.</li>
+            <li><strong>Current Matching - </strong>this is the agent in the other group that they are proposed to.</li>
+          </ul>
 
-            <p>
-              The set up for this Algorithm is 2 equal groups of people that is <strong>n</strong> long, 
-              in this case - men and woman. 
-            </p> 
-          </div>
 
-          <div>
-            <h2>How it Works</h2>
-              <p>
-                To produce a stable matching, the algorithm works using the code to the left. Each agent 
-                has the following properties. 
-              </p>
-                <ul>
-                  <li><strong>Preference Ranking - </strong>this is a list that orders the other group of people from most preferable to least preferable.</li>
-                  <li><strong>Current Matching - </strong>this is the agent in the other group that they are proposed to.</li>
-                </ul>
-              
+          <p>
+            The algorithm works by selecting a man that is not matched with anyone, the man
+            proposes to their highest-ranked women, if that woman is free or the man is more preferable
+            to their current matching, then they are matched, and the man the woman was previously
+            matched with is set to be free (not matched). This is repeated until all men and women are matched.
+          </p>
 
-              <p>
-                This algorithm works in the same way as Gale-Shapley but with an extra step to reduce 
-                the number of operations overall.
-              </p>
-                
-              <p>
-                The algorithm works by selecting a man that is not matched with anyone, the man
-                proposes to their highest-ranked women, if that woman is free or the man is more preferable
-                to their current matching, then they are matched, and the man the woman was previously
-                matched with is set to be free (not matched). Then for each of the men on the newly matched woman's 
-                preference list that are less preferable than her current matching are passed to the delete function
-                along with the woman.
-              
-                This is repeated until all men and women are matched.
-              </p>
+          <p>
+            In this version, it is biased towards the men and is known as man-orientated, and the produced
+            matching is known as the man-optimal matching, this version is shown in code. To
+            reverse this and create the woman-optimal matching, then the positions are simply switched
+            and the woman will be the one doing the proposing.
+          </p>
 
-              <h4><strong>Delete Function</strong></h4>
-              <p>   
-                This takes a woman and a man, then it removes the woman from the man's <strong>Preference Ranking</strong>, and the man
-                from the woman's <strong>Preference Ranking</strong>
-              </p>
-
-              <p>
-                In this version, it is biased towards the men and is known as man-orientated, and the produced
-                matching is known as the man-optimal matching, this version is shown in code. To
-                reverse this and create the woman-optimal matching, then the positions are simply switched 
-                and the woman will be the one doing the proposing. 
-              </p>
-
-          </div>
         </div>
-
-        <!-- HR/R -->
-        <div *ngIf="this.algorithmService.currentAlgorithm.id == 'hr-resident-egs'">   
-          <div>       
-            <h2 id="title">Set Up</h2>
-            <p>
-              The goal of the algorithm is to match residents to hospitals, where each agent has an ordered preference of 
-              the agents within the other group. This is done with the HR Extended Gale-Shapley Algorithm, where a stable matching 
-              is guaranteed.
-            </p>
-
-            <p>
-              The set up for this Algorithm is 2 groups, <strong>n</strong> residents, and <strong>m</strong> hospitals.
-            </p> 
-          </div>
-
-          <div>
-            <h2>How it Works</h2>
-              <p>
-                To produce a stable matching, the algorithm works using the code to the left. Each agent 
-                has the following properties. 
-              </p>
-
-                <ul>
-                  <li><strong>Preference Ranking - </strong>this is a list that orders the other group of people from most preferable to least preferable.</li>
-                  <li><strong>Current Matching - </strong>this is the agent in the other group that they are proposed to.</li>
-                </ul>
-
-              <p>
-                Hospitals also have the additional property <strong>Capacity</strong> - this is the maximum number of 
-                residents they are allowed to be matched with. Note, they are allowed to be matched with less.
-              </p>
-                
-              <p>
-                The algorithm works by selecting a resident <strong>r</strong> that is not matched with a hospital, <strong>r</strong>
-                proposes to their highest-ranked hospital, if the hospital is at capacity, then
-                the least preferred resident is removed, and set to be free (not matched). now <strong>r</strong> is provisionally assigned 
-                to the hospital.
-              </p>
-              <p>
-                If the hospital is now at capacity then <strong>s</strong> is set to the least preferred resident out of the hospitals 
-                assigned residents, and each resident less preferred than <strong>s</strong> on the hospitals preference ranking is passed 
-                to the delete function along with the hospital.
-                
-                This is repeated until a stable matching is found.
-              </p>
-
-              <h4><strong>Delete Function</strong></h4>
-              <p>
-                This takes a resident and a hospital, then it removes the resident from the hospital's <strong>Preference Ranking</strong>, 
-                and the hospital from the resident's <strong>Preference Ranking</strong>
-              </p>
-
-              <p>
-                In this version, it is biased towards the residents and is known as resident-oriented, and the produced
-                matching is known as the resident-optimal matching, this version is shown in code. The hospital-oriented 
-                version has a page of its own.
-              </p>
-
-          </div>
-        </div>
-
-        <!-- HR/H -->
-        <div *ngIf="this.algorithmService.currentAlgorithm.id == 'hr-hospital-egs'">   
-          <div>       
-            <h2 id="title">Set Up</h2>
-            <p>
-              The goal of the algorithm is to match residents to hospitals, where each agent has an ordered preference of 
-              the agents within the other group. This is done with the HR Extended Gale-Shapley Algorithm, where a stable matching 
-              is guaranteed.
-            </p>
-
-            <p>
-              The set up for this Algorithm is 2 groups, <strong>n</strong> residents, and <strong>m</strong> hospitals.
-            </p> 
-          </div>
-
-          <div>
-            <h2>How it Works</h2>
-              <p>
-                To produce a stable matching, the algorithm works using the code to the left. Each agent 
-                has the following properties. 
-              </p>
-
-                <ul>
-                  <li><strong>Preference Ranking - </strong>this is a list that orders the other group of people from most preferable to least preferable.</li>
-                  <li><strong>Current Matching - </strong>this is the agent in the other group that they are proposed to.</li>
-                </ul>
-
-              <p>
-                Hospitals also have the additional property <strong>Capacity</strong> - this is the maximum number of 
-                residents they are allowed to be matched with. Note, they are allowed to be matched with less.
-              </p>
-                
-              <p>
-                The algorithm works by selecting a hospital <strong>h</strong> that is undersubscribed and has a resident <strong>r</strong> on their preference ranking
-                that they are not already assigned to. resident <strong>r</strong> is provisionally assigned to hospital <strong>h</strong>
-                that is not matched with a hospital, <strong>r</strong>
-                proposes to their highest-ranked hospital, if the hospital is at capacity, then
-                the least preferred resident is removed and set to be free (not matched). now <strong>r</strong> is provisionally assigned 
-                to the hospital.
-              </p>
-
-              <p>
-                If the hospital is now at capacity, then <strong>s</strong> is set to the least preferred resident out of the hospitals 
-                assigned residents, and each resident less preferred than <strong>s</strong> on the hospital's preference ranking is passed 
-                to the delete function along with the hospital.
-                
-                This is repeated until a stable matching is found.
-              </p>
-
-              <h4><strong>Delete Function</strong></h4>
-              <p>            
-                This takes a resident and a hospital, then it removes the resident from the hospital's <strong>Preference Ranking</strong>, 
-                and the hospital from the resident's <strong>Preference Ranking</strong>
-              </p>
-
-              <p>
-                In this version, it is biased towards the residents and is known as resident-orientated, and the produced
-                matching is known as the resident-optimal matching, this version is shown in code. The hospital-oriented 
-                version has a page of its own.
-              </p>
-
-          </div>
-        </div>
-
-        <!-- STABLE ROOMMATES -->
-        <div *ngIf="this.algorithmService.currentAlgorithm.id == 'smp-room-irv'">   
-          <div>       
-            <h2 id="title">Set Up</h2>
-            <p>
-              The goal of the algorithm is to match people into pairs, where each agent has an ordered preference of 
-              the other agents within the group. This is done with Irving's Algorithm. Instances of the SR Problem
-              are not guaranteed to be stable, but if there are then it will be found.
-            </p>
-
-            <p>
-              The set up for this Algorithm is 1 group of people, <strong>n</strong> long, where <strong>n</strong> has to be even.
-            </p> 
-          </div>
-
-          <div>
-            <h2>How it Works</h2>
-              <p>
-                To produce a stable matching, the algorithm works using the code to the left, which is split into 2 phases. 
-                Each agent also has the following properties. 
-              </p>
-
-                <ul>
-                  <li><strong>Preference Ranking - </strong>this is a list that orders the other people from most preferable to least preferable.</li>
-                  <li><strong>Current Matching - </strong>this is the agent that they are proposed to.</li>
-                </ul>
-
-              <h3>Phase 1</h3>
-                <p> 
-                  Phase 1 is lines 1 - 10 in the code to the left. This phase is a version of Extended Gale-Shapley for 1 group.
-                  A free agent <strong>p</strong> is provisionally assigned to the highest ranked person on their preference list  
-                  <strong>b</strong>, if someone else was assigned to <strong>b</strong> then remove this assignment. Then the Delete
-                  Function is called on <strong>b</strong> and each person less preferred than <strong>p</strong> on their preference list.
-                </p>
-
-              <h3>Phase 2</h3>
-                <p>
-                  Phase 2 is lines 11 - 19. This phase <strong>rotations</strong> are removed. while some preference rankings have more than
-                  one ranking remaining, find a rotation in the preference rankings, and call the delete function on the pairs within the rotation.
-                  If at any point a preference list is empty, then there is no stable matching. If each ranking only has 1 agent remaining this
-                  is the stable matching.
-                </p>
-
-              <h4><strong>Delete Function</strong></h4>
-                <p>
-                  This takes a 2 people and removes each person from the other person's preference list.
-                </p>
-              
-              <h4><strong>Rotations</strong></h4>
-                <p>           
-                  Simply rotations are cycles of ordered pairs. However, in practice this can be a bit tricky. but it can be done by following 
-                  the steps below:
-                </p>
-
-                  <ul>
-                    <li>1 - Start with an agent who has more than one preference left, A, and set not them as the original O.</li>
-                    <li>2 - Now set S to agent A's second most preferred agent.</li>
-                    <li>3 - Now set L to S's least preferred agent</li>
-                    <li>4 - Finally set A to L and add the pair (L, S) to the rotation list</li>
-                    <li>5 - Repeat step 2 onwards until S is the same agent as we started with, O</li>
-                  </ul>
-
-                  <p>
-                    Once this is done, we are left with a list of pairs, whereas mentions above these pairs are passed to the delete function where 
-                    they are removed from each other's preference list.
-                  </p>
-
-                
-              <p>
-                In this version, there is only one group of people and thus no biases.
-              </p>
-
-          </div>
-        </div>
-
-        <!-- SPA -->
-        <div *ngIf="this.algorithmService.currentAlgorithm.id == 'spa-stu-egs'">   
-          <div>       
-            <h2 id="title">Set Up</h2>
-            <p>
-              The goal of the algorithm is to match students to projects, where each agent has an ordered preference of 
-              the agents within the other group. Also, each project has a maximum number of students that can work on it 
-              and a supervising lecturer, this lecturer also has a maximum number of students over all their projects
-              that they can supervise.
-            </p>
-
-            <p>
-              The set up for this Algorithm is 3 groups, <strong>n</strong> students, <strong>m</strong> projects, and <strong>o</strong> lecturers.
-              This is solved with the SPA Extended Gale-Shapley Algorithm, where a stable matching is guaranteed.
-            </p> 
-          </div>
-
-          <div>
-            <h2>How it Works</h2>
-              <p>
-                To produce a stable matching, the algorithm works using the code to the left. Each student
-                has the following properties:
-              </p>
-                <ul>
-                  <li><strong>Preference Ranking - </strong>this is a list that orders the group of projects from most preferable to least preferable.</li>
-                  <li><strong>Current Matching - </strong>this is the project in the other group that they are proposed to.</li>
-                </ul>
-                
-              <p> 
-                Lecturers also have the following properties:
-              </p>           
-              <ul>
-                <li><strong>Ranking - </strong>this is a list that orders the group of students from most preferable to least preferable.</li>
-                <li><strong>Projects - </strong>This is a list of projects that the lecturer runs.</li>
-                <li><strong>Capacity - </strong>This is the maximum number of students that the lecturer can supervise over all their projects.</li>
-              </ul>
-
-              <p>
-                Projects have the following properties:
-              </p>
-              <ul>
-                <li><strong>Current Matching - </strong>this is the student(s) that are currently matched with the project .</li>
-                <li><strong>Capacity - </strong>This is the maximum number of students that can be assigned to this project.</li>
-              </ul>
-                
-              <h4><strong>Start</strong></h4>
-              <p>
-                The algorithm works by initially setting all agents to be free and unmatched. It then selects a student <strong>s</strong>, that is 
-                free and has a non-empty preference ranking. Next <strong>p</strong> is set to <strong>s</strong>'s most preferred project and <strong>l</strong>
-                is set to the lecturer that runs that project. Then <strong>s</strong> and <strong>p</strong> are provisionally assigned to each other. After this, 
-                3 more checks are done:
-              </p>
-
-              <h4>1: Check for Over-Subscriptions</h4>
-              <p>
-                If <strong>p</strong> is over-subscribed, then the worst ranked student according to the lecturer that runs the project is unassigned 
-                from the project.
-                <br>
-                Else If <strong>l</strong> is over-subscribed, then the worst student ranked by <strong>l</strong> that is assigned to a project that <strong>l</strong>
-                runs, is unassigned from their project. 
-              </p>
-
-              <h4>2: Check If The Project is Full</h4>
-              <p>
-                If <strong>p</strong> is at capacity, then <strong>Sw</strong> is set to the worst student assigned to <strong>p</strong> according to the 
-                lecturer that runs it. Then for each student <strong>Si</strong> that is ranked worse than <strong>Sw</strong> on the lecturers
-                ranking and also finds <strong>p</strong> an acceptable project is found, then the delete function is called with the pair (<strong>Si, p</strong>).
-              </p>
-
-
-              <h4>3: Check If The Lecturer is Full</h4>
-              <p>   
-                If <strong>l</strong> is at capacity, then <strong>Sw</strong> is set to the worst student assigned to <strong>p</strong> according to the 
-                lecturer that runs it. Then for each student <strong>Si</strong> that is ranked worse than <strong>Sw</strong> on the lecturers
-                ranking, the delete function is called with the pair (<strong>Si, pi</strong>), where <strong>pi</strong> is all the projects that <strong>l</strong>
-                offers, and that <strong>Si</strong> finds acceptable.
-              </p>
-              
-              <p>   
-                This then goes back to the start and is repeated until all students have a match, and a stable matching is found.
-              </p>
-
-
-              <h4><strong>Delete Function</strong></h4>
-              <p>
-                This takes a student and a project, then it removes the project from the student's <strong>Preference Ranking</strong>.
-                Since projects don't have a preference ranking then the opposite operation is not required.
-              </p>
-
-              <p> 
-                In this version, it is biased towards the students and is known as student-orientated, and the produced
-                matching is known as the student-optimal matching, this version is shown in code. There also exists a lecturer-oriented
-                version. 
-              </p>
-          </div>
-        </div>
-
       </div>
+
+      <!-- STABLE MARRIAGE  -->
+      <div *ngIf="this.algorithmService.currentAlgorithm.id == 'smp-man-egs'">
+        <div>
+          <h2 id="title">Set Up</h2>
+          <p>
+            The goal of the algorithm is to match two groups of people into pairs, where each agent has an ordered
+            preference of
+            the agents within the other group. This is done with the Extended Gale-Shapley Algorithm, where a stable
+            matching
+            is guaranteed.
+          </p>
+
+          <p>
+            The set up for this Algorithm is 2 equal groups of people that is <strong>n</strong> long,
+            in this case - men and woman.
+          </p>
+        </div>
+
+        <div>
+          <h2>How it Works</h2>
+          <p>
+            To produce a stable matching, the algorithm works using the code to the left. Each agent
+            has the following properties.
+          </p>
+          <ul>
+            <li><strong>Preference Ranking - </strong>this is a list that orders the other group of people from most
+              preferable to least preferable.</li>
+            <li><strong>Current Matching - </strong>this is the agent in the other group that they are proposed to.</li>
+          </ul>
+
+
+          <p>
+            This algorithm works in the same way as Gale-Shapley but with an extra step to reduce
+            the number of operations overall.
+          </p>
+
+          <p>
+            The algorithm works by selecting a man that is not matched with anyone, the man
+            proposes to their highest-ranked women, if that woman is free or the man is more preferable
+            to their current matching, then they are matched, and the man the woman was previously
+            matched with is set to be free (not matched). Then for each of the men on the newly matched woman's
+            preference list that are less preferable than her current matching are passed to the delete function
+            along with the woman.
+
+            This is repeated until all men and women are matched.
+          </p>
+
+          <h4><strong>Delete Function</strong></h4>
+          <p>
+            This takes a woman and a man, then it removes the woman from the man's <strong>Preference Ranking</strong>,
+            and the man
+            from the woman's <strong>Preference Ranking</strong>
+          </p>
+
+          <p>
+            In this version, it is biased towards the men and is known as man-orientated, and the produced
+            matching is known as the man-optimal matching, this version is shown in code. To
+            reverse this and create the woman-optimal matching, then the positions are simply switched
+            and the woman will be the one doing the proposing.
+          </p>
+
+        </div>
+      </div>
+
+      <!-- HR/R -->
+      <div *ngIf="this.algorithmService.currentAlgorithm.id == 'hr-resident-egs'">
+        <div>
+          <h2 id="title">Set Up</h2>
+          <p>
+            The goal of the algorithm is to match residents to hospitals, where each agent has an ordered preference of
+            the agents within the other group. This is done with the HR Extended Gale-Shapley Algorithm, where a stable
+            matching
+            is guaranteed.
+          </p>
+
+          <p>
+            The set up for this Algorithm is 2 groups, <strong>n</strong> residents, and <strong>m</strong> hospitals.
+          </p>
+        </div>
+
+        <div>
+          <h2>How it Works</h2>
+          <p>
+            To produce a stable matching, the algorithm works using the code to the left. Each agent
+            has the following properties.
+          </p>
+
+          <ul>
+            <li><strong>Preference Ranking - </strong>this is a list that orders the other group of people from most
+              preferable to least preferable.</li>
+            <li><strong>Current Matching - </strong>this is the agent in the other group that they are proposed to.</li>
+          </ul>
+
+          <p>
+            Hospitals also have the additional property <strong>Capacity</strong> - this is the maximum number of
+            residents they are allowed to be matched with. Note, they are allowed to be matched with less.
+          </p>
+
+          <p>
+            The algorithm works by selecting a resident <strong>r</strong> that is not matched with a hospital,
+            <strong>r</strong>
+            proposes to their highest-ranked hospital, if the hospital is at capacity, then
+            the least preferred resident is removed, and set to be free (not matched). now <strong>r</strong> is
+            provisionally assigned
+            to the hospital.
+          </p>
+          <p>
+            If the hospital is now at capacity then <strong>s</strong> is set to the least preferred resident out of the
+            hospitals
+            assigned residents, and each resident less preferred than <strong>s</strong> on the hospitals preference
+            ranking is passed
+            to the delete function along with the hospital.
+
+            This is repeated until a stable matching is found.
+          </p>
+
+          <h4><strong>Delete Function</strong></h4>
+          <p>
+            This takes a resident and a hospital, then it removes the resident from the hospital's <strong>Preference
+              Ranking</strong>,
+            and the hospital from the resident's <strong>Preference Ranking</strong>
+          </p>
+
+          <p>
+            In this version, it is biased towards the residents and is known as resident-oriented, and the produced
+            matching is known as the resident-optimal matching, this version is shown in code. The hospital-oriented
+            version has a page of its own.
+          </p>
+
+        </div>
+      </div>
+
+      <!-- HR/H -->
+      <div *ngIf="this.algorithmService.currentAlgorithm.id == 'hr-hospital-egs'">
+        <div>
+          <h2 id="title">Set Up</h2>
+          <p>
+            The goal of the algorithm is to match residents to hospitals, where each agent has an ordered preference of
+            the agents within the other group. This is done with the HR Extended Gale-Shapley Algorithm, where a stable
+            matching
+            is guaranteed.
+          </p>
+
+          <p>
+            The set up for this Algorithm is 2 groups, <strong>n</strong> residents, and <strong>m</strong> hospitals.
+          </p>
+        </div>
+
+        <div>
+          <h2>How it Works</h2>
+          <p>
+            To produce a stable matching, the algorithm works using the code to the left. Each agent
+            has the following properties.
+          </p>
+
+          <ul>
+            <li><strong>Preference Ranking - </strong>this is a list that orders the other group of people from most
+              preferable to least preferable.</li>
+            <li><strong>Current Matching - </strong>this is the agent in the other group that they are proposed to.</li>
+          </ul>
+
+          <p>
+            Hospitals also have the additional property <strong>Capacity</strong> - this is the maximum number of
+            residents they are allowed to be matched with. Note, they are allowed to be matched with less.
+          </p>
+
+          <p>
+            The algorithm works by selecting a hospital <strong>h</strong> that is undersubscribed and has a resident
+            <strong>r</strong> on their preference ranking
+            that they are not already assigned to. resident <strong>r</strong> is provisionally assigned to hospital
+            <strong>h</strong>
+            that is not matched with a hospital, <strong>r</strong>
+            proposes to their highest-ranked hospital, if the hospital is at capacity, then
+            the least preferred resident is removed and set to be free (not matched). now <strong>r</strong> is
+            provisionally assigned
+            to the hospital.
+          </p>
+
+          <p>
+            If the hospital is now at capacity, then <strong>s</strong> is set to the least preferred resident out of
+            the hospitals
+            assigned residents, and each resident less preferred than <strong>s</strong> on the hospital's preference
+            ranking is passed
+            to the delete function along with the hospital.
+
+            This is repeated until a stable matching is found.
+          </p>
+
+          <h4><strong>Delete Function</strong></h4>
+          <p>
+            This takes a resident and a hospital, then it removes the resident from the hospital's <strong>Preference
+              Ranking</strong>,
+            and the hospital from the resident's <strong>Preference Ranking</strong>
+          </p>
+
+          <p>
+            In this version, it is biased towards the residents and is known as resident-orientated, and the produced
+            matching is known as the resident-optimal matching, this version is shown in code. The hospital-oriented
+            version has a page of its own.
+          </p>
+
+        </div>
+      </div>
+
+      <!-- STABLE ROOMMATES -->
+      <div *ngIf="this.algorithmService.currentAlgorithm.id == 'smp-room-irv'">
+        <div>
+          <h2 id="title">Set Up</h2>
+          <p>
+            The goal of the algorithm is to match people into pairs, where each agent has an ordered preference of
+            the other agents within the group. This is done with Irving's Algorithm. Instances of the SR Problem
+            are not guaranteed to be stable, but if there are then it will be found.
+          </p>
+
+          <p>
+            The set up for this Algorithm is 1 group of people, <strong>n</strong> long, where <strong>n</strong> has to
+            be even.
+          </p>
+        </div>
+
+        <div>
+          <h2>How it Works</h2>
+          <p>
+            To produce a stable matching, the algorithm works using the code to the left, which is split into 2 phases.
+            Each agent also has the following properties.
+          </p>
+
+          <ul>
+            <li><strong>Preference Ranking - </strong>this is a list that orders the other people from most preferable
+              to least preferable.</li>
+            <li><strong>Current Matching - </strong>this is the agent that they are proposed to.</li>
+          </ul>
+
+          <h3>Phase 1</h3>
+          <p>
+            Phase 1 is lines 1 - 10 in the code to the left. This phase is a version of Extended Gale-Shapley for 1
+            group.
+            A free agent <strong>p</strong> is provisionally assigned to the highest ranked person on their preference
+            list
+            <strong>b</strong>, if someone else was assigned to <strong>b</strong> then remove this assignment. Then the
+            Delete
+            Function is called on <strong>b</strong> and each person less preferred than <strong>p</strong> on their
+            preference list.
+          </p>
+
+          <h3>Phase 2</h3>
+          <p>
+            Phase 2 is lines 11 - 19. This phase <strong>rotations</strong> are removed. while some preference rankings
+            have more than
+            one ranking remaining, find a rotation in the preference rankings, and call the delete function on the pairs
+            within the rotation.
+            If at any point a preference list is empty, then there is no stable matching. If each ranking only has 1
+            agent remaining this
+            is the stable matching.
+          </p>
+
+          <h4><strong>Delete Function</strong></h4>
+          <p>
+            This takes a 2 people and removes each person from the other person's preference list.
+          </p>
+
+          <h4><strong>Rotations</strong></h4>
+          <p>
+            Simply rotations are cycles of ordered pairs. However, in practice this can be a bit tricky. but it can be
+            done by following
+            the steps below:
+          </p>
+
+          <ul>
+            <li>1 - Start with an agent who has more than one preference left, A, and set not them as the original O.
+            </li>
+            <li>2 - Now set S to agent A's second most preferred agent.</li>
+            <li>3 - Now set L to S's least preferred agent</li>
+            <li>4 - Finally set A to L and add the pair (L, S) to the rotation list</li>
+            <li>5 - Repeat step 2 onwards until S is the same agent as we started with, O</li>
+          </ul>
+
+          <p>
+            Once this is done, we are left with a list of pairs, whereas mentions above these pairs are passed to the
+            delete function where
+            they are removed from each other's preference list.
+          </p>
+
+
+          <p>
+            In this version, there is only one group of people and thus no biases.
+          </p>
+
+        </div>
+      </div>
+
+      <!-- SPA -->
+      <div *ngIf="this.algorithmService.currentAlgorithm.id == 'spa-stu-egs'">
+        <div>
+          <h2 id="title">Set Up</h2>
+          <p>
+            The goal of the algorithm is to match students to projects, where each agent has an ordered preference of
+            the agents within the other group. Also, each project has a maximum number of students that can work on it
+            and a supervising lecturer, this lecturer also has a maximum number of students over all their projects
+            that they can supervise.
+          </p>
+
+          <p>
+            The set up for this Algorithm is 3 groups, <strong>n</strong> students, <strong>m</strong> projects, and
+            <strong>o</strong> lecturers.
+            This is solved with the SPA Extended Gale-Shapley Algorithm, where a stable matching is guaranteed.
+          </p>
+        </div>
+
+        <div>
+          <h2>How it Works</h2>
+          <p>
+            To produce a stable matching, the algorithm works using the code to the left. Each student
+            has the following properties:
+          </p>
+          <ul>
+            <li><strong>Preference Ranking - </strong>this is a list that orders the group of projects from most
+              preferable to least preferable.</li>
+            <li><strong>Current Matching - </strong>this is the project in the other group that they are proposed to.
+            </li>
+          </ul>
+
+          <p>
+            Lecturers also have the following properties:
+          </p>
+          <ul>
+            <li><strong>Ranking - </strong>this is a list that orders the group of students from most preferable to
+              least preferable.</li>
+            <li><strong>Projects - </strong>This is a list of projects that the lecturer runs.</li>
+            <li><strong>Capacity - </strong>This is the maximum number of students that the lecturer can supervise over
+              all their projects.</li>
+          </ul>
+
+          <p>
+            Projects have the following properties:
+          </p>
+          <ul>
+            <li><strong>Current Matching - </strong>this is the student(s) that are currently matched with the project .
+            </li>
+            <li><strong>Capacity - </strong>This is the maximum number of students that can be assigned to this project.
+            </li>
+          </ul>
+
+          <h4><strong>Start</strong></h4>
+          <p>
+            The algorithm works by initially setting all agents to be free and unmatched. It then selects a student
+            <strong>s</strong>, that is
+            free and has a non-empty preference ranking. Next <strong>p</strong> is set to <strong>s</strong>'s most
+            preferred project and <strong>l</strong>
+            is set to the lecturer that runs that project. Then <strong>s</strong> and <strong>p</strong> are
+            provisionally assigned to each other. After this,
+            3 more checks are done:
+          </p>
+
+          <h4>1: Check for Over-Subscriptions</h4>
+          <p>
+            If <strong>p</strong> is over-subscribed, then the worst ranked student according to the lecturer that runs
+            the project is unassigned
+            from the project.
+            <br>
+            Else If <strong>l</strong> is over-subscribed, then the worst student ranked by <strong>l</strong> that is
+            assigned to a project that <strong>l</strong>
+            runs, is unassigned from their project.
+          </p>
+
+          <h4>2: Check If The Project is Full</h4>
+          <p>
+            If <strong>p</strong> is at capacity, then <strong>Sw</strong> is set to the worst student assigned to
+            <strong>p</strong> according to the
+            lecturer that runs it. Then for each student <strong>Si</strong> that is ranked worse than
+            <strong>Sw</strong> on the lecturers
+            ranking and also finds <strong>p</strong> an acceptable project is found, then the delete function is called
+            with the pair (<strong>Si, p</strong>).
+          </p>
+
+
+          <h4>3: Check If The Lecturer is Full</h4>
+          <p>
+            If <strong>l</strong> is at capacity, then <strong>Sw</strong> is set to the worst student assigned to
+            <strong>p</strong> according to the
+            lecturer that runs it. Then for each student <strong>Si</strong> that is ranked worse than
+            <strong>Sw</strong> on the lecturers
+            ranking, the delete function is called with the pair (<strong>Si, pi</strong>), where <strong>pi</strong> is
+            all the projects that <strong>l</strong>
+            offers, and that <strong>Si</strong> finds acceptable.
+          </p>
+
+          <p>
+            This then goes back to the start and is repeated until all students have a match, and a stable matching is
+            found.
+          </p>
+
+
+          <h4><strong>Delete Function</strong></h4>
+          <p>
+            This takes a student and a project, then it removes the project from the student's <strong>Preference
+              Ranking</strong>.
+            Since projects don't have a preference ranking then the opposite operation is not required.
+          </p>
+
+          <p>
+            In this version, it is biased towards the students and is known as student-orientated, and the produced
+            matching is known as the student-optimal matching, this version is shown in code. There also exists a
+            lecturer-oriented
+            version.
+          </p>
+        </div>
+      </div>
+
     </div>
+  </div>
 </nav>
