@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PlaybackService } from '../../services/playback/playback.service';
 
 import { ExecutionLogComponent } from './execution-log.component';
@@ -8,7 +8,7 @@ describe('ExecutionLogComponent', () => {
   let fixture: ComponentFixture<ExecutionLogComponent>;
   let playback: PlaybackService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ExecutionLogComponent ],
       providers: [ PlaybackService ]
