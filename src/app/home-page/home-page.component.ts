@@ -4,6 +4,7 @@ import { Router, RouterOutlet } from '@angular/router';
 import { IconBannerComponent } from './icon-banner/icon-banner.component';
 import { FeedbackBannerComponent } from './feedback-banner/feedback-banner.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { NgIf } from '@angular/common';
 
 declare var anime: any;
 
@@ -15,7 +16,8 @@ declare var anime: any;
     NavbarComponent,
     IconBannerComponent,
     FeedbackBannerComponent,
-    RouterOutlet
+    RouterOutlet,
+    NgIf,
   ],
 })
 export class HomePageComponent implements OnInit {

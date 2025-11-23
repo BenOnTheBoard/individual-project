@@ -4,7 +4,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTooltip } from '@angular/material/tooltip';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { NgClass } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { AgentTitlesComponent } from './animation-container/agent-titles/agent-titles.component';
 import { PlaybackControlsComponent } from './playback-controls/playback-controls.component';
 import { Router } from '@angular/router';
@@ -75,6 +75,7 @@ Functions in this file:
     MatIcon,
     MatTooltip,
     NgClass,
+    NgIf,
     SidebarComponent,
     InfoSidebarComponent,
     AgentTitlesComponent,

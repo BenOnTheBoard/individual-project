@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { Algorithm } from '../../../Algorithm';
 import { MatError, MatLabel, MatFormField } from '@angular/material/form-field';
+import { NgIf } from '@angular/common';
 
 
 declare var anime: any;
@@ -22,7 +23,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   selector: 'algorithm-card',
   templateUrl: './algorithm-card.component.html',
   styleUrls: ['./algorithm-card.component.scss', '../../home-page.component.scss', '../../home-content/home-content.component.scss'],
-  imports:[MatError, MatLabel, MatFormField, ReactiveFormsModule, FormsModule]
+  imports:[MatError, MatLabel, MatFormField, ReactiveFormsModule, FormsModule, NgIf]
 })
 export class AlgorithmCardComponent implements OnInit {
 

@@ -6,12 +6,13 @@ import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { CanvasService } from '../services/canvas/canvas.service';
 import { PlaybackService } from '../services/playback/playback.service';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-edit-preferences-dialog',
   templateUrl: './edit-preferences-dialog.component.html',
   styleUrls: ['./edit-preferences-dialog.component.scss'],
-  imports:[MatLabel, MatFormField, MatError, ReactiveFormsModule, FormsModule]
+  imports:[MatLabel, MatFormField, MatError, ReactiveFormsModule, FormsModule, NgIf]
 })
 export class EditPreferencesDialogComponent implements OnInit {
 
