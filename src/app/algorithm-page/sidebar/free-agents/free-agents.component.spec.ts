@@ -8,7 +8,7 @@ describe('FreeAgentsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ FreeAgentsComponent ]
+      imports: [ FreeAgentsComponent ]
     })
     .compileComponents();
   }));
@@ -19,7 +19,7 @@ describe('FreeAgentsComponent', () => {
     fixture.detectChanges();
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+    expect(component).toBeDefined();
+  });
 });

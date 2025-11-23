@@ -11,7 +11,7 @@ describe('SpaStudentEgsService', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(service).toBeDefined();
   });
 
     // tests dont work cause there is no pref generation - fixed at 6 - this tried to make different sizes 

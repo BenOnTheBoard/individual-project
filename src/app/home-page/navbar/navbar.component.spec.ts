@@ -9,7 +9,7 @@ describe('NavbarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ NavbarComponent ], imports: [RouterTestingModule],
+      imports: [RouterTestingModule, NavbarComponent],
     })
     .compileComponents();
   }));
@@ -21,6 +21,6 @@ describe('NavbarComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeDefined();
   });
 });

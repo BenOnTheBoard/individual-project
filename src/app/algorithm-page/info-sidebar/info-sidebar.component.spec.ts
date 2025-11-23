@@ -15,8 +15,7 @@ describe('InfoSidebarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ InfoSidebarComponent ],
-      imports: [MatDialogModule, RouterTestingModule, FormsModule],
+      imports: [MatDialogModule, RouterTestingModule, FormsModule, InfoSidebarComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: {} },
@@ -34,7 +33,7 @@ describe('InfoSidebarComponent', () => {
   });
 
   // can't access this.algorithmService.currentAlgorithm.name - saying .name is undefined within tests 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+    expect(component).toBeDefined();
+  });
 });

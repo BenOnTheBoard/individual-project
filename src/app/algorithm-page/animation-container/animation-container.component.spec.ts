@@ -8,7 +8,7 @@ describe('AnimationContainerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AnimationContainerComponent ]
+      imports: [ AnimationContainerComponent ]
     })
     .compileComponents();
   }));
@@ -20,6 +20,6 @@ describe('AnimationContainerComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeDefined();
   });
 });

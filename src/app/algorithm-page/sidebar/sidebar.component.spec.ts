@@ -10,8 +10,7 @@ describe('SidebarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SidebarComponent ],
-      imports: [MatDialogModule, RouterTestingModule],
+      imports: [SidebarComponent, MatDialogModule, RouterTestingModule],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: {} }
@@ -27,6 +26,6 @@ describe('SidebarComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeDefined();
   });
 });

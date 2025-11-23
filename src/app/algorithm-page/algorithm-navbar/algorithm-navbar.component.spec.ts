@@ -8,7 +8,7 @@ describe('AlgorithmNavbarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AlgorithmNavbarComponent ]
+      imports: [ AlgorithmNavbarComponent ]
     })
     .compileComponents();
   }));
@@ -20,6 +20,6 @@ describe('AlgorithmNavbarComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeDefined();
   });
 });

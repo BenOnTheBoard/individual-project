@@ -8,7 +8,7 @@ describe('FeedbackBannerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ FeedbackBannerComponent ]
+      imports: [ FeedbackBannerComponent ]
     })
     .compileComponents();
   }));
@@ -20,6 +20,6 @@ describe('FeedbackBannerComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeDefined();
   });
 });

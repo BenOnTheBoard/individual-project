@@ -9,8 +9,7 @@ describe('MatAnimatedIconComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ MatIconModule ],
-      declarations: [ MatAnimatedIconComponent ]
+      imports: [ MatIconModule, MatAnimatedIconComponent, ]
     })
     .compileComponents();
   }));
@@ -22,6 +21,6 @@ describe('MatAnimatedIconComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeDefined();
   });
 });

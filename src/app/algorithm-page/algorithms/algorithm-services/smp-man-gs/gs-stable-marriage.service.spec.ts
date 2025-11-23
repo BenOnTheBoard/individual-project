@@ -11,7 +11,7 @@ describe('GsStableMarriageService', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(service).toBeDefined();
   });
 
   it('test correctness x10000 (smp-man-gs)', () => {

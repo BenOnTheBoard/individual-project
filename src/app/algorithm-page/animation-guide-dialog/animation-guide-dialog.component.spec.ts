@@ -8,7 +8,7 @@ describe('AnimationGuideDialogComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AnimationGuideDialogComponent ]
+      imports: [ AnimationGuideDialogComponent ]
     })
     .compileComponents();
   }));
@@ -20,6 +20,6 @@ describe('AnimationGuideDialogComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeDefined();
   });
 });

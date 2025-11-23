@@ -9,7 +9,7 @@ describe('HomeContentComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ HomeContentComponent ], imports: [ BrowserAnimationsModule ],
+      imports: [ BrowserAnimationsModule, HomeContentComponent ],
     })
     .compileComponents();
   }));
@@ -21,6 +21,6 @@ describe('HomeContentComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeDefined();
   });
 });

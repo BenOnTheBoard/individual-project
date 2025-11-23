@@ -12,7 +12,8 @@ describe('EditPreferencesDialogComponent', () => {
       imports: [
         MatDialog,
         MatDialogModule,
-        MatDialogRef
+        MatDialogRef,
+        EditPreferencesDialogComponent,
       ],
       providers: [
         {
@@ -20,7 +21,6 @@ describe('EditPreferencesDialogComponent', () => {
           useValue: {}
         }
       ],
-      declarations: [ EditPreferencesDialogComponent ]
     })
     .compileComponents();
   }));
@@ -31,7 +31,7 @@ describe('EditPreferencesDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+    expect(component).toBeDefined();
+  });
 });

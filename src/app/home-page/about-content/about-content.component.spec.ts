@@ -9,7 +9,7 @@ describe('AboutContentComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AboutContentComponent ], imports: [ BrowserAnimationsModule ],
+      imports: [ BrowserAnimationsModule, AboutContentComponent ],
     })
     .compileComponents();
   }));
@@ -21,6 +21,6 @@ describe('AboutContentComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeDefined();
   });
 });

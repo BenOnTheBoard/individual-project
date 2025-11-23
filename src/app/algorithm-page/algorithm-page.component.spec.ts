@@ -4,6 +4,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AlgorithmPageComponent } from './algorithm-page.component';
+import { NgIf } from '@angular/common';
+
 
 describe('AlgorithmPageComponent', () => {
   let component: AlgorithmPageComponent;
@@ -15,9 +17,10 @@ describe('AlgorithmPageComponent', () => {
         BrowserAnimationsModule,
         MatSelectModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        AlgorithmPageComponent,
+        NgIf,
       ],
-      declarations: [ AlgorithmPageComponent ]
     })
     .compileComponents();
   }));
@@ -28,7 +31,7 @@ describe('AlgorithmPageComponent', () => {
     fixture.detectChanges();
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+     expect(component).toBeDefined();
+  });
 });

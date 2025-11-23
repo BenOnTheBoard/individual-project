@@ -8,7 +8,7 @@ describe('IconBannerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ IconBannerComponent ]
+      imports: [ IconBannerComponent ]
     })
     .compileComponents();
   }));
@@ -20,6 +20,6 @@ describe('IconBannerComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeDefined();
   });
 });

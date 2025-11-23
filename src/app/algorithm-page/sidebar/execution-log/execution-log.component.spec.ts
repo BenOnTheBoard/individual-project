@@ -10,8 +10,7 @@ describe('ExecutionLogComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExecutionLogComponent ],
-      providers: [ PlaybackService ]
+      providers: [ PlaybackService, ExecutionLogComponent ]
     })
     .compileComponents();
   }));
@@ -24,7 +23,7 @@ describe('ExecutionLogComponent', () => {
     fixture.detectChanges();
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+    expect(component).toBeDefined();
+  });
 });

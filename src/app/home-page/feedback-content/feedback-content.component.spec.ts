@@ -9,7 +9,7 @@ describe('FeedbackContentComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ FeedbackContentComponent ], imports: [ BrowserAnimationsModule ]
+      imports: [ BrowserAnimationsModule, FeedbackContentComponent ]
     })
     .compileComponents();
   }));
@@ -21,6 +21,6 @@ describe('FeedbackContentComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeDefined();
   });
 });

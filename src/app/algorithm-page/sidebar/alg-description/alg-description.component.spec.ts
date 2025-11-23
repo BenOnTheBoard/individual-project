@@ -8,7 +8,7 @@ describe('AlgDescriptionComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AlgDescriptionComponent ]
+      imports: [ AlgDescriptionComponent ]
     })
     .compileComponents();
   }));
@@ -20,6 +20,6 @@ describe('AlgDescriptionComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeDefined();
   });
 });

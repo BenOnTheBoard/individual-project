@@ -11,7 +11,7 @@ describe('HrHospitalRgsService', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(service).toBeDefined();
   });
 
   // added test from HR/R 

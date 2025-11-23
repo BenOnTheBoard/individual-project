@@ -8,7 +8,7 @@ describe('HomePageComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ HomePageComponent ]
+      imports: [ HomePageComponent ]
     })
     .compileComponents();
   }));
@@ -19,7 +19,7 @@ describe('HomePageComponent', () => {
     fixture.detectChanges();
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+    expect(component).toBeDefined();
+  });
 });

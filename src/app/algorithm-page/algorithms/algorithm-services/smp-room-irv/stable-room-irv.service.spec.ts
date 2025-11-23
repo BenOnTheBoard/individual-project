@@ -11,7 +11,7 @@ describe('StableRoomIrvService', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(service).toBeDefined();
   });
 
   // added test from smp

@@ -8,7 +8,7 @@ describe('AlgorithmCardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AlgorithmCardComponent ]
+      imports: [ AlgorithmCardComponent ]
     })
     .compileComponents();
   }));
@@ -19,7 +19,7 @@ describe('AlgorithmCardComponent', () => {
     fixture.detectChanges();
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+    expect(component).toBeDefined();
+  });
 });

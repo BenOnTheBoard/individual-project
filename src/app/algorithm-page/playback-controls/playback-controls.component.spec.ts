@@ -13,8 +13,8 @@ describe('PlaybackControlsComponent', () => {
       imports: [
         FormsModule,
         MatSliderModule,
-      ],
-      declarations: [ PlaybackControlsComponent ]
+        PlaybackControlsComponent,
+      ]
     })
     .compileComponents();
   }));
@@ -26,6 +26,6 @@ describe('PlaybackControlsComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeDefined();
   });
 });

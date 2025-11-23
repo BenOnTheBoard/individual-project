@@ -8,7 +8,7 @@ describe('AgentTitlesComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AgentTitlesComponent ]
+      imports: [ AgentTitlesComponent ]
     })
     .compileComponents();
   }));
@@ -19,7 +19,7 @@ describe('AgentTitlesComponent', () => {
     fixture.detectChanges();
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+    expect(component).toBeDefined();
+  });
 });

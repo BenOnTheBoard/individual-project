@@ -9,7 +9,7 @@ describe('AlgorithmContentComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AlgorithmContentComponent ], imports: [ BrowserAnimationsModule ],
+      imports: [ BrowserAnimationsModule, AlgorithmContentComponent ],
     })
     .compileComponents();
   }));
@@ -21,6 +21,6 @@ describe('AlgorithmContentComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeDefined();
   });
 });

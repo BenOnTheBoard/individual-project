@@ -8,7 +8,7 @@ describe('PseudocodeComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PseudocodeComponent ]
+      imports: [ PseudocodeComponent ]
     })
     .compileComponents();
   }));
@@ -19,7 +19,7 @@ describe('PseudocodeComponent', () => {
     fixture.detectChanges();
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+    expect(component).toBeDefined();
+  });
 });

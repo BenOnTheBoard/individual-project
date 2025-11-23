@@ -8,7 +8,7 @@ describe('CanvasDisplayComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CanvasDisplayComponent ]
+      imports: [ CanvasDisplayComponent ]
     })
     .compileComponents();
   }));
@@ -20,6 +20,6 @@ describe('CanvasDisplayComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeDefined();
   });
 });

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { CodeDisplayComponent } from './code-display.component';
 
 describe('CodeDisplayComponent', () => {
@@ -8,7 +7,7 @@ describe('CodeDisplayComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CodeDisplayComponent ]
+      imports: [ CodeDisplayComponent ]
     })
     .compileComponents();
   }));
@@ -19,7 +18,7 @@ describe('CodeDisplayComponent', () => {
     fixture.detectChanges();
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+    expect(component).toBeDefined();
+  });
 });
