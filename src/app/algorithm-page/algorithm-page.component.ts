@@ -1,10 +1,8 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatIcon } from '@angular/material/icon';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTooltip } from '@angular/material/tooltip';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { NgClass, NgIf } from '@angular/common';
+import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { AgentTitlesComponent } from './animation-container/agent-titles/agent-titles.component';
 import { PlaybackControlsComponent } from './playback-controls/playback-controls.component';
 import { Router } from '@angular/router';
@@ -16,6 +14,11 @@ import { CanvasService } from './services/canvas/canvas.service';
 import { EditPreferencesDialogComponent } from './edit-preferences-dialog/edit-preferences-dialog.component';
 import { PlaybackService } from './services/playback/playback.service';
 import { InfoSidebarComponent } from './info-sidebar/info-sidebar.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 declare var $: any;  // declaring jquery for use in this file
 
 // -------------------------------------------------- FILE DESCRIPTION
@@ -72,8 +75,14 @@ Functions in this file:
   templateUrl: './algorithm-page.component.html',
   styleUrls: ['./algorithm-page.component.scss'],
   imports: [
-    MatIcon,
-    MatTooltip,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatTooltipModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    CommonModule,
+    FormsModule,
     NgClass,
     NgIf,
     SidebarComponent,
