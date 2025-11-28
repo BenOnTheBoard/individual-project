@@ -9,7 +9,7 @@ import { HomeContentComponent } from '../home-page/home-content/home-content.com
 import { HomePageComponent } from '../home-page/home-page.component';
 
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', component: HomePageComponent, children: [
     {
       path: '',
