@@ -1,6 +1,7 @@
 <!-- semi-transparent panel to give illusion of modal on tutorial -->
-<div class="covering-panel" *ngIf="this.tutorialStep != 0"></div>
-
+@if (this.tutorialStep != 0){
+<div class="covering-panel"></div>
+}
 
 <!-- navbar -->
 <nav class="navbar alg-navbar sticky-top navbar-light p-0 moveToTop shadow-lg">
@@ -29,24 +30,25 @@
       this.algorithmService.currentAlgorithm.orientation[0] }}-Oriented</span>
   </div>
 
-
-  <div class="col-2 text-right" *ngIf="this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem'">
+  @if (this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem') {
+  <div class="col-2 text-right">
     <span style="color: white; font-size: 0.98rem; font-weight: 350;">{{ this.SRstableText }}</span>
   </div>
-
+  }
   <div class="col-3 text-right">
 
     <!-- If stable roommates then show these  -->
 
-
-    <mat-icon class="navbarIconButton unselectable mr-4" matTooltip="Stable/Unstable"
-      *ngIf="this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem'" mat-button
+    @if (this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem') {
+    <mat-icon class="navbarIconButton unselectable mr-4" matTooltip="Stable/Unstable" mat-button
       (click)="this.ChangeStableSR()" [ngClass]="{'disabled': this.tutorialStep != 0}">{{this.SRstable ? "check_box" :
       "check_box_outline_blank"}}</mat-icon>
+    }
 
-
-    <mat-icon class="navbarIconButton unselectable mr-4" matTooltip="Stop Tutorial" *ngIf="(this.tutorialStep != 0)"
+    @if(this.tutorialStep != 0) {
+    <mat-icon class="navbarIconButton unselectable mr-4" matTooltip="Stop Tutorial"
       (click)="this.stopTutorial()">cancel</mat-icon>
+    }
     <mat-icon class="navbarIconButton unselectable mr-4" matTooltip="Generate New Random Preferences"
       (click)="this.generateNewPreferences()" [ngClass]="{'disabled': this.tutorialStep != 0}">refresh</mat-icon>
     <mat-icon class="navbarIconButton unselectable mr-4" matTooltip="Edit Preferences" mat-button

@@ -6,10 +6,14 @@
     </div>
     <div class="col-8 text-center pr-5 py-3" style="font-size: 0.9vw;">
       [
-      <span
-        *ngFor="let item of this.playback.commandList[this.playback.stepCounter]['freeAgents']; let lastItem = last;">
-        <span class="{{ item }}">{{ item.slice(item.length - 1) }}</span><span *ngIf="!lastItem">, </span>
-      </span>
+      @for (item of this.playback.commandList[this.playback.stepCounter]['freeAgents']; track item) {
+        <span>
+          <span class="{{ item }}">{{ item.slice(item.length - 1) }}></span>
+          @if (!$last) {
+          <span>, </span>
+          }
+        </span>
+      }
       ]
     </div>
   </div>
