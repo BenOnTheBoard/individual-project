@@ -42,7 +42,7 @@ import { AnimationContainerComponent } from './algorithm-page/animation-containe
 import { AgentTitlesComponent } from './algorithm-page/animation-container/agent-titles/agent-titles.component';
 import { CanvasDisplayComponent } from './algorithm-page/animation-container/canvas-display/canvas-display.component';
 import { InfoSidebarComponent } from './algorithm-page/info-sidebar/info-sidebar.component';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { provideRouter, RouterModule, RouterOutlet } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -92,9 +92,5 @@ import { RouterModule, RouterOutlet } from '@angular/router';
     RouterOutlet,
     MatFormField,
   ],
-
-
-  providers: [],
-  bootstrap: [AppComponent]
 })
 export class AppModule { }
