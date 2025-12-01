@@ -154,7 +154,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation{
         // if student is mathced to lecturer or student is preferred over worst matched student 
         if (betterProjectLecturer.projects.includes(student.match[0].name) || currentStudentIndex < lastMatchIndex) {
           stability = false
-          console.log("FALSE a")
+          //console.log("FALSE a")
         }
       }
 
@@ -163,13 +163,13 @@ export class SpaStudentEgsService extends StudentProjectAllocation{
       // console.log(student.name, betterProject.name, betterProject.match)
       if (betterProject.match.length == betterProject.capacity && currentStudentIndex < this.getLastMatchProject(betterProject)) {
         stability = false
-        console.log("FALSE b")
+        //console.log("FALSE b")
       }
 
 
       if (currentStudentIndex < lastMatchIndex) {
           stability = false;
-          console.log("FALSE c")
+          //console.log("FALSE c")
       }    
     }
       

@@ -142,8 +142,8 @@ export abstract class MatchingAlgorithm {
             this.group2Agents.get(agent).ranking = tempCopyList;
         }
     
-        console.log(this.group1Agents);
-        console.log(this.group2Agents);
+        //console.log(this.group1Agents);
+        //console.log(this.group2Agents);
 
     }
 
@@ -354,7 +354,7 @@ export abstract class MatchingAlgorithm {
         for (let agent of allMatches.keys()) {
             let agentMatches = allMatches.get(agent);
 
-            console.log(agentMatches)
+            //console.log(agentMatches)
 
             // if agent has matches
             if (agentMatches.length > 0) {
@@ -378,7 +378,7 @@ export abstract class MatchingAlgorithm {
                             // console.log("Stable")
                         }
                     } else {
-                        console.log("Stable")
+                        //console.log("Stable")
                     }
                 }
             }
@@ -408,7 +408,7 @@ export abstract class MatchingAlgorithm {
         }
 
         if (numberOfGroup2Agents == 0){
-            console.log("0 agents in group 2");
+            //console.log("0 agents in group 2");
         }
                 
         if (SRstable) {
@@ -439,7 +439,7 @@ export abstract class MatchingAlgorithm {
         this.stable = this.checkStability(this.getMatches());
 
         if (!this.stable) {
-            console.log("Matching is not stable!");
+            // console.log("Matching is not stable!");
             return undefined;
         }
 

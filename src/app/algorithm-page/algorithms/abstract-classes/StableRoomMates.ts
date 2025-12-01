@@ -130,8 +130,8 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
                 count++;
             }
 
-            console.log("in gen", this.group1Agents)
-            console.log(instance)
+            //console.log("in gen", this.group1Agents)
+            //console.log(instance)
         }
 // for (let [key, person] of this.group1Agents.entries()){   
         //     for (let i = 0 ; i < this.group1Agents.size - 1 ; i++){
@@ -145,7 +145,7 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
     }
 
     populatePreferences(preferences: Map<String, Array<String>>): void {
-        console.log("preferences", preferences);
+        //console.log("preferences", preferences);
         let tempCopyList: Agent[];
 
         for (let agent of Array.from(this.group1Agents.keys())) {
@@ -157,8 +157,8 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
             this.group1Agents.get(agent).ranking = tempCopyList;
         }
 
-        console.log(this.group1Agents);
-        console.log(this.group2Agents);
+        //console.log(this.group1Agents);
+        //console.log(this.group2Agents);
 
     }
 

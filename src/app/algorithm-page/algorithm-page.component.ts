@@ -256,10 +256,10 @@ export class AlgorithmPageComponent implements OnInit {
       // let agent2Count: number = Math.floor(Math.random() * (9 - 2) + 2);
       // this.playback.setAlgorithm(this.algorithmService.currentAlgorithm.id, agent1Count, agent2Count);
 
-      console.log(this.algorithmService.currentAlgorithm.name)
+      // console.log(this.algorithmService.currentAlgorithm.name)
 
       if (this.algorithmService.currentAlgorithm.name == "Stable Roommates Problem") {
-        console.log("yes", this.SRstable)
+        // console.log("yes", this.SRstable)
         this.playback.setAlgorithm(this.algorithmService.currentAlgorithm.id, this.algorithmService.numberOfGroup1Agents, this.algorithmService.numberOfGroup2Agents, null, this.SRstable);
 
       } else {
@@ -313,7 +313,7 @@ export class AlgorithmPageComponent implements OnInit {
 
     this.duringAnimation = false;
 
-    console.log("current pannels", this.showInfo, this.showCode)
+    // console.log("current pannels", this.showInfo, this.showCode)
 
 
   }
@@ -361,7 +361,7 @@ async toggleInfoSidebar(): Promise<void> {
 
   this.duringAnimation = false;
 
-  console.log("current pannels", this.showInfo, this.showCode)
+  // console.log("current pannels", this.showInfo, this.showCode)
 
 }
   ChangeStableSR(): void {
@@ -375,7 +375,7 @@ async toggleInfoSidebar(): Promise<void> {
 
     }
 
-    console.log("New SR setting", this.SRstable)
+    // console.log("New SR setting", this.SRstable)
   }
 
 

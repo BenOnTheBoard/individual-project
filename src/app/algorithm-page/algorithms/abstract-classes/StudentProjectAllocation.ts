@@ -124,10 +124,10 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
                     names.push(agentInner.name)
                 }
             }
-            console.log(agent.name, names)
-            console.log("--------------")
+            //console.log(agent.name, names)
+            //console.log("--------------")
         }
-        console.log("")
+        //console.log("")
     }
 
     

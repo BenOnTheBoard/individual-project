@@ -694,7 +694,7 @@ export class CanvasService {
 
       text = String(this.currentCommand["algorithmSpecificData"]["lecturerRanking"][count])
       this.drawText(this.ctx, text,centerPos.positionX + 120, centerPos.positionY, 14)
-      console.log(text)
+      // console.log(text)
       count++
     }
 

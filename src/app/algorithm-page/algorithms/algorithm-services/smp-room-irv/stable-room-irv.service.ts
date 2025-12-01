@@ -178,7 +178,7 @@ export class StableRoomIrvService extends StableRoomMates {
   print_rankings(agent){
 
     for (let i = 0 ; i < agent.ranking.length ; i++){
-      console.log("Element", i, agent.ranking[i])
+      //console.log("Element", i, agent.ranking[i])
     }
   }
 

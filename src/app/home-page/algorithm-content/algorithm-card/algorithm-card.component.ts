@@ -55,7 +55,7 @@ export class AlgorithmCardComponent implements OnInit {
 
   evenOnly(event): void {
 
-    console.log("evenOnly", event, this.numberOfGroup1Agents.value)
+    // console.log("evenOnly", event, this.numberOfGroup1Agents.value)
     if (this.numberOfGroup1Agents.value % 2 == 1) {
       this.SReven = false
     } else {
@@ -66,7 +66,7 @@ export class AlgorithmCardComponent implements OnInit {
 
   isValid(): boolean {
 
-    console.log("event", this.numberOfGroup1Agents)
+    // console.log("event", this.numberOfGroup1Agents)
 
     return false
 

@@ -54,11 +54,11 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
   print_matches(){
 
 	for (let [key, resident] of this.group1Agents.entries()){
-		console.log(key, resident.match)
+		// console.log(key, resident.match)
 	}
 
 	for (let [key, hospital] of this.group2Agents.entries()){
-		console.log(key, hospital.match)
+		// console.log(key, hospital.match)
 
 	}
 }
