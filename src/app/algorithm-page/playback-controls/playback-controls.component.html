@@ -12,8 +12,9 @@
                     <div>
                         <div class="row justify-content-center">
                             <span style="padding-top: 4px" class="mt-2 mr-2">Slow</span>
-                            <mat-slider #timeSlider thumbLabel [displayWith]="formatLabel" tickInterval="1000" min="50"
-                                max="3000" value="2500" (input)="updateSpeed($event.value)"></mat-slider>
+                            <mat-slider #timeSlider name="timeSlider" showTickMarks discrete [min]="50" [max]="3000" [displayWith]="formatLabel" (change)="updateSpeed($event.value)">
+                                <input matSliderThumb value="2500">
+                            </mat-slider>
                             <span style="padding-top: 4px" class="mt-2 ml-2">Fast</span>
                         </div>
                     </div>
@@ -56,9 +57,12 @@
                         <div class="row justify-content-center">
                             <div id="stepCounter" style="padding-top: 4px; width: 5px" class="mt-2 mr-3">{{
                                 this.playback.stepCounter }}</div>
-                            <mat-slider style="width:80%; max-width: 600px;" #slider thumbLabel
-                                [(ngModel)]="this.playback.stepCounter" (input)="playback.onSliderChange($event.value)"
-                                tickInterval="1" min="0" max={{this.playback.numCommands}}></mat-slider>
+                            <mat-slider style="width:80%; max-width: 600px;" name="stepSlider" #slider
+                                    [(ngModel)]="this.playback.stepCounter" ngDefaultControl showTickMarks discrete
+                                    step=1 [min]="0" [max]="this.playback.numCommands"
+                                    (change)="playback.onSliderChange($event.value)">
+                                <input matSliderThumb>
+                            </mat-slider>
                             <div style="padding-top: 4px" class="mt-2 ml-2">{{ this.playback.numCommands }}</div>
                         </div>
                     </div>

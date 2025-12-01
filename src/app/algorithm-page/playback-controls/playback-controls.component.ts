@@ -1,11 +1,10 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
+import { Component, Input, OnInit } from '@angular/core';
 import { PlaybackService } from '../services/playback/playback.service';
-import { MatSlider } from '@angular/material/slider';
-import { MatIcon } from '@angular/material/icon';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatIconModule } from '@angular/material/icon';
 import { MatAnimatedIconComponent } from '../mat-animated-icon/mat-animated-icon.component';
 import { NgClass } from '@angular/common';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 declare var anime: any;
 
@@ -15,8 +14,8 @@ declare var anime: any;
   styleUrls: ['./playback-controls.component.scss'],
   imports:[
     MatAnimatedIconComponent,
-    MatIcon,
-    MatSlider,
+    MatIconModule,
+    MatSliderModule,
     NgClass,
     FormsModule,
   ],
@@ -25,7 +24,7 @@ export class PlaybackControlsComponent implements OnInit {
 
   @Input() algorithm: string;
 
-  constructor(public playback: PlaybackService, public algService: AlgorithmRetrievalService) { }
+  constructor(public playback: PlaybackService) { }
 
   ngOnInit(): void {
   }
