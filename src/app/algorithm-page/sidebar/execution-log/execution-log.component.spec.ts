@@ -48,6 +48,7 @@ describe('ExecutionLogComponent', () => {
               pluralMap: new Map([["Man", "Men"], ["Woman", "Women"],]),
               descriptions: []
             },
+            stepCounter: 0,
             previousStepCounter: 0,
             setAlgorithm: jasmine.createSpy('setAlgorithm')
           }
