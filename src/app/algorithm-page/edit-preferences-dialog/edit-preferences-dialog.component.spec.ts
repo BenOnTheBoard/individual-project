@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 import { EditPreferencesDialogComponent } from './edit-preferences-dialog.component';
 
@@ -10,16 +10,12 @@ describe('EditPreferencesDialogComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
-        MatDialog,
         MatDialogModule,
-        MatDialogRef,
         EditPreferencesDialogComponent,
       ],
       providers: [
-        {
-          provide: MatDialogRef,
-          useValue: {}
-        }
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: {} }
       ],
     })
     .compileComponents();
@@ -32,6 +28,6 @@ describe('EditPreferencesDialogComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeDefined();
+    expect(component).toBeTruthy();
   });
 });
