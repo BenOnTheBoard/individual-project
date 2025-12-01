@@ -21,14 +21,25 @@ export class HomeContentComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  ngAfterViewInit() {
-    let vid: HTMLVideoElement = this.animationVid.nativeElement;
-    vid.muted = true;
-    vid.play();
+  private async playVideo(video: HTMLVideoElement): Promise<void> {
+  try {
+    video.muted = true;
+    let playPromise = video.play();
+    if (playPromise !== undefined) {
+      await playPromise;
+    }
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      console.log('Play interrupted (media removed/expected)');
+    } else {
+      console.error('Video play failed:', error);
+    }
+  }
+}
 
-    vid = this.descriptionVid.nativeElement;
-    vid.muted = true;
-    vid.play();
+  ngAfterViewInit() {
+    this.playVideo(this.animationVid.nativeElement);
+    this.playVideo(this.descriptionVid.nativeElement);
   }
 
   delay(ms: number) {
