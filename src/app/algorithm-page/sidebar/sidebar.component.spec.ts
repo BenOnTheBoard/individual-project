@@ -1,8 +1,15 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { SidebarComponent } from './sidebar.component';
+import { CommonModule } from '@angular/common';
+import { AlgDescriptionComponent } from './alg-description/alg-description.component';
+import { FreeAgentsComponent } from './free-agents/free-agents.component';
+import { PseudocodeComponent } from './pseudocode/pseudocode.component';
+import { ExecutionLogComponent } from './execution-log/execution-log.component';
+import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
+import { PlaybackService } from '../services/playback/playback.service';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
@@ -10,13 +17,38 @@ describe('SidebarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [SidebarComponent, MatDialogModule, RouterTestingModule],
+      imports: [
+        SidebarComponent,
+        CommonModule,
+        MatDialogModule,
+        RouterTestingModule,
+        AlgDescriptionComponent,
+        FreeAgentsComponent,
+        PseudocodeComponent,
+        ExecutionLogComponent,
+      ],
       providers: [
-        { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: MatDialogRef, useValue: {} }
+        {
+          provide: PlaybackService,
+          useValue: {
+            commandList: [{}],
+            algorithmData: {
+              descriptions: []
+            },
+            stepCounter: 0,
+          },
+        },
+        {
+          provide: AlgorithmRetrievalService,
+          useValue: {
+            currentAlgorithm: {
+              orientation: ["Man", "Woman"],
+            },
+            pluralMap: new Map([["Man", "Men"], ["Woman", "Women"],]),
+          }
+        },
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -26,6 +58,6 @@ describe('SidebarComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeDefined();
+    expect(component).toBeTruthy();
   });
 });
