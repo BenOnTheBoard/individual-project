@@ -353,7 +353,7 @@ export class AlgorithmRetrievalService {
     ['Person', 'People'],
     ['Student', 'Students'],
     ['Project', 'Projects'],
-    ['Lecturer', 'Lectures'],
+    ['Lecturer', 'Lecturers'],
   ]);
 
   constructor(
