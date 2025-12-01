@@ -13,69 +13,82 @@
     <{{this.algorithmService.currentAlgorithm.orientation[0].toLowerCase()}}/{{this.algorithmService.currentAlgorithm.orientation[1].toLowerCase()}} number>: &lt;preferences separated by commas>
   </p> -->
 
-  <div *ngIf="this.algorithmService.currentAlgorithm.id != 'smp-room-irv'">
+  @if (this.algorithmService.currentAlgorithm.id != 'smp-room-irv') {
+  <div>
     <p>
       Click on the number below and use arrow keys to change the number of
       {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[0]).toLowerCase() }}
       and {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[1]).toLowerCase() }}
-
+    </p>
     <p>
       Each person is represented as their ID, either a letter or a number, below you can change the <br>
       preference list of the corresponding person.
-
+    </p>
     <p>
       Missing preferences are shown as pairs - (Person ID , Missing person ID on preference list).
-
+    </p>
   </div>
+  }
 
-  <div *ngIf="this.algorithmService.currentAlgorithm.id == 'smp-room-irv'">
+  @if (this.algorithmService.currentAlgorithm.id == 'smp-room-irv') {
+  <div>
     <p>
       Click on the number below and use arrow keys to change the number of
       {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[0]).toLowerCase() }}
-
+    </p>
     <p>
       Each person is represented by their ID, in this case a number, below you can change the preference <br>
       list of the corresponding person.
-
+    </p>
     <p>
       Missing preferences are shown as pairs - (Person ID, Missing person ID on preference list).
-
+    </p>
   </div>
+  }
 
   <!-- input size -->
 
   <form class="example-form pl-3">
-    <div class="row justify-content-start"
-      *ngIf="this.algorithmService.currentAlgorithm.name == 'Stable Marriage Problem'">
+    @if (this.algorithmService.currentAlgorithm.name == 'Stable Marriage Problem') {
+    <div class="row justify-content-start">
       <mat-form-field style="width: 200px;">
         <mat-label>Number of Men and Women</mat-label>
         <input [formControl]="numberOfGroup1Agents" type="number" matInput placeholder="5" value="5"
           (ngModelChange)="this.generatePreferenceString()" min="1" max="9"
           oninput="this.value = this.value > 0 && this.value < 10 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
           onDrag="return false" onDrop="return false" onPaste="return false">
-        <mat-error *ngIf="numberOfGroup1Agents.hasError('required')">
+        @if (numberOfGroup1Agents.hasError('required')){
+        <mat-error>
           This field is <strong>required</strong>
         </mat-error>
-        <mat-error *ngIf="numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')">
+        }
+        @if (numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
+        <mat-error>
           Please input a number between 1 and 9
         </mat-error>
+        }
       </mat-form-field>
     </div>
+    }
 
-    <div class="row justify-content-center"
-      *ngIf="this.algorithmService.currentAlgorithm.name == 'Hospitals/Residents Problem'">
+    @if (this.algorithmService.currentAlgorithm.name == 'Hospitals/Residents Problem') {
+    <div class="row justify-content-center">
       <mat-form-field style="width: 200px;" class="mr-1">
         <mat-label>Number of Residents</mat-label>
         <input [formControl]="numberOfGroup1Agents" type="number" matInput placeholder="5" value="5"
           (ngModelChange)="this.generatePreferenceString()" min="2" max="9"
           oninput="this.value = this.value > 1 && this.value < 10 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
           onDrag="return false" onDrop="return false" onPaste="return false">
-        <mat-error *ngIf="numberOfGroup1Agents.hasError('required')">
+        @if (numberOfGroup1Agents.hasError('required')){
+        <mat-error>
           This field is <strong>required</strong>
         </mat-error>
-        <mat-error *ngIf="numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')">
+        }
+        @if (numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
+        <mat-error>
           Please input a number between 1 and 9
         </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field style="width: 200px;" class="ml-1">
@@ -84,48 +97,61 @@
           (ngModelChange)="this.generatePreferenceString()" min="2" max="9"
           oninput="this.value = this.value > 1 && this.value < 10 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
           onDrag="return false" onDrop="return false" onPaste="return false">
-        <mat-error *ngIf="numberOfGroup2Agents.hasError('required')">
+        @if (numberOfGroup2Agents.hasError('required')){
+        <mat-error>
           This field is <strong>required</strong>
         </mat-error>
-        <mat-error *ngIf="numberOfGroup2Agents.hasError('min') || numberOfGroup2Agents.hasError('max')">
+        }
+        @if (numberOfGroup2Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
+        <mat-error>
           Please input a number between 1 and 9
         </mat-error>
+        }
       </mat-form-field>
     </div>
+    }
 
-    <div class="row justify-content-start"
-      *ngIf="this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem'">
+    @if (this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem') {
+    <div class="row justify-content-start">
       <mat-form-field style="width: 200px;">
         <mat-label>Number of People</mat-label>
         <input [formControl]="numberOfGroup1Agents" type="number" matInput placeholder="5" value="5"
           (ngModelChange)="this.generatePreferenceString1Group()" min="1" max="10"
           oninput="this.value = this.value > 0 && this.value < 11 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value))"
           onDrag="return false" onDrop="return false" onPaste="return false">
-        <mat-error *ngIf="numberOfGroup1Agents.hasError('required')">
+        @if (numberOfGroup1Agents.hasError('required')) {
+        <mat-error>
           This field is <strong>required</strong>
         </mat-error>
-        <mat-error *ngIf="numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')">
-          Please input an even number between 1 and 8
+        }
+        @if (numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
+        <mat-error>
+          Please input a number between 1 and 8
         </mat-error>
+        }
       </mat-form-field>
     </div>
-
+    }
 
     <!-- SPA -->
-    <div class="row justify-content-center"
-      *ngIf="this.algorithmService.currentAlgorithm.name == 'Student Project Allocation'">
+    @if (this.algorithmService.currentAlgorithm.name == 'Student Project Allocation') {
+    <div class="row justify-content-center">
       <mat-form-field style="width: 200px;" class="mr-1">
         <mat-label>Number of Students</mat-label>
         <input [formControl]="numberOfGroup1Agents" type="number" matInput placeholder="5" value="5"
           (ngModelChange)="this.generatePreferenceString()" min="2" max="9"
           oninput="this.value = this.value > 1 && this.value < 10 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
           onDrag="return false" onDrop="return false" onPaste="return false">
-        <mat-error *ngIf="numberOfGroup1Agents.hasError('required')">
+        @if (numberOfGroup1Agents.hasError('required')){
+        <mat-error>
           This field is <strong>required</strong>
         </mat-error>
-        <mat-error *ngIf="numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')">
+        }
+        @if (numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
+        <mat-error>
           Please input a number between 1 and 9
         </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field style="width: 200px;" class="ml-1">
@@ -134,14 +160,19 @@
           (ngModelChange)="this.generatePreferenceString()" min="2" max="9"
           oninput="this.value = this.value > 1 && this.value < 10 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
           onDrag="return false" onDrop="return false" onPaste="return false">
-        <mat-error *ngIf="numberOfGroup2Agents.hasError('required')">
+        @if (numberOfGroup2Agents.hasError('required')){
+        <mat-error>
           This field is <strong>required</strong>
         </mat-error>
-        <mat-error *ngIf="numberOfGroup2Agents.hasError('min') || numberOfGroup2Agents.hasError('max')">
+        }
+        @if (numberOfGroup2Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
+        <mat-error>
           Please input a number between 1 and 9
         </mat-error>
+        }
       </mat-form-field>
     </div>
+    }
 
   </form>
 
@@ -155,10 +186,10 @@
   <div class="parent">
     <!-- group 1 -->
     <div class="child">
-      <p> <strong> {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[0]) }}
-        </strong> </p>
+      <p><strong> {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[0]) }}</strong></p>
 
-      <div *ngFor="let item of this.preferenceTextGroup1; let i = index; trackBy: trackByFn">
+      @for (item of this.preferenceTextGroup1; let i = $index; track $index) {
+      <div>
         <div class="parent row">
           <span class="child labels">{{ i + 1 }}</span>
           <input class="child custom-field" type="text" [(ngModel)]="this.preferenceTextGroup1[i]"
@@ -166,15 +197,16 @@
 
         </div>
       </div>
+      }
     </div>
 
     <!-- group 2 -->
-    <div class="child"
-      *ngIf="(this.algorithmService.currentAlgorithm.name != 'Stable Roommates Problem' && this.algorithmService.currentAlgorithm.name != 'Student Project Allocation')">
-      <p> <strong> {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[1]) }}
-        </strong> </p>
-
-      <div *ngFor="let item of this.preferenceTextGroup2; let i = index; trackBy: trackByFn">
+    @if ((this.algorithmService.currentAlgorithm.name != 'Stable Roommates Problem') && (this.algorithmService.currentAlgorithm.name != 'Student Project Allocation')) {
+    <div class="child">
+      <p><strong>{{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[1]) }}</strong></p>
+      
+      @for (item of this.preferenceTextGroup2; let i = $index; track $index) {
+      <div>
         <div class="parent row">
           <span class="child labels">{{ this.keyList[i] }}</span>
           <input class="child custom-field" type="text" [(ngModel)]="this.preferenceTextGroup2[i]"
@@ -182,36 +214,46 @@
 
         </div>
       </div>
+      }
     </div>
+    }
   </div>
 
   <div class="parent">
-    <h2 *ngIf="this.missingPreferencesGroup1.length != 0 || this.missingPreferencesGroup2.length != 0">Missing
-      Preferences</h2>
-
+    @if ((this.missingPreferencesGroup1.length != 0) || (this.missingPreferencesGroup2.length != 0)) {
+    <h2>Missing Preferences</h2>
+    }
 
     <div class="container">
       <div class="row justify-content-around">
 
-        <div class="col-6" *ngIf="this.missingPreferencesGroup1.length > 0">
-          <p> <strong> {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[0]) }}
-            </strong> </p>
-
-          <span *ngFor="let item of this.missingPreferencesGroup1; let lastItem = last;">
-            <span class="labels">({{ item }})</span><span *ngIf="!lastItem">, </span>
+        @if (this.missingPreferencesGroup1.length > 0) {
+        <div class="col-6">
+          <p> <strong> {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[0]) }} </strong> </p>
+          
+          @for (item of this.missingPreferencesGroup1; let lastItem = $last; ; track item) {
+          <span>
+            @if (!lastItem) {
+            <span class="labels">({{ item }})</span><span>, </span>
+            }
           </span>
+          }
         </div>
+        }
 
+        @if (((this.missingPreferencesGroup2.length > 0) && (this.algorithmService.currentAlgorithm.name != 'Stable Roommates Problem'))) {
+        <div class="col-6">
+          <p> <strong> {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[1]) }} </strong> </p>
 
-        <div class="col-6"
-          *ngIf="(this.missingPreferencesGroup2.length > 0 && this.algorithmService.currentAlgorithm.name != 'Stable Roommates Problem')">
-          <p> <strong> {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[1]) }}
-            </strong> </p>
-
-          <span *ngFor="let item of this.missingPreferencesGroup2; let lastItem = last;">
-            <span class="labels">({{ item }})</span><span *ngIf="!lastItem">, </span>
+          @for (item of this.missingPreferencesGroup2; let lastItem = $last; track item) {
+          <span>
+            @if (!lastItem) {
+            <span class="labels">({{ item }})</span><span>, </span>
+            }
           </span>
+          }
         </div>
+        }
 
 
       </div>
@@ -219,23 +261,15 @@
       <br>
     </div>
 
-
-    <!-- <h2 *ngIf="this.missingPreferences.length != 0">Preferences Missing</h2>
-  <span *ngFor="let item of this.missingPreferences; let lastItem = last;">
-    <span class="labels">({{ item }})</span><span *ngIf="!lastItem">, </span>
-  </span> -->
-
     <div class="container">
       <div class="row justify-content-end">
         <form>
           <div class="right-align">
-            <!-- [disabled]="this.missingPreferences.length != 0 || (this.numberOfGroup1Agents.errors && this.numberOfGroup2Agents.errors)" -->
             <button class="buttons" mat-stroked-button (click)="fixInputs()">Fix!</button>
           </div>
         </form>
 
         <div class="col-3 ">
-          <!-- [disabled]="this.missingPreferences.length != 0 || (this.numberOfGroup1Agents.errors && this.numberOfGroup2Agents.errors)" -->
           <button class="buttons" mat-stroked-button (click)="callGenerateAlgorithmPreferences()"
             [disabled]="this.currentInputCheck()">Generate!</button>
         </div>
@@ -244,3 +278,4 @@
 
 
   </div>
+</div>
