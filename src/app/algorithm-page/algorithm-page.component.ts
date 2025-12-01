@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { CommonModule, NgClass,} from '@angular/common';
@@ -14,11 +14,9 @@ import { CanvasService } from './services/canvas/canvas.service';
 import { EditPreferencesDialogComponent } from './edit-preferences-dialog/edit-preferences-dialog.component';
 import { PlaybackService } from './services/playback/playback.service';
 import { InfoSidebarComponent } from './info-sidebar/info-sidebar.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+
 declare var $: any;  // declaring jquery for use in this file
 
 // -------------------------------------------------- FILE DESCRIPTION
