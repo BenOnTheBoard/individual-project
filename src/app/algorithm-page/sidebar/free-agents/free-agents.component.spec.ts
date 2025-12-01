@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FreeAgentsComponent } from './free-agents.component';
+import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
+import { PlaybackService } from '../../services/playback/playback.service';
 
 describe('FreeAgentsComponent', () => {
   let component: FreeAgentsComponent;
@@ -8,7 +10,25 @@ describe('FreeAgentsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ FreeAgentsComponent ]
+      imports: [ FreeAgentsComponent ],
+      providers: [
+        {
+          provide: PlaybackService,
+          useValue: {
+            commandList: [{freeAgents: [],}],
+            stepCounter:  0,
+          }
+        },
+        {
+          provide: AlgorithmRetrievalService,
+          useValue: {
+            currentAlgorithm: {
+              orientation: ["Man", "Woman"],
+            },
+            pluralMap: new Map([["Man", "Men"], ["Woman", "Women"],])
+          }
+        },
+      ]
     })
     .compileComponents();
   }));
