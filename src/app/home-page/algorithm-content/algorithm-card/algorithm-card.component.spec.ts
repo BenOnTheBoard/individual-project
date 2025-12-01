@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AlgorithmCardComponent } from './algorithm-card.component';
+import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 
 describe('AlgorithmCardComponent', () => {
   let component: AlgorithmCardComponent;
@@ -8,7 +9,7 @@ describe('AlgorithmCardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ AlgorithmCardComponent ]
+      imports: [ AlgorithmCardComponent ],
     })
     .compileComponents();
   }));
@@ -16,6 +17,17 @@ describe('AlgorithmCardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AlgorithmCardComponent);
     component = fixture.componentInstance;
+    component.algorithm = {
+        id: "",
+        name: "",
+        orientation: ["", ""],
+        equalGroups: true,
+        algorithm: "",
+        service: null,
+        description: "",
+        helpTextMap: {},
+        code: []
+      }
     fixture.detectChanges();
   });
 
