@@ -17,10 +17,14 @@ describe('InfoSidebarComponent', () => {
     TestBed.configureTestingModule({
       imports: [MatDialogModule, RouterTestingModule, FormsModule, InfoSidebarComponent],
       providers: [
-        { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: MatDialogRef, useValue: {} },
-        { provide: AlgorithmRetrievalService},
-        { useClass: InfoSidebarComponent},
+        {
+          provide: AlgorithmRetrievalService,
+          useValue: {
+            currentAlgorithm:{
+              name: ""
+            }
+          }
+        },
       ]
     })
     .compileComponents();
