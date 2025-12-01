@@ -14,7 +14,7 @@ describe('HrHospitalRgsService', () => {
     expect(service).toBeDefined();
   });
 
-  // added test from HR/R 
+  // added test from HR/R
   it('test correctness x10 (hr-hospital-egs)', () => {
     let stable: boolean = true;
     for (let i = 0; i < 1000; i++) {
@@ -25,7 +25,7 @@ describe('HrHospitalRgsService', () => {
         stable = false;
       }
     }
-    
+
     expect(stable).toBeTrue();
   });
 });

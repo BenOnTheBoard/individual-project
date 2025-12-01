@@ -9,9 +9,8 @@ describe('MatAnimatedIconComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ MatIconModule, MatAnimatedIconComponent, ]
-    })
-    .compileComponents();
+      imports: [MatIconModule, MatAnimatedIconComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

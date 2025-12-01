@@ -9,19 +9,18 @@ describe('PseudocodeComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ PseudocodeComponent ],
+      imports: [PseudocodeComponent],
       providers: [
         {
           provide: AlgorithmRetrievalService,
           useValue: {
             currentAlgorithm: {
-              id: "smp-man-egs",
+              id: 'smp-man-egs',
             },
-          }
+          },
         },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

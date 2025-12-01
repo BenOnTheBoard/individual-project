@@ -6,17 +6,16 @@ import { AlgorithmCardComponent } from './algorithm-card/algorithm-card.componen
 @Component({
   selector: 'app-algorithm-content',
   templateUrl: './algorithm-content.component.html',
-  styleUrls: ['./algorithm-content.component.scss', '../home-page.component.scss', '../home-content/home-content.component.scss'],
-  animations: [
-    simpleFadeAnimation
+  styleUrls: [
+    './algorithm-content.component.scss',
+    '../home-page.component.scss',
+    '../home-content/home-content.component.scss',
   ],
-  imports:[AlgorithmCardComponent],
+  animations: [simpleFadeAnimation],
+  imports: [AlgorithmCardComponent],
 })
 export class AlgorithmContentComponent implements OnInit {
+  constructor(public algorithmRetrieval: AlgorithmRetrievalService) {}
 
-  constructor(public algorithmRetrieval: AlgorithmRetrievalService) { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

@@ -3,10 +3,9 @@ import { ExecutionService } from '../execution/execution.service';
 import { CanvasService } from '../canvas/canvas.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlaybackService {
-
   // algorithm data variables
   public algorithmData: Object;
   commandList: Array<Object>;
@@ -21,9 +20,12 @@ export class PlaybackService {
   pause: boolean = true;
   speed: number = 500;
 
-  description: string = "Click play to run the program below!";
+  description: string = 'Click play to run the program below!';
 
-  constructor(public exeService: ExecutionService, public drawService: CanvasService) { }
+  constructor(
+    public exeService: ExecutionService,
+    public drawService: CanvasService
+  ) {}
 
   initialise(): void {
     this.algorithmData = {};
@@ -38,21 +40,31 @@ export class PlaybackService {
     this.currentLine = 0;
     this.pause = true;
 
-    this.description = "Click play to run the program below!";
+    this.description = 'Click play to run the program below!';
   }
 
-  setAlgorithm(algorithm: string, numberOfAgents: number, numberOfGroup2Agents: number = numberOfAgents, preferences: Map<String, Array<String>> = null, SRstable: boolean = true): void {
-
+  setAlgorithm(
+    algorithm: string,
+    numberOfAgents: number,
+    numberOfGroup2Agents: number = numberOfAgents,
+    preferences: Map<String, Array<String>> = null,
+    SRstable: boolean = true
+  ): void {
     this.initialise();
     // console.log("Set algorithm", SRstable)
-    this.algorithmData = this.exeService.getExecutionFlow(algorithm, numberOfAgents, numberOfGroup2Agents, preferences, SRstable);
-    this.commandList = this.algorithmData["commands"];
+    this.algorithmData = this.exeService.getExecutionFlow(
+      algorithm,
+      numberOfAgents,
+      numberOfGroup2Agents,
+      preferences,
+      SRstable
+    );
+    this.commandList = this.algorithmData['commands'];
     this.resetPlaybackData();
-    this.numCommands = this.commandList.length-1;
+    this.numCommands = this.commandList.length - 1;
 
     // console.log(this.algorithmData);
     this.updateCurrentCommand();
-
   }
 
   setSpeed(milliseconds: number) {
@@ -64,12 +76,11 @@ export class PlaybackService {
       this.previousStepCounter = this.stepCounter;
     }
 
-    this.currentCommand = this.algorithmData["commands"][this.stepCounter];
-    this.description = this.algorithmData["descriptions"][this.stepCounter];
-    this.currentLine = this.currentCommand["lineNumber"];
+    this.currentCommand = this.algorithmData['commands'][this.stepCounter];
+    this.description = this.algorithmData['descriptions'][this.stepCounter];
+    this.currentLine = this.currentCommand['lineNumber'];
     this.drawService.redrawCanvas(this.currentCommand);
   }
-
 
   restart(): void {
     this.pause = true;
@@ -89,14 +100,18 @@ export class PlaybackService {
 
   backStep(): void {
     this.uncolourCurrentLine();
-    if (this.stepCounter > 0) { this.stepCounter--; }
+    if (this.stepCounter > 0) {
+      this.stepCounter--;
+    }
     this.updateCurrentCommand();
-    this.colourCurrentLine(); 
+    this.colourCurrentLine();
   }
 
   forwardStep(): void {
     this.uncolourCurrentLine();
-    if (this.stepCounter < this.numCommands) { this.stepCounter++; }
+    if (this.stepCounter < this.numCommands) {
+      this.stepCounter++;
+    }
     this.updateCurrentCommand();
     this.colourCurrentLine();
   }
@@ -118,7 +133,6 @@ export class PlaybackService {
 
   async play(): Promise<void> {
     while (this.stepCounter < this.numCommands) {
-
       if (this.pause) {
         // console.log("Paused at step " + (this.stepCounter) + "!");
         // console.log("Current Line: " + this.currentLine);
@@ -138,30 +152,26 @@ export class PlaybackService {
           this.pause = true;
         }
       }
-
     }
   }
 
   async sleep(msec: number) {
-    return new Promise(resolve => setTimeout(resolve, msec));
+    return new Promise((resolve) => setTimeout(resolve, msec));
   }
 
-
   uncolourCurrentLine(): void {
-    let codeLineHTML = document.getElementById("line" + this.currentLine);
-    codeLineHTML.style.backgroundColor = "";
-    codeLineHTML.style.color = "";
+    let codeLineHTML = document.getElementById('line' + this.currentLine);
+    codeLineHTML.style.backgroundColor = '';
+    codeLineHTML.style.color = '';
   }
 
   colourCurrentLine(): void {
-    let codeLineHTML = document.getElementById("line" + this.currentLine);
-    codeLineHTML.style.backgroundColor = "black";
-    codeLineHTML.style.color = "#37FF00";
+    let codeLineHTML = document.getElementById('line' + this.currentLine);
+    codeLineHTML.style.backgroundColor = 'black';
+    codeLineHTML.style.color = '#37FF00';
   }
 
-
   onSliderChange(val: number) {
-
     if (this.firstRun) {
       this.firstRun = false;
     }
@@ -175,15 +185,14 @@ export class PlaybackService {
     this.stepCounter = val;
 
     var command = this.commandList[this.previousStepCounter];
-    let a = document.getElementById("line" + command["lineNumber"]);
-    a.style.backgroundColor = "";
-    a.style.color = "";
+    let a = document.getElementById('line' + command['lineNumber']);
+    a.style.backgroundColor = '';
+    a.style.color = '';
 
     this.updateCurrentCommand();
-    
+
     this.colourCurrentLine();
   }
-
 
   // unboldenVariables(): void {
 
@@ -230,7 +239,6 @@ export class PlaybackService {
   //   }
   // }
 
-
   // emboldenVariables(): void {
 
   //   var command = this.commandList[this.stepCounter];
@@ -243,5 +251,4 @@ export class PlaybackService {
   //     }
   //   }
   // }
-
 }

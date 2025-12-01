@@ -9,9 +9,8 @@ describe('FeedbackContentComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ BrowserAnimationsModule, FeedbackContentComponent ]
-    })
-    .compileComponents();
+      imports: [BrowserAnimationsModule, FeedbackContentComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -8,9 +8,8 @@ describe('IconBannerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ IconBannerComponent ]
-    })
-    .compileComponents();
+      imports: [IconBannerComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

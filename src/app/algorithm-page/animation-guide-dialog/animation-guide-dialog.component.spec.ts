@@ -8,9 +8,8 @@ describe('AnimationGuideDialogComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ AnimationGuideDialogComponent ]
-    })
-    .compileComponents();
+      imports: [AnimationGuideDialogComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

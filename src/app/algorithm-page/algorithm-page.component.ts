@@ -1,8 +1,14 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { CommonModule, NgClass,} from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { AgentTitlesComponent } from './animation-container/agent-titles/agent-titles.component';
 import { PlaybackControlsComponent } from './playback-controls/playback-controls.component';
 import { Router } from '@angular/router';
@@ -17,7 +23,7 @@ import { InfoSidebarComponent } from './info-sidebar/info-sidebar.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-declare var $: any;  // declaring jquery for use in this file
+declare var $: any; // declaring jquery for use in this file
 
 // -------------------------------------------------- FILE DESCRIPTION
 
@@ -64,9 +70,7 @@ Functions in this file:
 
 */
 
-
 // -------------------------------------------------- CODE
-
 
 @Component({
   selector: 'algorithm-page',
@@ -81,52 +85,46 @@ Functions in this file:
     InfoSidebarComponent,
     AgentTitlesComponent,
     PlaybackControlsComponent,
-  ]
+  ],
 })
 export class AlgorithmPageComponent implements OnInit {
-
   // --------------------------------------------------------------------------------- | INSTANCE VARIABLES
 
-
   // looks for the canvas element on the algorithm page and assigns it to the canvas variable
-  @ViewChild('canvas', {static: true})
+  @ViewChild('canvas', { static: true })
   canvas: ElementRef<HTMLCanvasElement>;
 
   showCode: boolean = false;
   dialogOpen: boolean = false;
 
-  showInfo: boolean = false
+  showInfo: boolean = false;
 
   tutorialStep: number;
 
   duringAnimation: boolean = false;
 
-  firstSelection: boolean = true
+  firstSelection: boolean = true;
   algorithm = new FormControl('');
   numPeople: number;
 
   // where SR is going to generate a stable matching or a unstable matching
   SRstable: boolean = true;
-  SRstableText: string = "Generating Stable Matchings"
-
+  SRstableText: string = 'Generating Stable Matchings';
 
   // --------------------------------------------------------------------------------- | INIT FUNCTIONS
 
-
   constructor(
-    public playback: PlaybackService,  // injecting the playback service
-    public algorithmService: AlgorithmRetrievalService,  // injecting the algorithm service
-    public drawService: CanvasService,  // injecting the canvas service
+    public playback: PlaybackService, // injecting the playback service
+    public algorithmService: AlgorithmRetrievalService, // injecting the algorithm service
+    public drawService: CanvasService, // injecting the canvas service
     public animation: AlgorithmAnimationService,
     public utils: UtilsService,
-    public dialog: MatDialog,  // injecting the dialog component
-    public router: Router  // injecting the router service (for programmatic route navigation)
-  ) { }
-
+    public dialog: MatDialog, // injecting the dialog component
+    public router: Router // injecting the router service (for programmatic route navigation)
+  ) {}
 
   // function that runs when page is created
   ngOnInit(): void {
-
     // set the global canvas element (in the canvasService) to the canvas on this page
     this.drawService.canvas = this.canvas;
     this.drawService.ctx = this.canvas.nativeElement.getContext('2d');
@@ -144,21 +142,22 @@ export class AlgorithmPageComponent implements OnInit {
     // this.algorithmService.currentAlgorithm = this.algorithmService.mapOfAvailableAlgorithms.get(alg);
     // this.playback.setAlgorithm(alg, group1, group2);
 
-
     this.drawService.initialise();
 
     // (un)comment the line below to (disable)/enable working algorithm selection
-    this.playback.setAlgorithm(this.algorithmService.currentAlgorithm.id, this.algorithmService.numberOfGroup1Agents, this.algorithmService.numberOfGroup2Agents);
-
+    this.playback.setAlgorithm(
+      this.algorithmService.currentAlgorithm.id,
+      this.algorithmService.numberOfGroup1Agents,
+      this.algorithmService.numberOfGroup2Agents
+    );
 
     // initialise all of the popovers for the tutorial (they won't appear without this function)
     $(function () {
-      $('[data-toggle="popover"]').popover()
-    })
+      $('[data-toggle="popover"]').popover();
+    });
 
     // initialise the tutorial to the beginning
     this.tutorialStep = 0;
-
   }
 
   // function that runs when page is visible to user
@@ -166,39 +165,42 @@ export class AlgorithmPageComponent implements OnInit {
     this.animation.loadPage();
   }
 
-
   // creating a listener function for keydown events
   // Key:
-    // (< arrow) or (a) == backstep in algorithm
-    // (> arrow) or (d) == forward step in algorithm
-    // (r) or (#) == generate new preferences
-    // (e) or (]) == open edit preferences dialog
+  // (< arrow) or (a) == backstep in algorithm
+  // (> arrow) or (d) == forward step in algorithm
+  // (r) or (#) == generate new preferences
+  // (e) or (]) == open edit preferences dialog
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
-    if (!this.dialogOpen && this.tutorialStep == 0) {  // disable events on tutorial or edit preferences open
-      if (event.key == "ArrowRight" || event.key == "d") {
-        if (!(!this.playback.pause || this.playback.stepCounter >= this.playback.numCommands)) {
+    if (!this.dialogOpen && this.tutorialStep == 0) {
+      // disable events on tutorial or edit preferences open
+      if (event.key == 'ArrowRight' || event.key == 'd') {
+        if (
+          !(
+            !this.playback.pause ||
+            this.playback.stepCounter >= this.playback.numCommands
+          )
+        ) {
           this.playback.forwardStep();
         }
-      } else if (event.key == "ArrowLeft" || event.key == "a") {
+      } else if (event.key == 'ArrowLeft' || event.key == 'a') {
         if (!(!this.playback.pause || this.playback.stepCounter == 0)) {
           this.playback.backStep();
         }
-      } else if (event.key == " ") {
+      } else if (event.key == ' ') {
         if (!(this.playback.stepCounter >= this.playback.numCommands)) {
           this.playback.toggle();
         }
-      } else if (event.key == "r" || event.key == "#") {
-        this.generateNewPreferences()
-      } else if (event.key == "e" || event.key == "]") {
-        this.openEditPreferencesDialog()
+      } else if (event.key == 'r' || event.key == '#') {
+        this.generateNewPreferences();
+      } else if (event.key == 'e' || event.key == ']') {
+        this.openEditPreferencesDialog();
       }
     }
   }
 
-
   // --------------------------------------------------------------------------------- | GENERAL FUNCTIONS
-
 
   // open the edit preferences dialog with a callback function
   openEditPreferencesDialog(): void {
@@ -206,10 +208,9 @@ export class AlgorithmPageComponent implements OnInit {
 
     this.dialogOpen = true;
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       this.dialogOpen = false;
     });
-
   }
 
   // open the animation guide dialog with a callback function
@@ -218,33 +219,28 @@ export class AlgorithmPageComponent implements OnInit {
 
     this.dialogOpen = true;
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       this.dialogOpen = false;
     });
-
   }
 
-
   // --------------------------------------------------------------------------------- | ON CLICK FUNCTIONS
-
 
   // function run when home link clicked
   // start animation for going home, delay 1000ms, then change route to home
   async goHome(): Promise<void> {
     this.animation.goHome();
     await this.utils.delay(1000);
-    this.router.navigateByUrl("/");
+    this.router.navigateByUrl('/');
   }
-
 
   // function run when generate new preferences button clicked
   async generateNewPreferences(): Promise<void> {
     // clears any code highlighting
     var command = this.playback.commandList[this.playback.previousStepCounter];
-    let a = document.getElementById("line" + command["lineNumber"]);
-    a.style.backgroundColor = "";
-    a.style.color = "";
-
+    let a = document.getElementById('line' + command['lineNumber']);
+    a.style.backgroundColor = '';
+    a.style.color = '';
 
     // animates changing of preferences (fade in/out)
     this.animation.fadeCanvasOut();
@@ -256,55 +252,60 @@ export class AlgorithmPageComponent implements OnInit {
 
       // console.log(this.algorithmService.currentAlgorithm.name)
 
-      if (this.algorithmService.currentAlgorithm.name == "Stable Roommates Problem") {
+      if (
+        this.algorithmService.currentAlgorithm.name ==
+        'Stable Roommates Problem'
+      ) {
         // console.log("yes", this.SRstable)
-        this.playback.setAlgorithm(this.algorithmService.currentAlgorithm.id, this.algorithmService.numberOfGroup1Agents, this.algorithmService.numberOfGroup2Agents, null, this.SRstable);
-
+        this.playback.setAlgorithm(
+          this.algorithmService.currentAlgorithm.id,
+          this.algorithmService.numberOfGroup1Agents,
+          this.algorithmService.numberOfGroup2Agents,
+          null,
+          this.SRstable
+        );
       } else {
-        this.playback.setAlgorithm(this.algorithmService.currentAlgorithm.id, this.algorithmService.numberOfGroup1Agents, this.algorithmService.numberOfGroup2Agents);
+        this.playback.setAlgorithm(
+          this.algorithmService.currentAlgorithm.id,
+          this.algorithmService.numberOfGroup1Agents,
+          this.algorithmService.numberOfGroup2Agents
+        );
       }
-
     }
     this.animation.fadeCanvasIn();
   }
 
-
   // function run when toggle sidebar button clicked (top left)
   async toggleSidebar(): Promise<void> {
-
     this.duringAnimation = true;
 
-    let mainContent = document.getElementById("mainContent");
+    let mainContent = document.getElementById('mainContent');
 
     if (!this.showCode) {
-
       // hide sidebar and content
       this.animation.hideSidebar();
       this.animation.hideMainContent();
 
       await this.utils.delay(700);
-  
+
       // show sidebar and content
-      mainContent.style.position = "";
+      mainContent.style.position = '';
       this.animation.showMainContent();
-      this.showCode = !this.showCode
-
+      this.showCode = !this.showCode;
     } else {
-
       // hide content
       this.animation.hideMainContent();
 
       await this.utils.delay(400);
 
       // show sidebar
-      this.showCode = !this.showCode
+      this.showCode = !this.showCode;
       this.animation.showSidebar();
 
       await this.utils.delay(200);
 
       // show content
       this.animation.showMainContent();
-
     }
 
     await this.utils.delay(200);
@@ -312,73 +313,60 @@ export class AlgorithmPageComponent implements OnInit {
     this.duringAnimation = false;
 
     // console.log("current pannels", this.showInfo, this.showCode)
-
-
   }
 
+  // function run when toggle sidebar button clicked (top left)
+  async toggleInfoSidebar(): Promise<void> {
+    this.duringAnimation = true;
 
-// function run when toggle sidebar button clicked (top left)
-async toggleInfoSidebar(): Promise<void> {
+    let mainContent = document.getElementById('mainContent');
 
-  this.duringAnimation = true;
+    if (!this.showInfo) {
+      // hide sidebar and content
+      this.animation.hideInfoSidebar();
+      this.animation.hideMainContent();
 
-  let mainContent = document.getElementById("mainContent");
+      await this.utils.delay(700);
 
-  if (!this.showInfo) {
+      // show sidebar and content
+      mainContent.style.position = '';
+      this.animation.showMainContent();
+      this.showInfo = !this.showInfo;
+    } else {
+      // hide content
+      this.animation.hideMainContent();
 
-    // hide sidebar and content
-    this.animation.hideInfoSidebar();
-    this.animation.hideMainContent();
+      await this.utils.delay(400);
 
-    await this.utils.delay(700);
+      // show sidebar
+      this.showInfo = !this.showInfo;
+      this.animation.showInfoSidebar();
 
-    // show sidebar and content
-    mainContent.style.position = "";
-    this.animation.showMainContent();
-    this.showInfo = !this.showInfo
+      await this.utils.delay(200);
 
-  } else {
-
-    // hide content
-    this.animation.hideMainContent();
-
-    await this.utils.delay(400);
-
-    // show sidebar
-    this.showInfo = !this.showInfo
-    this.animation.showInfoSidebar();
+      // show content
+      this.animation.showMainContent();
+    }
 
     await this.utils.delay(200);
 
-    // show content
-    this.animation.showMainContent();
+    this.duringAnimation = false;
 
+    // console.log("current pannels", this.showInfo, this.showCode)
   }
-
-  await this.utils.delay(200);
-
-  this.duringAnimation = false;
-
-  // console.log("current pannels", this.showInfo, this.showCode)
-
-}
   ChangeStableSR(): void {
-    
     if (this.SRstable == true) {
-      this.SRstable = false
-      this.SRstableText = "Generating Unstable Matchings"
+      this.SRstable = false;
+      this.SRstableText = 'Generating Unstable Matchings';
     } else {
-      this.SRstable = true
-      this.SRstableText = "Generating Stable Matchings"
-
+      this.SRstable = true;
+      this.SRstableText = 'Generating Stable Matchings';
     }
 
     // console.log("New SR setting", this.SRstable)
   }
 
-
   // --------------------------------------------------------------------------------- | TUTORIAL FUNCTIONS
-  
 
   // function run when ">" arrow clicked in tutorial
   // progresses to next stage of tutorial
@@ -389,21 +377,20 @@ async toggleInfoSidebar(): Promise<void> {
         this.toggleSidebar();
       }
       this.startTutorial();
-    
-    // step 2
+
+      // step 2
     } else if (this.tutorialStep == 1) {
       this.sidebarTutorial();
 
-    // step 3
+      // step 3
     } else if (this.tutorialStep == 2) {
       this.mainContentTutorial();
-      
-    // step 4
+
+      // step 4
     } else if (this.tutorialStep == 3) {
       this.stopTutorial();
     }
   }
-
 
   // functions to hide/show appropriate popovers for tutorial steps
   startTutorial(): void {
@@ -429,6 +416,4 @@ async toggleInfoSidebar(): Promise<void> {
     $('.sidebarPopover').popover('hide');
     $('.mainContentPopover').popover('hide');
   }
-
-
 }

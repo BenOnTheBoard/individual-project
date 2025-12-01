@@ -186,7 +186,8 @@
   <div class="parent">
     <!-- group 1 -->
     <div class="child">
-      <p><strong> {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[0]) }}</strong></p>
+      <p><strong> {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[0])
+          }}</strong></p>
 
       @for (item of this.preferenceTextGroup1; let i = $index; track $index) {
       <div>
@@ -201,10 +202,12 @@
     </div>
 
     <!-- group 2 -->
-    @if ((this.algorithmService.currentAlgorithm.name != 'Stable Roommates Problem') && (this.algorithmService.currentAlgorithm.name != 'Student Project Allocation')) {
+    @if ((this.algorithmService.currentAlgorithm.name != 'Stable Roommates Problem') &&
+    (this.algorithmService.currentAlgorithm.name != 'Student Project Allocation')) {
     <div class="child">
-      <p><strong>{{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[1]) }}</strong></p>
-      
+      <p><strong>{{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[1])
+          }}</strong></p>
+
       @for (item of this.preferenceTextGroup2; let i = $index; track $index) {
       <div>
         <div class="parent row">
@@ -229,8 +232,9 @@
 
         @if (this.missingPreferencesGroup1.length > 0) {
         <div class="col-6">
-          <p> <strong> {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[0]) }} </strong> </p>
-          
+          <p> <strong> {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[0]) }}
+            </strong> </p>
+
           @for (item of this.missingPreferencesGroup1; let lastItem = $last; ; track item) {
           <span>
             @if (!lastItem) {
@@ -241,9 +245,11 @@
         </div>
         }
 
-        @if (((this.missingPreferencesGroup2.length > 0) && (this.algorithmService.currentAlgorithm.name != 'Stable Roommates Problem'))) {
+        @if (((this.missingPreferencesGroup2.length > 0) && (this.algorithmService.currentAlgorithm.name != 'Stable
+        Roommates Problem'))) {
         <div class="col-6">
-          <p> <strong> {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[1]) }} </strong> </p>
+          <p> <strong> {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[1]) }}
+            </strong> </p>
 
           @for (item of this.missingPreferencesGroup2; let lastItem = $last; track item) {
           <span>

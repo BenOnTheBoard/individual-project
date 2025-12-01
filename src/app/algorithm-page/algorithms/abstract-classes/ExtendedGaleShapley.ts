@@ -1,81 +1,85 @@
-import { Agent } from "../interfaces/Agent";
-import { AlgorithmData } from "../interfaces/AlgorithmData";
-import { MatchingAlgorithm } from "./MatchingAlgorithm";
-
+import { Agent } from '../interfaces/Agent';
+import { AlgorithmData } from '../interfaces/AlgorithmData';
+import { MatchingAlgorithm } from './MatchingAlgorithm';
 
 export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
+  match(): AlgorithmData {
+    // assign each resident to be free;
+    this.update(1);
 
-    match(): AlgorithmData {
+    while (this.freeAgentsOfGroup1.length > 0) {
+      // this.currentlySelectedAgents = [];
+      // this.relevantPreferences = [];
 
-        // assign each resident to be free;
-        this.update(1);
+      // while (some hospital h is undersubscribed) and (h's preference list contains a resident r not provisionally assigned to h) {
+      let currentAgent = this.group1Agents.get(this.freeAgentsOfGroup1[0]);
+      // this.currentlySelectedAgents.push(this.getLastCharacter(currentAgent.name));
+      // this.relevantPreferences.push(this.getLastCharacter(currentAgent.name));
 
-        while (this.freeAgentsOfGroup1.length > 0) {
+      // if all potential proposees are gone, remove
+      if (
+        currentAgent.ranking.length <= 0 ||
+        !this.getNextPotentialProposee(currentAgent)
+      ) {
+        this.freeAgentsOfGroup1.shift();
+      } else {
+        this.update(2, { '%currentAgent%': currentAgent.name });
 
-            // this.currentlySelectedAgents = [];
-            // this.relevantPreferences = [];
+        // r := first such resident on h's list;
+        let potentialProposee: Agent =
+          this.getNextPotentialProposee(currentAgent);
 
-            // while (some hospital h is undersubscribed) and (h's preference list contains a resident r not provisionally assigned to h) {
-            let currentAgent = this.group1Agents.get(this.freeAgentsOfGroup1[0]);
-            // this.currentlySelectedAgents.push(this.getLastCharacter(currentAgent.name));
-            // this.relevantPreferences.push(this.getLastCharacter(currentAgent.name));
+        // let agentLastChar = this.getLastCharacter(currentAgent.name);
+        // let proposeeLastChar = this.getLastCharacter(potentialProposee.name);
 
+        // this.currentlySelectedAgents.push(proposeeLastChar);
+        // this.relevantPreferences.push(proposeeLastChar);
 
-            // if all potential proposees are gone, remove 
-            if (currentAgent.ranking.length <= 0 || !this.getNextPotentialProposee(currentAgent)) {
-                this.freeAgentsOfGroup1.shift();
-            } else {
+        // this.changePreferenceStyle(this.group1CurrentPreferences, agentLastChar, this.originalGroup1CurrentPreferences.get(agentLastChar).findIndex(woman => woman == this.getLastCharacter(potentialProposee.name)), "red");
+        // this.changePreferenceStyle(this.group2CurrentPreferences, proposeeLastChar, this.findPositionInMatches(potentialProposee, currentAgent), "red");
 
-                this.update(2, {"%currentAgent%": currentAgent.name});
+        // let redLine = [agentLastChar, proposeeLastChar, "red"];
+        // this.currentLines.push(redLine);
 
-                // r := first such resident on h's list;
-                let potentialProposee: Agent = this.getNextPotentialProposee(currentAgent);
+        this.update(3, {
+          '%currentAgent%': currentAgent.name,
+          '%potentialProposee%': potentialProposee.name,
+        });
 
+        // if h is fully subscribed, then break the assignment of the worst resident of that hospital
+        this.breakAssignment(currentAgent, potentialProposee);
 
-                // let agentLastChar = this.getLastCharacter(currentAgent.name);
-                // let proposeeLastChar = this.getLastCharacter(potentialProposee.name);
+        this.provisionallyAssign(currentAgent, potentialProposee);
 
-                // this.currentlySelectedAgents.push(proposeeLastChar);
-                // this.relevantPreferences.push(proposeeLastChar);
+        this.removeRuledOutPreferences(currentAgent, potentialProposee);
 
-                // this.changePreferenceStyle(this.group1CurrentPreferences, agentLastChar, this.originalGroup1CurrentPreferences.get(agentLastChar).findIndex(woman => woman == this.getLastCharacter(potentialProposee.name)), "red");
-                // this.changePreferenceStyle(this.group2CurrentPreferences, proposeeLastChar, this.findPositionInMatches(potentialProposee, currentAgent), "red");
-
-                // let redLine = [agentLastChar, proposeeLastChar, "red"];
-                // this.currentLines.push(redLine);
-
-                this.update(3, {"%currentAgent%": currentAgent.name, "%potentialProposee%": potentialProposee.name});
-
-                // if h is fully subscribed, then break the assignment of the worst resident of that hospital
-                this.breakAssignment(currentAgent, potentialProposee);
-        
-                this.provisionallyAssign(currentAgent, potentialProposee);
-        
-                this.removeRuledOutPreferences(currentAgent, potentialProposee);
-        
-                if (this.shouldContinueMatching(currentAgent)) {
-                    this.freeAgentsOfGroup1.shift();
-                }  
-            }
+        if (this.shouldContinueMatching(currentAgent)) {
+          this.freeAgentsOfGroup1.shift();
         }
-
-        this.currentlySelectedAgents = [];
-        this.relevantPreferences = [];
-        // a stable matching has been found
-        this.update(12);
-
-
-        return;
+      }
     }
 
-    abstract getNextPotentialProposee(currentAgent: Agent): Agent;
+    this.currentlySelectedAgents = [];
+    this.relevantPreferences = [];
+    // a stable matching has been found
+    this.update(12);
 
-    abstract shouldContinueMatching(currentAgent: Agent): boolean;
+    return;
+  }
 
-    abstract provisionallyAssign(currentAgent: Agent, potentialProposee: Agent): void;
+  abstract getNextPotentialProposee(currentAgent: Agent): Agent;
 
-    abstract removeRuledOutPreferences(currentAgent: Agent, potentialProposee: Agent): void;
+  abstract shouldContinueMatching(currentAgent: Agent): boolean;
 
-    abstract breakAssignment(currentAgent: Agent, potentialProposee: Agent): void;
+  abstract provisionallyAssign(
+    currentAgent: Agent,
+    potentialProposee: Agent
+  ): void;
 
+  abstract removeRuledOutPreferences(
+    currentAgent: Agent,
+    potentialProposee: Agent
+  ): void;
+
+  abstract breakAssignment(currentAgent: Agent, potentialProposee: Agent): void;
 }

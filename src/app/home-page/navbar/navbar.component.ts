@@ -8,29 +8,27 @@ declare var anime: any;
   selector: 'navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  imports:[NgClass],
+  imports: [NgClass],
 })
 export class NavbarComponent implements OnInit {
-
   componentMap: Object = {
-    "/": ".homeContent",
-    "/about": ".aboutContent",
-    "/algorithms": ".algorithmContent",
-    "/feedback": ".feedbackContent"
+    '/': '.homeContent',
+    '/about': '.aboutContent',
+    '/algorithms': '.algorithmContent',
+    '/feedback': '.feedbackContent',
   };
 
-  constructor(public router: Router) { }
+  constructor(public router: Router) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   fadeCurrentPage(): void {
     anime({
       targets: [this.componentMap[this.router.url]],
       easing: 'easeInOutQuint',
       opacity: [1, 0],
-      duration: 400
-    })
+      duration: 400,
+    });
   }
 
   async goToPage(page: string): Promise<void> {
@@ -42,7 +40,6 @@ export class NavbarComponent implements OnInit {
   }
 
   delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
-
 }

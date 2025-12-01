@@ -8,34 +8,43 @@ import { FeedbackContentComponent } from '../home-page/feedback-content/feedback
 import { HomeContentComponent } from '../home-page/home-content/home-content.component';
 import { HomePageComponent } from '../home-page/home-page.component';
 
-
 export const routes: Routes = [
-  { path: '', component: HomePageComponent, children: [
-    {
-      path: '',
-      component: HomeContentComponent,
-      data: {animation: 'HomePage'}
-    },
-    {
-      path: 'about',
-      component: AboutContentComponent,
-      data: {animation: 'AboutPage'}
-    },
-    {
-      path: 'algorithms',
-      component: AlgorithmContentComponent
-    },
-    {
-      path: 'feedback',
-      component: FeedbackContentComponent
-    },
-  ]},
-  { path: 'animation', component: AlgorithmPageComponent, canActivate: [AlgorithmGuard] },
-  { path: '**', redirectTo: '' },  // Wildcard route
+  {
+    path: '',
+    component: HomePageComponent,
+    children: [
+      {
+        path: '',
+        component: HomeContentComponent,
+        data: { animation: 'HomePage' },
+      },
+      {
+        path: 'about',
+        component: AboutContentComponent,
+        data: { animation: 'AboutPage' },
+      },
+      {
+        path: 'algorithms',
+        component: AlgorithmContentComponent,
+      },
+      {
+        path: 'feedback',
+        component: FeedbackContentComponent,
+      },
+    ],
+  },
+  {
+    path: 'animation',
+    component: AlgorithmPageComponent,
+    canActivate: [AlgorithmGuard],
+  },
+  { path: '**', redirectTo: '' }, // Wildcard route
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'})],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' }),
+  ],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -33,7 +33,7 @@ describe('SidebarComponent', () => {
           useValue: {
             commandList: [{}],
             algorithmData: {
-              descriptions: []
+              descriptions: [],
             },
             stepCounter: 0,
           },
@@ -42,12 +42,15 @@ describe('SidebarComponent', () => {
           provide: AlgorithmRetrievalService,
           useValue: {
             currentAlgorithm: {
-              orientation: ["Man", "Woman"],
+              orientation: ['Man', 'Woman'],
             },
-            pluralMap: new Map([["Man", "Men"], ["Woman", "Women"],]),
-          }
+            pluralMap: new Map([
+              ['Man', 'Men'],
+              ['Woman', 'Women'],
+            ]),
+          },
         },
-      ]
+      ],
     }).compileComponents();
   }));
 

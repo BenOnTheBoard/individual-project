@@ -8,9 +8,8 @@ describe('AlgDescriptionComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ AlgDescriptionComponent ]
-    })
-    .compileComponents();
+      imports: [AlgDescriptionComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

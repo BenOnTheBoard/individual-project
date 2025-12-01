@@ -6,10 +6,9 @@ import { MatIcon } from '@angular/material/icon';
   selector: 'mat-animated-icon',
   templateUrl: './mat-animated-icon.component.html',
   styleUrls: ['./mat-animated-icon.component.scss'],
-  imports:[MatIcon, NgClass],
+  imports: [MatIcon, NgClass],
 })
 export class MatAnimatedIconComponent implements OnInit {
-
   @Input() start: String;
   @Input() end: String;
   @Input() colorStart: String;
@@ -17,7 +16,7 @@ export class MatAnimatedIconComponent implements OnInit {
   @Input() animate: boolean;
   @Input() animateFromParent?: boolean = false;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     // console.log(this.colorStart);
@@ -25,7 +24,6 @@ export class MatAnimatedIconComponent implements OnInit {
   }
 
   toggle() {
-    if(!this.animateFromParent) this.animate = !this.animate;
+    if (!this.animateFromParent) this.animate = !this.animate;
   }
-
 }

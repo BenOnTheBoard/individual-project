@@ -4,13 +4,10 @@ import { PlaybackService } from '../../services/playback/playback.service';
 @Component({
   selector: 'execution-log',
   templateUrl: './execution-log.component.html',
-  styleUrls: ['./execution-log.component.scss', '../sidebar.component.scss']
+  styleUrls: ['./execution-log.component.scss', '../sidebar.component.scss'],
 })
 export class ExecutionLogComponent implements OnInit {
+  constructor(public playback: PlaybackService) {}
 
-  constructor(public playback: PlaybackService) { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

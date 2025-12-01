@@ -1,8 +1,7 @@
-import { Agent } from "./Agent";
-import { Lecturer } from "./Lecturer";
-import { Student } from "./Student";
+import { Agent } from './Agent';
+import { Student } from './Student';
 
 export interface Project extends Agent {
-    match: Array<Student>;
-    capacity: number;
+  match: Array<Student>;
+  capacity: number;
 }

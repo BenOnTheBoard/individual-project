@@ -10,27 +10,29 @@ describe('FreeAgentsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ FreeAgentsComponent ],
+      imports: [FreeAgentsComponent],
       providers: [
         {
           provide: PlaybackService,
           useValue: {
-            commandList: [{freeAgents: [],}],
-            stepCounter:  0,
-          }
+            commandList: [{ freeAgents: [] }],
+            stepCounter: 0,
+          },
         },
         {
           provide: AlgorithmRetrievalService,
           useValue: {
             currentAlgorithm: {
-              orientation: ["Man", "Woman"],
+              orientation: ['Man', 'Woman'],
             },
-            pluralMap: new Map([["Man", "Men"], ["Woman", "Women"],])
-          }
+            pluralMap: new Map([
+              ['Man', 'Men'],
+              ['Woman', 'Women'],
+            ]),
+          },
         },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

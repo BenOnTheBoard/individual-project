@@ -8,12 +8,12 @@ import { PlaybackService } from '../../services/playback/playback.service';
   styleUrls: ['./agent-titles.component.scss'],
 })
 export class AgentTitlesComponent implements OnInit {
-
   @Input() showCode: boolean;
 
-  constructor(public algorithmService: AlgorithmRetrievalService, public playback: PlaybackService) { }
+  constructor(
+    public algorithmService: AlgorithmRetrievalService,
+    public playback: PlaybackService
+  ) {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

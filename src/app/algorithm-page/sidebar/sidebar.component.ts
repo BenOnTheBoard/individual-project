@@ -8,7 +8,7 @@ import { CanvasService } from '../services/canvas/canvas.service';
 import { PlaybackService } from '../services/playback/playback.service';
 import { AlgDescriptionComponent } from './alg-description/alg-description.component';
 import { PseudocodeComponent } from './pseudocode/pseudocode.component';
-import { FreeAgentsComponent} from './free-agents/free-agents.component';
+import { FreeAgentsComponent } from './free-agents/free-agents.component';
 import { ExecutionLogComponent } from './execution-log/execution-log.component';
 import { NgClass } from '@angular/common';
 
@@ -22,24 +22,21 @@ import { NgClass } from '@angular/common';
     PseudocodeComponent,
     AlgDescriptionComponent,
     NgClass,
-  ]
+  ],
 })
 export class SidebarComponent implements OnInit {
-
   @Input() showCode: boolean;
   @Input() tutorialStep: number;
 
   constructor(
-    public playback: PlaybackService,  // injecting the playback service
-    public algorithmService: AlgorithmRetrievalService,  // injecting the algorithm service
-    public drawService: CanvasService,  // injecting the canvas service
+    public playback: PlaybackService, // injecting the playback service
+    public algorithmService: AlgorithmRetrievalService, // injecting the algorithm service
+    public drawService: CanvasService, // injecting the canvas service
     public animation: AlgorithmAnimationService,
     public utils: UtilsService,
-    public dialog: MatDialog,  // injecting the dialog component
-    public router: Router,  // injecting the router service (for programmatic route navigation)
-  ) { }
+    public dialog: MatDialog, // injecting the dialog component
+    public router: Router // injecting the router service (for programmatic route navigation)
+  ) {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

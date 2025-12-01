@@ -9,7 +9,6 @@ import { GsStableMarriageService } from './algorithms/algorithm-services/smp-man
 import { CanvasService } from './services/canvas/canvas.service';
 import { AlgorithmAnimationService } from './animations/algorithm-animation.service';
 
-
 describe('AlgorithmPageComponent', () => {
   let component: AlgorithmPageComponent;
   let fixture: ComponentFixture<AlgorithmPageComponent>;
@@ -23,7 +22,7 @@ describe('AlgorithmPageComponent', () => {
         ReactiveFormsModule,
         AlgorithmPageComponent,
       ],
-      providers:[
+      providers: [
         {
           provide: AlgorithmAnimationService,
           useValue: {
@@ -36,41 +35,44 @@ describe('AlgorithmPageComponent', () => {
             showMainContent: jasmine.createSpy('showMainContent'),
             showSidebar: jasmine.createSpy('showSidebar'),
             hideInfoSidebar: jasmine.createSpy('hideInfoSidebar'),
-            showInfoSidebar: jasmine.createSpy('showInfoSidebar')
+            showInfoSidebar: jasmine.createSpy('showInfoSidebar'),
           },
         },
         {
           provide: AlgorithmRetrievalService,
           useValue: {
             currentAlgorithm: {
-              id: "smp-man-gs",
-              orientation: ["Man", "Woman"]
+              id: 'smp-man-gs',
+              orientation: ['Man', 'Woman'],
             },
-            pluralMap: new Map([["Man", "Men"], ["Woman", "Women"]]),
+            pluralMap: new Map([
+              ['Man', 'Men'],
+              ['Woman', 'Women'],
+            ]),
             mapOfAvailableAlgorithms: new Map([
               [
-                "smp-man-gs", {
+                'smp-man-gs',
+                {
                   service: {
                     run: jasmine.createSpy('run').and.returnValue({
-                      commands: [{}]
-                    })
+                      commands: [{}],
+                    }),
                   },
                   helpTextMap: {},
-                }
-              ]
-            ])
-          }
+                },
+              ],
+            ]),
+          },
         },
         {
           provide: CanvasService,
           useValue: {
             initialise: jasmine.createSpy('initialise'),
-            redrawCanvas: jasmine.createSpy('redrawCanvas')
-          }
+            redrawCanvas: jasmine.createSpy('redrawCanvas'),
+          },
         },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -80,6 +82,6 @@ describe('AlgorithmPageComponent', () => {
   });
 
   it('should create', () => {
-     expect(component).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 });

@@ -31,9 +31,9 @@
 
             <div class="row my-5 mx-5 justify-content-center">
                 @for(algorithm of algorithmRetrieval.getListOfAlgorithms(); track $index) {
-                    <div class="col-xl-6 col-sm-12 mb-5">
-                        <algorithm-card [algorithm]=algorithm></algorithm-card>
-                    </div>
+                <div class="col-xl-6 col-sm-12 mb-5">
+                    <algorithm-card [algorithm]=algorithm></algorithm-card>
+                </div>
                 }
             </div>
         </div>

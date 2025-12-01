@@ -6,13 +6,10 @@ import { MatDialogModule } from '@angular/material/dialog';
   selector: 'app-animation-guide-dialog',
   templateUrl: './animation-guide-dialog.component.html',
   styleUrls: ['./animation-guide-dialog.component.scss'],
-  imports: [MatDialogModule, MatButtonModule]
+  imports: [MatDialogModule, MatButtonModule],
 })
 export class AnimationGuideDialogComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

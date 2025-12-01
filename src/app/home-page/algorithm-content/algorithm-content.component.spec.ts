@@ -9,9 +9,8 @@ describe('AlgorithmContentComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ BrowserAnimationsModule, AlgorithmContentComponent ],
-    })
-    .compileComponents();
+      imports: [BrowserAnimationsModule, AlgorithmContentComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

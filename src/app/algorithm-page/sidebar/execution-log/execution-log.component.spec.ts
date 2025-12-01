@@ -21,39 +21,42 @@ describe('ExecutionLogComponent', () => {
                 matches: new Map(),
                 stepVariables: {},
                 group1CurrentPreferences: new Map<string, string[]>([
-                  ["1", ["A", "B", "C"]],
-                  ["2", ["B", "A", "C"]],
-                  ["3", ["C", "A", "B"]],
+                  ['1', ['A', 'B', 'C']],
+                  ['2', ['B', 'A', 'C']],
+                  ['3', ['C', 'A', 'B']],
                 ]),
                 group2CurrentPreferences: new Map<string, string[]>([
-                  ["A", ["1", "2", "3"]],
-                  ["B", ["2", "1", "3"]],
-                  ["C", ["3", "1", "2"]],
+                  ['A', ['1', '2', '3']],
+                  ['B', ['2', '1', '3']],
+                  ['C', ['3', '1', '2']],
                 ]),
                 currentlySelectedAgents: [],
                 currentLines: [],
                 algorithmSpecificData: {},
                 relevantPreferences: [],
-              }
+              },
             ],
             algorithmData: {
               numberOfGroup1Agents: 3,
               numberOfGroup2Agents: 3,
               currentAlgorithm: {
-                id: "smp-man-egs",
-                name: "Stable Marriage Problem",
-                orientation: ["Man", "Woman"],
+                id: 'smp-man-egs',
+                name: 'Stable Marriage Problem',
+                orientation: ['Man', 'Woman'],
                 equalGroups: true,
               },
-              pluralMap: new Map([["Man", "Men"], ["Woman", "Women"],]),
-              descriptions: []
+              pluralMap: new Map([
+                ['Man', 'Men'],
+                ['Woman', 'Women'],
+              ]),
+              descriptions: [],
             },
             stepCounter: 0,
             previousStepCounter: 0,
-            setAlgorithm: jasmine.createSpy('setAlgorithm')
-          }
+            setAlgorithm: jasmine.createSpy('setAlgorithm'),
+          },
         },
-      ]
+      ],
     }).compileComponents();
   }));
 

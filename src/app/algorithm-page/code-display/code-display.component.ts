@@ -7,17 +7,21 @@ declare var anime: any;
 @Component({
   selector: 'code-display',
   templateUrl: './code-display.component.html',
-  styleUrls: ['./code-display.component.scss', '../sidebar/sidebar.component.scss'],
+  styleUrls: [
+    './code-display.component.scss',
+    '../sidebar/sidebar.component.scss',
+  ],
 })
 export class CodeDisplayComponent implements OnInit {
-
   algorithm: string;
   animate: boolean = true;
 
-  constructor(public playback: PlaybackService, public algService: AlgorithmRetrievalService) { }
+  constructor(
+    public playback: PlaybackService,
+    public algService: AlgorithmRetrievalService
+  ) {}
 
   ngOnInit(): void {
     this.algorithm = this.algService.currentAlgorithm.id;
   }
-
 }

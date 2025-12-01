@@ -1,61 +1,61 @@
 @use "../../../styles.scss" as styles;
 
 .startButton {
-    background-color: #2058ff;
-    transition: 200ms background-color;
+  background-color: #2058ff;
+  transition: 200ms background-color;
 }
 
 .startButton:hover {
-    background-color: #1140ce;
+  background-color: #1140ce;
 }
 
 .title-text {
-    font-size: styles.$base-font-size * 3.2;
-    line-height: styles.$base-font-size * 1.6;
+  font-size: styles.$base-font-size * 3.2;
+  line-height: styles.$base-font-size * 1.6;
 }
 
 /* under small */
 @media only screen and (max-width: 576px) {
-    .video {
-        height: 270px;
-    }
+  .video {
+    height: 270px;
+  }
 }
 
 /* small */
 @media only screen and (min-width: 576px) {
-    .video {
-        height: 300px;
-    }
+  .video {
+    height: 300px;
+  }
 }
 
 /* medium */
 @media only screen and (min-width: 768px) {
-    .video {
-        height: 410px;
-    }
+  .video {
+    height: 410px;
+  }
 }
 
 @media #{styles.$mq-xlarge} {
-    .title-text {
-        padding-top: 7vh;
-        font-size: styles.$base-font-size * 4;
-        line-height: styles.$base-font-size * 1.6;
-    }
+  .title-text {
+    padding-top: 7vh;
+    font-size: styles.$base-font-size * 4;
+    line-height: styles.$base-font-size * 1.6;
+  }
 
-    .video {
-        height: 540px;
-    }
+  .video {
+    height: 540px;
+  }
 }
 
 /* extra large */
 @media #{styles.$mq-xxlarge} {
-    .title-text {
-        padding-top: 7vh;
-        font-size: styles.$base-font-size * 4.6;
-        line-height: styles.$base-font-size * 1.6;
-    }
+  .title-text {
+    padding-top: 7vh;
+    font-size: styles.$base-font-size * 4.6;
+    line-height: styles.$base-font-size * 1.6;
+  }
 
-    .video {
-        height: 600px;
-    }
+  .video {
+    height: 600px;
+  }
 }

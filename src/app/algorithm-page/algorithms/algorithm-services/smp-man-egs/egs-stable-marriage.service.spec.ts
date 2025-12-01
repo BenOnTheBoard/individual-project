@@ -23,8 +23,7 @@ describe('EgsStableMarriageService', () => {
         stable = false;
       }
     }
-    
+
     expect(stable).toBeTrue();
   });
-
 });

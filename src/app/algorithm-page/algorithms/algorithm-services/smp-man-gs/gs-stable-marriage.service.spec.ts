@@ -23,8 +23,7 @@ describe('GsStableMarriageService', () => {
         stable = false;
       }
     }
-    
+
     expect(stable).toBeTrue();
   });
-
 });

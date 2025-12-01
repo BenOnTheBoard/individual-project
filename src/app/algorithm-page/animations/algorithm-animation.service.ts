@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-declare var anime: any;  // declaring the animejs animation library for use in this file
+declare var anime: any; // declaring the animejs animation library for use in this file
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AlgorithmAnimationService {
-
-  constructor() { }
+  constructor() {}
 
   loadPage(): void {
     // animation for sliding the navbar down from Y-150 its position
@@ -15,8 +14,8 @@ export class AlgorithmAnimationService {
       easing: 'easeOutQuint',
       translateY: [-150, 0],
       delay: 200,
-      duration: 900
-    })
+      duration: 900,
+    });
 
     // animation for sliding the sidebar right from X-500 its position
     anime({
@@ -24,24 +23,24 @@ export class AlgorithmAnimationService {
       easing: 'easeInOutQuint',
       translateX: [-500, 0],
       delay: 270,
-      duration: 1000
-    })
+      duration: 1000,
+    });
 
     anime({
       targets: '.info-sidebar',
       easing: 'easeInOutQuint',
       translateX: [0, 500],
       opacity: [0, 1],
-      duration: 600
-    })
-    
+      duration: 600,
+    });
+
     anime({
       targets: '#infosidebarContent',
       easing: 'easeInOutQuint',
       // translateX: [-1500, 0],
       opacity: [0, 1],
-      duration: 600
-    })
+      duration: 600,
+    });
 
     // animation for fading the sidebar content in as the sidebar slides in
     anime({
@@ -49,8 +48,8 @@ export class AlgorithmAnimationService {
       easing: 'easeInOutQuint',
       opacity: [0, 1],
       delay: 270,
-      duration: 1500
-    })
+      duration: 1500,
+    });
 
     // animation for fading the main content in as the sidebar finishes sliding in
     anime({
@@ -58,10 +57,9 @@ export class AlgorithmAnimationService {
       easing: 'easeInOutQuint',
       opacity: [0, 1],
       delay: 670,
-      duration: 900
-    })
+      duration: 900,
+    });
   }
-
 
   goHome(): void {
     anime({
@@ -70,34 +68,33 @@ export class AlgorithmAnimationService {
       translateY: [0, -150],
       // opacity: [0, 1],
       delay: 400,
-      duration: 900
-    })
+      duration: 900,
+    });
 
     anime({
       targets: '.sidebar',
       easing: 'easeInOutQuint',
       translateX: [0, -500],
       // opacity: [0, 1],
-      duration: 600
-    })
+      duration: 600,
+    });
 
     anime({
       targets: '#sidebarContent',
       easing: 'easeInOutQuint',
       // translateX: [-1500, 0],
       opacity: [1, 0],
-      duration: 600
-    })
+      duration: 600,
+    });
 
     anime({
       targets: '#mainContent',
       easing: 'easeInOutQuint',
       // translateX: [-1500, 0],
       opacity: [1, 0],
-      duration: 600
-    })
+      duration: 600,
+    });
   }
-
 
   fadeCanvasOut(): void {
     anime({
@@ -105,8 +102,8 @@ export class AlgorithmAnimationService {
       easing: 'easeInOutQuint',
       // translateX: [-1500, 0],
       opacity: [1, 0],
-      duration: 300
-    })
+      duration: 300,
+    });
   }
 
   fadeCanvasIn(): void {
@@ -115,10 +112,9 @@ export class AlgorithmAnimationService {
       easing: 'easeInOutQuint',
       // translateX: [-1500, 0],
       opacity: [0, 1],
-      duration: 300
-    })
+      duration: 300,
+    });
   }
-
 
   hideSidebar(): void {
     anime({
@@ -126,8 +122,8 @@ export class AlgorithmAnimationService {
       easing: 'easeInOutQuint',
       translateX: [0, -800],
       delay: 200,
-      duration: 700
-    })
+      duration: 700,
+    });
   }
 
   showSidebar(): void {
@@ -136,17 +132,16 @@ export class AlgorithmAnimationService {
       easing: 'easeInOutQuint',
       translateX: [-500, 0],
       // opacity: [0, 1],
-      duration: 600
-    })
-    
+      duration: 600,
+    });
 
     anime({
       targets: '#sidebarContent',
       easing: 'easeInOutQuint',
       // translateX: [-1500, 0],
       opacity: [0, 1],
-      duration: 600
-    })
+      duration: 600,
+    });
   }
 
   hideInfoSidebar(): void {
@@ -157,8 +152,8 @@ export class AlgorithmAnimationService {
       opacity: [1, 0],
       direction: 'reverse',
       delay: 200,
-      duration: 3700
-    })
+      duration: 3700,
+    });
   }
 
   showInfoSidebar(): void {
@@ -168,27 +163,25 @@ export class AlgorithmAnimationService {
       // translateX: [0, 500],
       direction: 'reverse',
       opacity: [0, 1],
-      duration: 1000
-    })
-    
+      duration: 1000,
+    });
 
     anime({
       targets: '#infosidebarContent',
       easing: 'easeInOutQuint',
       // translateX: [-1500, 0],
       opacity: [0.5, 1],
-      duration: 600
-    })
+      duration: 600,
+    });
   }
-
 
   hideMainContent(): void {
     anime({
       targets: '#mainContent',
       easing: 'easeInOutQuint',
       opacity: [1, 0],
-      duration: 500
-    })
+      duration: 500,
+    });
   }
 
   showMainContent(): void {
@@ -196,8 +189,7 @@ export class AlgorithmAnimationService {
       targets: '#mainContent',
       easing: 'easeInOutQuint',
       opacity: [0, 1],
-      duration: 500
-    })
+      duration: 500,
+    });
   }
-
 }

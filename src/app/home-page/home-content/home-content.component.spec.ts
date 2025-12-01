@@ -9,9 +9,8 @@ describe('HomeContentComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ BrowserAnimationsModule, HomeContentComponent ],
-    })
-    .compileComponents();
+      imports: [BrowserAnimationsModule, HomeContentComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

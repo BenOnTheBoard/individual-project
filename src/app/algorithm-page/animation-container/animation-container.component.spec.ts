@@ -8,9 +8,8 @@ describe('AnimationContainerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ AnimationContainerComponent ]
-    })
-    .compileComponents();
+      imports: [AnimationContainerComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

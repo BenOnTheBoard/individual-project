@@ -5,7 +5,8 @@
         <h1 class="card-title" style="font-size: 30px; font-weight: 400;">{{ algorithm.name }}</h1>
       </div>
       <div class="col-5 mt-2 pr-4 text-right">
-        <h6 class="card-subtitle text-muted" style="font-size: 20px; font-weight: 400">{{ algorithm.orientation[0] }}-Oriented</h6>
+        <h6 class="card-subtitle text-muted" style="font-size: 20px; font-weight: 400">{{ algorithm.orientation[0]
+          }}-Oriented</h6>
       </div>
     </div>
 
@@ -45,7 +46,7 @@
             </mat-form-field>
           </div>
           }
-          
+
           @if (algorithm.id == 'hr-resident-egs') {
           <div class="row justify-content-center">
             <mat-form-field style="width: 200px;" class="mr-1">
@@ -202,30 +203,36 @@
       </div>
 
       <div class="col-5 text-right">
-        @if ((algorithm.name == 'Stable Marriage Problem') && !(numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min'))) {
+        @if ((algorithm.name == 'Stable Marriage Problem') && !(numberOfGroup1Agents.hasError('required') ||
+        numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min'))) {
         <button class="cardButton" mat-stroked-button style="border-radius: 70px; width: 220px; height: 45px;"
           cdkFocusInitial
           [disabled]="numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min')"
           (click)="this.onGeneratePreferences()">
           <span style="font-size: 18px; font-weight: 500; color: black;">Generate Preferences</span>
         </button>
-        } @else if ((algorithm.name == 'Hospitals/Residents Problem') && !(numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min')
-                      || numberOfGroup2Agents.hasError('required') || numberOfGroup2Agents.hasError('max') || numberOfGroup2Agents.hasError('min'))) {
+        } @else if ((algorithm.name == 'Hospitals/Residents Problem') && !(numberOfGroup1Agents.hasError('required') ||
+        numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min')
+        || numberOfGroup2Agents.hasError('required') || numberOfGroup2Agents.hasError('max') ||
+        numberOfGroup2Agents.hasError('min'))) {
         <button class="cardButton" mat-stroked-button style="border-radius: 70px; width: 220px; height: 45px;"
           cdkFocusInitial
           [disabled]="numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min') || numberOfGroup2Agents.hasError('required') || numberOfGroup2Agents.hasError('max') || numberOfGroup2Agents.hasError('min')"
           (click)="this.onGeneratePreferences()">
           <span style="font-size: 18px; font-weight: 500; color: black;">Generate Preferences</span>
         </button>
-        } @else if ((algorithm.name == 'Stable Roommates Problem') && !(numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min'))) {
+        } @else if ((algorithm.name == 'Stable Roommates Problem') && !(numberOfGroup1Agents.hasError('required') ||
+        numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min'))) {
         <button class="cardButton" mat-stroked-button style="border-radius: 70px; width: 220px; height: 45px;"
           cdkFocusInitial
           [disabled]="numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min') || !this.SReven"
           (click)="this.onGeneratePreferences()">
           <span style="font-size: 18px; font-weight: 500; color: black;">Generate Preferences</span>
         </button>
-        } @else if ((algorithm.name == 'Student Project Allocation') && !(numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min')
-                      || numberOfGroup2Agents.hasError('required') || numberOfGroup2Agents.hasError('max') || numberOfGroup2Agents.hasError('min'))) {
+        } @else if ((algorithm.name == 'Student Project Allocation') && !(numberOfGroup1Agents.hasError('required') ||
+        numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min')
+        || numberOfGroup2Agents.hasError('required') || numberOfGroup2Agents.hasError('max') ||
+        numberOfGroup2Agents.hasError('min'))) {
         <button class="cardButton" mat-stroked-button style="border-radius: 70px; width: 220px; height: 45px;"
           cdkFocusInitial
           [disabled]="numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min') || numberOfGroup2Agents.hasError('required') || numberOfGroup2Agents.hasError('max') || numberOfGroup2Agents.hasError('min')"

@@ -11,11 +11,7 @@ describe('PlaybackControlsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        MatSliderModule,
-        PlaybackControlsComponent,
-      ],
+      imports: [FormsModule, MatSliderModule, PlaybackControlsComponent],
       providers: [
         {
           provide: PlaybackService,
@@ -27,12 +23,11 @@ describe('PlaybackControlsComponent', () => {
             backStep: jasmine.createSpy('backStep'),
             toggle: jasmine.createSpy('toggle'),
             forwardStep: jasmine.createSpy('forwardStep'),
-            onSliderChange: jasmine.createSpy('onSliderChange')
-          }
+            onSliderChange: jasmine.createSpy('onSliderChange'),
+          },
         },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

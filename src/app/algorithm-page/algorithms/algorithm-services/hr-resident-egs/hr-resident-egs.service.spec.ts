@@ -24,8 +24,7 @@ describe('HrResidentEgsService', () => {
         stable = false;
       }
     }
-    
+
     expect(stable).toBeTrue();
   });
-
 });

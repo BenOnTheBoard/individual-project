@@ -9,7 +9,7 @@ describe('AgentTitlesComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ AgentTitlesComponent ],
+      imports: [AgentTitlesComponent],
       providers: [
         {
           provide: AlgorithmRetrievalService,
@@ -17,17 +17,19 @@ describe('AgentTitlesComponent', () => {
             numberOfGroup1Agents: 3,
             numberOfGroup2Agents: 3,
             currentAlgorithm: {
-              id: "smp-man-egs",
-              name: "Stable Marriage Problem",
-              orientation: ["Man", "Woman"],
+              id: 'smp-man-egs',
+              name: 'Stable Marriage Problem',
+              orientation: ['Man', 'Woman'],
               equalGroups: true,
             },
-            pluralMap: new Map([["Man", "Men"], ["Woman", "Women"],])
-          }
+            pluralMap: new Map([
+              ['Man', 'Men'],
+              ['Woman', 'Women'],
+            ]),
+          },
         },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

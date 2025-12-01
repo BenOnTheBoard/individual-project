@@ -12,7 +12,7 @@ declare var anime: any;
   selector: 'playback-controls',
   templateUrl: './playback-controls.component.html',
   styleUrls: ['./playback-controls.component.scss'],
-  imports:[
+  imports: [
     MatAnimatedIconComponent,
     MatIconModule,
     MatSliderModule,
@@ -21,16 +21,13 @@ declare var anime: any;
   ],
 })
 export class PlaybackControlsComponent implements OnInit {
-
   @Input() algorithm: string;
 
-  constructor(public playback: PlaybackService) { }
+  constructor(public playback: PlaybackService) {}
 
-  ngOnInit(): void {
-  }
-  
+  ngOnInit(): void {}
+
   formatLabel(value: number) {
-
     // pause
     value = 3050 - value;
     // play? (maybe not cause so many changes to this.timeInBetween value)
@@ -47,7 +44,6 @@ export class PlaybackControlsComponent implements OnInit {
   }
 
   delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
-
 }

@@ -7,7 +7,7 @@ describe('AlgorithmGuardGuard', () => {
   let guard: AlgorithmGuard;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({imports: [RouterTestingModule],});
+    TestBed.configureTestingModule({ imports: [RouterTestingModule] });
     guard = TestBed.inject(AlgorithmGuard);
   });
 

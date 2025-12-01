@@ -8,20 +8,19 @@ describe('CodeDisplayComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ CodeDisplayComponent ],
+      imports: [CodeDisplayComponent],
       providers: [
         {
           provide: AlgorithmRetrievalService,
           useValue: {
             currentAlgorithm: {
-              id: "smp-man-egs",
-              name: "Stable Marriage Problem",
-            }
-          }
-        }
-      ]
-    })
-    .compileComponents();
+              id: 'smp-man-egs',
+              name: 'Stable Marriage Problem',
+            },
+          },
+        },
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

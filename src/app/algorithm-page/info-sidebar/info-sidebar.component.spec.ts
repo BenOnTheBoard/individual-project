@@ -1,13 +1,16 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialogModule,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { InfoSidebarComponent } from './info-sidebar.component';
 
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
-
 
 describe('InfoSidebarComponent', () => {
   let component: InfoSidebarComponent;
@@ -15,19 +18,23 @@ describe('InfoSidebarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [MatDialogModule, RouterTestingModule, FormsModule, InfoSidebarComponent],
+      imports: [
+        MatDialogModule,
+        RouterTestingModule,
+        FormsModule,
+        InfoSidebarComponent,
+      ],
       providers: [
         {
           provide: AlgorithmRetrievalService,
           useValue: {
-            currentAlgorithm:{
-              name: ""
-            }
-          }
+            currentAlgorithm: {
+              name: '',
+            },
+          },
         },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -36,7 +43,7 @@ describe('InfoSidebarComponent', () => {
     fixture.detectChanges();
   });
 
-  // can't access this.algorithmService.currentAlgorithm.name - saying .name is undefined within tests 
+  // can't access this.algorithmService.currentAlgorithm.name - saying .name is undefined within tests
   it('should create', () => {
     expect(component).toBeDefined();
   });
