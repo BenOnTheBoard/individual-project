@@ -38,6 +38,19 @@ export class PlaybackControlsComponent implements OnInit {
     this.playback.setSpeed(3050 - value);
   }
 
+  onStepSliderInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const value = Number(input.value)
+    this.playback.jumpToStep(value);
+  }
+
+  onStepSliderChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const value = Number(input.value)
+    this.playback.jumpToStep(value);
+    this.playback.onSliderChange(value);
+  }
+
   delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }

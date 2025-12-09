@@ -83,17 +83,17 @@ export class PlaybackService {
   }
 
   restart(): void {
-    this.pause = true;
-    this.uncolourCurrentLine();
-    this.stepCounter = 0;
-    this.updateCurrentCommand();
-    this.colourCurrentLine();
+    this.jumpToStep(0);
   }
 
   goToEnd(): void {
+    this.jumpToStep(this.numCommands);
+  }
+
+  jumpToStep(step: number): void {
     this.pause = true;
     this.uncolourCurrentLine();
-    this.stepCounter = this.numCommands;
+    this.stepCounter = step;
     this.updateCurrentCommand();
     this.colourCurrentLine();
   }
@@ -193,62 +193,4 @@ export class PlaybackService {
 
     this.colourCurrentLine();
   }
-
-  // unboldenVariables(): void {
-
-  //   var command = this.commandList[this.stepCounter-1];
-  //   let changeTrace = command["changeTrace"]["embolden"];
-
-  //   console.log(changeTrace);
-
-  //   for (let className of changeTrace) {
-  //     let a = document.getElementsByClassName(className);
-  //     for (let i = 0; i < a.length; i++) {
-  //       a[i].setAttribute("style", "font-weight: normal;");
-  //     }
-  //   }
-  // }
-
-  // unboldenPreviousVariables(): void {
-
-  //   var command = this.commandList[this.previousStepCounter];
-  //   let changeTrace = command["changeTrace"]["embolden"];
-
-  //   console.log(changeTrace);
-
-  //   for (let className of changeTrace) {
-  //     let a = document.getElementsByClassName(className);
-  //     for (let i = 0; i < a.length; i++) {
-  //       a[i].setAttribute("style", "font-weight: normal;");
-  //     }
-  //   }
-  // }
-
-  // unboldenCurrentVariables(): void {
-
-  //   var command = this.commandList[this.stepCounter];
-  //   let changeTrace = command["changeTrace"]["embolden"];
-
-  //   console.log(changeTrace);
-
-  //   for (let className of changeTrace) {
-  //     let a = document.getElementsByClassName(className);
-  //     for (let i = 0; i < a.length; i++) {
-  //       a[i].setAttribute("style", "font-weight: normal;");
-  //     }
-  //   }
-  // }
-
-  // emboldenVariables(): void {
-
-  //   var command = this.commandList[this.stepCounter];
-  //   let changeTrace = command["changeTrace"]["embolden"];
-
-  //   for (let className of changeTrace) {
-  //     let a = document.getElementsByClassName(className);
-  //     for (let i = 0; i < a.length; i++) {
-  //       a[i].setAttribute("style", "font-weight: bold;");
-  //     }
-  //   }
-  // }
 }
