@@ -113,7 +113,7 @@ export class AlgorithmCardComponent implements OnInit {
         this.numberOfGroup1Agents.value;
     }
 
-    if (this.numberOfGroup2Agents.value) {
+    if (!this.numberOfGroup2Agents.value) {
       this.algorithmService.numberOfGroup2Agents =
         this.numberOfGroup1Agents.value;
     } else {
