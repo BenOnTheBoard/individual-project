@@ -27,20 +27,15 @@ export class PlaybackControlsComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  formatLabel(value: number) {
-    // pause
+  formatLabel(value: number) : string {
     value = 3050 - value;
-    // play? (maybe not cause so many changes to this.timeInBetween value)
-
-    if (value >= 1000) {
-      return Math.round(value / 1000) + 's';
-    }
-
-    return value;
+    return value >= 1000 ? `${Math.round(value / 1000)}s` : `${value}ms`;
   }
 
-  updateSpeed(val: number): void {
-    this.playback.speed = 3050 - val;
+  updateSpeed(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const value = Number(input.value);
+    this.playback.setSpeed(3050 - value);
   }
 
   delay(ms: number) {
