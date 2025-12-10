@@ -1029,22 +1029,17 @@ export class CanvasService {
     // if SR Algorithm
     if (this.currentCommand['algorithmSpecificData']['SR']) {
       // draw lines between circles (matches and relations)
+      this.calculateEqualDistance1Group();
       for (let line of this.currentCommand['currentLines']) {
         this.drawLine1Group(line);
       }
-
-      // update positions of all canvas elements
-      this.calculateEqualDistance1Group();
       this.drawCircles1Group();
     } else {
       // draw lines between circles (matches and relations)
+      this.calculateEqualDistance();
       for (let line of this.currentCommand['currentLines']) {
         this.drawLine(line);
       }
-
-      // update positions of all canvas elements
-      this.calculateEqualDistance();
-
       this.drawLHSCircles();
       this.drawRHSCircles();
     }
