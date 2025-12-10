@@ -1,7 +1,5 @@
-import { ElementRef, ViewChild } from '@angular/core';
-import { Injectable } from '@angular/core';
+import { ElementRef, Injectable } from '@angular/core';
 import { AlgorithmRetrievalService } from '../../../algorithm-retrieval.service';
-import { SidebarComponent } from '../../sidebar/sidebar.component';
 
 @Injectable({
   providedIn: 'root',
@@ -11,15 +9,15 @@ export class CanvasService {
   originalGroup2Preferences: Array<Array<string>>;
 
   // HTML drawing properties
-  sizes = [];
-  baseSize = undefined;
-  font = undefined;
+  sizes: Array<number> = [];
+  baseSize: number | undefined;
+  font: string | undefined;
   controlChars = '{}\n\t';
   spaceSize = 0;
   tabSize = 8; // in spaceSize units
-  tabs = (function () {
-    var t = [];
-    for (var i = 0; i < 100; i += 8) {
+  tabs: number[] = (() => {
+    const t: number[] = [];
+    for (let i = 0; i < 100; i += 8) {
       t.push(i);
     }
     return t;
@@ -35,9 +33,14 @@ export class CanvasService {
 
   alwaysShowPreferences: boolean = false;
 
-  canvas: ElementRef<HTMLCanvasElement>;
-
-  positions;
+  private canvasElement!: HTMLCanvasElement;
+  positions: Record<
+    string,
+    {
+      positionX: number;
+      positionY: number;
+    }
+  > = {};
 
   public currentCommand: Object;
 
@@ -49,7 +52,14 @@ export class CanvasService {
 
   constructor(public algService: AlgorithmRetrievalService) {}
 
-  ngOnInit(): void {}
+  setCanvas(canvasRef: ElementRef<HTMLCanvasElement>): void {
+    this.canvasElement = canvasRef.nativeElement;
+    const ctx = this.canvasElement.getContext('2d');
+    if (!ctx) {
+      throw new Error('CanvasRenderingContext2D not available');
+    }
+    this.ctx = ctx;
+  }
 
   setCommand(command) {
     this.currentCommand = command;
@@ -57,16 +67,13 @@ export class CanvasService {
   }
 
   initialise() {
-    // this.lineSizes = new Map();
     this.firstRun = true;
   }
 
   // Idea:
   // Start from middle of canvas and
   calculateEqualDistance() {
-    let canvas: HTMLCanvasElement = <HTMLCanvasElement>(
-      document.getElementById('myCanvas')
-    );
+    const canvas = this.canvasElement;
 
     let LHSHeightOffset = 0;
     let RHSHeightOffset = 0;
@@ -104,13 +111,8 @@ export class CanvasService {
     let centerX = effectiveWidth / 2 + canvas.width * 0.15;
     let centerY = effectiveHeight / 2;
 
-    // console.log(canvasMiddle);
-
     this.positions = {};
-
-    // canvas Middle
-    this.positions['middleX'] = centerX;
-    this.positions['middleY'] = centerY;
+    this.positions['middle'] = { positionX: centerX, positionY: centerY };
 
     // LHS Positions
 
@@ -128,13 +130,11 @@ export class CanvasService {
       };
 
       // plot circles above middle
-      // console.log("above middle");
       for (
         let i = Math.floor(this.algService.numberOfGroup1Agents / 2);
         i > 0;
         i--
       ) {
-        // console.log(i);
         this.positions['circle' + i] = {
           positionX: this.currentCommand['algorithmSpecificData'][
             'hospitalCapacity'
@@ -149,13 +149,11 @@ export class CanvasService {
       }
 
       // plot circles below middle
-      // console.log("below middle");
       for (
         let i = Math.ceil(this.algService.numberOfGroup1Agents / 2) + 1;
         i < this.algService.numberOfGroup1Agents + 1;
         i++
       ) {
-        // console.log(i);
         this.positions['circle' + i] = {
           positionX: this.currentCommand['algorithmSpecificData'][
             'hospitalCapacity'
@@ -168,12 +166,8 @@ export class CanvasService {
               spaceBetweenCircles,
         };
       }
-
-      // console.log(this.positions);
     } else {
       // plot middle circle
-      // console.log(Math.floor(this.algService.numberOfGroup1Agents / 2));
-      // console.log((Math.ceil(this.algService.numberOfGroup1Agents / 2)) + 1);
       this.positions[
         'circle' + Math.floor(this.algService.numberOfGroup1Agents / 2)
       ] = {
@@ -198,13 +192,11 @@ export class CanvasService {
       };
 
       // plot circles above middle
-      // console.log("above middle");
       for (
         let i = Math.floor(this.algService.numberOfGroup1Agents / 2) - 1;
         i > 0;
         i--
       ) {
-        // console.log(i);
         this.positions['circle' + i] = {
           positionX: this.currentCommand['algorithmSpecificData'][
             'hospitalCapacity'
@@ -220,13 +212,11 @@ export class CanvasService {
       }
 
       // // plot circles below middle
-      // console.log("below middle");
       for (
         let i = Math.ceil(this.algService.numberOfGroup1Agents / 2) + 2;
         i < this.algService.numberOfGroup1Agents + 1;
         i++
       ) {
-        // console.log(i);
         this.positions['circle' + i] = {
           positionX: this.currentCommand['algorithmSpecificData'][
             'hospitalCapacity'
@@ -240,14 +230,11 @@ export class CanvasService {
               spaceBetweenCircles,
         };
       }
-
-      // console.log(this.positions);
     }
 
     spaceBetweenCircles =
       effectiveHeight / this.algService.numberOfGroup2Agents + RHSHeightOffset;
 
-    // console.log(this.algService.numberOfGroup2Agents);
     // RHS Circles
 
     if (this.algService.numberOfGroup2Agents % 2 == 1) {
@@ -263,13 +250,11 @@ export class CanvasService {
       };
 
       // plot circles above middle
-      // console.log("above middle");
       for (
         let i = Math.floor(this.algService.numberOfGroup2Agents / 2);
         i > 0;
         i--
       ) {
-        // console.log(i);
         this.positions['circle' + String.fromCharCode(i + 64)] = {
           positionX: canvas.width - canvas.width * this.xMargin,
           positionY:
@@ -280,13 +265,11 @@ export class CanvasService {
       }
 
       // plot circles below middle
-      // console.log("below middle");
       for (
         let i = Math.ceil(this.algService.numberOfGroup2Agents / 2) + 1;
         i < this.algService.numberOfGroup2Agents + 1;
         i++
       ) {
-        // console.log(i);
         this.positions['circle' + String.fromCharCode(i + 64)] = {
           positionX: canvas.width - canvas.width * this.xMargin,
           positionY:
@@ -295,13 +278,8 @@ export class CanvasService {
               spaceBetweenCircles,
         };
       }
-
-      // console.log(this.positions);
     } else {
       // plot middle circle
-      // console.log(Math.floor(this.algService.numberOfGroup1Agents / 2));
-      // console.log((Math.ceil(this.algService.numberOfGroup1Agents / 2)) + 1);
-      // console.log(String.fromCharCode(Math.floor(this.algService.numberOfGroup2Agents / 2) + 64));
       this.positions[
         'circle' +
           String.fromCharCode(
@@ -324,13 +302,11 @@ export class CanvasService {
       };
 
       // plot circles above middle
-      // console.log("above middle");
       for (
         let i = Math.floor(this.algService.numberOfGroup2Agents / 2) - 1;
         i > 0;
         i--
       ) {
-        // console.log(i);
         this.positions['circle' + String.fromCharCode(i + 64)] = {
           positionX: canvas.width - canvas.width * this.xMargin,
           positionY:
@@ -342,13 +318,11 @@ export class CanvasService {
       }
 
       // // plot circles below middle
-      // console.log("below middle");
       for (
         let i = Math.ceil(this.algService.numberOfGroup2Agents / 2) + 2;
         i < this.algService.numberOfGroup2Agents + 1;
         i++
       ) {
-        // console.log(i);
         this.positions['circle' + String.fromCharCode(i + 64)] = {
           positionX: canvas.width - canvas.width * this.xMargin,
           positionY:
@@ -362,52 +336,19 @@ export class CanvasService {
   }
 
   calculateEqualDistance1Group() {
-    let canvas: HTMLCanvasElement = <HTMLCanvasElement>(
-      document.getElementById('myCanvas')
-    );
-
-    let LHSHeightOffset = 0;
-    let RHSHeightOffset = 0;
-
-    if (this.algService.numberOfGroup1Agents == 8) {
-      LHSHeightOffset = 8;
-      this.radiusOfCircles = 27;
-    } else if (this.algService.numberOfGroup1Agents == 9) {
-      LHSHeightOffset = 6;
-      this.radiusOfCircles = 21;
-    } else {
-      LHSHeightOffset = 0;
-      this.radiusOfCircles = 30;
-    }
-
-    if (this.algService.numberOfGroup2Agents == 8) {
-      RHSHeightOffset = 8;
-      this.radiusOfCircles = 27;
-    } else if (this.algService.numberOfGroup2Agents == 9) {
-      RHSHeightOffset = 6;
-      this.radiusOfCircles = 21;
-    } else {
-      RHSHeightOffset = 0;
-      this.radiusOfCircles = 30;
-    }
+    const canvas = this.canvasElement;
 
     let effectiveHeight: number = canvas.height - canvas.height * this.yMargin;
     let effectiveWidth: number = canvas.width - canvas.width * this.xMargin;
-
-    let spaceBetweenCircles: number =
-      effectiveHeight / this.algService.numberOfGroup1Agents + LHSHeightOffset;
 
     // center points of the canvas for SR circles
     let centerX = effectiveWidth / 2 + canvas.width * 0.15;
     let centerY = effectiveHeight / 2;
 
-    // console.log(canvasMiddle);
-
     this.positions = {};
 
     // canvas Middle
-    this.positions['middleX'] = centerX;
-    this.positions['middleY'] = centerY;
+    this.positions['middle'] = { positionX: centerX, positionY: centerY };
 
     // positions
 
@@ -416,10 +357,7 @@ export class CanvasService {
     let angle = (Math.PI * 2) / number;
     let r = 200;
 
-    // number to rotated the circle, so that numbering looks more natural
-    let offset = 3;
-
-    // Draw LHS circles in orange
+    // Draw SR circles in orange
     for (let i = 2; i < this.algService.numberOfGroup1Agents + 2; i++) {
       this.positions['circle' + (i - 1)] = {
         positionX: r * Math.cos(angle * i) + centerX,
@@ -429,8 +367,6 @@ export class CanvasService {
   }
 
   drawLHSCircles() {
-    // console.log("LHS draw positions", this.positions)
-
     this.ctx.beginPath();
     this.ctx.fillStyle = '#FF6332';
 
@@ -546,9 +482,6 @@ export class CanvasService {
     let yLen =
       this.positions['circle' + line[1]].positionY -
       this.positions['circle' + line[0]].positionY;
-
-    // halfX = this.positions["circle" + line[0]].positionX + (xLen * (1 - Math.abs(this.radiusOfCircles / yLen)))
-    // halfY = this.positions["circle" + line[0]].positionY + (yLen * (1 - Math.abs(this.radiusOfCircles / yLen)))
 
     let halfX = this.positions['circle' + line[0]].positionX + xLen * 0.8;
     let halfY = this.positions['circle' + line[0]].positionY + yLen * 0.8;
@@ -797,7 +730,7 @@ export class CanvasService {
         this.positions['circle' + currentLetter].positionY + 7,
         this.fontSize
       );
-      // this.ctx.fillText(group2PreferenceList[i-1].join(", "), this.positions["circle" + currentLetter].positionX + 65, this.positions["circle" + currentLetter].positionY + 7);
+
       currentLetter = String.fromCharCode(
         ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65
       );
@@ -894,7 +827,6 @@ export class CanvasService {
         centerPos.positionY,
         14
       );
-      // console.log(text)
       count++;
     }
 
@@ -1056,12 +988,15 @@ export class CanvasService {
       this.currentCommand = command;
     }
 
-    let canvas: HTMLCanvasElement = <HTMLCanvasElement>(
-      document.getElementById('myCanvas')
-    );
-    var parent = document.getElementById('parent');
-    canvas.width = parent.offsetWidth - 20;
-    canvas.height = parent.offsetHeight - 20;
+    if (!this.canvasElement || !this.ctx || !this.currentCommand) {
+      return;
+    }
+
+    const parent = document.getElementById('parent');
+    if (parent) {
+      this.canvasElement.width = parent.offsetWidth - 20;
+      this.canvasElement.height = parent.offsetHeight - 20;
+    }
 
     if (this.firstRun) {
       this.originalGroup1Preferences = Array.from(
@@ -1082,9 +1017,12 @@ export class CanvasService {
     }
 
     this.setFont();
-
-    // this.drawLineBetween("circle1", "circleE", "red")
-    // this.drawLineBetween("circle1", "circleB");
+    this.ctx.clearRect(
+      0,
+      0,
+      this.canvasElement.width,
+      this.canvasElement.height
+    );
 
     // draw circles
 
@@ -1112,29 +1050,25 @@ export class CanvasService {
     }
 
     // draw project lecturer Viz
-    if (this.currentCommand) {
-      if (this.currentCommand['algorithmSpecificData']['lecturerCapacity']) {
-        this.drawSPAlecturers();
-      }
+    if (this.currentCommand['algorithmSpecificData']['lecturerCapacity']) {
+      this.drawSPAlecturers();
     }
 
-    if (this.currentCommand) {
-      if (this.currentCommand['algorithmSpecificData']['hospitalCapacity']) {
-        this.drawHospitalCapacity();
-      }
+    if (this.currentCommand['algorithmSpecificData']['hospitalCapacity']) {
+      this.drawHospitalCapacity();
+    }
 
-      if (
-        this.currentCommand['relevantPreferences'].length >= 1 &&
-        this.alwaysShowPreferences
-      ) {
-        this.drawRelevantPreferences();
+    if (
+      this.currentCommand['relevantPreferences'].length >= 1 &&
+      this.alwaysShowPreferences
+    ) {
+      this.drawRelevantPreferences();
+    } else {
+      // preferences drawn differently for SR
+      if (this.currentCommand['algorithmSpecificData']['SR']) {
+        this.drawAllPreferences1Group();
       } else {
-        // preferances drawn differently for SR
-        if (this.currentCommand['algorithmSpecificData']['SR']) {
-          this.drawAllPreferences1Group();
-        } else {
-          this.drawAllPreferences();
-        }
+        this.drawAllPreferences();
       }
     }
 

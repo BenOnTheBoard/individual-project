@@ -126,8 +126,7 @@ export class AlgorithmPageComponent implements OnInit {
   // function that runs when page is created
   ngOnInit(): void {
     // set the global canvas element (in the canvasService) to the canvas on this page
-    this.drawService.canvas = this.canvas;
-    this.drawService.ctx = this.canvas.nativeElement.getContext('2d');
+    this.drawService.setCanvas(this.canvas);
 
     // debugging: use the following lines (113-121) to test individual algorithms
     // you can use this in conjunction with changing the routing in order to direct to the animation page (so you don't have to keep selecting an algorithm through the main page, etc.)
