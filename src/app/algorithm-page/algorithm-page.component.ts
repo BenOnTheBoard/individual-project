@@ -104,7 +104,7 @@ export class AlgorithmPageComponent implements OnInit {
   duringAnimation: boolean = false;
 
   firstSelection: boolean = true;
-  algorithm = new FormControl('');
+  algorithm = new FormControl<string | null>('');
   numPeople: number;
 
   // where SR is going to generate a stable matching or a unstable matching
@@ -208,7 +208,7 @@ export class AlgorithmPageComponent implements OnInit {
 
     this.dialogOpen = true;
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(() => {
       this.dialogOpen = false;
     });
   }
@@ -219,7 +219,7 @@ export class AlgorithmPageComponent implements OnInit {
 
     this.dialogOpen = true;
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(() => {
       this.dialogOpen = false;
     });
   }
@@ -245,34 +245,26 @@ export class AlgorithmPageComponent implements OnInit {
     // animates changing of preferences (fade in/out)
     this.animation.fadeCanvasOut();
     await this.utils.delay(300);
-    for (let i = 0; i < 1; i++) {
-      // let agent1Count: number = Math.floor(Math.random() * (9 - 2) + 2);
-      // let agent2Count: number = Math.floor(Math.random() * (9 - 2) + 2);
-      // this.playback.setAlgorithm(this.algorithmService.currentAlgorithm.id, agent1Count, agent2Count);
 
-      // console.log(this.algorithmService.currentAlgorithm.name)
-
-      if (
-        this.algorithmService.currentAlgorithm.name ==
-        'Stable Roommates Problem'
-      ) {
-        // console.log("yes", this.SRstable)
-        this.playback.setAlgorithm(
-          this.algorithmService.currentAlgorithm.id,
-          this.algorithmService.numberOfGroup1Agents,
-          this.algorithmService.numberOfGroup2Agents,
-          null,
-          this.SRstable
-        );
-      } else {
-        this.playback.setAlgorithm(
-          this.algorithmService.currentAlgorithm.id,
-          this.algorithmService.numberOfGroup1Agents,
-          this.algorithmService.numberOfGroup2Agents
-        );
-      }
+    if (
+      this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem'
+    ) {
+      this.playback.setAlgorithm(
+        this.algorithmService.currentAlgorithm.id,
+        this.algorithmService.numberOfGroup1Agents,
+        this.algorithmService.numberOfGroup2Agents,
+        null,
+        this.SRstable
+      );
+    } else {
+      this.playback.setAlgorithm(
+        this.algorithmService.currentAlgorithm.id,
+        this.algorithmService.numberOfGroup1Agents,
+        this.algorithmService.numberOfGroup2Agents
+      );
     }
     this.animation.fadeCanvasIn();
+    this.drawService.redrawCanvas();
   }
 
   // function run when toggle sidebar button clicked (top left)
@@ -288,72 +280,53 @@ export class AlgorithmPageComponent implements OnInit {
 
       await this.utils.delay(700);
 
-      // show sidebar and content
-      mainContent.style.position = '';
-      this.animation.showMainContent();
       this.showCode = !this.showCode;
+      this.animation.showMainContent();
     } else {
-      // hide content
       this.animation.hideMainContent();
-
       await this.utils.delay(400);
 
-      // show sidebar
       this.showCode = !this.showCode;
       this.animation.showSidebar();
-
       await this.utils.delay(200);
 
-      // show content
       this.animation.showMainContent();
     }
 
     await this.utils.delay(200);
 
     this.duringAnimation = false;
-
-    // console.log("current pannels", this.showInfo, this.showCode)
+    this.drawService.redrawCanvas();
   }
 
   // function run when toggle sidebar button clicked (top left)
   async toggleInfoSidebar(): Promise<void> {
     this.duringAnimation = true;
 
-    let mainContent = document.getElementById('mainContent');
-
     if (!this.showInfo) {
-      // hide sidebar and content
       this.animation.hideInfoSidebar();
       this.animation.hideMainContent();
-
       await this.utils.delay(700);
 
-      // show sidebar and content
-      mainContent.style.position = '';
-      this.animation.showMainContent();
       this.showInfo = !this.showInfo;
+      this.animation.showMainContent();
     } else {
-      // hide content
       this.animation.hideMainContent();
-
       await this.utils.delay(400);
 
-      // show sidebar
       this.showInfo = !this.showInfo;
       this.animation.showInfoSidebar();
-
       await this.utils.delay(200);
 
-      // show content
       this.animation.showMainContent();
     }
 
     await this.utils.delay(200);
 
     this.duringAnimation = false;
-
-    // console.log("current pannels", this.showInfo, this.showCode)
+    this.drawService.redrawCanvas();
   }
+
   ChangeStableSR(): void {
     if (this.SRstable == true) {
       this.SRstable = false;
@@ -362,8 +335,6 @@ export class AlgorithmPageComponent implements OnInit {
       this.SRstable = true;
       this.SRstableText = 'Generating Stable Matchings';
     }
-
-    // console.log("New SR setting", this.SRstable)
   }
 
   // --------------------------------------------------------------------------------- | TUTORIAL FUNCTIONS
@@ -377,15 +348,12 @@ export class AlgorithmPageComponent implements OnInit {
         this.toggleSidebar();
       }
       this.startTutorial();
-
       // step 2
     } else if (this.tutorialStep == 1) {
       this.sidebarTutorial();
-
       // step 3
     } else if (this.tutorialStep == 2) {
       this.mainContentTutorial();
-
       // step 4
     } else if (this.tutorialStep == 3) {
       this.stopTutorial();
