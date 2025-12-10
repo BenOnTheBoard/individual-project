@@ -162,6 +162,7 @@ export class AlgorithmPageComponent implements OnInit {
   // function that runs when page is visible to user
   ngAfterViewInit(): void {
     this.animation.loadPage();
+    this.drawService.redrawCanvas();
   }
 
   // creating a listener function for keydown events
