@@ -1,7 +1,4 @@
-// @import "../../scss/mixins";
-
 :host {
-  //   @include mat-design-icon-mixin();
   .material-icons {
     transition: transform 0.25s;
     &.animate {

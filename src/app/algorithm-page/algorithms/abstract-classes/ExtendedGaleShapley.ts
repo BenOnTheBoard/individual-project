@@ -8,15 +8,8 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
     this.update(1);
 
     while (this.freeAgentsOfGroup1.length > 0) {
-      // this.currentlySelectedAgents = [];
-      // this.relevantPreferences = [];
-
-      // while (some hospital h is undersubscribed) and (h's preference list contains a resident r not provisionally assigned to h) {
       let currentAgent = this.group1Agents.get(this.freeAgentsOfGroup1[0]);
-      // this.currentlySelectedAgents.push(this.getLastCharacter(currentAgent.name));
-      // this.relevantPreferences.push(this.getLastCharacter(currentAgent.name));
 
-      // if all potential proposees are gone, remove
       if (
         currentAgent.ranking.length <= 0 ||
         !this.getNextPotentialProposee(currentAgent)
@@ -28,18 +21,6 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
         // r := first such resident on h's list;
         let potentialProposee: Agent =
           this.getNextPotentialProposee(currentAgent);
-
-        // let agentLastChar = this.getLastCharacter(currentAgent.name);
-        // let proposeeLastChar = this.getLastCharacter(potentialProposee.name);
-
-        // this.currentlySelectedAgents.push(proposeeLastChar);
-        // this.relevantPreferences.push(proposeeLastChar);
-
-        // this.changePreferenceStyle(this.group1CurrentPreferences, agentLastChar, this.originalGroup1CurrentPreferences.get(agentLastChar).findIndex(woman => woman == this.getLastCharacter(potentialProposee.name)), "red");
-        // this.changePreferenceStyle(this.group2CurrentPreferences, proposeeLastChar, this.findPositionInMatches(potentialProposee, currentAgent), "red");
-
-        // let redLine = [agentLastChar, proposeeLastChar, "red"];
-        // this.currentLines.push(redLine);
 
         this.update(3, {
           '%currentAgent%': currentAgent.name,

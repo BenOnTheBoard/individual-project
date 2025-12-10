@@ -42,7 +42,6 @@ export class HomePageComponent implements OnInit {
       targets: '.main-page',
       easing: 'easeInOutQuint',
       opacity: [0, 1],
-      // translateY: [-100, 0],
       delay: 550,
       duration: 900,
     });

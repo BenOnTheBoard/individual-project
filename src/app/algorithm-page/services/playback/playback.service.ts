@@ -51,7 +51,6 @@ export class PlaybackService {
     SRstable: boolean = true
   ): void {
     this.initialise();
-    // console.log("Set algorithm", SRstable)
     this.algorithmData = this.exeService.getExecutionFlow(
       algorithm,
       numberOfAgents,
@@ -63,7 +62,6 @@ export class PlaybackService {
     this.resetPlaybackData();
     this.numCommands = this.commandList.length - 1;
 
-    // console.log(this.algorithmData);
     this.updateCurrentCommand();
   }
 
@@ -134,8 +132,6 @@ export class PlaybackService {
   async play(): Promise<void> {
     while (this.stepCounter < this.numCommands) {
       if (this.pause) {
-        // console.log("Paused at step " + (this.stepCounter) + "!");
-        // console.log("Current Line: " + this.currentLine);
         break;
       }
 
@@ -144,7 +140,6 @@ export class PlaybackService {
       await this.sleep(this.speed);
 
       if (!this.pause) {
-        // console.log(this.stepCounter + " | " + this.numCommands);
         this.uncolourCurrentLine();
         this.stepCounter++;
         this.updateCurrentCommand();

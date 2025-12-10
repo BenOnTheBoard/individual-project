@@ -112,24 +112,14 @@ export class EditPreferencesDialogComponent implements OnInit {
   test(id) {
     let a = document.getElementById('lbl').innerHTML;
     document.getElementById('lbl').innerHTML = 'newlbl';
-
-    //console.log("id", a)
     return 'hi';
   }
 
   ngOnInit(): void {
-    //console.log("Fix", this.fix)
-
-    //console.log("before" ,this.group1Preferences)
-    //console.log("before" ,this.group2Preferences)
-
     this.group1Preferences =
       this.playbackService.commandList[0]['group1CurrentPreferences'];
     this.group2Preferences =
       this.playbackService.commandList[0]['group2CurrentPreferences'];
-
-    //console.log("after", this.group1Preferences)
-    //console.log("after", this.group2Preferences)
 
     this.preferencesForm = new FormControl(this.preferences);
 
@@ -186,10 +176,6 @@ export class EditPreferencesDialogComponent implements OnInit {
   }
 
   generatePreferenceString(): void {
-    //console.log("here", this.group1Preferences)
-    //console.log("value", this.numberOfGroup1Agents.value)
-    //console.log("preferenceList", this.preferenceTextGroup1)
-
     this.preferenceTextGroup1 = [];
     this.preferenceTextGroup2 = [];
 
@@ -214,9 +200,6 @@ export class EditPreferencesDialogComponent implements OnInit {
         this.numberOfGroup2Agents.value
     ) {
       // if value has been changed
-
-      //console.log("value changed")
-
       let numbersToAdd: Array<string> = [];
       let lettersToAdd: Array<string> = [];
 
@@ -242,7 +225,7 @@ export class EditPreferencesDialogComponent implements OnInit {
       // addes pre-generated rankings
       for (let agent of this.group1Preferences) {
         // filter out value that are too large
-        let agentCopy = Object.assign([], agent[1]); //.sort()
+        let agentCopy = Object.assign([], agent[1]);
         let safe_values = agentCopy.filter(
           (pref) => pref.charCodeAt(0) - 64 <= this.numberOfGroup2Agents.value
         );
@@ -255,7 +238,6 @@ export class EditPreferencesDialogComponent implements OnInit {
           this.preferenceTextGroup1[index].concat(lettersToAdd);
       }
 
-      //console.log("lettersToAdd", lettersToAdd)
       // adds new rankings
       for (
         let i = this.algorithmService.numberOfGroup1Agents;
@@ -308,7 +290,7 @@ export class EditPreferencesDialogComponent implements OnInit {
           break;
         }
         // filter out values in the ranking which are too large
-        let agentCopy = Object.assign([], agent[1]); //.sort()
+        let agentCopy = Object.assign([], agent[1]);
         let safe_values = agentCopy.filter(
           (pref) => pref.charCodeAt(0) - 64 <= this.numberOfGroup2Agents.value
         );
@@ -326,26 +308,18 @@ export class EditPreferencesDialogComponent implements OnInit {
           break;
         }
         // filter out values in the ranking which are too large
-        let agentCopy = Object.assign([], agent[1]); //.sort()
+        let agentCopy = Object.assign([], agent[1]);
         let safe_values = agentCopy.filter(
           (pref) => pref <= this.numberOfGroup1Agents.value
         );
         // add rankning
         this.preferenceTextGroup2.push(safe_values);
         counter++;
-
-        // console.log("Gen group2", agent, agentCopy, safe_values)
       }
     }
-
-    // console.log("After Gen", this.group1Preferences, this.group2Preferences)
   }
 
   generatePreferenceString1Group(): void {
-    // console.log("here - 1 group", this.group1Preferences)
-    // console.log("value", this.numberOfGroup1Agents.value)
-    // console.log("preferenceList", this.preferenceTextGroup1)
-
     this.preferenceTextGroup1 = [];
     this.missingPreferences = [];
 
@@ -361,9 +335,6 @@ export class EditPreferencesDialogComponent implements OnInit {
       this.numberOfGroup1Agents.value
     ) {
       // if value has been changed
-
-      // console.log("value chnaged")
-
       let numbersToAdd: Array<string> = [];
 
       for (
@@ -430,18 +401,11 @@ export class EditPreferencesDialogComponent implements OnInit {
         counter++;
       }
     }
-
-    // console.log("END", this.preferenceTextGroup1)
   }
 
   /////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////
 
   currentInputCheck(): boolean {
-    // console.log("--------------------------")
-    // console.log(this.preferenceTextGroup1)
-
     // CREATES ARRAYS FROM THE STRING
     // GROUP 1
     for (let index = 0; index < this.preferenceTextGroup1.length; index++) {
@@ -478,7 +442,6 @@ export class EditPreferencesDialogComponent implements OnInit {
       this.algorithmService.currentAlgorithm.name ==
       'Student Project Allocation'
     ) {
-      // console.log("SPA")
       valid = this.SPAisvalid();
     } else {
       valid = this.isValid();
@@ -489,13 +452,7 @@ export class EditPreferencesDialogComponent implements OnInit {
 
   generateAlgorithmPreferences(): void {
     //// UPDATE REAL PREFERANCES
-
-    // console.log("updatating real prefs")
-
     let preferenceString: string = this.formString;
-
-    // console.log("---");
-    // console.log(preferenceString);
 
     // fill out new preferences
     let newPreferences: Map<String, Array<String>> = new Map();
@@ -508,13 +465,6 @@ export class EditPreferencesDialogComponent implements OnInit {
     }
 
     //GROUP 2
-
-    // num = 1
-    // for (let agent of this.preferenceTextGroup2){
-    //   newPreferences.set(String.fromCharCode(64 + num), agent)
-    //   num++
-    // }
-
     if (
       this.algorithmService.currentAlgorithm.name !=
       'Student Project Allocation'
@@ -525,8 +475,6 @@ export class EditPreferencesDialogComponent implements OnInit {
         num++;
       }
     }
-
-    // console.log("new prefs", newPreferences)
 
     var command =
       this.playbackService.commandList[
@@ -664,7 +612,6 @@ export class EditPreferencesDialogComponent implements OnInit {
   generateAlgorithmPreferences1Group(): void {
     //// UPDATE REAL PREFERANCES
 
-    // console.log("updatating real prefs - 1 group")
     // fill out new preferences
     let newPreferences: Map<String, Array<String>> = new Map();
 
@@ -681,8 +628,6 @@ export class EditPreferencesDialogComponent implements OnInit {
       newPreferences.set(String.fromCharCode(64 + num), agent);
       num++;
     }
-
-    // console.log("new prefs", newPreferences)
 
     var command =
       this.playbackService.commandList[
@@ -769,8 +714,6 @@ export class EditPreferencesDialogComponent implements OnInit {
   }
 
   fixPreferenceString() {
-    // console.log("fixPreferenceString", this.preferenceTextGroup1)
-
     let letters: Array<string> = [];
     let numbers: Array<string> = [];
 
@@ -875,8 +818,6 @@ export class EditPreferencesDialogComponent implements OnInit {
   }
 
   fixPreferenceString1Group() {
-    // console.log("fixPreferenceString", this.preferenceTextGroup1)
-
     let letters: Array<string> = [];
     let numbers: Array<string> = [];
 
@@ -939,9 +880,6 @@ export class EditPreferencesDialogComponent implements OnInit {
 
   // NOT USED - from old input preferenace system - needs updated in the form of a fix button or toggle
   generateMissingPreferences(preferenceString) {
-    // console.log("---------------------")
-    // console.log(preferenceString)
-
     let newPreferences: Map<string, Array<string>> = new Map();
     this.missingPreferences = [];
 
@@ -971,24 +909,12 @@ export class EditPreferencesDialogComponent implements OnInit {
       }
     }
 
-    // console.log(newPreferences);
-    // console.log("\n\n");
-
     this.valid = true;
 
-    // let missingPreferences: Array<Array<string>> = [];
-
     for (let agent of newPreferences) {
-      // let currentPreferences: Array<string> = agent[1];
       let agentId: string = agent[0];
       let currentPreferences: string[] = agent[1];
       let isGroup1: boolean = isNaN(Number(agentId));
-
-      // console.log(agentId);
-      // console.log(currentPreferences);
-      // console.log(isGroup1);
-
-      // console.log("\n");
 
       for (
         let i = 1;
@@ -998,27 +924,15 @@ export class EditPreferencesDialogComponent implements OnInit {
           : this.numberOfGroup2Agents.value);
         i++
       ) {
-        // console.log(isGroup1 ? i : String.fromCharCode(i + 64));
         let currentNumInPreference = false;
         for (let preference of currentPreferences) {
-          // console.log(isGroup1 ? String(i) : String.fromCharCode(i + 64));
-          // console.log(preference);
           if (
             (isGroup1 ? String(i) : String.fromCharCode(i + 64)) == preference
           ) {
-            // console.log("here");
-            // boolean array?
             currentNumInPreference = true;
           }
         }
         if (!currentNumInPreference) {
-          // console.log("(" + agentId + ", " + (isGroup1 ? String(i) : String.fromCharCode(i + 64)) + ")");
-          // console.log([agentId, (isGroup1 ? String(i) : String.fromCharCode(i + 64))])
-          // console.log([(isGroup1 ? String(i) : String.fromCharCode(i + 64)), agentId]);
-          // console.log([agentId, (isGroup1 ? String(i) : String.fromCharCode(i + 64))] == ["1", "D"]);
-
-          // console.log(this.checkArrayEquality([agentId, (isGroup1 ? String(i) : String.fromCharCode(i + 64))], ["1", "D"]));
-
           let added: boolean = false;
 
           for (let preference of this.missingPreferences) {
@@ -1029,8 +943,6 @@ export class EditPreferencesDialogComponent implements OnInit {
               ])
             ) {
               added = true;
-              // console.log("???");
-              // console.log(this.missingPreferences.indexOf(preference));
               this.missingPreferences.splice(
                 this.missingPreferences.indexOf(preference),
                 1
@@ -1044,31 +956,11 @@ export class EditPreferencesDialogComponent implements OnInit {
               isGroup1 ? String(i) : String.fromCharCode(i + 64),
             ]);
           }
-
-          // if (missingPreferences.includes([(isGroup1 ? String(i) : String.fromCharCode(i + 64)), agentId])) {
-          //   missingPreferences.splice(missingPreferences.indexOf([(isGroup1 ? String(i) : String.fromCharCode(i + 64)), agentId]), 1);
-          // } else {
-          //   missingPreferences.push([agentId, (isGroup1 ? String(i) : String.fromCharCode(i + 64))]);
-          // }
-          // console.log("make valid = false here!");
         }
       }
-
-      // console.log("-----------");
     }
-    // console.log(this.group1Preferences);
     this.valid = this.missingPreferences.length == 0;
-    // console.log(this.missingPreferences);
-    // console.log(this.valid);
   }
-
-  // this will be new
-
-  // [1, 2, 3, 4]
-  // [4, 3, 2, 1]
-
-  // [1, 4], [1, 3], [1, 2], [1, 1]
-  // false, false, false, true
 
   // FROM: https://javascript.info/task/shuffle
   shuffle(array: Array<Object>) {

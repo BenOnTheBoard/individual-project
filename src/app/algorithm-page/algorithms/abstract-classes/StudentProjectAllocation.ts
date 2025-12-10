@@ -12,12 +12,12 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
 
   constructor() {
     super();
-    // console.log("StableRoomMates Class");
   }
 
   generatePreferences(): void {
     let numberLectures = 0;
     let projectLists = [];
+
     // Students - Group 1
     for (let student of Array.from(this.group1Agents.values())) {
       let agent1Rankings = Array.from(new Map(this.group2Agents).values());
@@ -31,8 +31,6 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
     for (let i = 0; i < numberLectures; i++) {
       projectLists.push([]);
     }
-
-    // console.log("lists", projectLists)
 
     // Projects - Group 2
     let count = 1;
@@ -61,32 +59,16 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
       this.algorithmSpecificData['lecturerRanking'].push(lecturerRanking);
       count++;
     }
-
-    // this.algorithmSpecificData["lecturerRanking"][1] = ["{#EB2A2A3}", "{#53D26F3}"]
-
-    // console.log("this.algorithmSpecificData", this.algorithmSpecificData["lecturerRanking"])
-
     this.algorithmSpecificData['lecturerProjects'] = projectLists;
-
-    // console.log("SPA gen agents")
-    // console.log(this.group1Agents)
-    // console.log(this.group2Agents)
-    // console.log(this.group3Agents)
   }
 
   populatePreferences(preferences: Map<String, Array<String>>): void {
-    // console.log("preferences", preferences);
-
     this.generatePreferences();
 
     let tempCopyList: Agent[];
 
-    // console.log("changes", Array.from(this.group1Agents.keys()))
-
     for (let agent of Array.from(this.group1Agents.keys())) {
       tempCopyList = [];
-      // console.log(agent, preferences.get(this.getLastCharacter(String(agent))))
-      // this.group1Agents.get(agent).ranking = preferences.get(this.getLastCharacter(String(agent)));
       for (let preferenceAgent of preferences.get(
         this.getLastCharacter(String(agent))
       )) {
@@ -96,103 +78,18 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
       }
       this.group1Agents.get(agent).ranking = tempCopyList;
     }
-
-    // console.log(this.group1Agents);
-    // console.log(this.group2Agents);
-    // console.log(this.group3Agents)
   }
 
   printRanking(group) {
     for (let agent of group.values()) {
-      // console.log(agent.name)
       let names = [];
       if (agent.ranking) {
         for (let agentInner of agent.ranking) {
-          // console.log(agentInner.name)
           names.push(agentInner.name);
         }
       }
-      //console.log(agent.name, names)
-      //console.log("--------------")
     }
-    //console.log("")
   }
 
   abstract match(): AlgorithmData;
 }
-
-// test instances
-
-// student1 = [["pA", "pC", "pE"],
-//             ["pA", "pD"],
-//             ["pA", "pB"],
-//             ["pC", "pA", "pE"]]
-
-// projCap1 = [2, 1, 1, 1, 1]
-
-// lecture1 = [["s1", "s3", "s2", "s4"],
-//             ["s1", "s2", "s4"]]
-
-// lectureProj1 = [["pA", "pB", "pC"],
-//                 ["pD", "pE"]]
-
-// lectCap1 = [2, 2]
-
-// student1 = [["pC", "pA"],
-//             ["pA", "pC"],
-//             ["pD", "pB"],
-//             ["pB", "pD"]]
-
-// projCap1 = [1, 1, 1, 1]
-
-// lecture1 = [["s1", "s2", "s3", "s4"],
-//             ["s2", "s1", "s4", "s3"]]
-
-// lectureProj1 = [["pA", "pB"],
-//                 ["pC", "pD"]]
-
-// lectCap1 = [2, 2]
-
-// generatePreferences(): void {
-
-//     // set student rankings
-//     let count = 0;
-//     for (let [key, student] of this.group1Agents.entries()){
-//         for (let i = 0 ; i < this.student1[count].length ; i++){
-//             //console.log(this.group1Agents.get(data2[count][i]), data2[count][i]);
-//             student.ranking[i] = this.group2Agents.get(String(this.student1[count][i]));
-//         }
-//         count++;
-//     }
-
-//      // set proj cap
-//     count = 0
-//     for (let [key, project] of this.group2Agents.entries()){
-//        project.capacity = this.projCap1[count]
-//        count++
-//     }
-
-//     count = 0
-//     //set lecture raknings
-//     for (let [key, lecture] of this.group3Agents.entries()){
-//         lecture.capacity = this.lectCap1[count]
-
-//         for (let i = 0 ; i < this.lecture1[count].length ; i++){
-//             //console.log(this.group1Agents.get(data2[count][i]), data2[count][i]);
-//             lecture.ranking[i] = this.group1Agents.get(String(this.lecture1[count][i]));
-//         }
-
-//         for (let i = 0 ; i < this.lectureProj1[count].length ; i++){
-//             //console.log(this.group1Agents.get(data2[count][i]), data2[count][i]);
-//             lecture.projects[i] = this.lectureProj1[count][i];
-//         }
-
-//         count++
-//      }
-
-//     console.log("SPA gen agents")
-//     console.log(this.group1Agents)
-//     console.log(this.group2Agents)
-//     console.log(this.group3Agents)
-
-// }

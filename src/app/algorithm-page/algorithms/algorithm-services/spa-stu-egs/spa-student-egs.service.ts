@@ -41,7 +41,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
     for (let i = 1; i < this.numberOfGroup2Agents + 1; i++) {
       let group2AgentName = this.group2Name + currentLetter;
-      let projectCapacity = 2; //this.getRandomInt(1, this.numberOfAgents-2);
+      let projectCapacity = 2;
 
       this.group2Agents.set(group2AgentName, {
         name: group2AgentName,
@@ -78,10 +78,8 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       });
 
       this.lecturerCapacitys[i] = this.lecturerCapacity;
-      // this.lecturerProjects[i] = this.group3Agents.get(group3AgentName).projects
     }
     this.algorithmSpecificData['lecturerCapacity'] = this.lecturerCapacitys;
-    // this.algorithmSpecificData["lecturerProjects"] = this.lecturerProjects
   }
 
   getRandomInt(min: number, max: number): number {
@@ -96,18 +94,8 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   checkStability(allMatches: Map<String, Array<String>>): boolean {
     let stability = true;
 
-    // this.printRanking(this.group1Agents)
-    // this.printRanking(this.group2Agents)
-    // this.printRanking(this.group3Agents)
-
-    // console.log("Check")
-
     // for all students
     for (let [name, student] of this.group1Agents.entries()) {
-      // let agentMatches = allMatches.get(agent);
-
-      // console.log(name)
-
       let studentMatchIndex = 0;
       if (student.match.length == 0) {
         studentMatchIndex = student.ranking.length;
@@ -122,8 +110,6 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         this.getLastCharacter(student.name)
       );
 
-      // console.log("Current student", student.name, student.match[0].name, studentMatchIndex)
-
       for (let i = studentMatchIndex - 1; i >= 0; i--) {
         // get project + lecturer that is more preferred than the current
         let betterProjectname = studentRanking[i];
@@ -131,22 +117,17 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
           this.group2Name + betterProjectname
         );
 
-        // console.log("A better Project:", betterProjectname)
         let betterProjectLecturer = this.getProjectLecturer(betterProject);
-        // console.log("Project lecturer:", betterProjectLecturer.name)
 
         // get lecturers ranking list to compare positions
         let lastMatchIndex = this.getLastMatchLecturer(betterProjectLecturer);
-        // console.log("lastMatchIndex:", lastMatchIndex)
 
         let currentStudentIndex = this.getCurrentStudentIndex(
           student,
           betterProjectLecturer
         );
-        // console.log("currentStudentIndex:", currentStudentIndex)
 
         // IF bother under subbed (a)
-        // console.log("(a)", betterProject.match.length , betterProject.capacity , this.getLecturerCurrentCapacity(betterProjectLecturer) , this.lecturerCapacity)
         if (
           betterProject.match.length < betterProject.capacity &&
           this.getLecturerCurrentCapacity(betterProjectLecturer) <
@@ -156,7 +137,6 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         }
 
         // project is under subbed + lecturer is full + ()
-        // console.log("(b)", betterProject.match.length, betterProject.capacity, this.getLecturerCurrentCapacity(betterProjectLecturer), this.lecturerCapacity)
         if (
           betterProject.match.length < betterProject.capacity &&
           this.getLecturerCurrentCapacity(betterProjectLecturer) ==
@@ -168,24 +148,19 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
             currentStudentIndex < lastMatchIndex
           ) {
             stability = false;
-            //console.log("FALSE a")
           }
         }
 
         // project is full + student is preferred over worst ranked person on project
-        // console.log("(c)", betterProject.match.length, betterProject.capacity, currentStudentIndex, this.getLastMatchProject(betterProject))
-        // console.log(student.name, betterProject.name, betterProject.match)
         if (
           betterProject.match.length == betterProject.capacity &&
           currentStudentIndex < this.getLastMatchProject(betterProject)
         ) {
           stability = false;
-          //console.log("FALSE b")
         }
 
         if (currentStudentIndex < lastMatchIndex) {
           stability = false;
-          //console.log("FALSE c")
         }
       }
     }
@@ -503,8 +478,6 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   }
 
   match(): AlgorithmData {
-    // console.log("Here is SPA")
-
     let redLine = [];
     let greenLine = [];
 
@@ -519,8 +492,6 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       let student = availableStudents[0];
       // while some student s is free
       this.update(2, { '%student%': student.name });
-
-      // console.log("Current Student", student.name, student)
 
       // get students most prefered project and its lecturer
       let preferedProject = student.ranking[0];
@@ -657,12 +628,6 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
       // update viz
       this.updateCapacityVisualization();
-
-      // stopPoint++
-      // if (stopPoint > 200) {
-      //   console.log("OVERRUN - STOPPED")
-      //   break;
-      // }
     }
 
     // updates confirms
@@ -694,48 +659,6 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
     // END - Stable matching found
     this.update(23);
-
-    // console.log("--- End ---")
-    // console.log(this.group1Agents)
-    // console.log(this.group2Agents)
-    // console.log(this.group3Agents)
-
     return;
   }
 }
-
-// Testing Set uo
-
-// let s1 = this.group1Agents.get("s1")
-// let s2 = this.group1Agents.get("s2")
-// let s3 = this.group1Agents.get("s3")
-
-// let p1 = this.group2Agents.get("pA")
-// let p2 = this.group2Agents.get("pB")
-
-// let l1 = this.group3Agents.get("l1")
-
-// console.log(s1, s2, p1)
-
-// p1.match.push(s1)
-// // p1.match.push(s2)
-// p2.match.push(s3)
-
-// s1.match.push(p1)
-// // s2.match.push(p1)
-// s3.match.push(p2)
-
-// console.log("worst")
-// let w = this.getWorstStudentOverall(l1)
-// let w2 = this.getWorstStudent(p1)
-// console.log(w, w2)
-
-// console.log("HERE")
-
-// let a = [1,2,3,4]
-
-// for (let i of a.reverse()){
-//   console.log(i)
-// }
-// a.reverse()
-// console.log(a)

@@ -118,12 +118,10 @@ export abstract class MatchingAlgorithm {
   }
 
   populatePreferences(preferences: Map<String, Array<String>>): void {
-    // console.log("preferences", preferences);
     let tempCopyList: Agent[];
 
     for (let agent of Array.from(this.group1Agents.keys())) {
       tempCopyList = [];
-      // this.group1Agents.get(agent).ranking = preferences.get(this.getLastCharacter(String(agent)));
       for (let preferenceAgent of preferences.get(
         this.getLastCharacter(String(agent))
       )) {
@@ -136,7 +134,6 @@ export abstract class MatchingAlgorithm {
 
     for (let agent of Array.from(this.group2Agents.keys())) {
       tempCopyList = [];
-      // this.group1Agents.get(agent).ranking = preferences.get(this.getLastCharacter(String(agent)));
       for (let preferenceAgent of preferences.get(
         this.getLastCharacter(String(agent))
       )) {
@@ -146,9 +143,6 @@ export abstract class MatchingAlgorithm {
       }
       this.group2Agents.get(agent).ranking = tempCopyList;
     }
-
-    //console.log(this.group1Agents);
-    //console.log(this.group2Agents);
   }
 
   // FROM: https://javascript.info/task/shuffle
@@ -175,7 +169,6 @@ export abstract class MatchingAlgorithm {
       }
 
       let identifier: string = agent.name.slice(agent.name.length - 1);
-      // console.log()
 
       matches.set(identifier, preferenceList);
     }
@@ -191,7 +184,6 @@ export abstract class MatchingAlgorithm {
 
     mapIn.forEach(
       (str: Array<String>, key: String, mapObj: Map<String, Array<String>>) => {
-        //products.slice(0) clone array
         mapCloned.set(key, str.slice(0));
       }
     );
@@ -250,7 +242,6 @@ export abstract class MatchingAlgorithm {
     let originalPreferences = this.originalGroup1CurrentPreferences.get(
       currentAgent.name[currentAgent.name.length - 1]
     );
-    // console.log("Group1", originalPreferences)
     let position: number = originalPreferences.indexOf(
       agentToFind.name[agentToFind.name.length - 1]
     );
@@ -261,7 +252,6 @@ export abstract class MatchingAlgorithm {
     let originalPreferences = this.originalGroup1CurrentPreferences.get(
       this.getLastCharacter(currentAgent.name)
     );
-    // console.log("originalPreferences", this.originalGroup1CurrentPreferences)
     let position: number = originalPreferences.indexOf(
       this.getLastCharacter(agentToFind.name)
     );
@@ -272,18 +262,11 @@ export abstract class MatchingAlgorithm {
     let originalPreferences = this.originalGroup2CurrentPreferences.get(
       currentAgent.name[currentAgent.name.length - 1]
     );
-    // console.log("Group2", originalPreferences)
     let position: number = originalPreferences.indexOf(
       agentToFind.name[agentToFind.name.length - 1]
     );
     return position;
   }
-
-  // findPositionInOriginalMatches(currentAgent: Agent, agentToFind: Agent) {
-  //     let originalPreferences = this.originalGroup1CurrentPreferences.get(currentAgent.name[currentAgent.name.length - 1]);
-  //     console.log("originalPreferences", originalPreferences)
-  //     return 0
-  // }
 
   getLastCharacter(name: string) {
     return name.slice(name.length - 1);
@@ -331,9 +314,6 @@ export abstract class MatchingAlgorithm {
     }
   }
 
-  // #53D26F (green)
-  // #C4C4C4 (grey)
-  // changePreferenceStyle(preferenceList: Object, person: string, position: number, style: string) {
   changePreferenceStyle(
     preferenceList: Map<String, Array<String>>,
     person: string,
@@ -341,8 +321,6 @@ export abstract class MatchingAlgorithm {
     style: string
   ) {
     let currentAgent: string = '';
-
-    // console.log("inner", preferenceList, preferenceList.get(person), preferenceList.get(person)[position], person, position, style)
 
     if (preferenceList.get(person)[position].includes('#')) {
       currentAgent = preferenceList
@@ -375,8 +353,6 @@ export abstract class MatchingAlgorithm {
     for (let agent of allMatches.keys()) {
       let agentMatches = allMatches.get(agent);
 
-      //console.log(agentMatches)
-
       // if agent has matches
       if (agentMatches.length > 0) {
         // find the position of the last ranked match (for Stable Marriage this will be the only match)
@@ -401,11 +377,7 @@ export abstract class MatchingAlgorithm {
             );
             if (currentAgentPosition < matchPosition) {
               stability = false;
-            } else {
-              // console.log("Stable")
             }
-          } else {
-            //console.log("Stable")
           }
         }
       }
@@ -441,10 +413,6 @@ export abstract class MatchingAlgorithm {
       this.initialise(numberOfAgents);
     }
 
-    if (numberOfGroup2Agents == 0) {
-      //console.log("0 agents in group 2");
-    }
-
     if (SRstable) {
       this.SRstable = true;
     } else {
@@ -474,7 +442,6 @@ export abstract class MatchingAlgorithm {
     this.stable = this.checkStability(this.getMatches());
 
     if (!this.stable) {
-      // console.log("Matching is not stable!");
       return undefined;
     }
 

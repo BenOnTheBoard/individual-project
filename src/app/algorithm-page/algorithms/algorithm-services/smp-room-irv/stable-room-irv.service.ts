@@ -110,7 +110,6 @@ export class StableRoomIrvService extends StableRoomMates {
       // if assigned then
       if (person.lastProposed != null) {
         if (person.lastProposed.name == assinged) {
-          // console.log("assigned", person.lastProposed.name, key)
           return key;
         }
       }
@@ -121,8 +120,6 @@ export class StableRoomIrvService extends StableRoomMates {
   // makes sure noone is assigned to person "free"
   // loop through all people - if they are - assign them to null
   free(person_free: String) {
-    // console.log("---Free Person---")
-
     for (let [key, person] of this.group1Agents.entries()) {
       // if assigned then set to null
       if (person.lastProposed != null) {
@@ -140,24 +137,19 @@ export class StableRoomIrvService extends StableRoomMates {
           // add new free person to list
           this.freeAgentsOfGroup1.push(this.getLastCharacter(person.name));
           person.lastProposed = null;
-          // console.log(this.group1Agents);
         }
       }
     }
   }
 
-  // del agent1 from agent2 ranking
-  // del agent2 from agent1 ranking
   delete_pair(agent1, agent2) {
     let agent1index = agent2.ranking.indexOf(agent1);
     if (agent1index != -1) {
-      // console.log("Delete --- ", agent1.name, " From ", agent2.name);
       agent2.ranking.splice(agent1index, 1);
     }
 
     let agent2index = agent1.ranking.indexOf(agent2);
     if (agent2index != -1) {
-      // console.log("Delete --- ", agent2.name, " From ", agent1.name);
       agent1.ranking.splice(agent2index, 1);
     }
 
@@ -181,12 +173,6 @@ export class StableRoomIrvService extends StableRoomMates {
     );
   }
 
-  print_rankings(agent) {
-    for (let i = 0; i < agent.ranking.length; i++) {
-      //console.log("Element", i, agent.ranking[i])
-    }
-  }
-
   // returns a map of agents that are free - not assigned to anyone
   check_free_agents() {
     let free_agents: Map<String, Person> = new Map();
@@ -208,7 +194,6 @@ export class StableRoomIrvService extends StableRoomMates {
       // if person has more than one person in their ranking
       if (person.ranking.length > 1) {
         agents_multiple_prefs.set(key, person);
-        // console.log("Agent with multiple prefs", key, person.ranking.length)
       }
     }
     return agents_multiple_prefs;
@@ -242,8 +227,6 @@ export class StableRoomIrvService extends StableRoomMates {
   }
 
   match(): AlgorithmData {
-    // console.log(this.group1Agents)
-
     let free_agents: Map<String, Person> = new Map();
     free_agents = this.check_free_agents();
 
@@ -266,26 +249,16 @@ export class StableRoomIrvService extends StableRoomMates {
         //While some person p is free (not assigned to someone)
         this.update(2, { '%person%': person.name });
 
-        // console.log("------------------")
-        // console.log(person);
-        // console.log(person.name);
-        // console.log(person.ranking);
-        // console.log(person.match);
-        // console.log(person.lastProposed);
-
         //if person p has a empty preferance list
         this.update(3, { '%person%': person.name });
 
         // if there is no more preferances for a agent - no stable matchong exists
         if (person.ranking.length < 1) {
-          // console.log("NO STABLE MATHCING - empty preferance list")
-
           //end - no stable mathcing
           this.update(4);
 
           // if stable == true then regenerate
           if (this.SRstable) {
-            // console.log("ReRun")
             this.run(
               this.numberOfAgents,
               this.numberOfGroup2Agents,
@@ -329,7 +302,6 @@ export class StableRoomIrvService extends StableRoomMates {
         });
 
         let pref = person.ranking[0];
-        // console.log("Pref check --- ", person.name, pref.name, person.ranking)
 
         redLine = [
           this.getLastCharacter(person.name),
@@ -382,16 +354,8 @@ export class StableRoomIrvService extends StableRoomMates {
           });
         }
 
-        //person.ranking = person.ranking.slice(0, 3);
         free_agents = this.check_free_agents();
       }
-
-      // // Place holder
-      // count++;
-      // if (count > 300){
-      //   console.log("No Stable Mathcing")
-      //   return;
-      // }
     }
 
     // fix last highlights number
@@ -434,7 +398,6 @@ export class StableRoomIrvService extends StableRoomMates {
 
         let counter = 0;
         while (starting_agent != second_pref) {
-          // console.log("adding pairs ")
           counter++;
 
           // stops infinite loops - break if there is no cycle through all the people
@@ -456,16 +419,10 @@ export class StableRoomIrvService extends StableRoomMates {
         // if rotation r is found
         this.update(13, { '%rotation%': this.objs_toString(rotation_pairs) }); // temp remove %rotation%
 
-        // console.log("Found rotation", rotation_pairs)
-
         let deleted_pairs = [];
         for (let pair = 0; pair < rotation_pairs.length; pair++) {
-          // console.log("looping dels")
-
           // if pair not already deleted
           if (!deleted_pairs.includes(rotation_pairs[pair])) {
-            // console.log("deleting", rotation_pairs[pair])
-
             this.delete_pair(rotation_pairs[pair][0], rotation_pairs[pair][1]);
             deleted_pairs.push(rotation_pairs[pair]);
 
@@ -476,7 +433,6 @@ export class StableRoomIrvService extends StableRoomMates {
             });
 
             // update lines
-
             for (let [key_inner, person_inner] of this.group1Agents.entries()) {
               if (
                 person_inner.ranking.length == 1 &&
@@ -574,9 +530,6 @@ export class StableRoomIrvService extends StableRoomMates {
         if (this.check_pref_list_empty() == true) {
           // end - no stable matching
           this.update(18);
-
-          // console.log("No Stable matching")
-
           // if stable == true then regenerate
           if (this.SRstable) {
             // console.log("ReRun")
@@ -630,7 +583,6 @@ export class StableRoomIrvService extends StableRoomMates {
             ],
             'green',
           ];
-          // let line = ["1", "B", "green"]
           this.currentLines.push(line);
         }
       }

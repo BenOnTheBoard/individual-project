@@ -37,7 +37,6 @@ export class AlgorithmAnimationService {
     anime({
       targets: '#infosidebarContent',
       easing: 'easeInOutQuint',
-      // translateX: [-1500, 0],
       opacity: [0, 1],
       duration: 600,
     });
@@ -66,7 +65,6 @@ export class AlgorithmAnimationService {
       targets: '.navbar',
       easing: 'easeOutQuint',
       translateY: [0, -150],
-      // opacity: [0, 1],
       delay: 400,
       duration: 900,
     });
@@ -75,14 +73,12 @@ export class AlgorithmAnimationService {
       targets: '.sidebar',
       easing: 'easeInOutQuint',
       translateX: [0, -500],
-      // opacity: [0, 1],
       duration: 600,
     });
 
     anime({
       targets: '#sidebarContent',
       easing: 'easeInOutQuint',
-      // translateX: [-1500, 0],
       opacity: [1, 0],
       duration: 600,
     });
@@ -90,7 +86,6 @@ export class AlgorithmAnimationService {
     anime({
       targets: '#mainContent',
       easing: 'easeInOutQuint',
-      // translateX: [-1500, 0],
       opacity: [1, 0],
       duration: 600,
     });
@@ -100,7 +95,6 @@ export class AlgorithmAnimationService {
     anime({
       targets: '#myCanvas',
       easing: 'easeInOutQuint',
-      // translateX: [-1500, 0],
       opacity: [1, 0],
       duration: 300,
     });
@@ -110,7 +104,6 @@ export class AlgorithmAnimationService {
     anime({
       targets: '#myCanvas',
       easing: 'easeInOutQuint',
-      // translateX: [-1500, 0],
       opacity: [0, 1],
       duration: 300,
     });
@@ -131,14 +124,12 @@ export class AlgorithmAnimationService {
       targets: '.sidebar',
       easing: 'easeInOutQuint',
       translateX: [-500, 0],
-      // opacity: [0, 1],
       duration: 600,
     });
 
     anime({
       targets: '#sidebarContent',
       easing: 'easeInOutQuint',
-      // translateX: [-1500, 0],
       opacity: [0, 1],
       duration: 600,
     });
@@ -148,7 +139,6 @@ export class AlgorithmAnimationService {
     anime({
       targets: '.info-sidebar',
       easing: 'easeInOutQuint',
-      // translateX: [0],
       opacity: [1, 0],
       direction: 'reverse',
       delay: 200,
@@ -160,7 +150,6 @@ export class AlgorithmAnimationService {
     anime({
       targets: '.info-sidebar',
       easing: 'easeInOutQuint',
-      // translateX: [0, 500],
       direction: 'reverse',
       opacity: [0, 1],
       duration: 1000,
@@ -169,7 +158,6 @@ export class AlgorithmAnimationService {
     anime({
       targets: '#infosidebarContent',
       easing: 'easeInOutQuint',
-      // translateX: [-1500, 0],
       opacity: [0.5, 1],
       duration: 600,
     });

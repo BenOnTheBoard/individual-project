@@ -5,12 +5,9 @@ import { Agent } from '../interfaces/Agent';
 export abstract class StableRoomMates extends MatchingAlgorithm {
   constructor() {
     super();
-    // console.log("StableRoomMates Class");
   }
 
   generatePreferences(): void {
-    // console.log("Gen Pref", this.SRstable)
-
     let data2 = [
       ['2', '4', '6', '3', '5'],
       ['4', '5', '6', '1', '3'],
@@ -88,7 +85,6 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
     ];
 
     let count = 0;
-    // let name = "person"
 
     let nonStableSRInstacens6 = [unstable6_1, unstable6_2, unstable6_3];
     let nonStableSRInstacens8 = [unstable8_1, unstable8_2, unstable8_3];
@@ -97,8 +93,6 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
 
     // generate a random SR instance
     if (this.SRstable) {
-      // console.log("Generating Stable")
-
       for (let agent of Array.from(this.group1Agents.values())) {
         let agent1Rankings = Array.from(new Map(this.group1Agents).values());
 
@@ -112,8 +106,6 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
 
       // pick a non-stable instance
     } else {
-      // console.log("Generating UnStable")
-
       if (this.numberOfAgents == 2) {
         this.SRstable = true;
       } else if (this.numberOfAgents == 4) {
@@ -136,26 +128,14 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
         }
         count++;
       }
-
-      //console.log("in gen", this.group1Agents)
-      //console.log(instance)
     }
-    // for (let [key, person] of this.group1Agents.entries()){
-    //     for (let i = 0 ; i < this.group1Agents.size - 1 ; i++){
-    //         //console.log(this.group1Agents.get(data2[count][i]), data2[count][i]);
-    //         person.ranking[i] = this.group1Agents.get(name + String(data4[count][i]));
-    //     }
-    //     count++;
-    // }
   }
 
   populatePreferences(preferences: Map<String, Array<String>>): void {
-    //console.log("preferences", preferences);
     let tempCopyList: Agent[];
 
     for (let agent of Array.from(this.group1Agents.keys())) {
       tempCopyList = [];
-      // this.group1Agents.get(agent).ranking = preferences.get(this.getLastCharacter(String(agent)));
       for (let preferenceAgent of preferences.get(
         this.getLastCharacter(String(agent))
       )) {
@@ -165,9 +145,6 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
       }
       this.group1Agents.get(agent).ranking = tempCopyList;
     }
-
-    //console.log(this.group1Agents);
-    //console.log(this.group2Agents);
   }
 
   abstract match(): AlgorithmData;

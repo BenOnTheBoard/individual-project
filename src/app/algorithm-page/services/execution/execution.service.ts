@@ -32,9 +32,7 @@ export class ExecutionService {
       this.algorithmRetrieval.mapOfAvailableAlgorithms.get(
         algorithm
       ).helpTextMap;
-    // console.log(this.commandMap);
 
-    // console.log("get execution flow", SRstable)
     let commandList: AlgorithmData = algorithmService.run(
       numberOfAgents,
       numberOfGroup2Agents,
@@ -43,10 +41,6 @@ export class ExecutionService {
     );
 
     commandList.descriptions = this.generateDescriptions(commandList);
-
-    // console.log(commandList);
-
-    // this.drawService.redrawCanvas(commandList["commands"][0]);
 
     return commandList;
   }

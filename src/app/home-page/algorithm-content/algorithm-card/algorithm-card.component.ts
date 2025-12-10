@@ -68,7 +68,6 @@ export class AlgorithmCardComponent implements OnInit {
   SReven: boolean = true;
 
   evenOnly(event): void {
-    // console.log("evenOnly", event, this.numberOfGroup1Agents.value)
     if (this.numberOfGroup1Agents.value % 2 == 1) {
       this.SReven = false;
     } else {
@@ -77,12 +76,8 @@ export class AlgorithmCardComponent implements OnInit {
   }
 
   isValid(): boolean {
-    // console.log("event", this.numberOfGroup1Agents)
-
     return false;
   }
-
-  // matcher = new MyErrorStateMatcher();
 
   constructor(
     public algorithmService: AlgorithmRetrievalService,

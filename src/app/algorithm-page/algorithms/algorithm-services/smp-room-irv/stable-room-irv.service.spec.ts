@@ -22,19 +22,13 @@ describe('StableRoomIrvService', () => {
     for (let i = 0; i < 1000; i++) {
       // only even numbers from 2 - 18
       let agentCount: number = Math.floor(Math.random() * 4 + 1) * 2;
-      // console.log("agentCount", agentCount)
 
-      // let array = [2,4,6,8]
-      // let agentCount: number = array[Math.floor(Math.random() * array.length)];
-      // console.log(agentCount)
       service.run(agentCount, agentCount, undefined);
       if (!service.stable) {
         stable = false;
       }
-      // console.log(service.stable)
     }
 
     expect(stable).toBeTrue();
-    // console.log("SR Tests Done")
   });
 });

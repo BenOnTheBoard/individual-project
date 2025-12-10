@@ -123,9 +123,7 @@ export class AlgorithmPageComponent implements OnInit {
     public router: Router // injecting the router service (for programmatic route navigation)
   ) {}
 
-  // function that runs when page is created
   ngOnInit(): void {
-    // set the global canvas element (in the canvasService) to the canvas on this page
     this.drawService.setCanvas(this.canvas);
 
     // debugging: use the following lines (113-121) to test individual algorithms
@@ -142,8 +140,6 @@ export class AlgorithmPageComponent implements OnInit {
     // this.playback.setAlgorithm(alg, group1, group2);
 
     this.drawService.initialise();
-
-    // (un)comment the line below to (disable)/enable working algorithm selection
     this.playback.setAlgorithm(
       this.algorithmService.currentAlgorithm.id,
       this.algorithmService.numberOfGroup1Agents,

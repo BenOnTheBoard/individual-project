@@ -9,8 +9,6 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     this.update(4, { '%woman%': potentialProposee.name });
     if (potentialProposee.match.length >= 1) {
       // break the provisional assignment of r to h'
-      // let matchPosition: number = potentialProposee.match[0].match.findIndex((agent: { name: string }) => agent.name == potentialProposee.name);
-
       let matchPosition: number = this.findPositionInMatches(
         potentialProposee,
         potentialProposee.match[0]
@@ -63,7 +61,6 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
         1
       );
     } else {
-      // } (r is not currently assigned)
       this.update(6, { '%woman%': potentialProposee.name });
     }
   }
@@ -81,8 +78,6 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
 
     let greenLine = [agentLastChar, proposeeLastChar, 'green'];
     this.currentLines.push(greenLine);
-
-    // this.findPositionInMatches(currentAgent, potentialProposee));
 
     this.changePreferenceStyle(
       this.group1CurrentPreferences,
@@ -126,8 +121,6 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       i < potentialProposee.ranking.length;
       i++
     ) {
-      // "Woman: " + potentialProposee.name);
-
       let proposeePosition: number = this.findPositionInMatches(
         potentialProposee.ranking[i],
         potentialProposee
@@ -135,10 +128,6 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       this.relevantPreferences.push(
         this.getLastCharacter(potentialProposee.ranking[i].name)
       );
-
-      // potentialProposee.ranking[i].name);
-      // potentialProposee.ranking[i].ranking[proposeePosition]);
-
       // remove h' and r from each other's lists
       this.update(9, {
         '%nextWorstMan%': potentialProposee.ranking[i].name,
@@ -167,9 +156,6 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
         '%nextWorstMan%': potentialProposee.ranking[i].name,
         '%woman%': potentialProposee.name,
       });
-
-      // potentialProposee.ranking[i].name);
-      // potentialProposee.name);
 
       potentialProposee.ranking[i].ranking.splice(proposeePosition, 1);
       potentialProposee.ranking.splice(i, 1);
