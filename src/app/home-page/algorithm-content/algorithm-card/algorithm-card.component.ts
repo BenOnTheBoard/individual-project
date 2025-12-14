@@ -1,10 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormControl,
   FormGroupDirective,
   FormsModule,
   NgForm,
   ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -65,14 +68,23 @@ export class AlgorithmCardComponent implements OnInit {
     Validators.max(9),
   ]);
 
+  numberOfSRAgents = new FormControl<number | null>(null, [
+    Validators.required,
+    Validators.min(1),
+    Validators.max(8),
+    AlgorithmCardComponent.validateEven(),
+  ]);
+
   SReven: boolean = true;
 
-  evenOnly(event): void {
-    if (this.numberOfGroup1Agents.value % 2 == 1) {
-      this.SReven = false;
-    } else {
-      this.SReven = true;
-    }
+  static validateEven(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (value === null || value === undefined || value % 2 === 0) {
+        return null;
+      }
+      return { even: { value: control.value, requiredEven: true } };
+    };
   }
 
   isValid(): boolean {
@@ -92,16 +104,12 @@ export class AlgorithmCardComponent implements OnInit {
 
     // makes sure the SR value is not odd or too large
     if (this.algorithmService.currentAlgorithm.id == 'smp-room-irv') {
-      if (this.numberOfGroup1Agents.value % 2 == 1) {
+      if (this.numberOfSRAgents.value % 2 == 1) {
         this.algorithmService.numberOfGroup1Agents =
-          this.numberOfGroup1Agents.value + 1;
-
-        if (this.algorithmService.numberOfGroup1Agents == 10) {
-          this.algorithmService.numberOfGroup1Agents = 8;
-        }
+          this.numberOfSRAgents.value + 1;
       } else {
         this.algorithmService.numberOfGroup1Agents =
-          this.numberOfGroup1Agents.value;
+          this.numberOfSRAgents.value;
       }
     } else {
       this.algorithmService.numberOfGroup1Agents =
