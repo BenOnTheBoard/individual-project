@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GaleShapley } from '../../abstract-classes/GaleShapley';
+import { MatchingAlgorithm } from '../../abstract-classes/MatchingAlgorithm';
 import { Agent } from '../../interfaces/Agent';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { Man } from '../../interfaces/Man';
@@ -7,7 +7,7 @@ import { Man } from '../../interfaces/Man';
 @Injectable({
   providedIn: 'root',
 })
-export class GsStableMarriageService extends GaleShapley {
+export class GsStableMarriageService extends MatchingAlgorithm {
   group1Name = 'man';
   group2Name = 'woman';
 

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CheckboxControlValueAccessor } from '@angular/forms';
 import { ExtendedGaleShapley } from '../../abstract-classes/ExtendedGaleShapley';
-import { GaleShapley } from '../../abstract-classes/GaleShapley';
 import { Agent } from '../../interfaces/Agent';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { Hospital } from '../../interfaces/Hospital';
