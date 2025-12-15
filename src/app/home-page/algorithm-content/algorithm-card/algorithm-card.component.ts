@@ -15,6 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { UtilsService } from 'src/app/utils/utils.service';
 
 declare var anime: any;
 
@@ -65,15 +66,14 @@ export class AlgorithmCardComponent implements OnInit {
     Validators.max(9),
   ]);
 
-  SReven: boolean = true;
+  numberOfSRAgents = new FormControl<number | null>(null, [
+    Validators.required,
+    Validators.min(1),
+    Validators.max(8),
+    UtilsService.validateEven(),
+  ]);
 
-  evenOnly(event): void {
-    if (this.numberOfGroup1Agents.value % 2 == 1) {
-      this.SReven = false;
-    } else {
-      this.SReven = true;
-    }
-  }
+  SReven: boolean = true;
 
   isValid(): boolean {
     return false;
@@ -92,17 +92,7 @@ export class AlgorithmCardComponent implements OnInit {
 
     // makes sure the SR value is not odd or too large
     if (this.algorithmService.currentAlgorithm.id == 'smp-room-irv') {
-      if (this.numberOfGroup1Agents.value % 2 == 1) {
-        this.algorithmService.numberOfGroup1Agents =
-          this.numberOfGroup1Agents.value + 1;
-
-        if (this.algorithmService.numberOfGroup1Agents == 10) {
-          this.algorithmService.numberOfGroup1Agents = 8;
-        }
-      } else {
-        this.algorithmService.numberOfGroup1Agents =
-          this.numberOfGroup1Agents.value;
-      }
+      this.algorithmService.numberOfGroup1Agents = this.numberOfSRAgents.value;
     } else {
       this.algorithmService.numberOfGroup1Agents =
         this.numberOfGroup1Agents.value;

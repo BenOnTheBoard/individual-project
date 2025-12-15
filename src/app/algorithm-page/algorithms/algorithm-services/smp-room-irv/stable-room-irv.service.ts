@@ -12,8 +12,6 @@ export class StableRoomIrvService extends StableRoomMates {
 
   group1Agents: Map<String, Person> = new Map();
 
-  personkey = {};
-
   generateAgents() {
     if (this.numberOfAgents % 2 == 1) {
       this.numberOfAgents = this.numberOfAgents + 1;
@@ -45,8 +43,6 @@ export class StableRoomIrvService extends StableRoomMates {
         match: new Array(),
         ranking: new Array(),
       });
-
-      this.personkey[String(i)] = String(i);
 
       currentLetter = String.fromCharCode(
         ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65
@@ -305,7 +301,7 @@ export class StableRoomIrvService extends StableRoomMates {
 
         redLine = [
           this.getLastCharacter(person.name),
-          this.personkey[this.getLastCharacter(pref.name)],
+          this.getLastCharacter(pref.name),
           'red',
         ];
         this.currentLines.push(redLine);
@@ -450,16 +446,12 @@ export class StableRoomIrvService extends StableRoomMates {
                 // remove lines going to their new proposal
                 this.removeTargetFromArray(
                   this.currentLines,
-                  this.personkey[
-                    this.getLastCharacter(person_inner.lastProposed.name)
-                  ]
+                  this.getLastCharacter(person_inner.lastProposed.name)
                 );
                 // with lines are green early, without overlapping reds
                 this.removePersonFromArray(
                   this.currentLines,
-                  this.personkey[
-                    this.getLastCharacter(person_inner.lastProposed.name)
-                  ]
+                  this.getLastCharacter(person_inner.lastProposed.name)
                 );
 
                 // update value in list
@@ -477,9 +469,7 @@ export class StableRoomIrvService extends StableRoomMates {
                 // draw line to new proposal from, to, colour
                 let line = [
                   this.getLastCharacter(person_inner.name),
-                  this.personkey[
-                    this.getLastCharacter(person_inner.lastProposed.name)
-                  ],
+                  this.getLastCharacter(person_inner.lastProposed.name),
                   'green',
                 ];
                 this.currentLines.push(line);
@@ -510,9 +500,7 @@ export class StableRoomIrvService extends StableRoomMates {
             person_inner.lastProposed = person_inner.ranking.slice(0)[0];
             let line = [
               this.getLastCharacter(person_inner.name),
-              this.personkey[
-                this.getLastCharacter(person_inner.lastProposed.name)
-              ],
+              this.getLastCharacter(person_inner.lastProposed.name),
               'green',
             ];
 
@@ -570,17 +558,13 @@ export class StableRoomIrvService extends StableRoomMates {
 
           this.removeTargetFromArray(
             this.currentLines,
-            this.personkey[
-              this.getLastCharacter(person_inner.lastProposed.name)
-            ]
+            this.getLastCharacter(person_inner.lastProposed.name)
           );
 
           person_inner.lastProposed = person_inner.ranking.slice(0)[0];
           let line = [
             this.getLastCharacter(person_inner.name),
-            this.personkey[
-              this.getLastCharacter(person_inner.lastProposed.name)
-            ],
+            this.getLastCharacter(person_inner.lastProposed.name),
             'green',
           ];
           this.currentLines.push(line);
