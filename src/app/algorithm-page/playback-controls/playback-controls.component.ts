@@ -50,8 +50,4 @@ export class PlaybackControlsComponent implements OnInit {
     this.playback.jumpToStep(value);
     this.playback.onSliderChange(value);
   }
-
-  delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
 }
