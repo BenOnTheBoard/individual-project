@@ -1,6 +1,7 @@
 import { Agent } from '../interfaces/Agent';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { Step } from '../interfaces/Step';
+import { UtilsService } from '../../../utils/utils.service';
 
 export abstract class MatchingAlgorithm {
   abstract group1Name: string;
@@ -37,7 +38,7 @@ export abstract class MatchingAlgorithm {
 
   stable: boolean = false;
 
-  constructor() {}
+  constructor(public utils: UtilsService) {}
 
   initialise(
     numberOfAgents: number,
@@ -271,20 +272,11 @@ export abstract class MatchingAlgorithm {
     return name.slice(name.length - 1);
   }
 
-  checkArrayEquality(a: Array<string>, b: Array<string>) {
-    for (let i = 0; i < a.length; i++) {
-      if (a[i] !== b[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   // used to remove elements from currentLines
   removeArrayFromArray(a: Array<Array<string>>, b: Array<string>) {
     let arrayPositionCounter: number = 0;
     for (let subArray of a) {
-      if (this.checkArrayEquality(subArray, b)) {
+      if (this.utils.checkArrayEquality(subArray, b)) {
         a.splice(arrayPositionCounter, 1);
       }
       arrayPositionCounter++;

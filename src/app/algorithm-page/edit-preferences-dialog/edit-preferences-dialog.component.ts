@@ -12,6 +12,7 @@ import { CanvasService } from '../services/canvas/canvas.service';
 import { PlaybackService } from '../services/playback/playback.service';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { UtilsService } from '../../utils/utils.service';
 
 @Component({
   selector: 'app-edit-preferences-dialog',
@@ -68,6 +69,7 @@ export class EditPreferencesDialogComponent implements OnInit {
     public algorithmService: AlgorithmRetrievalService,
     public playbackService: PlaybackService,
     public canvasService: CanvasService,
+    public utils: UtilsService,
     public dialogRef: MatDialogRef<EditPreferencesDialogComponent>,
     private _snackBar: MatSnackBar
   ) {}
@@ -937,7 +939,7 @@ export class EditPreferencesDialogComponent implements OnInit {
 
           for (let preference of this.missingPreferences) {
             if (
-              this.checkArrayEquality(preference, [
+              this.utils.checkArrayEquality(preference, [
                 isGroup1 ? String(i) : String.fromCharCode(i + 64),
                 agentId,
               ])
@@ -974,15 +976,6 @@ export class EditPreferencesDialogComponent implements OnInit {
       // let t = array[i]; array[i] = array[j]; array[j] = t
       [array[i], array[j]] = [array[j], array[i]];
     }
-  }
-
-  checkArrayEquality(a: Array<string>, b: Array<string>) {
-    for (let i = 0; i < a.length; i++) {
-      if (a[i] !== b[i]) {
-        return false;
-      }
-    }
-    return true;
   }
 
   trackByFn(index, item) {
