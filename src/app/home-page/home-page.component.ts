@@ -1,11 +1,4 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { IconBannerComponent } from './icon-banner/icon-banner.component';
 import { FeedbackBannerComponent } from './feedback-banner/feedback-banner.component';

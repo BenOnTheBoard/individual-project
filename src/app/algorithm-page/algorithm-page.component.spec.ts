@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AlgorithmPageComponent } from './algorithm-page.component';
 import { AlgorithmRetrievalService } from '../algorithm-retrieval.service';
-import { GsStableMarriageService } from './algorithms/algorithm-services/smp-man-gs/gs-stable-marriage.service';
 import { CanvasService } from './services/canvas/canvas.service';
 import { AlgorithmAnimationService } from './animations/algorithm-animation.service';
 

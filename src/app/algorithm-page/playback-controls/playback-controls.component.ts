@@ -27,7 +27,7 @@ export class PlaybackControlsComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  formatLabel(value: number) : string {
+  formatLabel(value: number): string {
     value = 3050 - value;
     return value >= 1000 ? `${Math.round(value / 1000)}s` : `${value}ms`;
   }
@@ -40,13 +40,13 @@ export class PlaybackControlsComponent implements OnInit {
 
   onStepSliderInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-    const value = Number(input.value)
+    const value = Number(input.value);
     this.playback.jumpToStep(value);
   }
 
   onStepSliderChange(event: Event): void {
     const input = event.target as HTMLInputElement;
-    const value = Number(input.value)
+    const value = Number(input.value);
     this.playback.jumpToStep(value);
     this.playback.onSliderChange(value);
   }

@@ -39,7 +39,7 @@ import { PseudocodeComponent } from './algorithm-page/sidebar/pseudocode/pseudoc
 import { ExecutionLogComponent } from './algorithm-page/sidebar/execution-log/execution-log.component';
 import { AgentTitlesComponent } from './algorithm-page/agent-titles/agent-titles.component';
 import { InfoSidebarComponent } from './algorithm-page/info-sidebar/info-sidebar.component';
-import { provideRouter, RouterModule, RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 
 @NgModule({
   imports: [
