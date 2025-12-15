@@ -4,14 +4,15 @@ import { Agent } from '../interfaces/Agent';
 import { Student } from '../interfaces/Student';
 import { Project } from '../interfaces/Project';
 import { Lecturer } from '../interfaces/Lecturer';
+import { UtilsService } from 'src/app/utils/utils.service';
 
 export abstract class StudentProjectAllocation extends MatchingAlgorithm {
   group1Agents: Map<String, Student> = new Map();
   group2Agents: Map<String, Project> = new Map();
   group3Agents: Map<String, Lecturer> = new Map();
 
-  constructor() {
-    super();
+  constructor(public utils: UtilsService) {
+    super(utils);
   }
 
   generatePreferences(): void {
@@ -21,7 +22,7 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
     // Students - Group 1
     for (let student of Array.from(this.group1Agents.values())) {
       let agent1Rankings = Array.from(new Map(this.group2Agents).values());
-      this.shuffle(agent1Rankings);
+      this.utils.shuffle(agent1Rankings);
       this.group1Agents.get(student.name).ranking = agent1Rankings;
     }
 
@@ -46,7 +47,7 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
     let lecturerRanking = [];
     for (let lecturer of Array.from(this.group3Agents.values())) {
       let agent3Rankings = Array.from(new Map(this.group1Agents).values());
-      this.shuffle(agent3Rankings);
+      this.utils.shuffle(agent3Rankings);
       this.group3Agents.get(lecturer.name).ranking = agent3Rankings;
 
       lecturer.projects = projectLists[count];

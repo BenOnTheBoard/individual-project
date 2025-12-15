@@ -20,6 +20,14 @@ export class UtilsService {
     return true;
   }
 
+  // FROM: https://javascript.info/task/shuffle
+  shuffle(array: Array<Object>) {
+    for (let i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
   static validateEven(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;

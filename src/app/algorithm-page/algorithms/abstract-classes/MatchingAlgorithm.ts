@@ -106,13 +106,13 @@ export abstract class MatchingAlgorithm {
   generatePreferences(): void {
     for (let agent of Array.from(this.group1Agents.values())) {
       let agent1Rankings = Array.from(new Map(this.group2Agents).values());
-      this.shuffle(agent1Rankings);
+      this.utils.shuffle(agent1Rankings);
       this.group1Agents.get(agent.name).ranking = agent1Rankings;
     }
 
     for (let agent of Array.from(this.group2Agents.values())) {
       let agent2Rankings = Array.from(new Map(this.group1Agents).values());
-      this.shuffle(agent2Rankings);
+      this.utils.shuffle(agent2Rankings);
       this.group2Agents.get(agent.name).ranking = agent2Rankings;
     }
   }
@@ -142,20 +142,6 @@ export abstract class MatchingAlgorithm {
         );
       }
       this.group2Agents.get(agent).ranking = tempCopyList;
-    }
-  }
-
-  // FROM: https://javascript.info/task/shuffle
-  shuffle(array: Array<Object>) {
-    for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
-
-      // swap elements array[i] and array[j]
-      // we use "destructuring assignment" syntax to achieve that
-      // you'll find more details about that syntax in later chapters
-      // same can be written as:
-      // let t = array[i]; array[i] = array[j]; array[j] = t
-      [array[i], array[j]] = [array[j], array[i]];
     }
   }
 

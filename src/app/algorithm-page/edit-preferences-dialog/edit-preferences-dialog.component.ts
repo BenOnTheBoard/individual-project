@@ -111,12 +111,6 @@ export class EditPreferencesDialogComponent implements OnInit {
     }
   }
 
-  test(id) {
-    let a = document.getElementById('lbl').innerHTML;
-    document.getElementById('lbl').innerHTML = 'newlbl';
-    return 'hi';
-  }
-
   ngOnInit(): void {
     this.group1Preferences =
       this.playbackService.commandList[0]['group1CurrentPreferences'];
@@ -251,7 +245,7 @@ export class EditPreferencesDialogComponent implements OnInit {
           .filter(
             (pref) => pref.charCodeAt(0) - 64 <= this.numberOfGroup2Agents.value
           );
-        this.shuffle(newPreferences);
+        this.utils.shuffle(newPreferences);
         this.preferenceTextGroup1.push(newPreferences);
       }
 
@@ -277,7 +271,7 @@ export class EditPreferencesDialogComponent implements OnInit {
           .filter(
             (pref) => pref.charCodeAt(0) - 64 <= this.numberOfGroup2Agents.value
           );
-        this.shuffle(newPreferences);
+        this.utils.shuffle(newPreferences);
         this.preferenceTextGroup2.push(newPreferences);
       }
     } else {
@@ -379,7 +373,7 @@ export class EditPreferencesDialogComponent implements OnInit {
           }
         }
 
-        this.shuffle(newPreferences);
+        this.utils.shuffle(newPreferences);
         this.preferenceTextGroup1.push(newPreferences);
       }
     } else {
@@ -705,10 +699,6 @@ export class EditPreferencesDialogComponent implements OnInit {
     return re.test(str);
   }
 
-  checkValidity(str: string): boolean {
-    return true;
-  }
-
   fixInputs() {
     this.fix = true;
     this.ngOnInit();
@@ -897,17 +887,15 @@ export class EditPreferencesDialogComponent implements OnInit {
 
     for (let line of preferenceString.split('\n')) {
       if (this.checkIfPreference(line)) {
-        if (this.checkValidity) {
-          line = line.replace(/:\s+,/g, ':');
-          line = line.replace(/,\s+,/g, ',');
-          line = line.replace(/, $/g, '');
-          line = line.replace(/,$/g, '');
-          line = line.replace(/\s+/g, ''); // remove whitespace from line from https://stackoverflow.com/questions/24580912/trim-all-white-space-from-string-javascript
-          let agentId: string = line.slice(0, line.indexOf(':'));
-          let agentPreferences = line.slice(line.indexOf(':') + 1).split(',');
+        line = line.replace(/:\s+,/g, ':');
+        line = line.replace(/,\s+,/g, ',');
+        line = line.replace(/, $/g, '');
+        line = line.replace(/,$/g, '');
+        line = line.replace(/\s+/g, ''); // remove whitespace from line from https://stackoverflow.com/questions/24580912/trim-all-white-space-from-string-javascript
+        let agentId: string = line.slice(0, line.indexOf(':'));
+        let agentPreferences = line.slice(line.indexOf(':') + 1).split(',');
 
-          newPreferences.set(agentId, agentPreferences.slice());
-        }
+        newPreferences.set(agentId, agentPreferences.slice());
       }
     }
 
@@ -962,20 +950,6 @@ export class EditPreferencesDialogComponent implements OnInit {
       }
     }
     this.valid = this.missingPreferences.length == 0;
-  }
-
-  // FROM: https://javascript.info/task/shuffle
-  shuffle(array: Array<Object>) {
-    for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
-
-      // swap elements array[i] and array[j]
-      // we use "destructuring assignment" syntax to achieve that
-      // you'll find more details about that syntax in later chapters
-      // same can be written as:
-      // let t = array[i]; array[i] = array[j]; array[j] = t
-      [array[i], array[j]] = [array[j], array[i]];
-    }
   }
 
   trackByFn(index, item) {
