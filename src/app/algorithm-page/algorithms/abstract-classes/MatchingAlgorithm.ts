@@ -162,29 +162,18 @@ export abstract class MatchingAlgorithm {
     return matches;
   }
 
-  clone(mapIn: Map<String, Array<String>>): Map<String, Array<String>> {
-    let mapCloned: Map<String, Array<String>> = new Map<
-      String,
-      Array<String>
-    >();
-
-    mapIn.forEach(
-      (str: Array<String>, key: String, mapObj: Map<String, Array<String>>) => {
-        mapCloned.set(key, str.slice(0));
-      }
-    );
-
-    return mapCloned;
-  }
-
   update(step: number, stepVariables?: Object): void {
     let currentStep: Step = {
       lineNumber: step,
       freeAgents: Object.assign([], this.freeAgentsOfGroup1),
       matches: new Map(),
       stepVariables: stepVariables,
-      group1CurrentPreferences: this.clone(this.group1CurrentPreferences),
-      group2CurrentPreferences: this.clone(this.group2CurrentPreferences),
+      group1CurrentPreferences: this.utils.cloneMap(
+        this.group1CurrentPreferences
+      ),
+      group2CurrentPreferences: this.utils.cloneMap(
+        this.group2CurrentPreferences
+      ),
       currentlySelectedAgents: JSON.parse(
         JSON.stringify(this.currentlySelectedAgents)
       ),

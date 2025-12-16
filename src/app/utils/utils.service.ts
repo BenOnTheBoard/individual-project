@@ -28,6 +28,16 @@ export class UtilsService {
     }
   }
 
+  cloneMap<K, V>(mapIn: Map<K, V[]>): Map<K, V[]> {
+    const mapCloned = new Map<K, V[]>();
+
+    mapIn.forEach((value, key) => {
+      mapCloned.set(key, [...value]);
+    });
+
+    return mapCloned;
+  }
+
   static validateEven(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
