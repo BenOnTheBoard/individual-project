@@ -100,7 +100,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     let stability = true;
 
     // for all students
-    for (let [name, student] of this.group1Agents.entries()) {
+    for (let student of this.group1Agents.values()) {
       let studentMatchIndex = 0;
       if (student.match.length == 0) {
         studentMatchIndex = student.ranking.length;
@@ -176,14 +176,12 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   getLastMatchProject(project: Project) {
     let projectLecturer = this.getProjectLecturer(project);
     let worstIndex = 0;
-    let worstStudent = null;
 
     for (let student of project.match) {
       let index = projectLecturer.ranking.indexOf(student);
 
       if (index > worstIndex) {
         worstIndex = index;
-        worstStudent = student;
       }
     }
 
@@ -218,7 +216,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   availableStudents() {
     let students = [];
     // for each student - if they are free and have people in their ranking - add to list and return
-    for (let [key, student] of this.group1Agents.entries()) {
+    for (let student of this.group1Agents.values()) {
       if (student.ranking.length > 0 && student.match.length == 0) {
         students.push(student);
       }
@@ -228,7 +226,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
   // returns the lecturer that runs the passed in project
   getProjectLecturer(project: Project) {
-    for (let [key, lecturer] of this.group3Agents.entries()) {
+    for (let lecturer of this.group3Agents.values()) {
       if (lecturer.projects.includes(project.name)) {
         return lecturer;
       }

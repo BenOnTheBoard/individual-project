@@ -333,9 +333,8 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
   // they are undersubbed and there is someone not assigned to them that the hospital wants
   checkFreeHospitals() {
     let freeHospitals = [];
-    for (let [key, hospital] of this.group2Agents.entries()) {
+    for (let hospital of this.group2Agents.values()) {
       let hospitalCap = hospital.availableSpaces;
-      let rankingsLeftLen = hospital.ranking.length;
 
       // if hospital in undersubbed and there is someone on the list that is not assigned to them
       if (

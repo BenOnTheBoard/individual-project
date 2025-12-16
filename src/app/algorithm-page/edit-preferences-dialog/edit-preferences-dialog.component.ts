@@ -175,11 +175,6 @@ export class EditPreferencesDialogComponent implements OnInit {
     this.preferenceTextGroup1 = [];
     this.preferenceTextGroup2 = [];
 
-    let preferenceString: string =
-      this.algorithmService.pluralMap.get(
-        this.algorithmService.currentAlgorithm.orientation[0]
-      ) + '\n';
-
     this.missingPreferences = [];
 
     this.missingPreferencesGroup1 = [];
@@ -448,8 +443,6 @@ export class EditPreferencesDialogComponent implements OnInit {
 
   generateAlgorithmPreferences(): void {
     //// UPDATE REAL PREFERANCES
-    let preferenceString: string = this.formString;
-
     // fill out new preferences
     let newPreferences: Map<String, Array<String>> = new Map();
 
@@ -814,7 +807,6 @@ export class EditPreferencesDialogComponent implements OnInit {
     let numbers: Array<string> = [];
 
     let preferenceTextGroup1Copy = Object.assign([], this.preferenceTextGroup1);
-    let preferenceTextGroup2Copy = Object.assign([], this.preferenceTextGroup2);
 
     this.preferenceTextGroup1 = [];
     this.preferenceTextGroup2 = [];
@@ -950,9 +942,5 @@ export class EditPreferencesDialogComponent implements OnInit {
       }
     }
     this.valid = this.missingPreferences.length == 0;
-  }
-
-  trackByFn(index, item) {
-    return index;
   }
 }

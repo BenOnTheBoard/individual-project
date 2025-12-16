@@ -896,13 +896,12 @@ export class CanvasService {
   drawText(context, text, x, y, size) {
     var i, len, subText;
     var w, scale;
-    var xx, yy, ctx;
+    var xx, ctx;
     var state = [];
     if (text === undefined) {
       return;
     }
     xx = x;
-    yy = y;
     if (!context.setTransform) {
       // simple test if this is a 2D context
       if (context.ctx) {

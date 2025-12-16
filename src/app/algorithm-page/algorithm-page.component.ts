@@ -267,8 +267,6 @@ export class AlgorithmPageComponent implements OnInit {
   async toggleSidebar(): Promise<void> {
     this.duringAnimation = true;
 
-    let mainContent = document.getElementById('mainContent');
-
     if (!this.showCode) {
       // hide sidebar and content
       this.animation.hideSidebar();
