@@ -1,8 +1,13 @@
+import { UtilsService } from 'src/app/utils/utils.service';
 import { Agent } from '../interfaces/Agent';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
 
 export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
+  constructor(public utils: UtilsService) {
+    super(utils);
+  }
+
   match(): AlgorithmData {
     // assign each resident to be free;
     this.update(1);

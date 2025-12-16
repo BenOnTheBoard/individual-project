@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { StableRoomMates } from '../../abstract-classes/StableRoomMates';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { Person } from '../../interfaces/Person';
+import { UtilsService } from 'src/app/utils/utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,10 @@ export class StableRoomIrvService extends StableRoomMates {
   group2Name = 'Other';
 
   group1Agents: Map<String, Person> = new Map();
+
+  constructor(public utils: UtilsService) {
+    super(utils);
+  }
 
   generateAgents() {
     if (this.numberOfAgents % 2 == 1) {
@@ -50,10 +55,6 @@ export class StableRoomIrvService extends StableRoomMates {
     }
 
     this.algorithmSpecificData['SR'] = true;
-  }
-
-  constructor() {
-    super();
   }
 
   // check if no unmatched pair like each other more than their current partners

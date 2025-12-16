@@ -1,9 +1,14 @@
+import { UtilsService } from 'src/app/utils/utils.service';
 import { Agent } from '../interfaces/Agent';
 import { ExtendedGaleShapley } from './ExtendedGaleShapley';
 
 // this file is the implementation for SM - EGS
 
 export abstract class EgsOneToMany extends ExtendedGaleShapley {
+  constructor(public utils: UtilsService) {
+    super(utils);
+  }
+
   breakAssignment(currentAgent: Agent, potentialProposee: Agent) {
     // if w is currently assigned to someone {
     this.update(4, { '%woman%': potentialProposee.name });

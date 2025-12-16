@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ExtendedGaleShapley } from '../../abstract-classes/ExtendedGaleShapley';
 import { Agent } from '../../interfaces/Agent';
 import { Hospital } from '../../interfaces/Hospital';
+import { UtilsService } from 'src/app/utils/utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,10 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
   group2Agents: Map<String, Hospital> = new Map();
 
   hospitalCapacity: Map<string, number> = new Map();
+
+  constructor(public utils: UtilsService) {
+    super(utils);
+  }
 
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {

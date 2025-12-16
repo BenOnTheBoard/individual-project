@@ -3,6 +3,7 @@ import { ExtendedGaleShapley } from '../../abstract-classes/ExtendedGaleShapley'
 import { Agent } from '../../interfaces/Agent';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { Hospital } from '../../interfaces/Hospital';
+import { UtilsService } from 'src/app/utils/utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,10 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
   hospitalCapacity: Map<string, number> = new Map();
 
   freeAgentsOfGroup2: Array<String> = new Array();
+
+  constructor(public utils: UtilsService) {
+    super(utils);
+  }
 
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {

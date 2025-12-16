@@ -5,6 +5,7 @@ import { Lecturer } from '../../interfaces/Lecturer';
 import { Project } from '../../interfaces/Project';
 
 import { Student } from '../../interfaces/Student';
+import { UtilsService } from 'src/app/utils/utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,10 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
   numberLectures: number;
   lecturerCapacity: number;
+
+  constructor(public utils: UtilsService) {
+    super(utils);
+  }
 
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
