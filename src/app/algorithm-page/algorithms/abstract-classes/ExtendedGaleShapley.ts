@@ -39,9 +39,7 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
 
         this.removeRuledOutPreferences(currentAgent, potentialProposee);
 
-        if (this.shouldContinueMatching(currentAgent)) {
-          this.freeAgentsOfGroup1.shift();
-        }
+        this.freeAgentsOfGroup1.shift();
       }
     }
 
@@ -54,8 +52,6 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
   }
 
   abstract getNextPotentialProposee(currentAgent: Agent): Agent;
-
-  abstract shouldContinueMatching(currentAgent: Agent): boolean;
 
   abstract provisionallyAssign(
     currentAgent: Agent,

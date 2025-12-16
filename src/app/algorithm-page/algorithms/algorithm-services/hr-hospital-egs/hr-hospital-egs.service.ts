@@ -318,10 +318,6 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     }
   }
 
-  shouldContinueMatching(hospital: Hospital): boolean {
-    return true;
-  }
-
   // returns true if there is a resident on the list that is not matched with that hospital
   checkHospitalPreferanceList(hospital: Hospital) {
     for (let resident of hospital.ranking) {
@@ -402,9 +398,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
         // continous loop as guessed + not clear way to define/get free hospitals
         // rankings should be deleted until convergence?
 
-        if (this.shouldContinueMatching(currentHospital)) {
-          this.freeAgentsOfGroup1.shift();
-        }
+        this.freeAgentsOfGroup1.shift();
       }
     }
 

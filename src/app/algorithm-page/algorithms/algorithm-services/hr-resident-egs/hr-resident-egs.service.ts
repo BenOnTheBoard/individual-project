@@ -260,8 +260,4 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
       }
     }
   }
-
-  shouldContinueMatching(hospital: Hospital): boolean {
-    return true;
-  }
 }

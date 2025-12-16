@@ -14,10 +14,6 @@ export class EgsStableMarriageService extends EgsOneToMany {
     super(utils);
   }
 
-  shouldContinueMatching(currentAgent: Agent): boolean {
-    return true;
-  }
-
   getNextPotentialProposee(currentAgent: Agent): Agent {
     return currentAgent.ranking[0];
   }
