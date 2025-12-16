@@ -1,7 +1,7 @@
 import { Agent } from '../interfaces/Agent';
-import { Person } from '../interfaces/Person';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { Step } from '../interfaces/Step';
+import { UtilsService } from '../../../utils/utils.service';
 
 export abstract class MatchingAlgorithm {
   abstract group1Name: string;
@@ -38,7 +38,7 @@ export abstract class MatchingAlgorithm {
 
   stable: boolean = false;
 
-  constructor() {}
+  constructor(public utils: UtilsService) {}
 
   initialise(
     numberOfAgents: number,
@@ -106,13 +106,13 @@ export abstract class MatchingAlgorithm {
   generatePreferences(): void {
     for (let agent of Array.from(this.group1Agents.values())) {
       let agent1Rankings = Array.from(new Map(this.group2Agents).values());
-      this.shuffle(agent1Rankings);
+      this.utils.shuffle(agent1Rankings);
       this.group1Agents.get(agent.name).ranking = agent1Rankings;
     }
 
     for (let agent of Array.from(this.group2Agents.values())) {
       let agent2Rankings = Array.from(new Map(this.group1Agents).values());
-      this.shuffle(agent2Rankings);
+      this.utils.shuffle(agent2Rankings);
       this.group2Agents.get(agent.name).ranking = agent2Rankings;
     }
   }
@@ -123,7 +123,7 @@ export abstract class MatchingAlgorithm {
     for (let agent of Array.from(this.group1Agents.keys())) {
       tempCopyList = [];
       for (let preferenceAgent of preferences.get(
-        this.getLastCharacter(String(agent))
+        this.utils.getLastChar(String(agent))
       )) {
         tempCopyList.push(
           this.group2Agents.get(this.group2Name + preferenceAgent)
@@ -135,27 +135,13 @@ export abstract class MatchingAlgorithm {
     for (let agent of Array.from(this.group2Agents.keys())) {
       tempCopyList = [];
       for (let preferenceAgent of preferences.get(
-        this.getLastCharacter(String(agent))
+        this.utils.getLastChar(String(agent))
       )) {
         tempCopyList.push(
           this.group1Agents.get(this.group1Name + preferenceAgent)
         );
       }
       this.group2Agents.get(agent).ranking = tempCopyList;
-    }
-  }
-
-  // FROM: https://javascript.info/task/shuffle
-  shuffle(array: Array<Object>) {
-    for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
-
-      // swap elements array[i] and array[j]
-      // we use "destructuring assignment" syntax to achieve that
-      // you'll find more details about that syntax in later chapters
-      // same can be written as:
-      // let t = array[i]; array[i] = array[j]; array[j] = t
-      [array[i], array[j]] = [array[j], array[i]];
     }
   }
 
@@ -176,29 +162,18 @@ export abstract class MatchingAlgorithm {
     return matches;
   }
 
-  clone(mapIn: Map<String, Array<String>>): Map<String, Array<String>> {
-    let mapCloned: Map<String, Array<String>> = new Map<
-      String,
-      Array<String>
-    >();
-
-    mapIn.forEach(
-      (str: Array<String>, key: String, mapObj: Map<String, Array<String>>) => {
-        mapCloned.set(key, str.slice(0));
-      }
-    );
-
-    return mapCloned;
-  }
-
   update(step: number, stepVariables?: Object): void {
     let currentStep: Step = {
       lineNumber: step,
       freeAgents: Object.assign([], this.freeAgentsOfGroup1),
       matches: new Map(),
       stepVariables: stepVariables,
-      group1CurrentPreferences: this.clone(this.group1CurrentPreferences),
-      group2CurrentPreferences: this.clone(this.group2CurrentPreferences),
+      group1CurrentPreferences: this.utils.cloneMap(
+        this.group1CurrentPreferences
+      ),
+      group2CurrentPreferences: this.utils.cloneMap(
+        this.group2CurrentPreferences
+      ),
       currentlySelectedAgents: JSON.parse(
         JSON.stringify(this.currentlySelectedAgents)
       ),
@@ -250,10 +225,10 @@ export abstract class MatchingAlgorithm {
 
   findPositionInOriginalMatches1Group(currentAgent: Agent, agentToFind: Agent) {
     let originalPreferences = this.originalGroup1CurrentPreferences.get(
-      this.getLastCharacter(currentAgent.name)
+      this.utils.getLastChar(currentAgent.name)
     );
     let position: number = originalPreferences.indexOf(
-      this.getLastCharacter(agentToFind.name)
+      this.utils.getLastChar(agentToFind.name)
     );
     return position;
   }
@@ -268,24 +243,11 @@ export abstract class MatchingAlgorithm {
     return position;
   }
 
-  getLastCharacter(name: string) {
-    return name.slice(name.length - 1);
-  }
-
-  checkArrayEquality(a: Array<string>, b: Array<string>) {
-    for (let i = 0; i < a.length; i++) {
-      if (a[i] !== b[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   // used to remove elements from currentLines
   removeArrayFromArray(a: Array<Array<string>>, b: Array<string>) {
     let arrayPositionCounter: number = 0;
     for (let subArray of a) {
-      if (this.checkArrayEquality(subArray, b)) {
+      if (this.utils.checkArrayEquality(subArray, b)) {
         a.splice(arrayPositionCounter, 1);
       }
       arrayPositionCounter++;

@@ -1,17 +1,18 @@
-import { Component, HostListener, Inject, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import {
   FormControl,
   FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { CanvasService } from '../services/canvas/canvas.service';
 import { PlaybackService } from '../services/playback/playback.service';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { UtilsService } from '../../utils/utils.service';
 
 @Component({
   selector: 'app-edit-preferences-dialog',
@@ -68,6 +69,7 @@ export class EditPreferencesDialogComponent implements OnInit {
     public algorithmService: AlgorithmRetrievalService,
     public playbackService: PlaybackService,
     public canvasService: CanvasService,
+    public utils: UtilsService,
     public dialogRef: MatDialogRef<EditPreferencesDialogComponent>,
     private _snackBar: MatSnackBar
   ) {}
@@ -107,12 +109,6 @@ export class EditPreferencesDialogComponent implements OnInit {
         this.callGenerateAlgorithmPreferences();
       }
     }
-  }
-
-  test(id) {
-    let a = document.getElementById('lbl').innerHTML;
-    document.getElementById('lbl').innerHTML = 'newlbl';
-    return 'hi';
   }
 
   ngOnInit(): void {
@@ -179,11 +175,6 @@ export class EditPreferencesDialogComponent implements OnInit {
     this.preferenceTextGroup1 = [];
     this.preferenceTextGroup2 = [];
 
-    let preferenceString: string =
-      this.algorithmService.pluralMap.get(
-        this.algorithmService.currentAlgorithm.orientation[0]
-      ) + '\n';
-
     this.missingPreferences = [];
 
     this.missingPreferencesGroup1 = [];
@@ -249,7 +240,7 @@ export class EditPreferencesDialogComponent implements OnInit {
           .filter(
             (pref) => pref.charCodeAt(0) - 64 <= this.numberOfGroup2Agents.value
           );
-        this.shuffle(newPreferences);
+        this.utils.shuffle(newPreferences);
         this.preferenceTextGroup1.push(newPreferences);
       }
 
@@ -275,7 +266,7 @@ export class EditPreferencesDialogComponent implements OnInit {
           .filter(
             (pref) => pref.charCodeAt(0) - 64 <= this.numberOfGroup2Agents.value
           );
-        this.shuffle(newPreferences);
+        this.utils.shuffle(newPreferences);
         this.preferenceTextGroup2.push(newPreferences);
       }
     } else {
@@ -377,7 +368,7 @@ export class EditPreferencesDialogComponent implements OnInit {
           }
         }
 
-        this.shuffle(newPreferences);
+        this.utils.shuffle(newPreferences);
         this.preferenceTextGroup1.push(newPreferences);
       }
     } else {
@@ -452,8 +443,6 @@ export class EditPreferencesDialogComponent implements OnInit {
 
   generateAlgorithmPreferences(): void {
     //// UPDATE REAL PREFERANCES
-    let preferenceString: string = this.formString;
-
     // fill out new preferences
     let newPreferences: Map<String, Array<String>> = new Map();
 
@@ -703,10 +692,6 @@ export class EditPreferencesDialogComponent implements OnInit {
     return re.test(str);
   }
 
-  checkValidity(str: string): boolean {
-    return true;
-  }
-
   fixInputs() {
     this.fix = true;
     this.ngOnInit();
@@ -822,7 +807,6 @@ export class EditPreferencesDialogComponent implements OnInit {
     let numbers: Array<string> = [];
 
     let preferenceTextGroup1Copy = Object.assign([], this.preferenceTextGroup1);
-    let preferenceTextGroup2Copy = Object.assign([], this.preferenceTextGroup2);
 
     this.preferenceTextGroup1 = [];
     this.preferenceTextGroup2 = [];
@@ -895,17 +879,15 @@ export class EditPreferencesDialogComponent implements OnInit {
 
     for (let line of preferenceString.split('\n')) {
       if (this.checkIfPreference(line)) {
-        if (this.checkValidity) {
-          line = line.replace(/:\s+,/g, ':');
-          line = line.replace(/,\s+,/g, ',');
-          line = line.replace(/, $/g, '');
-          line = line.replace(/,$/g, '');
-          line = line.replace(/\s+/g, ''); // remove whitespace from line from https://stackoverflow.com/questions/24580912/trim-all-white-space-from-string-javascript
-          let agentId: string = line.slice(0, line.indexOf(':'));
-          let agentPreferences = line.slice(line.indexOf(':') + 1).split(',');
+        line = line.replace(/:\s+,/g, ':');
+        line = line.replace(/,\s+,/g, ',');
+        line = line.replace(/, $/g, '');
+        line = line.replace(/,$/g, '');
+        line = line.replace(/\s+/g, ''); // remove whitespace from line from https://stackoverflow.com/questions/24580912/trim-all-white-space-from-string-javascript
+        let agentId: string = line.slice(0, line.indexOf(':'));
+        let agentPreferences = line.slice(line.indexOf(':') + 1).split(',');
 
-          newPreferences.set(agentId, agentPreferences.slice());
-        }
+        newPreferences.set(agentId, agentPreferences.slice());
       }
     }
 
@@ -937,7 +919,7 @@ export class EditPreferencesDialogComponent implements OnInit {
 
           for (let preference of this.missingPreferences) {
             if (
-              this.checkArrayEquality(preference, [
+              this.utils.checkArrayEquality(preference, [
                 isGroup1 ? String(i) : String.fromCharCode(i + 64),
                 agentId,
               ])
@@ -960,32 +942,5 @@ export class EditPreferencesDialogComponent implements OnInit {
       }
     }
     this.valid = this.missingPreferences.length == 0;
-  }
-
-  // FROM: https://javascript.info/task/shuffle
-  shuffle(array: Array<Object>) {
-    for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
-
-      // swap elements array[i] and array[j]
-      // we use "destructuring assignment" syntax to achieve that
-      // you'll find more details about that syntax in later chapters
-      // same can be written as:
-      // let t = array[i]; array[i] = array[j]; array[j] = t
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-  }
-
-  checkArrayEquality(a: Array<string>, b: Array<string>) {
-    for (let i = 0; i < a.length; i++) {
-      if (a[i] !== b[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  trackByFn(index, item) {
-    return index;
   }
 }

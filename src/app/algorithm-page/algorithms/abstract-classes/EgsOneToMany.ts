@@ -1,9 +1,14 @@
+import { UtilsService } from 'src/app/utils/utils.service';
 import { Agent } from '../interfaces/Agent';
 import { ExtendedGaleShapley } from './ExtendedGaleShapley';
 
 // this file is the implementation for SM - EGS
 
 export abstract class EgsOneToMany extends ExtendedGaleShapley {
+  constructor(public utils: UtilsService) {
+    super(utils);
+  }
+
   breakAssignment(currentAgent: Agent, potentialProposee: Agent) {
     // if w is currently assigned to someone {
     this.update(4, { '%woman%': potentialProposee.name });
@@ -25,24 +30,24 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       }
 
       this.removeArrayFromArray(this.currentLines, [
-        this.getLastCharacter(potentialProposee.match[0].name),
-        this.getLastCharacter(potentialProposee.name),
+        this.utils.getLastChar(potentialProposee.match[0].name),
+        this.utils.getLastChar(potentialProposee.name),
         'green',
       ]);
 
       this.changePreferenceStyle(
         this.group1CurrentPreferences,
-        this.getLastCharacter(potentialProposee.match[0].name),
+        this.utils.getLastChar(potentialProposee.match[0].name),
         this.originalGroup1CurrentPreferences
-          .get(this.getLastCharacter(potentialProposee.match[0].name))
+          .get(this.utils.getLastChar(potentialProposee.match[0].name))
           .findIndex(
-            (woman) => woman == this.getLastCharacter(potentialProposee.name)
+            (woman) => woman == this.utils.getLastChar(potentialProposee.name)
           ),
         'grey'
       );
       this.changePreferenceStyle(
         this.group2CurrentPreferences,
-        this.getLastCharacter(potentialProposee.name),
+        this.utils.getLastChar(potentialProposee.name),
         matchPosition,
         'grey'
       );
@@ -68,8 +73,8 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
   provisionallyAssign(currentAgent: Agent, potentialProposee: Agent) {
     // provisionally assign r to h;
 
-    let agentLastChar = this.getLastCharacter(currentAgent.name);
-    let proposeeLastChar = this.getLastCharacter(potentialProposee.name);
+    let agentLastChar = this.utils.getLastChar(currentAgent.name);
+    let proposeeLastChar = this.utils.getLastChar(potentialProposee.name);
     this.removeArrayFromArray(this.currentLines, [
       agentLastChar,
       proposeeLastChar,
@@ -85,7 +90,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       this.originalGroup1CurrentPreferences
         .get(agentLastChar)
         .findIndex(
-          (woman) => woman == this.getLastCharacter(potentialProposee.name)
+          (woman) => woman == this.utils.getLastChar(potentialProposee.name)
         ),
       'green'
     );
@@ -126,7 +131,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
         potentialProposee
       );
       this.relevantPreferences.push(
-        this.getLastCharacter(potentialProposee.ranking[i].name)
+        this.utils.getLastChar(potentialProposee.ranking[i].name)
       );
       // remove h' and r from each other's lists
       this.update(9, {
@@ -136,18 +141,18 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
 
       this.changePreferenceStyle(
         this.group1CurrentPreferences,
-        this.getLastCharacter(potentialProposee.ranking[i].name),
+        this.utils.getLastChar(potentialProposee.ranking[i].name),
         this.originalGroup1CurrentPreferences
-          .get(this.getLastCharacter(potentialProposee.ranking[i].name))
+          .get(this.utils.getLastChar(potentialProposee.ranking[i].name))
           .findIndex(
-            (woman) => woman == this.getLastCharacter(potentialProposee.name)
+            (woman) => woman == this.utils.getLastChar(potentialProposee.name)
           ),
         'grey'
       );
 
       this.changePreferenceStyle(
         this.group2CurrentPreferences,
-        this.getLastCharacter(potentialProposee.name),
+        this.utils.getLastChar(potentialProposee.name),
         proposeeRankingClearCounter,
         'grey'
       );

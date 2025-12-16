@@ -9,7 +9,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { CommonModule, NgClass } from '@angular/common';
-import { AgentTitlesComponent } from './animation-container/agent-titles/agent-titles.component';
+import { AgentTitlesComponent } from './agent-titles/agent-titles.component';
 import { PlaybackControlsComponent } from './playback-controls/playback-controls.component';
 import { Router } from '@angular/router';
 import { AlgorithmRetrievalService } from '../algorithm-retrieval.service';
@@ -266,8 +266,6 @@ export class AlgorithmPageComponent implements OnInit {
   // function run when toggle sidebar button clicked (top left)
   async toggleSidebar(): Promise<void> {
     this.duringAnimation = true;
-
-    let mainContent = document.getElementById('mainContent');
 
     if (!this.showCode) {
       // hide sidebar and content

@@ -37,12 +37,9 @@ import { AlgDescriptionComponent } from './algorithm-page/sidebar/alg-descriptio
 import { FreeAgentsComponent } from './algorithm-page/sidebar/free-agents/free-agents.component';
 import { PseudocodeComponent } from './algorithm-page/sidebar/pseudocode/pseudocode.component';
 import { ExecutionLogComponent } from './algorithm-page/sidebar/execution-log/execution-log.component';
-import { AlgorithmNavbarComponent } from './algorithm-page/algorithm-navbar/algorithm-navbar.component';
-import { AnimationContainerComponent } from './algorithm-page/animation-container/animation-container.component';
-import { AgentTitlesComponent } from './algorithm-page/animation-container/agent-titles/agent-titles.component';
-import { CanvasDisplayComponent } from './algorithm-page/animation-container/canvas-display/canvas-display.component';
+import { AgentTitlesComponent } from './algorithm-page/agent-titles/agent-titles.component';
 import { InfoSidebarComponent } from './algorithm-page/info-sidebar/info-sidebar.component';
-import { provideRouter, RouterModule, RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -67,10 +64,7 @@ import { provideRouter, RouterModule, RouterOutlet } from '@angular/router';
     FreeAgentsComponent,
     PseudocodeComponent,
     ExecutionLogComponent,
-    AlgorithmNavbarComponent,
-    AnimationContainerComponent,
     AgentTitlesComponent,
-    CanvasDisplayComponent,
     InfoSidebarComponent,
     BrowserModule,
     AppRoutingModule,

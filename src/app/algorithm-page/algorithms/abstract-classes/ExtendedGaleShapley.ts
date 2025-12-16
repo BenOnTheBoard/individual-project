@@ -1,8 +1,13 @@
+import { UtilsService } from 'src/app/utils/utils.service';
 import { Agent } from '../interfaces/Agent';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
 
 export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
+  constructor(public utils: UtilsService) {
+    super(utils);
+  }
+
   match(): AlgorithmData {
     // assign each resident to be free;
     this.update(1);
@@ -34,9 +39,7 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
 
         this.removeRuledOutPreferences(currentAgent, potentialProposee);
 
-        if (this.shouldContinueMatching(currentAgent)) {
-          this.freeAgentsOfGroup1.shift();
-        }
+        this.freeAgentsOfGroup1.shift();
       }
     }
 
@@ -49,8 +52,6 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
   }
 
   abstract getNextPotentialProposee(currentAgent: Agent): Agent;
-
-  abstract shouldContinueMatching(currentAgent: Agent): boolean;
 
   abstract provisionallyAssign(
     currentAgent: Agent,

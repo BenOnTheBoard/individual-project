@@ -1,22 +1,14 @@
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
 import { Agent } from '../interfaces/Agent';
+import { UtilsService } from 'src/app/utils/utils.service';
 
 export abstract class StableRoomMates extends MatchingAlgorithm {
-  constructor() {
-    super();
+  constructor(public utils: UtilsService) {
+    super(utils);
   }
 
   generatePreferences(): void {
-    let data2 = [
-      ['2', '4', '6', '3', '5'],
-      ['4', '5', '6', '1', '3'],
-      ['4', '5', '6', '1', '2'],
-      ['6', '3', '1', '5', '2'],
-      ['6', '3', '4', '2', '1'],
-      ['1', '2', '4', '3', '5'],
-    ];
-
     let unstable4 = [
       ['2', '3', '4'],
       ['3', '1', '4'],
@@ -100,7 +92,7 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
 
         agent1Rankings.splice(selfIndex, 1);
 
-        this.shuffle(agent1Rankings);
+        this.utils.shuffle(agent1Rankings);
         this.group1Agents.get(agent.name).ranking = agent1Rankings;
       }
 
@@ -120,7 +112,7 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
         instance = [];
       }
 
-      for (let [key, person] of this.group1Agents.entries()) {
+      for (let person of this.group1Agents.values()) {
         for (let i = 0; i < this.group1Agents.size - 1; i++) {
           person.ranking[i] = this.group1Agents.get(
             this.group1Name + String(instance[count][i])
@@ -137,7 +129,7 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
     for (let agent of Array.from(this.group1Agents.keys())) {
       tempCopyList = [];
       for (let preferenceAgent of preferences.get(
-        this.getLastCharacter(String(agent))
+        this.utils.getLastChar(String(agent))
       )) {
         tempCopyList.push(
           this.group1Agents.get(this.group1Name + preferenceAgent)

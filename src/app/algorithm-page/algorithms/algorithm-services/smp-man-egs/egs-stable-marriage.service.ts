@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EgsOneToMany } from '../../abstract-classes/EgsOneToMany';
 import { Agent } from '../../interfaces/Agent';
+import { UtilsService } from 'src/app/utils/utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +10,8 @@ export class EgsStableMarriageService extends EgsOneToMany {
   group1Name = 'man';
   group2Name = 'woman';
 
-  shouldContinueMatching(currentAgent: Agent): boolean {
-    return true;
+  constructor(public utils: UtilsService) {
+    super(utils);
   }
 
   getNextPotentialProposee(currentAgent: Agent): Agent {

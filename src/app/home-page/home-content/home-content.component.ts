@@ -37,8 +37,4 @@ export class HomeContentComponent implements OnInit {
     this.playVideo(this.animationVid.nativeElement);
     this.playVideo(this.descriptionVid.nativeElement);
   }
-
-  delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
 }
