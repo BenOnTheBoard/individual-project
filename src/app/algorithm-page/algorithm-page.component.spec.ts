@@ -68,6 +68,7 @@ describe('AlgorithmPageComponent', () => {
           useValue: {
             initialise: jasmine.createSpy('initialise'),
             redrawCanvas: jasmine.createSpy('redrawCanvas'),
+            setCanvas: jasmine.createSpy('setCanvas'),
           },
         },
       ],
