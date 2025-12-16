@@ -55,7 +55,7 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
       // add lecture ranking to algorithmspecData for use in canvas display
       lecturerRanking = [];
       for (let student of agent3Rankings) {
-        lecturerRanking.push(this.getLastCharacter(student.name));
+        lecturerRanking.push(this.utils.getLastChar(student.name));
       }
       this.algorithmSpecificData['lecturerRanking'].push(lecturerRanking);
       count++;
@@ -71,7 +71,7 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
     for (let agent of Array.from(this.group1Agents.keys())) {
       tempCopyList = [];
       for (let preferenceAgent of preferences.get(
-        this.getLastCharacter(String(agent))
+        this.utils.getLastChar(String(agent))
       )) {
         tempCopyList.push(
           this.group2Agents.get(this.group2Name + preferenceAgent)

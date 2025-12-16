@@ -38,6 +38,10 @@ export class UtilsService {
     return mapCloned;
   }
 
+  getLastChar(name: string) {
+    return name.slice(name.length - 1);
+  }
+
   static validateEven(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;

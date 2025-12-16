@@ -123,7 +123,7 @@ export abstract class MatchingAlgorithm {
     for (let agent of Array.from(this.group1Agents.keys())) {
       tempCopyList = [];
       for (let preferenceAgent of preferences.get(
-        this.getLastCharacter(String(agent))
+        this.utils.getLastChar(String(agent))
       )) {
         tempCopyList.push(
           this.group2Agents.get(this.group2Name + preferenceAgent)
@@ -135,7 +135,7 @@ export abstract class MatchingAlgorithm {
     for (let agent of Array.from(this.group2Agents.keys())) {
       tempCopyList = [];
       for (let preferenceAgent of preferences.get(
-        this.getLastCharacter(String(agent))
+        this.utils.getLastChar(String(agent))
       )) {
         tempCopyList.push(
           this.group1Agents.get(this.group1Name + preferenceAgent)
@@ -225,10 +225,10 @@ export abstract class MatchingAlgorithm {
 
   findPositionInOriginalMatches1Group(currentAgent: Agent, agentToFind: Agent) {
     let originalPreferences = this.originalGroup1CurrentPreferences.get(
-      this.getLastCharacter(currentAgent.name)
+      this.utils.getLastChar(currentAgent.name)
     );
     let position: number = originalPreferences.indexOf(
-      this.getLastCharacter(agentToFind.name)
+      this.utils.getLastChar(agentToFind.name)
     );
     return position;
   }
@@ -241,10 +241,6 @@ export abstract class MatchingAlgorithm {
       agentToFind.name[agentToFind.name.length - 1]
     );
     return position;
-  }
-
-  getLastCharacter(name: string) {
-    return name.slice(name.length - 1);
   }
 
   // used to remove elements from currentLines

@@ -106,13 +106,13 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         studentMatchIndex = student.ranking.length;
       } else {
         studentMatchIndex = this.originalGroup1CurrentPreferences
-          .get(this.getLastCharacter(student.name))
-          .indexOf(this.getLastCharacter(student.match[0].name));
+          .get(this.utils.getLastChar(student.name))
+          .indexOf(this.utils.getLastChar(student.match[0].name));
       }
 
       // current student information
       let studentRanking = this.originalGroup1CurrentPreferences.get(
-        this.getLastCharacter(student.name)
+        this.utils.getLastChar(student.name)
       );
 
       for (let i = studentMatchIndex - 1; i >= 0; i--) {
@@ -283,8 +283,8 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     project.match.splice(studentIndex, 1);
 
     this.removeArrayFromArray(this.currentLines, [
-      this.getLastCharacter(student.name),
-      this.getLastCharacter(project.name),
+      this.utils.getLastChar(student.name),
+      this.utils.getLastChar(project.name),
       'red',
     ]);
     this.updateCapacityVisualization();
@@ -331,10 +331,10 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
         this.changePreferenceStyle(
           this.group1CurrentPreferences,
-          this.getLastCharacter(lecturer.ranking[i].name),
+          this.utils.getLastChar(lecturer.ranking[i].name),
           this.originalGroup1CurrentPreferences
-            .get(this.getLastCharacter(lecturer.ranking[i].name))
-            .indexOf(this.getLastCharacter(project.name)),
+            .get(this.utils.getLastChar(lecturer.ranking[i].name))
+            .indexOf(this.utils.getLastChar(project.name)),
           'grey'
         );
 
@@ -370,10 +370,10 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
           this.changePreferenceStyle(
             this.group1CurrentPreferences,
-            this.getLastCharacter(lecturer.ranking[i].name),
+            this.utils.getLastChar(lecturer.ranking[i].name),
             this.originalGroup1CurrentPreferences
-              .get(this.getLastCharacter(lecturer.ranking[i].name))
-              .indexOf(this.getLastCharacter(projectObject.name)),
+              .get(this.utils.getLastChar(lecturer.ranking[i].name))
+              .indexOf(this.utils.getLastChar(projectObject.name)),
             'grey'
           );
 
@@ -396,17 +396,17 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       if (cap == lecturer.capacity) {
         // turn green if at capacity
         this.algorithmSpecificData['lecturerCapacity'][
-          Number(this.getLastCharacter(lecturer.name))
+          Number(this.utils.getLastChar(lecturer.name))
         ] = '{#53D26F' + lecturer.capacity + '}';
       } else if (cap > lecturer.capacity) {
         // turn red if over capacity
         this.algorithmSpecificData['lecturerCapacity'][
-          Number(this.getLastCharacter(lecturer.name))
+          Number(this.utils.getLastChar(lecturer.name))
         ] = '{#EB2A2A' + lecturer.capacity + '}';
       } else {
         // turn black otherwise
         this.algorithmSpecificData['lecturerCapacity'][
-          Number(this.getLastCharacter(lecturer.name))
+          Number(this.utils.getLastChar(lecturer.name))
         ] = '{#000000' + lecturer.capacity + '}';
       }
     }
@@ -416,17 +416,17 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       if (project.match.length == project.capacity) {
         // turn green to show full
         this.algorithmSpecificData['hospitalCapacity'][
-          this.getLastCharacter(project.name)
+          this.utils.getLastChar(project.name)
         ] = '{#53D26F' + project.capacity + '}';
       } else if (project.match.length > project.capacity) {
         // turn red to show over full
         this.algorithmSpecificData['hospitalCapacity'][
-          this.getLastCharacter(project.name)
+          this.utils.getLastChar(project.name)
         ] = '{#EB2A2A' + project.capacity + '}';
       } else {
         // turn black otherwise
         this.algorithmSpecificData['hospitalCapacity'][
-          this.getLastCharacter(project.name)
+          this.utils.getLastChar(project.name)
         ] = '{#000000' + project.capacity + '}';
       }
     }
@@ -470,14 +470,14 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         let project = student.match[0];
         let lecturer = this.getProjectLecturer(project);
 
-        let lectureIndex = Number(this.getLastCharacter(lecturer.name)) - 1;
+        let lectureIndex = Number(this.utils.getLastChar(lecturer.name)) - 1;
         let studentIndex = this.group3Agents
           .get(lecturer.name)
           .ranking.indexOf(student);
 
         this.algorithmSpecificData['lecturerRanking'][lectureIndex][
           studentIndex
-        ] = '{#53D26F' + this.getLastCharacter(student.name) + '}';
+        ] = '{#53D26F' + this.utils.getLastChar(student.name) + '}';
       }
     }
   }
@@ -512,10 +512,10 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       // highlight assinged
       this.changePreferenceStyle(
         this.group1CurrentPreferences,
-        this.getLastCharacter(student.name),
+        this.utils.getLastChar(student.name),
         this.originalGroup1CurrentPreferences
-          .get(this.getLastCharacter(student.name))
-          .indexOf(this.getLastCharacter(preferedProject.name)),
+          .get(this.utils.getLastChar(student.name))
+          .indexOf(this.utils.getLastChar(preferedProject.name)),
         'red'
       );
 
@@ -526,8 +526,8 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       this.updateFreeList();
 
       redLine = [
-        this.getLastCharacter(student.name),
-        this.getLastCharacter(preferedProject.name),
+        this.utils.getLastChar(student.name),
+        this.utils.getLastChar(preferedProject.name),
         'red',
       ];
       this.currentLines.push(redLine);
@@ -624,10 +624,10 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       // unhighlight assinged
       this.changePreferenceStyle(
         this.group1CurrentPreferences,
-        this.getLastCharacter(student.name),
+        this.utils.getLastChar(student.name),
         this.originalGroup1CurrentPreferences
-          .get(this.getLastCharacter(student.name))
-          .indexOf(this.getLastCharacter(preferedProject.name)),
+          .get(this.utils.getLastChar(student.name))
+          .indexOf(this.utils.getLastChar(preferedProject.name)),
         'black'
       );
 
@@ -641,22 +641,22 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       if (student.match.length == 1) {
         this.changePreferenceStyle(
           this.group1CurrentPreferences,
-          this.getLastCharacter(student.name),
+          this.utils.getLastChar(student.name),
           this.originalGroup1CurrentPreferences
-            .get(this.getLastCharacter(student.name))
-            .indexOf(this.getLastCharacter(student.match[0].name)),
+            .get(this.utils.getLastChar(student.name))
+            .indexOf(this.utils.getLastChar(student.match[0].name)),
           'green'
         );
 
         greenLine = [
-          this.getLastCharacter(student.name),
-          this.getLastCharacter(student.match[0].name),
+          this.utils.getLastChar(student.name),
+          this.utils.getLastChar(student.match[0].name),
           'green',
         ];
         this.currentLines.push(greenLine);
         this.removeArrayFromArray(this.currentLines, [
-          this.getLastCharacter(student.name),
-          this.getLastCharacter(student.match[0].name),
+          this.utils.getLastChar(student.name),
+          this.utils.getLastChar(student.match[0].name),
           'red',
         ]);
       }

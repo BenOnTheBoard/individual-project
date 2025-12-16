@@ -66,10 +66,10 @@ export class StableRoomIrvService extends StableRoomMates {
       // if agent has matches
       if (person.lastProposed) {
         let personMatchIndex = this.originalGroup1CurrentPreferences
-          .get(this.getLastCharacter(person.name))
-          .indexOf(this.getLastCharacter(person.lastProposed.name));
+          .get(this.utils.getLastChar(person.name))
+          .indexOf(this.utils.getLastChar(person.lastProposed.name));
         let personRanking = this.originalGroup1CurrentPreferences.get(
-          this.getLastCharacter(person.name)
+          this.utils.getLastChar(person.name)
         );
 
         for (let i = personMatchIndex - 1; i >= 0; i--) {
@@ -129,10 +129,10 @@ export class StableRoomIrvService extends StableRoomMates {
 
           this.removePersonFromArray(
             this.currentLines,
-            this.getLastCharacter(person.name)
+            this.utils.getLastChar(person.name)
           );
           // add new free person to list
-          this.freeAgentsOfGroup1.push(this.getLastCharacter(person.name));
+          this.freeAgentsOfGroup1.push(this.utils.getLastChar(person.name));
           person.lastProposed = null;
         }
       }
@@ -153,19 +153,19 @@ export class StableRoomIrvService extends StableRoomMates {
     // grey out elms from visual lists
     this.changePreferenceStyle(
       this.group1CurrentPreferences,
-      this.getLastCharacter(agent1.name),
+      this.utils.getLastChar(agent1.name),
       this.originalGroup1CurrentPreferences
-        .get(this.getLastCharacter(agent1.name))
-        .indexOf(this.getLastCharacter(agent2.name)),
+        .get(this.utils.getLastChar(agent1.name))
+        .indexOf(this.utils.getLastChar(agent2.name)),
       'grey'
     );
 
     this.changePreferenceStyle(
       this.group1CurrentPreferences,
-      this.getLastCharacter(agent2.name),
+      this.utils.getLastChar(agent2.name),
       this.originalGroup1CurrentPreferences
-        .get(this.getLastCharacter(agent2.name))
-        .indexOf(this.getLastCharacter(agent1.name)),
+        .get(this.utils.getLastChar(agent2.name))
+        .indexOf(this.utils.getLastChar(agent1.name)),
       'grey'
     );
   }
@@ -271,7 +271,7 @@ export class StableRoomIrvService extends StableRoomMates {
         if (last_person != null) {
           this.changePreferenceStyle(
             this.group1CurrentPreferences,
-            this.getLastCharacter(last_person.name),
+            this.utils.getLastChar(last_person.name),
             last_pref,
             'black'
           );
@@ -280,15 +280,15 @@ export class StableRoomIrvService extends StableRoomMates {
         // store prevouis person
         last_person = person;
         (last_pref = this.originalGroup1CurrentPreferences
-          .get(this.getLastCharacter(person.name))
-          .indexOf(this.getLastCharacter(person.ranking[0].name))),
+          .get(this.utils.getLastChar(person.name))
+          .indexOf(this.utils.getLastChar(person.ranking[0].name))),
           //highlight pref in persons list
           this.changePreferenceStyle(
             this.group1CurrentPreferences,
-            this.getLastCharacter(person.name),
+            this.utils.getLastChar(person.name),
             this.originalGroup1CurrentPreferences
-              .get(this.getLastCharacter(person.name))
-              .indexOf(this.getLastCharacter(person.ranking[0].name)),
+              .get(this.utils.getLastChar(person.name))
+              .indexOf(this.utils.getLastChar(person.ranking[0].name)),
             'red'
           );
 
@@ -301,8 +301,8 @@ export class StableRoomIrvService extends StableRoomMates {
         let pref = person.ranking[0];
 
         redLine = [
-          this.getLastCharacter(person.name),
-          this.getLastCharacter(pref.name),
+          this.utils.getLastChar(person.name),
+          this.utils.getLastChar(pref.name),
           'red',
         ];
         this.currentLines.push(redLine);
@@ -358,7 +358,7 @@ export class StableRoomIrvService extends StableRoomMates {
     // fix last highlights number
     this.changePreferenceStyle(
       this.group1CurrentPreferences,
-      this.getLastCharacter(last_person.name),
+      this.utils.getLastChar(last_person.name),
       last_pref,
       'black'
     );
@@ -438,7 +438,7 @@ export class StableRoomIrvService extends StableRoomMates {
                 // remove lines starting from person_inner
                 this.removePersonFromArray(
                   this.currentLines,
-                  this.getLastCharacter(person_inner.name)
+                  this.utils.getLastChar(person_inner.name)
                 );
 
                 // let person_inner propose to their last remaining person
@@ -447,30 +447,30 @@ export class StableRoomIrvService extends StableRoomMates {
                 // remove lines going to their new proposal
                 this.removeTargetFromArray(
                   this.currentLines,
-                  this.getLastCharacter(person_inner.lastProposed.name)
+                  this.utils.getLastChar(person_inner.lastProposed.name)
                 );
                 // with lines are green early, without overlapping reds
                 this.removePersonFromArray(
                   this.currentLines,
-                  this.getLastCharacter(person_inner.lastProposed.name)
+                  this.utils.getLastChar(person_inner.lastProposed.name)
                 );
 
                 // update value in list
                 this.changePreferenceStyle(
                   this.group1CurrentPreferences,
-                  this.getLastCharacter(person_inner.name),
+                  this.utils.getLastChar(person_inner.name),
                   this.originalGroup1CurrentPreferences
-                    .get(this.getLastCharacter(person_inner.name))
+                    .get(this.utils.getLastChar(person_inner.name))
                     .indexOf(
-                      this.getLastCharacter(person_inner.ranking[0].name)
+                      this.utils.getLastChar(person_inner.ranking[0].name)
                     ),
                   'green'
                 );
 
                 // draw line to new proposal from, to, colour
                 let line = [
-                  this.getLastCharacter(person_inner.name),
-                  this.getLastCharacter(person_inner.lastProposed.name),
+                  this.utils.getLastChar(person_inner.name),
+                  this.utils.getLastChar(person_inner.lastProposed.name),
                   'green',
                 ];
                 this.currentLines.push(line);
@@ -500,8 +500,8 @@ export class StableRoomIrvService extends StableRoomMates {
           if (person_inner.ranking.length == 1) {
             person_inner.lastProposed = person_inner.ranking.slice(0)[0];
             let line = [
-              this.getLastCharacter(person_inner.name),
-              this.getLastCharacter(person_inner.lastProposed.name),
+              this.utils.getLastChar(person_inner.name),
+              this.utils.getLastChar(person_inner.lastProposed.name),
               'green',
             ];
 
@@ -545,27 +545,27 @@ export class StableRoomIrvService extends StableRoomMates {
           // update value in list
           this.changePreferenceStyle(
             this.group1CurrentPreferences,
-            this.getLastCharacter(person_inner.name),
+            this.utils.getLastChar(person_inner.name),
             this.originalGroup1CurrentPreferences
-              .get(this.getLastCharacter(person_inner.name))
-              .indexOf(this.getLastCharacter(person_inner.ranking[0].name)),
+              .get(this.utils.getLastChar(person_inner.name))
+              .indexOf(this.utils.getLastChar(person_inner.ranking[0].name)),
             'green'
           );
 
           this.removePersonFromArray(
             this.currentLines,
-            this.getLastCharacter(person_inner.name)
+            this.utils.getLastChar(person_inner.name)
           );
 
           this.removeTargetFromArray(
             this.currentLines,
-            this.getLastCharacter(person_inner.lastProposed.name)
+            this.utils.getLastChar(person_inner.lastProposed.name)
           );
 
           person_inner.lastProposed = person_inner.ranking.slice(0)[0];
           let line = [
-            this.getLastCharacter(person_inner.name),
-            this.getLastCharacter(person_inner.lastProposed.name),
+            this.utils.getLastChar(person_inner.name),
+            this.utils.getLastChar(person_inner.lastProposed.name),
             'green',
           ];
           this.currentLines.push(line);
