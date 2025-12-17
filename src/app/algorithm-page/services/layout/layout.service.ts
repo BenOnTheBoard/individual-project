@@ -137,7 +137,10 @@ export class LayoutService {
     const spacingAngle = (Math.PI * 2) / this.algService.numberOfGroup1Agents;
 
     for (let i = 0; i < this.algService.numberOfGroup1Agents; i++) {
-      const [x, y] = this.polarToCartesian(this.SRRadius, spacingAngle * i);
+      const [x, y] = this.polarToCartesian(
+        this.SRRadius,
+        spacingAngle * (i + 2)
+      );
       this.setCirclePosition('SR', i + 1, x + centreX, y + canvasMiddle);
     }
   }
