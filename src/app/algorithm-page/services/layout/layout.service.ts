@@ -29,8 +29,12 @@ export class LayoutService {
     return this.positions;
   }
 
-  public getPositionOfAgent(agent: string): Position | null {
-    return this.positions[agent] || null;
+  public getPositionOfAgent(agent: string): [number, number] {
+    const position = this.positions[agent];
+    if (!position) {
+      throw new Error(`Position not found for agent: ${agent}`);
+    }
+    return [position.PosX, position.PosY];
   }
 
   private setCirclePosition(
