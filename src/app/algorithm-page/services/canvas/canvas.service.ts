@@ -1,5 +1,6 @@
 import { ElementRef, Injectable } from '@angular/core';
 import { AlgorithmRetrievalService } from '../../../algorithm-retrieval.service';
+import { LayoutService } from '../layout/layout.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,8 +26,6 @@ export class CanvasService {
 
   // circle properties
   radiusOfCircles: number = 30;
-  yMargin: number = 0.15;
-  xMargin: number = 0.3;
 
   // font properties
   fontSize: number = 20;
@@ -34,14 +33,6 @@ export class CanvasService {
   alwaysShowPreferences: boolean = false;
 
   private canvasElement!: HTMLCanvasElement;
-  positions: Record<
-    string,
-    {
-      positionX: number;
-      positionY: number;
-    }
-  > = {};
-
   public currentCommand: Object;
 
   public ctx: CanvasRenderingContext2D;
@@ -50,7 +41,10 @@ export class CanvasService {
 
   firstRun: boolean = true;
 
-  constructor(public algService: AlgorithmRetrievalService) {}
+  constructor(
+    public algService: AlgorithmRetrievalService,
+    public layoutService: LayoutService
+  ) {}
 
   setCanvas(canvasRef: ElementRef<HTMLCanvasElement>): void {
     this.canvasElement = canvasRef.nativeElement;
@@ -70,311 +64,13 @@ export class CanvasService {
     this.firstRun = true;
   }
 
-  // Idea:
-  // Start from middle of canvas and
-  calculateEqualDistance() {
-    const canvas = this.canvasElement;
-
-    let LHSHeightOffset = 0;
-    let RHSHeightOffset = 0;
-
-    if (this.algService.numberOfGroup1Agents == 8) {
-      LHSHeightOffset = 8;
-      this.radiusOfCircles = 27;
-    } else if (this.algService.numberOfGroup1Agents == 9) {
-      LHSHeightOffset = 6;
-      this.radiusOfCircles = 21;
-    } else {
-      LHSHeightOffset = 0;
-      this.radiusOfCircles = 30;
-    }
-
-    if (this.algService.numberOfGroup2Agents == 8) {
-      RHSHeightOffset = 8;
-      this.radiusOfCircles = 27;
-    } else if (this.algService.numberOfGroup2Agents == 9) {
-      RHSHeightOffset = 6;
-      this.radiusOfCircles = 21;
-    } else {
-      RHSHeightOffset = 0;
-      this.radiusOfCircles = 30;
-    }
-
-    let effectiveHeight: number = canvas.height - canvas.height * this.yMargin;
-    let effectiveWidth: number = canvas.width - canvas.width * this.xMargin;
-    let spaceBetweenCircles: number =
-      effectiveHeight / this.algService.numberOfGroup1Agents + LHSHeightOffset;
-
-    let canvasMiddle: number = effectiveHeight / 2 + 40;
-
-    // center points of the canvas for SR circles
-    let centerX = effectiveWidth / 2 + canvas.width * 0.15;
-    let centerY = effectiveHeight / 2;
-
-    this.positions = {};
-    this.positions['middle'] = { positionX: centerX, positionY: centerY };
-
-    // LHS Positions
-
-    if (this.algService.numberOfGroup1Agents % 2 == 1) {
-      // plot middle circle
-      this.positions[
-        'circle' + Math.floor(this.algService.numberOfGroup1Agents / 2 + 1)
-      ] = {
-        positionX: this.currentCommand['algorithmSpecificData'][
-          'hospitalCapacity'
-        ]
-          ? canvas.width * this.xMargin - 35
-          : canvas.width * this.xMargin,
-        positionY: canvasMiddle,
-      };
-
-      // plot circles above middle
-      for (
-        let i = Math.floor(this.algService.numberOfGroup1Agents / 2);
-        i > 0;
-        i--
-      ) {
-        this.positions['circle' + i] = {
-          positionX: this.currentCommand['algorithmSpecificData'][
-            'hospitalCapacity'
-          ]
-            ? canvas.width * this.xMargin - 35
-            : canvas.width * this.xMargin,
-          positionY:
-            canvasMiddle -
-            (Math.ceil(this.algService.numberOfGroup1Agents / 2) - i) *
-              spaceBetweenCircles,
-        };
-      }
-
-      // plot circles below middle
-      for (
-        let i = Math.ceil(this.algService.numberOfGroup1Agents / 2) + 1;
-        i < this.algService.numberOfGroup1Agents + 1;
-        i++
-      ) {
-        this.positions['circle' + i] = {
-          positionX: this.currentCommand['algorithmSpecificData'][
-            'hospitalCapacity'
-          ]
-            ? canvas.width * this.xMargin - 35
-            : canvas.width * this.xMargin,
-          positionY:
-            canvasMiddle +
-            (i - Math.ceil(this.algService.numberOfGroup1Agents / 2)) *
-              spaceBetweenCircles,
-        };
-      }
-    } else {
-      // plot middle circle
-      this.positions[
-        'circle' + Math.floor(this.algService.numberOfGroup1Agents / 2)
-      ] = {
-        positionX: this.currentCommand['algorithmSpecificData'][
-          'hospitalCapacity'
-        ]
-          ? canvas.width * this.xMargin - 35
-          : canvas.width * this.xMargin,
-        positionY: canvasMiddle - spaceBetweenCircles / 2,
-      };
-
-      // plot middle circle
-      this.positions[
-        'circle' + (Math.ceil(this.algService.numberOfGroup1Agents / 2) + 1)
-      ] = {
-        positionX: this.currentCommand['algorithmSpecificData'][
-          'hospitalCapacity'
-        ]
-          ? canvas.width * this.xMargin - 35
-          : canvas.width * this.xMargin,
-        positionY: canvasMiddle + spaceBetweenCircles / 2,
-      };
-
-      // plot circles above middle
-      for (
-        let i = Math.floor(this.algService.numberOfGroup1Agents / 2) - 1;
-        i > 0;
-        i--
-      ) {
-        this.positions['circle' + i] = {
-          positionX: this.currentCommand['algorithmSpecificData'][
-            'hospitalCapacity'
-          ]
-            ? canvas.width * this.xMargin - 35
-            : canvas.width * this.xMargin,
-          positionY:
-            canvasMiddle -
-            spaceBetweenCircles / 2 -
-            (Math.ceil(this.algService.numberOfGroup1Agents / 2) - i) *
-              spaceBetweenCircles,
-        };
-      }
-
-      // // plot circles below middle
-      for (
-        let i = Math.ceil(this.algService.numberOfGroup1Agents / 2) + 2;
-        i < this.algService.numberOfGroup1Agents + 1;
-        i++
-      ) {
-        this.positions['circle' + i] = {
-          positionX: this.currentCommand['algorithmSpecificData'][
-            'hospitalCapacity'
-          ]
-            ? canvas.width * this.xMargin - 35
-            : canvas.width * this.xMargin,
-          positionY:
-            canvasMiddle +
-            spaceBetweenCircles / 2 +
-            (i - Math.ceil(this.algService.numberOfGroup1Agents / 2 + 1)) *
-              spaceBetweenCircles,
-        };
-      }
-    }
-
-    spaceBetweenCircles =
-      effectiveHeight / this.algService.numberOfGroup2Agents + RHSHeightOffset;
-
-    // RHS Circles
-
-    if (this.algService.numberOfGroup2Agents % 2 == 1) {
-      // plot middle circle
-      this.positions[
-        'circle' +
-          String.fromCharCode(
-            Math.floor(this.algService.numberOfGroup2Agents / 2 + 1 + 64)
-          )
-      ] = {
-        positionX: canvas.width - canvas.width * this.xMargin,
-        positionY: canvasMiddle,
-      };
-
-      // plot circles above middle
-      for (
-        let i = Math.floor(this.algService.numberOfGroup2Agents / 2);
-        i > 0;
-        i--
-      ) {
-        this.positions['circle' + String.fromCharCode(i + 64)] = {
-          positionX: canvas.width - canvas.width * this.xMargin,
-          positionY:
-            canvasMiddle -
-            (Math.ceil(this.algService.numberOfGroup2Agents / 2) - i) *
-              spaceBetweenCircles,
-        };
-      }
-
-      // plot circles below middle
-      for (
-        let i = Math.ceil(this.algService.numberOfGroup2Agents / 2) + 1;
-        i < this.algService.numberOfGroup2Agents + 1;
-        i++
-      ) {
-        this.positions['circle' + String.fromCharCode(i + 64)] = {
-          positionX: canvas.width - canvas.width * this.xMargin,
-          positionY:
-            canvasMiddle +
-            (i - Math.ceil(this.algService.numberOfGroup2Agents / 2)) *
-              spaceBetweenCircles,
-        };
-      }
-    } else {
-      // plot middle circle
-      this.positions[
-        'circle' +
-          String.fromCharCode(
-            Math.floor(this.algService.numberOfGroup2Agents / 2) + 64
-          )
-      ] = {
-        positionX: canvas.width - canvas.width * this.xMargin,
-        positionY: canvasMiddle - spaceBetweenCircles / 2,
-      };
-
-      // plot middle circle
-      this.positions[
-        'circle' +
-          String.fromCharCode(
-            Math.ceil(this.algService.numberOfGroup2Agents / 2) + 1 + 64
-          )
-      ] = {
-        positionX: canvas.width - canvas.width * this.xMargin,
-        positionY: canvasMiddle + spaceBetweenCircles / 2,
-      };
-
-      // plot circles above middle
-      for (
-        let i = Math.floor(this.algService.numberOfGroup2Agents / 2) - 1;
-        i > 0;
-        i--
-      ) {
-        this.positions['circle' + String.fromCharCode(i + 64)] = {
-          positionX: canvas.width - canvas.width * this.xMargin,
-          positionY:
-            canvasMiddle -
-            spaceBetweenCircles / 2 -
-            (Math.ceil(this.algService.numberOfGroup2Agents / 2) - i) *
-              spaceBetweenCircles,
-        };
-      }
-
-      // // plot circles below middle
-      for (
-        let i = Math.ceil(this.algService.numberOfGroup2Agents / 2) + 2;
-        i < this.algService.numberOfGroup2Agents + 1;
-        i++
-      ) {
-        this.positions['circle' + String.fromCharCode(i + 64)] = {
-          positionX: canvas.width - canvas.width * this.xMargin,
-          positionY:
-            canvasMiddle +
-            spaceBetweenCircles / 2 +
-            (i - Math.ceil(this.algService.numberOfGroup2Agents / 2 + 1)) *
-              spaceBetweenCircles,
-        };
-      }
-    }
-  }
-
-  calculateEqualDistance1Group() {
-    const canvas = this.canvasElement;
-
-    let effectiveHeight: number = canvas.height - canvas.height * this.yMargin;
-    let effectiveWidth: number = canvas.width - canvas.width * this.xMargin;
-
-    // center points of the canvas for SR circles
-    let centerX = effectiveWidth / 2 + canvas.width * 0.15;
-    let centerY = effectiveHeight / 2;
-
-    this.positions = {};
-
-    // canvas Middle
-    this.positions['middle'] = { positionX: centerX, positionY: centerY };
-
-    // positions
-
-    let number = this.algService.numberOfGroup1Agents;
-
-    let angle = (Math.PI * 2) / number;
-    let r = 200;
-
-    // Draw SR circles in orange
-    for (let i = 2; i < this.algService.numberOfGroup1Agents + 2; i++) {
-      this.positions['circle' + (i - 1)] = {
-        positionX: r * Math.cos(angle * i) + centerX,
-        positionY: r * Math.sin(angle * i) + centerY,
-      };
-    }
-  }
-
   drawLHSCircles() {
     this.ctx.beginPath();
     this.ctx.fillStyle = '#FF6332';
 
     // Draw LHS circles in orange
     for (let i = 1; i < this.algService.numberOfGroup1Agents + 1; i++) {
-      let posX: number = this.positions['circle' + i].positionX;
-      let posY: number = this.positions['circle' + i].positionY;
-
+      const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
       this.ctx.moveTo(posX + this.radiusOfCircles, posY);
       this.ctx.arc(posX, posY, this.radiusOfCircles, 0, Math.PI * 2, true);
     }
@@ -384,9 +80,7 @@ export class CanvasService {
 
     // Draw text (numbers)
     for (let i = 1; i < this.algService.numberOfGroup1Agents + 1; i++) {
-      let posX: number = this.positions['circle' + i].positionX;
-      let posY: number = this.positions['circle' + i].positionY;
-
+      const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
       this.ctx.fillStyle = 'black';
       this.ctx.font = this.radiusOfCircles + 'px Arial';
 
@@ -401,9 +95,9 @@ export class CanvasService {
 
     // Draw RHS circles in orange
     for (let i = 0; i < this.algService.numberOfGroup2Agents; i++) {
-      let posX: number = this.positions['circle' + currentLetter].positionX;
-      let posY: number = this.positions['circle' + currentLetter].positionY;
-
+      const [posX, posY] = this.layoutService.getPositionOfAgent(
+        'circle' + currentLetter
+      );
       this.ctx.moveTo(posX + this.radiusOfCircles, posY);
       this.ctx.arc(posX, posY, this.radiusOfCircles, 0, Math.PI * 2, true);
       currentLetter = String.fromCharCode(
@@ -418,9 +112,9 @@ export class CanvasService {
 
     // Draw text (numbers)
     for (let i = 1; i < this.algService.numberOfGroup2Agents + 1; i++) {
-      let posX: number = this.positions['circle' + currentLetter].positionX;
-      let posY: number = this.positions['circle' + currentLetter].positionY;
-
+      const [posX, posY] = this.layoutService.getPositionOfAgent(
+        'circle' + currentLetter
+      );
       this.ctx.fillStyle = 'black';
       this.ctx.font = this.radiusOfCircles + 'px Arial';
 
@@ -439,9 +133,7 @@ export class CanvasService {
     let offset = 1;
     // Draw LHS circles in orange
     for (let i = 1; i < this.algService.numberOfGroup1Agents + 1; i++) {
-      let posX: number = this.positions['circle' + i].positionX;
-      let posY: number = this.positions['circle' + i].positionY;
-
+      const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
       this.ctx.moveTo(posX + this.radiusOfCircles, posY);
       this.ctx.arc(posX, posY, this.radiusOfCircles, 0, Math.PI * 2, true);
     }
@@ -455,9 +147,7 @@ export class CanvasService {
       i < this.algService.numberOfGroup1Agents + offset;
       i++
     ) {
-      let posX: number = this.positions['circle' + i].positionX;
-      let posY: number = this.positions['circle' + i].positionY;
-
+      const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
       this.ctx.fillStyle = 'black';
       this.ctx.font = this.radiusOfCircles + 'px Arial';
 
@@ -476,28 +166,26 @@ export class CanvasService {
 
     this.ctx.lineWidth = 3;
 
-    let xLen =
-      this.positions['circle' + line[1]].positionX -
-      this.positions['circle' + line[0]].positionX;
-    let yLen =
-      this.positions['circle' + line[1]].positionY -
-      this.positions['circle' + line[0]].positionY;
+    const [posFromX, posFromY] = this.layoutService.getPositionOfAgent(
+      'circle' + line[0]
+    );
+    const [posToX, posToY] = this.layoutService.getPositionOfAgent(
+      'circle' + line[1]
+    );
 
-    let halfX = this.positions['circle' + line[0]].positionX + xLen * 0.8;
-    let halfY = this.positions['circle' + line[0]].positionY + yLen * 0.8;
+    const xLen = posToX - posFromX;
+    const yLen = posToY - posFromY;
+
+    let halfX = posFromX + xLen * 0.8;
+    let halfY = posFromY + yLen * 0.8;
 
     let angle = Math.atan(yLen / xLen);
 
     let newX = 0;
     let newY = 0;
 
-    let right = false;
-
-    // if starting < ending - pointing right- canvas in bottum right quadrent
-    if (
-      this.positions['circle' + line[0]].positionX <
-      this.positions['circle' + line[1]].positionX
-    ) {
+    let right: boolean;
+    if (posFromX < posToX) {
       right = true;
     } else {
       right = false;
@@ -505,10 +193,7 @@ export class CanvasService {
 
     // draw arrow
     this.ctx.beginPath();
-    this.ctx.moveTo(
-      this.positions['circle' + line[0]].positionX,
-      this.positions['circle' + line[0]].positionY
-    );
+    this.ctx.moveTo(posFromX, posFromY);
 
     if (color != 'green') {
       this.ctx.lineTo(halfX, halfY);
@@ -534,10 +219,7 @@ export class CanvasService {
 
       this.ctx.lineTo(newX, newY);
     } else {
-      this.ctx.lineTo(
-        this.positions['circle' + line[1]].positionX,
-        this.positions['circle' + line[1]].positionY
-      );
+      this.ctx.lineTo(posToX, posToY);
     }
 
     this.ctx.stroke();
@@ -547,6 +229,12 @@ export class CanvasService {
   }
 
   drawLine(line: Array<string>): void {
+    const [posFromX, posFromY] = this.layoutService.getPositionOfAgent(
+      'circle' + line[0]
+    );
+    const [posToX, posToY] = this.layoutService.getPositionOfAgent(
+      'circle' + line[1]
+    );
     let color: string = line[2];
 
     if (color == 'red') {
@@ -558,14 +246,8 @@ export class CanvasService {
     this.ctx.lineWidth = 3;
 
     this.ctx.beginPath();
-    this.ctx.moveTo(
-      this.positions['circle' + line[0]].positionX,
-      this.positions['circle' + line[0]].positionY
-    );
-    this.ctx.lineTo(
-      this.positions['circle' + line[1]].positionX,
-      this.positions['circle' + line[1]].positionY
-    );
+    this.ctx.moveTo(posFromX, posFromY);
+    this.ctx.lineTo(posToX, posToY);
     this.ctx.stroke();
 
     this.ctx.strokeStyle = '#000000';
@@ -586,13 +268,12 @@ export class CanvasService {
     }
 
     for (let i = 1; i < this.algService.numberOfGroup1Agents + 1; i++) {
+      const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
       this.drawText(
         this.ctx,
         group1PreferenceList[i - 1].join(', '),
-        this.positions['circle' + i].positionX -
-          this.lineSizes.get(String(i)) * 2 -
-          65,
-        this.positions['circle' + i].positionY + 7,
+        posX - this.lineSizes.get(String(i)) * 2 - 65,
+        posY + 7,
         this.fontSize
       );
     }
@@ -611,14 +292,17 @@ export class CanvasService {
     }
 
     for (let i = 1; i < this.algService.numberOfGroup2Agents + 1; i++) {
+      const [posX, posY] = this.layoutService.getPositionOfAgent(
+        'circle' + currentLetter
+      );
       this.drawText(
         this.ctx,
         group2PreferenceList[i - 1].join(', '),
-        this.positions['circle' + currentLetter].positionX +
+        posX +
           (this.currentCommand['algorithmSpecificData']['hospitalCapacity']
             ? 115
             : 65),
-        this.positions['circle' + currentLetter].positionY + 7,
+        posY + 7,
         this.fontSize
       );
       currentLetter = String.fromCharCode(
@@ -643,23 +327,23 @@ export class CanvasService {
     let num = this.algService.numberOfGroup1Agents;
 
     for (let i = 1; i < num / 2 + 1; i++) {
+      const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
       this.drawText(
         this.ctx,
         group1PreferenceList[i - 1].join(', '),
-        this.positions['circle' + i].positionX -
-          this.lineSizes.get(String(i)) * 2 -
-          65,
-        this.positions['circle' + i].positionY + 7,
+        posX - this.lineSizes.get(String(i)) * 2 - 65,
+        posY + 7,
         this.fontSize
       );
     }
 
     for (let i = num / 2 + 1; i < num + 1; i++) {
+      const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
       this.drawText(
         this.ctx,
         group1PreferenceList[i - 1].join(', '),
-        this.positions['circle' + i].positionX + 65,
-        this.positions['circle' + i].positionY + 7,
+        posX + 65,
+        posY + 7,
         this.fontSize
       );
     }
@@ -687,25 +371,26 @@ export class CanvasService {
     }
 
     for (let agent of this.currentCommand['relevantPreferences']) {
+      const [posX, posY] = this.layoutService.getPositionOfAgent(
+        'circle' + agent
+      );
       if (agent.match(/[A-Z]/i)) {
         this.drawText(
           this.ctx,
           group2PreferenceList[agent.charCodeAt(0) - 65].join(', '),
-          this.positions['circle' + agent].positionX +
+          posX +
             (this.currentCommand['algorithmSpecificData']['hospitalCapacity']
               ? 115
               : 65),
-          this.positions['circle' + agent].positionY + 7,
+          posY + 7,
           this.fontSize
         );
       } else {
         this.drawText(
           this.ctx,
           group1PreferenceList[agent - 1].join(', '),
-          this.positions['circle' + agent].positionX -
-            this.lineSizes.get(agent) * 2 -
-            65,
-          this.positions['circle' + agent].positionY + 7,
+          posX - this.lineSizes.get(agent) * 2 - 65,
+          posY + 7,
           this.fontSize
         );
       }
@@ -722,12 +407,15 @@ export class CanvasService {
 
     for (let i = 1; i < this.algService.numberOfGroup2Agents + 1; i++) {
       let currentCapacity: number = hospitalCapacityMap[currentLetter];
+      const [posX, posY] = this.layoutService.getPositionOfAgent(
+        'circle' + currentLetter
+      );
 
       this.drawText(
         this.ctx,
         '(' + String(currentCapacity) + ')',
-        this.positions['circle' + currentLetter].positionX + 45,
-        this.positions['circle' + currentLetter].positionY + 7,
+        posX + 45,
+        posY + 7,
         this.fontSize
       );
 
@@ -755,50 +443,36 @@ export class CanvasService {
       let firstLetter = first.slice(-1)[0];
       let lastLetter = last.slice(-1)[0];
 
-      let firstPos = this.positions['circle' + String(firstLetter)];
-      let lastPos = this.positions['circle' + String(lastLetter)];
+      const [posFirstX, posFirstY] = this.layoutService.getPositionOfAgent(
+        'circle' + String(firstLetter)
+      );
+      const [posLastX, posLastY] = this.layoutService.getPositionOfAgent(
+        'circle' + String(lastLetter)
+      );
 
       let centerPos = { positionX: 0, positionY: 0 };
 
       // location on where to draw lecturer name and cap
       if (firstLetter == lastLetter) {
         centerPos = {
-          positionX: firstPos.positionX,
-          positionY: firstPos.positionY + 10,
+          positionX: posFirstX,
+          positionY: posFirstY + 10,
         };
       } else {
         centerPos = {
-          positionX: firstPos.positionX,
-          positionY:
-            (lastPos.positionY - firstPos.positionY) / 2 +
-            firstPos.positionY +
-            10,
+          positionX: posFirstX,
+          positionY: (posLastY - posFirstY) / 2 + posFirstY + 10,
         };
       }
 
       // bracket lines
-      this.ctx.moveTo(
-        firstPos.positionX + 85,
-        firstPos.positionY - this.radiusOfCircles
-      );
-      this.ctx.lineTo(
-        firstPos.positionX + 100,
-        firstPos.positionY - this.radiusOfCircles
-      );
+      this.ctx.moveTo(posFirstX + 85, posFirstY - this.radiusOfCircles);
+      this.ctx.lineTo(posFirstX + 100, posFirstY - this.radiusOfCircles);
 
-      this.ctx.lineTo(
-        lastPos.positionX + 100,
-        lastPos.positionY + this.radiusOfCircles
-      );
+      this.ctx.lineTo(posLastX + 100, posLastY + this.radiusOfCircles);
 
-      this.ctx.moveTo(
-        lastPos.positionX + 85,
-        lastPos.positionY + this.radiusOfCircles
-      );
-      this.ctx.lineTo(
-        lastPos.positionX + 100,
-        lastPos.positionY + this.radiusOfCircles
-      );
+      this.ctx.moveTo(posLastX + 85, posLastY + this.radiusOfCircles);
+      this.ctx.lineTo(posLastX + 100, posLastY + this.radiusOfCircles);
 
       // lecturer text
       text =
@@ -845,15 +519,12 @@ export class CanvasService {
     this.ctx.strokeStyle = '#53D26F';
 
     for (let agent of circles) {
+      const [posX, posY] = this.layoutService.getPositionOfAgent(
+        'circle' + agent
+      );
       this.ctx.beginPath();
-
-      let posX: number = this.positions['circle' + agent].positionX;
-      let posY: number = this.positions['circle' + agent].positionY;
-
       this.ctx.moveTo(posX + this.radiusOfCircles, posY);
-
       this.ctx.arc(posX, posY, this.radiusOfCircles, 0, Math.PI * 2, true);
-
       this.ctx.stroke();
     }
 
@@ -1028,14 +699,17 @@ export class CanvasService {
     // if SR Algorithm
     if (this.currentCommand['algorithmSpecificData']['SR']) {
       // draw lines between circles (matches and relations)
-      this.calculateEqualDistance1Group();
+      this.layoutService.calculateRoommatePositions(this.canvasElement);
       for (let line of this.currentCommand['currentLines']) {
         this.drawLine1Group(line);
       }
       this.drawCircles1Group();
     } else {
       // draw lines between circles (matches and relations)
-      this.calculateEqualDistance();
+      this.layoutService.calculateBipartitePositions(
+        this.canvasElement,
+        this.currentCommand
+      );
       for (let line of this.currentCommand['currentLines']) {
         this.drawLine(line);
       }
