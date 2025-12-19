@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 interface TextRenderState {
-  size: number;
   colour: string;
   x: number;
   y: number;
@@ -18,11 +17,17 @@ export class TextRendererService {
   private readonly tabSpaces = 8;
   private readonly maxTabs = 100; // bigger than we need probably
 
-  private font = '20px Arial';
+  private font = 'Arial';
   private sizes: Array<number> = [];
-  private baseSize: number | undefined;
+  private fontSize?: number;
   private spaceSize = 0;
   private tabStops: number[] = [];
+
+  private readonly colourMap = new Map<string, string>([
+    ['black', '#000000'],
+    ['red', '#EB2A2A'],
+    ['green', '#53D26F'],
+  ]);
 
   private ctx?: CanvasRenderingContext2D;
 
@@ -32,32 +37,24 @@ export class TextRendererService {
     }
   }
 
-  private extractFontSize(font: string): number {
-    const size = font.match(/\d+/);
-    return Number(size[0]);
-  }
-
-  setFont(font: string): void {
-    this.font = font;
-    if (this.ctx) {
-      this.ctx.font = this.font;
+  setFontSize(fontSize: number): void {
+    if (!this.ctx) {
+      return;
     }
-    this.baseSize = this.extractFontSize(this.font);
+    this.ctx.font = `${fontSize}px ${this.font}`;
+    this.fontSize = fontSize;
+    // precompute width ratios
+    for (let i = this.startChar; i < this.endChar; i++) {
+      const char = String.fromCharCode(i);
+      this.sizes[i - this.startChar] =
+        this.ctx.measureText(char).width / fontSize;
+    }
+    this.spaceSize = this.sizes[0];
   }
 
   public setContext(ctx: CanvasRenderingContext2D): void {
     this.ctx = ctx;
     this.ctx.font = this.font;
-    this.baseSize = this.extractFontSize(this.font);
-
-    // best to precompute width ratios
-    for (let i = this.startChar; i < this.endChar; i++) {
-      const char = String.fromCharCode(i);
-      this.sizes[i - this.startChar] =
-        ctx.measureText(char).width / this.baseSize;
-    }
-
-    this.spaceSize = this.sizes[0];
   }
 
   private getNextTab(x: number): number {
@@ -71,29 +68,23 @@ export class TextRendererService {
     return last * this.tabSpaces * this.spaceSize;
   }
 
-  private renderTextSegment(
-    text: string,
-    state: TextRenderState,
-    scale: number
-  ): void {
+  private renderTextSegment(text: string, state: TextRenderState): void {
     this.ctx.save();
     this.ctx.fillStyle = state.colour;
     this.ctx.translate(state.x, state.y);
-    this.ctx.scale(scale, scale);
     this.ctx.fillText(text, 0, 0);
     this.ctx.restore();
   }
 
   // FROM: https://stackoverflow.com/questions/43904201/how-can-i-colour-different-words-in-the-same-line-with-html5-canvas
   // adapted for use in this project
-  public drawText(text: string, state: TextRenderState): void {
+  public drawTextFromState(text: string, state: TextRenderState): void {
     if (!this.ctx) {
       throw new Error('Context not provided.');
     }
 
     const xStart = state.x;
-    const scale = state.size / this.baseSize;
-    const stack: TextRenderState[] = [];
+    const stack: string[] = [];
     let subText = '';
     let width = 0;
 
@@ -108,10 +99,10 @@ export class TextRendererService {
 
       if (!'{}\n\t'.includes(ch)) {
         subText += ch;
-        width += this.sizes[charCode - this.startChar] * state.size;
+        width += this.sizes[charCode - this.startChar] * this.fontSize;
       } else {
         if (subText.length > 0) {
-          this.renderTextSegment(subText, state, scale);
+          this.renderTextSegment(subText, state);
           state.x += width;
           subText = '';
           width = 0;
@@ -120,7 +111,7 @@ export class TextRendererService {
         switch (ch) {
           case '\n':
             state.x = xStart;
-            state.y += state.size;
+            state.y += this.fontSize;
             break;
 
           case '\t':
@@ -128,7 +119,7 @@ export class TextRendererService {
             break;
 
           case '{':
-            stack.push({ ...state });
+            stack.push(state.colour);
             i++;
             const next = text[i];
             if (next === '#') {
@@ -141,9 +132,9 @@ export class TextRendererService {
             break;
 
           case '}':
-            const prev = stack.pop();
-            if (prev) {
-              Object.assign(state, prev);
+            const prevColour = stack.pop();
+            if (prevColour) {
+              state.colour = prevColour;
             }
             break;
         }
@@ -151,7 +142,23 @@ export class TextRendererService {
     }
 
     if (subText.length > 0) {
-      this.renderTextSegment(subText, state, scale);
+      this.renderTextSegment(subText, state);
     }
+  }
+
+  public drawText(
+    text: string,
+    x: number,
+    y: number,
+    colour: string = 'black'
+  ): void {
+    // fallback prevents crashes from invalid caller input
+    const fontColour = this.colourMap[colour] || '#000000';
+    const newRenderState: TextRenderState = {
+      colour: fontColour,
+      x,
+      y,
+    };
+    this.drawTextFromState(text, newRenderState);
   }
 }
