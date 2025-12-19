@@ -14,14 +14,9 @@ export class TextRendererService {
   private readonly startChar = 32;
   private readonly endChar = 256;
 
-  private readonly tabSpaces = 8;
-  private readonly maxTabs = 100; // bigger than we need probably
-
   private font = 'Arial';
   private sizes: Array<number> = [];
   private fontSize?: number;
-  private spaceSize = 0;
-  private tabStops: number[] = [];
 
   private readonly colourMap = new Map<string, string>([
     ['black', '#000000'],
@@ -30,12 +25,6 @@ export class TextRendererService {
   ]);
 
   private ctx?: CanvasRenderingContext2D;
-
-  constructor() {
-    for (let i = 0; i < this.maxTabs; i += this.tabSpaces) {
-      this.tabStops.push(i);
-    }
-  }
 
   setFontSize(fontSize: number): void {
     if (!this.ctx) {
@@ -49,23 +38,11 @@ export class TextRendererService {
       this.sizes[i - this.startChar] =
         this.ctx.measureText(char).width / fontSize;
     }
-    this.spaceSize = this.sizes[0];
   }
 
   public setContext(ctx: CanvasRenderingContext2D): void {
     this.ctx = ctx;
     this.ctx.font = this.font;
-  }
-
-  private getNextTab(x: number): number {
-    for (const t of this.tabStops) {
-      const tabValue = t * this.tabSpaces * this.spaceSize;
-      if (x < tabValue) {
-        return tabValue;
-      }
-    }
-    const last = this.tabStops[this.tabStops.length - 1];
-    return last * this.tabSpaces * this.spaceSize;
   }
 
   private renderTextSegment(text: string, state: TextRenderState): void {
@@ -93,11 +70,14 @@ export class TextRendererService {
       const charCode = text.charCodeAt(i);
 
       // we don't support it, skip
-      if (charCode < this.startChar || charCode >= this.endChar) {
+      if (
+        !'{}\n'.includes(ch) &&
+        (charCode < this.startChar || charCode >= this.endChar)
+      ) {
         continue;
       }
 
-      if (!'{}\n\t'.includes(ch)) {
+      if (!'{}\n'.includes(ch)) {
         subText += ch;
         width += this.sizes[charCode - this.startChar] * this.fontSize;
       } else {
@@ -112,10 +92,6 @@ export class TextRendererService {
           case '\n':
             state.x = xStart;
             state.y += this.fontSize;
-            break;
-
-          case '\t':
-            state.x = this.getNextTab(state.x - xStart) + xStart;
             break;
 
           case '{':
@@ -153,7 +129,7 @@ export class TextRendererService {
     colour: string = 'black'
   ): void {
     // fallback prevents crashes from invalid caller input
-    const fontColour = this.colourMap[colour] || '#000000';
+    const fontColour = this.colourMap.get(colour) || '#000000';
     const newRenderState: TextRenderState = {
       colour: fontColour,
       x,
