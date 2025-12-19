@@ -1,6 +1,7 @@
 import { ElementRef, Injectable } from '@angular/core';
 import { AlgorithmRetrievalService } from '../../../algorithm-retrieval.service';
 import { LayoutService } from '../layout/layout.service';
+import { TextRendererService } from '../text-renderer/text-renderer.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,41 +10,21 @@ export class CanvasService {
   originalGroup1Preferences: Array<Array<string>>;
   originalGroup2Preferences: Array<Array<string>>;
 
-  // HTML drawing properties
-  sizes: Array<number> = [];
-  baseSize: number | undefined;
-  font: string | undefined;
-  controlChars = '{}\n\t';
-  spaceSize = 0;
-  tabSize = 8; // in spaceSize units
-  tabs: number[] = (() => {
-    const t: number[] = [];
-    for (let i = 0; i < 100; i += 8) {
-      t.push(i);
-    }
-    return t;
-  })();
-
   // circle properties
   radiusOfCircles: number = 30;
-
-  // font properties
-  fontSize: number = 20;
 
   alwaysShowPreferences: boolean = false;
 
   private canvasElement!: HTMLCanvasElement;
   public currentCommand: Object;
-
   public ctx: CanvasRenderingContext2D;
-
   lineSizes: Map<string, number> = new Map();
-
-  firstRun: boolean = true;
+  firstRun = true;
 
   constructor(
     public algService: AlgorithmRetrievalService,
-    public layoutService: LayoutService
+    public layoutService: LayoutService,
+    public textRendererService: TextRendererService
   ) {}
 
   setCanvas(canvasRef: ElementRef<HTMLCanvasElement>): void {
@@ -53,6 +34,7 @@ export class CanvasService {
       throw new Error('CanvasRenderingContext2D not available');
     }
     this.ctx = ctx;
+    this.textRendererService.setContext(this.ctx);
   }
 
   setCommand(command) {
@@ -79,12 +61,10 @@ export class CanvasService {
     this.ctx.stroke();
 
     // Draw text (numbers)
+    this.textRendererService.setFontSize(this.radiusOfCircles);
     for (let i = 1; i < this.algService.numberOfGroup1Agents + 1; i++) {
       const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
-      this.ctx.fillStyle = 'black';
-      this.ctx.font = this.radiusOfCircles + 'px Arial';
-
-      this.ctx.fillText(String(i), posX - 8, posY + 10, 20);
+      this.textRendererService.drawText(String(i), posX - 8, posY + 10);
     }
   }
 
@@ -110,15 +90,13 @@ export class CanvasService {
 
     currentLetter = 'A';
 
+    this.textRendererService.setFontSize(this.radiusOfCircles);
     // Draw text (numbers)
     for (let i = 1; i < this.algService.numberOfGroup2Agents + 1; i++) {
       const [posX, posY] = this.layoutService.getPositionOfAgent(
         'circle' + currentLetter
       );
-      this.ctx.fillStyle = 'black';
-      this.ctx.font = this.radiusOfCircles + 'px Arial';
-
-      this.ctx.fillText(currentLetter, posX - 9, posY + 11, 20);
+      this.textRendererService.drawText(currentLetter, posX - 9, posY + 11);
       currentLetter = String.fromCharCode(
         ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65
       );
@@ -142,16 +120,18 @@ export class CanvasService {
     this.ctx.fill();
     this.ctx.stroke();
 
+    this.textRendererService.setFontSize(this.radiusOfCircles);
     for (
       let i = offset;
       i < this.algService.numberOfGroup1Agents + offset;
       i++
     ) {
       const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
-      this.ctx.fillStyle = 'black';
-      this.ctx.font = this.radiusOfCircles + 'px Arial';
-
-      this.ctx.fillText(String(i - offset + 1), posX - 8, posY + 10, 20);
+      this.textRendererService.drawText(
+        String(i - offset + 1),
+        posX - 8,
+        posY + 10
+      );
     }
   }
 
@@ -255,7 +235,7 @@ export class CanvasService {
   }
 
   drawAllPreferences() {
-    this.ctx.font = this.fontSize + 'px Arial';
+    this.textRendererService.setFontSize(20);
 
     let group1PreferenceList: Array<Array<string>> = Object.values(
       this.currentCommand['group1CurrentPreferences']
@@ -269,12 +249,10 @@ export class CanvasService {
 
     for (let i = 1; i < this.algService.numberOfGroup1Agents + 1; i++) {
       const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
-      this.drawText(
-        this.ctx,
+      this.textRendererService.drawText(
         group1PreferenceList[i - 1].join(', '),
         posX - this.lineSizes.get(String(i)) * 2 - 65,
-        posY + 7,
-        this.fontSize
+        posY + 7
       );
     }
 
@@ -295,15 +273,13 @@ export class CanvasService {
       const [posX, posY] = this.layoutService.getPositionOfAgent(
         'circle' + currentLetter
       );
-      this.drawText(
-        this.ctx,
+      this.textRendererService.drawText(
         group2PreferenceList[i - 1].join(', '),
         posX +
           (this.currentCommand['algorithmSpecificData']['hospitalCapacity']
             ? 115
             : 65),
-        posY + 7,
-        this.fontSize
+        posY + 7
       );
       currentLetter = String.fromCharCode(
         ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65
@@ -312,7 +288,7 @@ export class CanvasService {
   }
 
   drawAllPreferences1Group() {
-    this.ctx.font = this.fontSize + 'px Arial';
+    this.textRendererService.setFontSize(20);
 
     let group1PreferenceList: Array<Array<string>> = Object.values(
       this.currentCommand['group1CurrentPreferences']
@@ -328,23 +304,19 @@ export class CanvasService {
 
     for (let i = 1; i < num / 2 + 1; i++) {
       const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
-      this.drawText(
-        this.ctx,
+      this.textRendererService.drawText(
         group1PreferenceList[i - 1].join(', '),
         posX - this.lineSizes.get(String(i)) * 2 - 65,
-        posY + 7,
-        this.fontSize
+        posY + 7
       );
     }
 
     for (let i = num / 2 + 1; i < num + 1; i++) {
       const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
-      this.drawText(
-        this.ctx,
+      this.textRendererService.drawText(
         group1PreferenceList[i - 1].join(', '),
         posX + 65,
-        posY + 7,
-        this.fontSize
+        posY + 7
       );
     }
   }
@@ -375,23 +347,19 @@ export class CanvasService {
         'circle' + agent
       );
       if (agent.match(/[A-Z]/i)) {
-        this.drawText(
-          this.ctx,
+        this.textRendererService.drawText(
           group2PreferenceList[agent.charCodeAt(0) - 65].join(', '),
           posX +
             (this.currentCommand['algorithmSpecificData']['hospitalCapacity']
               ? 115
               : 65),
-          posY + 7,
-          this.fontSize
+          posY + 7
         );
       } else {
-        this.drawText(
-          this.ctx,
+        this.textRendererService.drawText(
           group1PreferenceList[agent - 1].join(', '),
           posX - this.lineSizes.get(agent) * 2 - 65,
-          posY + 7,
-          this.fontSize
+          posY + 7
         );
       }
     }
@@ -401,7 +369,7 @@ export class CanvasService {
     let hospitalCapacityMap =
       this.currentCommand['algorithmSpecificData']['hospitalCapacity'];
 
-    this.ctx.font = this.fontSize + 'px Arial';
+    this.textRendererService.setFontSize(20);
 
     let currentLetter = 'A';
 
@@ -411,12 +379,10 @@ export class CanvasService {
         'circle' + currentLetter
       );
 
-      this.drawText(
-        this.ctx,
+      this.textRendererService.drawText(
         '(' + String(currentCapacity) + ')',
         posX + 45,
-        posY + 7,
-        this.fontSize
+        posY + 7
       );
 
       currentLetter = String.fromCharCode(
@@ -474,6 +440,8 @@ export class CanvasService {
       this.ctx.moveTo(posLastX + 85, posLastY + this.radiusOfCircles);
       this.ctx.lineTo(posLastX + 100, posLastY + this.radiusOfCircles);
 
+      this.textRendererService.setFontSize(14);
+
       // lecturer text
       text =
         'Lecturer' +
@@ -483,23 +451,19 @@ export class CanvasService {
           count + 1
         ] +
         ')';
-      this.drawText(
-        this.ctx,
+      this.textRendererService.drawText(
         text,
         centerPos.positionX + 120,
-        centerPos.positionY - 20,
-        14
+        centerPos.positionY - 20
       );
 
       text = String(
         this.currentCommand['algorithmSpecificData']['lecturerRanking'][count]
       );
-      this.drawText(
-        this.ctx,
+      this.textRendererService.drawText(
         text,
         centerPos.positionX + 120,
-        centerPos.positionY,
-        14
+        centerPos.positionY
       );
       count++;
     }
@@ -530,127 +494,6 @@ export class CanvasService {
 
     this.ctx.lineWidth = originalLineWidth;
     this.ctx.strokeStyle = originalStrokeStyle;
-  }
-
-  getNextTab(x) {
-    let i = 0;
-    while (i < this.tabs.length) {
-      if (x < this.tabs[i] * this.tabSize * this.spaceSize) {
-        return this.tabs[i] * this.tabSize * this.spaceSize;
-      }
-      i++;
-    }
-    return this.tabs[i - 1] * this.tabSize * this.spaceSize;
-  }
-
-  getFontSize(font) {
-    var numFind = /[0-9]+/;
-    var number: number = Number(numFind.exec(font)[0]);
-    if (isNaN(number)) {
-      throw Error('SimpleTextStyler Cant find font size');
-    }
-    return Number(number);
-  }
-
-  setFont(font = this.ctx.font) {
-    this.font = this.ctx.font = font;
-    this.baseSize = this.getFontSize(font);
-    for (var i = 32; i < 256; i++) {
-      this.sizes[i - 32] =
-        this.ctx.measureText(String.fromCharCode(i)).width / this.baseSize;
-    }
-    this.spaceSize = this.sizes[0];
-  }
-
-  // FROM: https://stackoverflow.com/questions/43904201/how-can-i-colour-different-words-in-the-same-line-with-html5-canvas
-  // adapted for use in this project
-  drawText(context, text, x, y, size) {
-    var i, len, subText;
-    var w, scale;
-    var xx, ctx;
-    var state = [];
-    if (text === undefined) {
-      return;
-    }
-    xx = x;
-    if (!context.setTransform) {
-      // simple test if this is a 2D context
-      if (context.ctx) {
-        ctx = context.ctx;
-      } // may be a image with attached ctx?
-      else {
-        return;
-      }
-    } else {
-      ctx = context;
-    }
-
-    function renderText(text) {
-      ctx.save();
-      ctx.fillStyle = colour;
-      ctx.translate(x, y);
-      ctx.scale(scale, scale);
-      ctx.fillText(text, 0, 0);
-      ctx.restore();
-    }
-    var colour = ctx.fillStyle;
-    ctx.font = this.font;
-    len = text.length;
-    subText = '';
-    w = 0;
-    i = 0;
-    scale = size / this.baseSize;
-    while (i < len) {
-      var c = text[i];
-      var cc = text.charCodeAt(i);
-      if (cc < 256) {
-        // only ascii
-        if (this.controlChars.indexOf(c) > -1) {
-          if (subText !== '') {
-            scale = size / this.baseSize;
-            renderText(subText);
-            x += w;
-            w = 0;
-            subText = '';
-          }
-          if (c === '\n') {
-            // return move to new line
-            x = xx;
-            y += size;
-          } else if (c === '\t') {
-            // tab move to next tab
-            x = this.getNextTab(x - xx) + xx;
-          } else if (c === '{') {
-            // Text format delimiter
-            state.push({
-              size: size,
-              colour: colour,
-              x: x,
-              y: y,
-            });
-            i += 1;
-            var t = text[i];
-            if (t === '#') {
-              colour = text.substr(i, 7);
-              i += 6;
-            }
-          } else if (c === '}') {
-            var s = state.pop();
-            y = s.y;
-            size = s.size;
-            colour = s.colour;
-            scale = size / this.baseSize;
-          }
-        } else {
-          subText += c;
-          w += this.sizes[cc - 32] * size;
-        }
-      }
-      i += 1;
-    }
-    if (subText !== '') {
-      renderText(subText);
-    }
   }
 
   redrawCanvas(command?: Object): void {
@@ -686,7 +529,6 @@ export class CanvasService {
       this.lineSizes.set(String(i), lineSize);
     }
 
-    this.setFont();
     this.ctx.clearRect(
       0,
       0,
