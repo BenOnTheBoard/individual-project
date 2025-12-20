@@ -28,7 +28,7 @@ export class AgentRendererService {
     this.ctx = ctx;
   }
 
-  private drawCircle(x: number, y: number, strokeOnly: boolean): void {
+  public drawCircle(x: number, y: number, strokeOnly: boolean): void {
     this.ctx.beginPath();
     this.ctx.arc(x, y, this.radius, 0, Math.PI * 2);
     if (!strokeOnly) {
@@ -37,7 +37,7 @@ export class AgentRendererService {
     this.ctx.stroke();
   }
 
-  private drawGroup(
+  public drawGroup(
     agentCount: number,
     labelGenerator: (i: number) => string,
     fillStyle: string
@@ -46,7 +46,9 @@ export class AgentRendererService {
     this.textRenderer.setFontSize(this.radius);
     const offset = (this.radius * Math.sqrt(2)) / 4;
 
+    console.log(agentCount);
     for (let i = 0; i < agentCount; i++) {
+      console.log(i);
       const label = labelGenerator(i);
       const [x, y] = this.layoutService.getPositionOfAgent('circle' + label);
       this.drawCircle(x, y, false);
