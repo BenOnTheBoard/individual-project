@@ -2,6 +2,8 @@ import { ElementRef, Injectable } from '@angular/core';
 import { AlgorithmRetrievalService } from '../../../algorithm-retrieval.service';
 import { LayoutService } from '../layout/layout.service';
 import { TextRendererService } from '../text-renderer/text-renderer.service';
+import { AgentRendererService } from '../agent-renderer/agent-renderer.service';
+import { ColourHexService } from '../colour-hex.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,8 +25,10 @@ export class CanvasService {
 
   constructor(
     public algService: AlgorithmRetrievalService,
+    public agentRenderer: AgentRendererService,
     public layoutService: LayoutService,
-    public textRendererService: TextRendererService
+    public textRendererService: TextRendererService,
+    public colourHexService: ColourHexService
   ) {}
 
   setCanvas(canvasRef: ElementRef<HTMLCanvasElement>): void {
@@ -35,6 +39,7 @@ export class CanvasService {
     }
     this.ctx = ctx;
     this.textRendererService.setContext(this.ctx);
+    this.agentRenderer.setContext(this.ctx);
   }
 
   setCommand(command) {
@@ -46,104 +51,10 @@ export class CanvasService {
     this.firstRun = true;
   }
 
-  drawLHSCircles() {
-    this.ctx.beginPath();
-    this.ctx.fillStyle = '#FF6332';
-
-    // Draw LHS circles in orange
-    for (let i = 1; i < this.algService.numberOfGroup1Agents + 1; i++) {
-      const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
-      this.ctx.moveTo(posX + this.radiusOfCircles, posY);
-      this.ctx.arc(posX, posY, this.radiusOfCircles, 0, Math.PI * 2, true);
-    }
-
-    this.ctx.fill();
-    this.ctx.stroke();
-
-    // Draw text (numbers)
-    this.textRendererService.setFontSize(this.radiusOfCircles);
-    for (let i = 1; i < this.algService.numberOfGroup1Agents + 1; i++) {
-      const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
-      this.textRendererService.drawText(String(i), posX - 8, posY + 10);
-    }
-  }
-
-  drawRHSCircles() {
-    this.ctx.beginPath();
-    this.ctx.fillStyle = '#CA32FF';
-    let currentLetter = 'A';
-
-    // Draw RHS circles in orange
-    for (let i = 0; i < this.algService.numberOfGroup2Agents; i++) {
-      const [posX, posY] = this.layoutService.getPositionOfAgent(
-        'circle' + currentLetter
-      );
-      this.ctx.moveTo(posX + this.radiusOfCircles, posY);
-      this.ctx.arc(posX, posY, this.radiusOfCircles, 0, Math.PI * 2, true);
-      currentLetter = String.fromCharCode(
-        ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65
-      );
-    }
-
-    this.ctx.fill();
-    this.ctx.stroke();
-
-    currentLetter = 'A';
-
-    this.textRendererService.setFontSize(this.radiusOfCircles);
-    // Draw text (numbers)
-    for (let i = 1; i < this.algService.numberOfGroup2Agents + 1; i++) {
-      const [posX, posY] = this.layoutService.getPositionOfAgent(
-        'circle' + currentLetter
-      );
-      this.textRendererService.drawText(currentLetter, posX - 9, posY + 11);
-      currentLetter = String.fromCharCode(
-        ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65
-      );
-    }
-  }
-
-  drawCircles1Group() {
-    this.ctx.beginPath();
-    this.ctx.fillStyle = '#FF6332';
-
-    // number to rotated the circle, so that numbering looks more natural
-    let offset = 1;
-    // Draw LHS circles in orange
-    for (let i = 1; i < this.algService.numberOfGroup1Agents + 1; i++) {
-      const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
-      this.ctx.moveTo(posX + this.radiusOfCircles, posY);
-      this.ctx.arc(posX, posY, this.radiusOfCircles, 0, Math.PI * 2, true);
-    }
-
-    // colours circles
-    this.ctx.fill();
-    this.ctx.stroke();
-
-    this.textRendererService.setFontSize(this.radiusOfCircles);
-    for (
-      let i = offset;
-      i < this.algService.numberOfGroup1Agents + offset;
-      i++
-    ) {
-      const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
-      this.textRendererService.drawText(
-        String(i - offset + 1),
-        posX - 8,
-        posY + 10
-      );
-    }
-  }
-
   drawLine1Group(line: Array<string>): void {
     let color: string = line[2];
 
-    if (color == 'red') {
-      this.ctx.strokeStyle = '#EB2A2A';
-    } else if (color == 'green') {
-      this.ctx.strokeStyle = '#53D26F';
-    }
-
+    this.ctx.strokeStyle = this.colourHexService.getHex(color);
     this.ctx.lineWidth = 3;
 
     const [posFromX, posFromY] = this.layoutService.getPositionOfAgent(
@@ -204,7 +115,7 @@ export class CanvasService {
 
     this.ctx.stroke();
 
-    this.ctx.strokeStyle = '#000000';
+    this.ctx.strokeStyle = this.colourHexService.getHex('black');
     this.ctx.lineWidth = 1;
   }
 
@@ -217,11 +128,7 @@ export class CanvasService {
     );
     let color: string = line[2];
 
-    if (color == 'red') {
-      this.ctx.strokeStyle = '#EB2A2A';
-    } else if (color == 'green') {
-      this.ctx.strokeStyle = '#53D26F';
-    }
+    this.ctx.strokeStyle = this.colourHexService.getHex(color);
 
     this.ctx.lineWidth = 3;
 
@@ -230,7 +137,7 @@ export class CanvasService {
     this.ctx.lineTo(posToX, posToY);
     this.ctx.stroke();
 
-    this.ctx.strokeStyle = '#000000';
+    this.ctx.strokeStyle = this.colourHexService.getHex('black');
     this.ctx.lineWidth = 1;
   }
 
@@ -392,7 +299,7 @@ export class CanvasService {
   }
 
   drawSPAlecturers() {
-    this.ctx.strokeStyle = '#000000';
+    this.ctx.strokeStyle = this.colourHexService.getHex('black');
     this.ctx.lineWidth = 1.5;
 
     this.ctx.beginPath();
@@ -470,30 +377,8 @@ export class CanvasService {
 
     this.ctx.stroke();
 
-    this.ctx.strokeStyle = '#000000';
+    this.ctx.strokeStyle = this.colourHexService.getHex('black');
     this.ctx.lineWidth = 1;
-  }
-
-  selectCircles(circles: Array<string>) {
-    let originalLineWidth: number = this.ctx.lineWidth;
-    let originalStrokeStyle: string | CanvasGradient | CanvasPattern =
-      this.ctx.strokeStyle;
-
-    this.ctx.lineWidth = 4;
-    this.ctx.strokeStyle = '#53D26F';
-
-    for (let agent of circles) {
-      const [posX, posY] = this.layoutService.getPositionOfAgent(
-        'circle' + agent
-      );
-      this.ctx.beginPath();
-      this.ctx.moveTo(posX + this.radiusOfCircles, posY);
-      this.ctx.arc(posX, posY, this.radiusOfCircles, 0, Math.PI * 2, true);
-      this.ctx.stroke();
-    }
-
-    this.ctx.lineWidth = originalLineWidth;
-    this.ctx.strokeStyle = originalStrokeStyle;
   }
 
   redrawCanvas(command?: Object): void {
@@ -545,7 +430,7 @@ export class CanvasService {
       for (let line of this.currentCommand['currentLines']) {
         this.drawLine1Group(line);
       }
-      this.drawCircles1Group();
+      this.agentRenderer.drawGroupOneAgents();
     } else {
       // draw lines between circles (matches and relations)
       this.layoutService.calculateBipartitePositions(
@@ -555,8 +440,8 @@ export class CanvasService {
       for (let line of this.currentCommand['currentLines']) {
         this.drawLine(line);
       }
-      this.drawLHSCircles();
-      this.drawRHSCircles();
+      this.agentRenderer.drawGroupOneAgents();
+      this.agentRenderer.drawGroupTwoAgents();
     }
 
     // draw project lecturer Viz
@@ -582,6 +467,8 @@ export class CanvasService {
       }
     }
 
-    this.selectCircles(this.currentCommand['currentlySelectedAgents']);
+    this.agentRenderer.selectCircles(
+      this.currentCommand['currentlySelectedAgents']
+    );
   }
 }
