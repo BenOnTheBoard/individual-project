@@ -10,6 +10,7 @@ import { ColourHexService } from '../colour-hex.service';
 export class AgentRendererService {
   private readonly radius = 30;
   private readonly selectionBorderWidth = 4;
+  private readonly defaultBorderWidth = 1;
 
   private readonly groupOneColour = 'orange';
   private readonly groupTwoColour = 'purple';
@@ -29,6 +30,9 @@ export class AgentRendererService {
   }
 
   public drawCircle(x: number, y: number, strokeOnly: boolean): void {
+    this.ctx.strokeStyle = this.colourHexService.getHex('black');
+    this.ctx.lineWidth = this.defaultBorderWidth;
+
     this.ctx.beginPath();
     this.ctx.arc(x, y, this.radius, 0, Math.PI * 2);
     if (!strokeOnly) {
