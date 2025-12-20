@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ColourHexService } from '../colour-hex.service';
 
 interface TextRenderState {
   colour: string;
@@ -18,13 +19,9 @@ export class TextRendererService {
   private sizes: Array<number> = [];
   private fontSize?: number;
 
-  private readonly colourMap = new Map<string, string>([
-    ['black', '#000000'],
-    ['red', '#EB2A2A'],
-    ['green', '#53D26F'],
-  ]);
-
   private ctx?: CanvasRenderingContext2D;
+
+  constructor(public colourHexService: ColourHexService) {}
 
   setFontSize(fontSize: number): void {
     if (!this.ctx) {
@@ -129,7 +126,7 @@ export class TextRendererService {
     colour: string = 'black'
   ): void {
     // fallback prevents crashes from invalid caller input
-    const fontColour = this.colourMap.get(colour) || '#000000';
+    const fontColour = this.colourHexService.getHex(colour) || '#000000';
     const newRenderState: TextRenderState = {
       colour: fontColour,
       x,
