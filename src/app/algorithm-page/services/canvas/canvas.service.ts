@@ -4,6 +4,7 @@ import { LayoutService } from '../layout/layout.service';
 import { TextRendererService } from '../text-renderer/text-renderer.service';
 import { AgentRendererService } from '../agent-renderer/agent-renderer.service';
 import { ColourHexService } from '../colour-hex.service';
+import { LineRendererService } from '../line-renderer/line-renderer.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +28,8 @@ export class CanvasService {
     public algService: AlgorithmRetrievalService,
     public agentRenderer: AgentRendererService,
     public layoutService: LayoutService,
-    public textRendererService: TextRendererService,
+    public lineRenderer: LineRendererService,
+    public textRenderer: TextRendererService,
     public colourHexService: ColourHexService
   ) {}
 
@@ -38,8 +40,9 @@ export class CanvasService {
       throw new Error('CanvasRenderingContext2D not available');
     }
     this.ctx = ctx;
-    this.textRendererService.setContext(this.ctx);
     this.agentRenderer.setContext(this.ctx);
+    this.lineRenderer.setContext(this.ctx);
+    this.textRenderer.setContext(this.ctx);
   }
 
   setCommand(command) {
@@ -51,98 +54,8 @@ export class CanvasService {
     this.firstRun = true;
   }
 
-  drawLine1Group(line: Array<string>): void {
-    let color: string = line[2];
-
-    this.ctx.strokeStyle = this.colourHexService.getHex(color);
-    this.ctx.lineWidth = 3;
-
-    const [posFromX, posFromY] = this.layoutService.getPositionOfAgent(
-      'circle' + line[0]
-    );
-    const [posToX, posToY] = this.layoutService.getPositionOfAgent(
-      'circle' + line[1]
-    );
-
-    const xLen = posToX - posFromX;
-    const yLen = posToY - posFromY;
-
-    let halfX = posFromX + xLen * 0.8;
-    let halfY = posFromY + yLen * 0.8;
-
-    let angle = Math.atan(yLen / xLen);
-
-    let newX = 0;
-    let newY = 0;
-
-    let right: boolean;
-    if (posFromX < posToX) {
-      right = true;
-    } else {
-      right = false;
-    }
-
-    // draw arrow
-    this.ctx.beginPath();
-    this.ctx.moveTo(posFromX, posFromY);
-
-    if (color != 'green') {
-      this.ctx.lineTo(halfX, halfY);
-
-      if (right) {
-        newX = halfX + 20 * Math.cos(angle + (3 * Math.PI) / 4);
-        newY = halfY + 20 * Math.sin(angle + (3 * Math.PI) / 4);
-      } else {
-        newX = halfX + 20 * Math.cos(angle + Math.PI / 4);
-        newY = halfY + 20 * Math.sin(angle + Math.PI / 4);
-      }
-
-      this.ctx.lineTo(newX, newY);
-      this.ctx.lineTo(halfX, halfY);
-
-      if (right) {
-        newX = halfX + 20 * Math.cos(angle - (3 * Math.PI) / 4);
-        newY = halfY + 20 * Math.sin(angle - (3 * Math.PI) / 4);
-      } else {
-        newX = halfX + 20 * Math.cos(angle - Math.PI / 4);
-        newY = halfY + 20 * Math.sin(angle - Math.PI / 4);
-      }
-
-      this.ctx.lineTo(newX, newY);
-    } else {
-      this.ctx.lineTo(posToX, posToY);
-    }
-
-    this.ctx.stroke();
-
-    this.ctx.strokeStyle = this.colourHexService.getHex('black');
-    this.ctx.lineWidth = 1;
-  }
-
-  drawLine(line: Array<string>): void {
-    const [posFromX, posFromY] = this.layoutService.getPositionOfAgent(
-      'circle' + line[0]
-    );
-    const [posToX, posToY] = this.layoutService.getPositionOfAgent(
-      'circle' + line[1]
-    );
-    let color: string = line[2];
-
-    this.ctx.strokeStyle = this.colourHexService.getHex(color);
-
-    this.ctx.lineWidth = 3;
-
-    this.ctx.beginPath();
-    this.ctx.moveTo(posFromX, posFromY);
-    this.ctx.lineTo(posToX, posToY);
-    this.ctx.stroke();
-
-    this.ctx.strokeStyle = this.colourHexService.getHex('black');
-    this.ctx.lineWidth = 1;
-  }
-
   drawAllPreferences() {
-    this.textRendererService.setFontSize(20);
+    this.textRenderer.setFontSize(20);
 
     let group1PreferenceList: Array<Array<string>> = Object.values(
       this.currentCommand['group1CurrentPreferences']
@@ -156,7 +69,7 @@ export class CanvasService {
 
     for (let i = 1; i < this.algService.numberOfGroup1Agents + 1; i++) {
       const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
-      this.textRendererService.drawText(
+      this.textRenderer.drawText(
         group1PreferenceList[i - 1].join(', '),
         posX - this.lineSizes.get(String(i)) * 2 - 65,
         posY + 7
@@ -180,7 +93,7 @@ export class CanvasService {
       const [posX, posY] = this.layoutService.getPositionOfAgent(
         'circle' + currentLetter
       );
-      this.textRendererService.drawText(
+      this.textRenderer.drawText(
         group2PreferenceList[i - 1].join(', '),
         posX +
           (this.currentCommand['algorithmSpecificData']['hospitalCapacity']
@@ -195,7 +108,7 @@ export class CanvasService {
   }
 
   drawAllPreferences1Group() {
-    this.textRendererService.setFontSize(20);
+    this.textRenderer.setFontSize(20);
 
     let group1PreferenceList: Array<Array<string>> = Object.values(
       this.currentCommand['group1CurrentPreferences']
@@ -211,7 +124,7 @@ export class CanvasService {
 
     for (let i = 1; i < num / 2 + 1; i++) {
       const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
-      this.textRendererService.drawText(
+      this.textRenderer.drawText(
         group1PreferenceList[i - 1].join(', '),
         posX - this.lineSizes.get(String(i)) * 2 - 65,
         posY + 7
@@ -220,7 +133,7 @@ export class CanvasService {
 
     for (let i = num / 2 + 1; i < num + 1; i++) {
       const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
-      this.textRendererService.drawText(
+      this.textRenderer.drawText(
         group1PreferenceList[i - 1].join(', '),
         posX + 65,
         posY + 7
@@ -254,7 +167,7 @@ export class CanvasService {
         'circle' + agent
       );
       if (agent.match(/[A-Z]/i)) {
-        this.textRendererService.drawText(
+        this.textRenderer.drawText(
           group2PreferenceList[agent.charCodeAt(0) - 65].join(', '),
           posX +
             (this.currentCommand['algorithmSpecificData']['hospitalCapacity']
@@ -263,7 +176,7 @@ export class CanvasService {
           posY + 7
         );
       } else {
-        this.textRendererService.drawText(
+        this.textRenderer.drawText(
           group1PreferenceList[agent - 1].join(', '),
           posX - this.lineSizes.get(agent) * 2 - 65,
           posY + 7
@@ -276,7 +189,7 @@ export class CanvasService {
     let hospitalCapacityMap =
       this.currentCommand['algorithmSpecificData']['hospitalCapacity'];
 
-    this.textRendererService.setFontSize(20);
+    this.textRenderer.setFontSize(20);
 
     let currentLetter = 'A';
 
@@ -286,7 +199,7 @@ export class CanvasService {
         'circle' + currentLetter
       );
 
-      this.textRendererService.drawText(
+      this.textRenderer.drawText(
         '(' + String(currentCapacity) + ')',
         posX + 45,
         posY + 7
@@ -347,7 +260,7 @@ export class CanvasService {
       this.ctx.moveTo(posLastX + 85, posLastY + this.radiusOfCircles);
       this.ctx.lineTo(posLastX + 100, posLastY + this.radiusOfCircles);
 
-      this.textRendererService.setFontSize(14);
+      this.textRenderer.setFontSize(14);
 
       // lecturer text
       text =
@@ -358,7 +271,7 @@ export class CanvasService {
           count + 1
         ] +
         ')';
-      this.textRendererService.drawText(
+      this.textRenderer.drawText(
         text,
         centerPos.positionX + 120,
         centerPos.positionY - 20
@@ -367,7 +280,7 @@ export class CanvasService {
       text = String(
         this.currentCommand['algorithmSpecificData']['lecturerRanking'][count]
       );
-      this.textRendererService.drawText(
+      this.textRenderer.drawText(
         text,
         centerPos.positionX + 120,
         centerPos.positionY
@@ -428,7 +341,7 @@ export class CanvasService {
       // draw lines between circles (matches and relations)
       this.layoutService.calculateRoommatePositions(this.canvasElement);
       for (let line of this.currentCommand['currentLines']) {
-        this.drawLine1Group(line);
+        this.lineRenderer.drawLine(line, true);
       }
       this.agentRenderer.drawGroupOneAgents();
     } else {
@@ -438,7 +351,7 @@ export class CanvasService {
         this.currentCommand
       );
       for (let line of this.currentCommand['currentLines']) {
-        this.drawLine(line);
+        this.lineRenderer.drawLine(line);
       }
       this.agentRenderer.drawGroupOneAgents();
       this.agentRenderer.drawGroupTwoAgents();
