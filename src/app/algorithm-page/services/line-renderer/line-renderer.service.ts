@@ -27,7 +27,7 @@ export class LineRendererService {
     this.ctx.lineWidth = this.lineWidth;
   }
 
-  drawLine(line: string[], withArrow: boolean = false): void {
+  public drawLine(line: string[], withArrow: boolean = false): void {
     const [fromX, fromY] = this.layoutService.getPositionOfAgent(
       'circle' + line[0]
     );
@@ -57,7 +57,7 @@ export class LineRendererService {
     const dx = toX - fromX;
     const dy = toY - fromY;
     const angle = Math.atan2(dy, dx);
-    const scalingFactor = this.arrowHeadPullback / Math.sqrt(dx ** 2 + dy ** 2);
+    const scalingFactor = this.arrowHeadPullback / Math.hypot(dx, dy);
     const headX = toX - dx * scalingFactor;
     const headY = toY - dy * scalingFactor;
 
