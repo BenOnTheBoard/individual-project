@@ -35,6 +35,10 @@ export class CanvasService {
       throw new Error('CanvasRenderingContext2D not available');
     }
     this.ctx = ctx;
+    this.updateServiceContexts();
+  }
+
+  private updateServiceContexts(): void {
     this.agentRenderer.setContext(this.ctx);
     this.lineRenderer.setContext(this.ctx);
     this.prefRenderer.setContext(this.ctx);
@@ -48,6 +52,60 @@ export class CanvasService {
 
   initialise() {
     this.prefRenderer.resetFirstRun();
+  }
+
+  private arrangeSRAgents(): void {
+    this.layoutService.calculateRoommatePositions(this.canvasElement);
+    for (let line of this.currentCommand['currentLines']) {
+      this.lineRenderer.drawLine(line, true);
+    }
+    this.agentRenderer.drawGroupOneAgents();
+  }
+
+  private arrangeBipartiteAgents(): void {
+    this.layoutService.calculateBipartitePositions(
+      this.canvasElement,
+      this.currentCommand
+    );
+    for (let line of this.currentCommand['currentLines']) {
+      this.lineRenderer.drawLine(line);
+    }
+    this.agentRenderer.drawGroupOneAgents();
+    this.agentRenderer.drawGroupTwoAgents();
+  }
+
+  private arrangeAgents(isSR: boolean): void {
+    if (isSR) {
+      this.arrangeSRAgents();
+    } else {
+      this.arrangeBipartiteAgents();
+    }
+    this.agentRenderer.selectCircles(
+      this.currentCommand.currentlySelectedAgents
+    );
+  }
+
+  private arrangePreferences(isSR: boolean): void {
+    // ensure that the preference renderer has the correct command
+    // /w .setCurrentCommand before calling this function
+    const hasRelevantPrefs =
+      this.currentCommand.relevantPreferences.length >= 1 &&
+      this.alwaysShowPreferences;
+
+    if (hasRelevantPrefs) {
+      this.prefRenderer.drawRelevantPreferences();
+    } else {
+      if (isSR) {
+        this.prefRenderer.drawAllPreferences1Group();
+      } else {
+        this.prefRenderer.drawAllPreferences();
+      }
+    }
+  }
+
+  private clearCanvas(): void {
+    const elt = this.canvasElement;
+    this.ctx.clearRect(0, 0, elt.width, elt.height);
   }
 
   redrawCanvas(command?: Step): void {
@@ -65,60 +123,24 @@ export class CanvasService {
       this.canvasElement.height = parent.offsetHeight - 20;
     }
 
-    this.ctx.clearRect(
-      0,
-      0,
-      this.canvasElement.width,
-      this.canvasElement.height
-    );
+    this.clearCanvas();
+
     this.prefRenderer.setCurrentCommand(this.currentCommand);
 
-    // if SR Algorithm
-    if (this.currentCommand['algorithmSpecificData']['SR']) {
-      // draw lines between circles (matches and relations)
-      this.layoutService.calculateRoommatePositions(this.canvasElement);
-      for (let line of this.currentCommand['currentLines']) {
-        this.lineRenderer.drawLine(line, true);
-      }
-      this.agentRenderer.drawGroupOneAgents();
-    } else {
-      // draw lines between circles (matches and relations)
-      this.layoutService.calculateBipartitePositions(
-        this.canvasElement,
-        this.currentCommand
-      );
-      for (let line of this.currentCommand['currentLines']) {
-        this.lineRenderer.drawLine(line);
-      }
-      this.agentRenderer.drawGroupOneAgents();
-      this.agentRenderer.drawGroupTwoAgents();
-    }
+    const algData = this.currentCommand.algorithmSpecificData;
+    const isSR = !!algData['SR'];
+    const hasLecturers = !!algData['lecturerCapacity'];
+    const hasProjectsOrHospitals = !!algData['hospitalCapacity'];
 
-    // draw project lecturer Viz
-    if (this.currentCommand['algorithmSpecificData']['lecturerCapacity']) {
-      this.prefRenderer.drawSPAlecturers();
-    }
+    this.arrangeAgents(isSR);
+    this.arrangePreferences(isSR);
 
-    if (this.currentCommand['algorithmSpecificData']['hospitalCapacity']) {
+    if (hasProjectsOrHospitals) {
       this.prefRenderer.drawHospitalCapacity();
     }
 
-    if (
-      this.currentCommand['relevantPreferences'].length >= 1 &&
-      this.alwaysShowPreferences
-    ) {
-      this.prefRenderer.drawRelevantPreferences();
-    } else {
-      // preferences drawn differently for SR
-      if (this.currentCommand['algorithmSpecificData']['SR']) {
-        this.prefRenderer.drawAllPreferences1Group();
-      } else {
-        this.prefRenderer.drawAllPreferences();
-      }
+    if (hasLecturers) {
+      this.prefRenderer.drawSPAlecturers();
     }
-
-    this.agentRenderer.selectCircles(
-      this.currentCommand['currentlySelectedAgents']
-    );
   }
 }
