@@ -104,7 +104,7 @@ export class CanvasService {
 
     // draw project lecturer Viz
     if (this.currentCommand['algorithmSpecificData']['lecturerCapacity']) {
-      this.prefRenderer.drawSPAlecturers(this.currentCommand);
+      this.prefRenderer.drawSPAlecturers();
     }
 
     if (this.currentCommand['algorithmSpecificData']['hospitalCapacity']) {

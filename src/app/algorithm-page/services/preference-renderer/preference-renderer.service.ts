@@ -173,7 +173,7 @@ export class PreferenceRendererService {
     }
   }
 
-  drawSPAlecturers(command: Step) {
+  drawSPAlecturers() {
     this.ctx.strokeStyle = this.colourHexService.getHex('black');
     this.ctx.lineWidth = 1.5;
     this.textRenderer.setFontSize(14);
@@ -183,7 +183,9 @@ export class PreferenceRendererService {
 
     let lecturerNum = 1;
     let text = '';
-    for (let projectList of command.algorithmSpecificData['lecturerProjects']) {
+    for (let projectList of this.cmd.algorithmSpecificData[
+      'lecturerProjects'
+    ]) {
       // get coords
       const first = projectList[0];
       const last = projectList[projectList.length - 1];
@@ -216,7 +218,7 @@ export class PreferenceRendererService {
         'Lecturer' +
         String(lecturerNum) +
         ' (' +
-        command.algorithmSpecificData['lecturerCapacity'][lecturerNum] +
+        this.cmd.algorithmSpecificData['lecturerCapacity'][lecturerNum] +
         ')';
       this.textRenderer.drawText(
         text,
@@ -225,7 +227,7 @@ export class PreferenceRendererService {
       );
 
       text = String(
-        command.algorithmSpecificData['lecturerRanking'][lecturerNum - 1]
+        this.cmd.algorithmSpecificData['lecturerRanking'][lecturerNum - 1]
       );
       this.textRenderer.drawText(text, centerPos.posX + 120, centerPos.posY);
       lecturerNum++;
