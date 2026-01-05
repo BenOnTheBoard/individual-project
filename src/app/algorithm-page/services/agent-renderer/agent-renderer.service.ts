@@ -29,6 +29,10 @@ export class AgentRendererService {
     this.ctx = ctx;
   }
 
+  public getRadiusOfCircles(): number {
+    return this.radius;
+  }
+
   public drawCircle(x: number, y: number, strokeOnly: boolean): void {
     this.ctx.strokeStyle = this.colourHexService.getHex('black');
     this.ctx.lineWidth = this.defaultBorderWidth;
