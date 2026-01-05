@@ -12,19 +12,11 @@ import { Step } from '../../algorithms/interfaces/Step';
   providedIn: 'root',
 })
 export class CanvasService {
-  originalGroup1Preferences: Array<Array<string>>;
-  originalGroup2Preferences: Array<Array<string>>;
-
-  // circle properties
-  radiusOfCircles: number = 30;
-
-  alwaysShowPreferences: boolean = false;
-
   private canvasElement!: HTMLCanvasElement;
+  public alwaysShowPreferences: boolean = false;
+  private ctx: CanvasRenderingContext2D;
+
   public currentCommand: Step;
-  public ctx: CanvasRenderingContext2D;
-  lineSizes: Map<string, number> = new Map();
-  firstRun = true;
 
   constructor(
     public algService: AlgorithmRetrievalService,
@@ -49,13 +41,13 @@ export class CanvasService {
     this.textRenderer.setContext(this.ctx);
   }
 
-  setCommand(command) {
+  setCommand(command: Step) {
     this.currentCommand = command;
     this.redrawCanvas();
   }
 
   initialise() {
-    this.firstRun = true;
+    this.prefRenderer.resetFirstRun();
   }
 
   redrawCanvas(command?: Step): void {
