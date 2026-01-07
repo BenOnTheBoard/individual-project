@@ -36,7 +36,7 @@ describe('AgentRendererService', () => {
     ]);
     mockColourHex = jasmine.createSpyObj('ColourHexService', ['getHex']);
 
-    mockLayoutService.getPositionOfAgent.and.returnValue([100, 200]);
+    mockLayoutService.getPositionOfAgent.and.returnValue({ x: 100, y: 200 });
     mockTextRenderer.setFontSize.and.callFake((size: number) => {});
 
     TestBed.configureTestingModule({
@@ -54,12 +54,12 @@ describe('AgentRendererService', () => {
   });
 
   it('should draw a circle and fill when strokeOnly is false', () => {
-    service.drawCircle(100, 200, false);
+    service.drawCircle({ x: 100, y: 200 }, false);
     expect(mockCtx.fill).toHaveBeenCalled();
   });
 
   it('should draw a circle without fill when strokeOnly is true', () => {
-    service.drawCircle(100, 200, true);
+    service.drawCircle({ x: 100, y: 200 }, true);
     expect(mockCtx.fill).not.toHaveBeenCalled();
   });
 

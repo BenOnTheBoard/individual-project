@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
-
-export interface Position {
-  PosX: number;
-  PosY: number;
-}
+import { Position } from 'src/app/utils/position';
 
 @Injectable({
   providedIn: 'root',
@@ -29,12 +25,12 @@ export class LayoutService {
     return this.positions;
   }
 
-  public getPositionOfAgent(agent: string): [number, number] {
+  public getPositionOfAgent(agent: string): Position {
     const position = this.positions[agent];
     if (!position) {
       throw new Error(`Position not found for agent: ${agent}`);
     }
-    return [position.PosX, position.PosY];
+    return position;
   }
 
   private setCirclePosition(
@@ -49,7 +45,7 @@ export class LayoutService {
     } else if (group == 'RHS') {
       key = 'circle' + String.fromCharCode(index + 64);
     }
-    this.positions[key] = { PosX: x, PosY: y };
+    this.positions[key] = { x: x, y: y };
   }
 
   private getCanvasMetrics(canvas: HTMLCanvasElement): {
@@ -94,7 +90,7 @@ export class LayoutService {
 
     // reset
     this.positions = {
-      middle: { PosX: centreX, PosY: centreY },
+      middle: { x: centreX, y: centreY },
     };
 
     const LHSPosX = currentCommand['algorithmSpecificData']['hospitalCapacity']
@@ -131,7 +127,7 @@ export class LayoutService {
 
     // reset
     this.positions = {
-      middle: { PosX: centreX, PosY: centreY },
+      middle: { x: centreX, y: centreY },
     };
 
     const spacingAngle = (Math.PI * 2) / this.algService.numberOfGroup1Agents;

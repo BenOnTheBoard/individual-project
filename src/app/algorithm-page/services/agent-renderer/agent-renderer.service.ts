@@ -3,6 +3,7 @@ import { AlgorithmRetrievalService } from '../../../algorithm-retrieval.service'
 import { LayoutService } from '../layout/layout.service';
 import { TextRendererService } from '../text-renderer/text-renderer.service';
 import { ColourHexService } from '../colour-hex.service';
+import { Position } from 'src/app/utils/position';
 
 @Injectable({
   providedIn: 'root',
@@ -33,12 +34,12 @@ export class AgentRendererService {
     return this.radius;
   }
 
-  public drawCircle(x: number, y: number, strokeOnly: boolean): void {
+  public drawCircle(pos: Position, strokeOnly: boolean): void {
     this.ctx.strokeStyle = this.colourHexService.getHex('black');
     this.ctx.lineWidth = this.defaultBorderWidth;
 
     this.ctx.beginPath();
-    this.ctx.arc(x, y, this.radius, 0, Math.PI * 2);
+    this.ctx.arc(pos.x, pos.y, this.radius, 0, Math.PI * 2);
     if (!strokeOnly) {
       this.ctx.fill();
     }
@@ -58,9 +59,9 @@ export class AgentRendererService {
     for (let i = 0; i < agentCount; i++) {
       console.log(i);
       const label = labelGenerator(i);
-      const [x, y] = this.layoutService.getPositionOfAgent('circle' + label);
-      this.drawCircle(x, y, false);
-      this.textRenderer.drawText(label, x - offset, y + offset);
+      const pos = this.layoutService.getPositionOfAgent('circle' + label);
+      this.drawCircle(pos, false);
+      this.textRenderer.drawText(label, pos.x - offset, pos.y + offset);
     }
   }
 
@@ -89,8 +90,8 @@ export class AgentRendererService {
     this.ctx.strokeStyle = this.colourHexService.getHex(this.selectionColour);
 
     for (let label of circles) {
-      const [x, y] = this.layoutService.getPositionOfAgent('circle' + label);
-      this.drawCircle(x, y, true);
+      const pos = this.layoutService.getPositionOfAgent('circle' + label);
+      this.drawCircle(pos, true);
     }
 
     this.ctx.lineWidth = originalLineWidth;

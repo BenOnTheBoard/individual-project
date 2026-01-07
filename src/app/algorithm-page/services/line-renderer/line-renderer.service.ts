@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LayoutService } from '../layout/layout.service';
 import { ColourHexService } from '../colour-hex.service';
+import { Position } from 'src/app/utils/position';
 
 @Injectable({
   providedIn: 'root',
@@ -28,51 +29,49 @@ export class LineRendererService {
   }
 
   public drawLine(line: string[], withArrow: boolean = false): void {
-    const [fromX, fromY] = this.layoutService.getPositionOfAgent(
-      'circle' + line[0]
-    );
-    const [toX, toY] = this.layoutService.getPositionOfAgent(
-      'circle' + line[1]
-    );
+    const from = this.layoutService.getPositionOfAgent('circle' + line[0]);
+    const to = this.layoutService.getPositionOfAgent('circle' + line[1]);
     const colour: string = line[2];
 
     this.prepareContext(colour);
 
     this.ctx.beginPath();
-    this.ctx.moveTo(fromX, fromY);
+    this.ctx.moveTo(from.x, from.y);
     if (withArrow && colour != 'green') {
-      this.drawArrowSegment(fromX, fromY, toX, toY);
+      this.drawArrowSegment(from, to);
     } else {
-      this.ctx.lineTo(toX, toY);
+      this.ctx.lineTo(to.x, to.y);
     }
     this.ctx.stroke();
   }
 
-  private drawArrowSegment(
-    fromX: number,
-    fromY: number,
-    toX: number,
-    toY: number
-  ): void {
-    const dx = toX - fromX;
-    const dy = toY - fromY;
+  private polarToCartesian(origin: Position, theta: number): Position {
+    return {
+      x: origin.x + this.arrowSize * Math.cos(theta),
+      y: origin.y + this.arrowSize * Math.sin(theta),
+    };
+  }
+
+  private drawArrowSegment(from: Position, to: Position): void {
+    const dx = to.x - from.x;
+    const dy = to.y - from.y;
     const angle = Math.atan2(dy, dx);
     const scalingFactor = this.arrowHeadPullback / Math.hypot(dx, dy);
-    const headX = toX - dx * scalingFactor;
-    const headY = toY - dy * scalingFactor;
+    const head: Position = {
+      x: to.x - dx * scalingFactor,
+      y: to.y - dy * scalingFactor,
+    };
 
     let theta: number;
-    let arrowX: number;
-    let arrowY: number;
+    let arrowWingEnd: Position;
 
-    this.ctx.lineTo(headX, headY);
+    this.ctx.lineTo(head.x, head.y);
 
     for (const side of [1, -1]) {
       theta = angle + (side * (3 * Math.PI)) / 4;
-      arrowX = headX + this.arrowSize * Math.cos(theta);
-      arrowY = headY + this.arrowSize * Math.sin(theta);
-      this.ctx.moveTo(headX, headY);
-      this.ctx.lineTo(arrowX, arrowY);
+      arrowWingEnd = this.polarToCartesian(head, theta);
+      this.ctx.moveTo(head.x, head.y);
+      this.ctx.lineTo(arrowWingEnd.x, arrowWingEnd.y);
     }
   }
 }

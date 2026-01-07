@@ -47,7 +47,7 @@ describe('LayoutService', () => {
       const command = { algorithmSpecificData: { hospitalCapacity: true } };
       service.calculateBipartitePositions(mockCanvas, command);
 
-      const lhsPos = service.getPositions()['circle1'].PosX;
+      const lhsPos = service.getPositions()['circle1'].x;
       expect(lhsPos).toBeCloseTo(205, 1); // 800 * 0.3 - 35 = 205
     });
 
@@ -95,14 +95,14 @@ describe('LayoutService', () => {
   describe('getPositionOfAgent', () => {
     beforeEach(() => {
       service['positions'] = {
-        testAgent: { PosX: 100, PosY: 200 },
+        testAgent: { x: 100, y: 200 },
       };
     });
 
     it('should return correct coordinates for known agent', () => {
-      const [x, y] = service.getPositionOfAgent('testAgent');
-      expect(x).toBe(100);
-      expect(y).toBe(200);
+      const pos = service.getPositionOfAgent('testAgent');
+      expect(pos.x).toBe(100);
+      expect(pos.y).toBe(200);
     });
 
     it('should throw an error for unknown agent', () => {
