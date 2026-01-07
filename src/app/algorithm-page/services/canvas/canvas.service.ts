@@ -96,9 +96,9 @@ export class CanvasService {
       this.prefRenderer.drawRelevantPreferences();
     } else {
       if (isSR) {
-        this.prefRenderer.drawAllPreferences1Group();
+        this.prefRenderer.drawSRPreferences();
       } else {
-        this.prefRenderer.drawAllPreferences();
+        this.prefRenderer.drawBipartitePreferences();
       }
     }
   }
@@ -136,11 +136,10 @@ export class CanvasService {
     this.arrangePreferences(isSR);
 
     if (hasProjectsOrHospitals) {
-      this.prefRenderer.drawHospitalCapacity();
+      this.prefRenderer.drawCapacities();
     }
-
     if (hasLecturers) {
-      this.prefRenderer.drawSPAlecturers();
+      this.prefRenderer.drawLecturers();
     }
   }
 }

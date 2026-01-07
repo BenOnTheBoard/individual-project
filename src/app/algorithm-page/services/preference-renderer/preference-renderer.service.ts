@@ -48,7 +48,7 @@ export class PreferenceRendererService {
     this.firstRun = true;
   }
 
-  setCurrentCommand(command: Step) {
+  public setCurrentCommand(command: Step): void {
     this.cmd = command;
     if (this.firstRun) {
       this.firstRun = false;
@@ -63,7 +63,7 @@ export class PreferenceRendererService {
     }
   }
 
-  getPreferenceText(agent: string): string {
+  private getPreferenceText(agent: string): string {
     let prefList: String[];
     if (agent.match(/[A-Z]/i)) {
       prefList = this.cmd.group2CurrentPreferences.get(agent);
@@ -73,7 +73,7 @@ export class PreferenceRendererService {
     return prefList.join(', ');
   }
 
-  getOffsetX(group: 'LHS' | 'RHS', agent?: string): number {
+  private getOffsetX(group: 'LHS' | 'RHS', agent?: string): number {
     const isHospital = Boolean(
       this.cmd.algorithmSpecificData['hospitalCapacity']
     );
@@ -87,7 +87,7 @@ export class PreferenceRendererService {
     }
   }
 
-  private drawPreferences(
+  private drawPreferenceList(
     count: number,
     getAgentId: (index: number) => string,
     side: 'LHS' | 'RHS'
@@ -104,16 +104,20 @@ export class PreferenceRendererService {
     }
   }
 
-  drawAllPreferences(): void {
+  public drawBipartitePreferences(): void {
     this.textRenderer.setFontSize(this.prefFontSize);
     const lhsCount = this.algService.numberOfGroup1Agents;
     const rhsCount = this.algService.numberOfGroup2Agents;
 
-    this.drawPreferences(lhsCount, (i) => String(i + 1), 'LHS');
-    this.drawPreferences(rhsCount, (i) => String.fromCharCode(65 + i), 'RHS');
+    this.drawPreferenceList(lhsCount, (i) => String(i + 1), 'LHS');
+    this.drawPreferenceList(
+      rhsCount,
+      (i) => String.fromCharCode(65 + i),
+      'RHS'
+    );
   }
 
-  drawAllPreferences1Group() {
+  public drawSRPreferences(): void {
     // Given agents arranged clockwise from 6 o'clock
     // the first half should have their preferences on their left
     // and the second should have their preferences on their right
@@ -122,21 +126,21 @@ export class PreferenceRendererService {
     const lhsCount = Math.ceil(numAgents / 2);
     const rhsCount = numAgents - lhsCount;
 
-    this.drawPreferences(lhsCount, (i) => String(i + 1), 'LHS');
-    this.drawPreferences(rhsCount, (i) => String(lhsCount + (i + 1)), 'RHS');
+    this.drawPreferenceList(lhsCount, (i) => String(i + 1), 'LHS');
+    this.drawPreferenceList(rhsCount, (i) => String(lhsCount + (i + 1)), 'RHS');
   }
 
-  drawRelevantPreferences() {
+  public drawRelevantPreferences(): void {
     this.textRenderer.setFontSize(this.prefFontSize);
     const relevantPrefs = this.cmd.relevantPreferences;
     const lhsAgents = relevantPrefs.filter((a) => !/[A-Z]/i.test(a));
     const rhsAgents = relevantPrefs.filter((a) => /[A-Z]/i.test(a));
 
-    this.drawPreferences(lhsAgents.length, (i) => lhsAgents[i], 'LHS');
-    this.drawPreferences(rhsAgents.length, (i) => rhsAgents[i], 'RHS');
+    this.drawPreferenceList(lhsAgents.length, (i) => lhsAgents[i], 'LHS');
+    this.drawPreferenceList(rhsAgents.length, (i) => rhsAgents[i], 'RHS');
   }
 
-  drawHospitalCapacity() {
+  public drawCapacities(): void {
     this.textRenderer.setFontSize(this.prefFontSize);
     const hospitalCapacityMap =
       this.cmd.algorithmSpecificData['hospitalCapacity'];
@@ -192,7 +196,7 @@ export class PreferenceRendererService {
     return [posFirst, posLast];
   }
 
-  drawSPAlecturers(): void {
+  public drawLecturers(): void {
     this.ctx.strokeStyle = this.colourHexService.getHex('black');
     this.ctx.lineWidth = this.lecturerBracketWidth;
     this.ctx.beginPath();
