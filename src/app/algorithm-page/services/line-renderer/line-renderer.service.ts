@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { LayoutService } from '../layout/layout.service';
 import { ColourHexService } from '../colour-hex.service';
 import { Position } from 'src/app/utils/position';
+import { UtilsService } from 'src/app/utils/utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,8 @@ export class LineRendererService {
 
   constructor(
     public layoutService: LayoutService,
-    public colourHexService: ColourHexService
+    public colourHexService: ColourHexService,
+    public utils: UtilsService
   ) {}
 
   public setContext(ctx: CanvasRenderingContext2D): void {
@@ -45,13 +47,6 @@ export class LineRendererService {
     this.ctx.stroke();
   }
 
-  private polarToCartesian(origin: Position, theta: number): Position {
-    return {
-      x: origin.x + this.arrowSize * Math.cos(theta),
-      y: origin.y + this.arrowSize * Math.sin(theta),
-    };
-  }
-
   private drawArrowSegment(from: Position, to: Position): void {
     const dx = to.x - from.x;
     const dy = to.y - from.y;
@@ -69,7 +64,7 @@ export class LineRendererService {
 
     for (const side of [1, -1]) {
       theta = angle + (side * (3 * Math.PI)) / 4;
-      arrowWingEnd = this.polarToCartesian(head, theta);
+      arrowWingEnd = this.utils.polarToCartesian(this.arrowSize, theta, head);
       this.ctx.moveTo(head.x, head.y);
       this.ctx.lineTo(arrowWingEnd.x, arrowWingEnd.y);
     }

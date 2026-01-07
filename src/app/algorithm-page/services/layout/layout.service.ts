@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { Position } from 'src/app/utils/position';
+import { UtilsService } from 'src/app/utils/utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,10 @@ export class LayoutService {
 
   private positions: Record<string, Position> = {};
 
-  constructor(public algService: AlgorithmRetrievalService) {}
+  constructor(
+    public algService: AlgorithmRetrievalService,
+    public utils: UtilsService
+  ) {}
 
   public getPositions(): Record<string, Position> {
     return this.positions;
@@ -121,13 +125,6 @@ export class LayoutService {
     }
   }
 
-  private polarToCartesian(origin: Position, theta: number): Position {
-    return {
-      x: origin.x + this.SRRadius * Math.cos(theta),
-      y: origin.y + this.SRRadius * Math.sin(theta),
-    };
-  }
-
   public calculateRoommatePositions(canvas: HTMLCanvasElement) {
     const { canvasMiddle, centre } = this.getCanvasMetrics(canvas);
     const origin = { x: centre.x, y: canvasMiddle };
@@ -139,7 +136,11 @@ export class LayoutService {
     };
 
     for (let i = 0; i < this.algService.numberOfGroup1Agents; i++) {
-      const pos = this.polarToCartesian(origin, spacingAngle * (i + 2));
+      const pos = this.utils.polarToCartesian(
+        this.SRRadius,
+        spacingAngle * (i + 2),
+        origin
+      );
       this.setCirclePosition('SR', i + 1, pos);
     }
   }
