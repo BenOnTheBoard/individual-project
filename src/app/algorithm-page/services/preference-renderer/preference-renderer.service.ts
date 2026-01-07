@@ -5,6 +5,7 @@ import { TextRendererService } from '../text-renderer/text-renderer.service';
 import { Step } from '../../algorithms/interfaces/Step';
 import { ColourHexService } from '../colour-hex.service';
 import { AgentRendererService } from '../agent-renderer/agent-renderer.service';
+import { Position } from 'src/app/utils/position';
 
 @Injectable({
   providedIn: 'root',
@@ -16,10 +17,18 @@ export class PreferenceRendererService {
   private lineSizes: Map<string, number> = new Map();
 
   private readonly prefFontSize = 20;
+  private readonly lecturerFontSize = 14;
+  private readonly lecturerBracketWidth = 1.5;
+
   private readonly defaultOffsetY = 10;
   private readonly defaultOffsetX = 65; // min dist from prefs to centre of circle
+
   private readonly hospitalExtraPrefsOffsetX = 20; // to make space for capacity
   private readonly capacityOffsetX = 45;
+
+  private readonly bracketOffsetX = 85;
+  private readonly bracketWidth = 15;
+  private readonly lecturerOffsetFromBracket = 20;
 
   constructor(
     public algService: AlgorithmRetrievalService,
@@ -62,13 +71,13 @@ export class PreferenceRendererService {
     return prefList.join(', ');
   }
 
-  getOffsetX(group: 'LHS' | 'RHS', idx?: number): number {
+  getOffsetX(group: 'LHS' | 'RHS', agent?: string): number {
     const isHospital = Boolean(
       this.cmd.algorithmSpecificData['hospitalCapacity']
     );
 
     if (group == 'LHS') {
-      return -this.defaultOffsetX - this.lineSizes.get(String(idx));
+      return -this.defaultOffsetX - this.lineSizes.get(agent);
     } else if (isHospital) {
       return this.defaultOffsetX + this.hospitalExtraPrefsOffsetX;
     } else {
@@ -76,79 +85,53 @@ export class PreferenceRendererService {
     }
   }
 
+  private drawPreferences(
+    count: number,
+    getAgentId: (index: number) => string,
+    side: 'LHS' | 'RHS'
+  ): void {
+    for (let i = 0; i < count; i++) {
+      const agent = getAgentId(i);
+      const pos = this.layoutService.getPositionOfAgent('circle' + agent);
+      const offsetX = this.getOffsetX(side, agent);
+      this.textRenderer.drawText(
+        this.getPreferenceText(agent),
+        pos.x + offsetX,
+        pos.y + this.defaultOffsetY
+      );
+    }
+  }
+
   drawAllPreferences(): void {
     this.textRenderer.setFontSize(this.prefFontSize);
+    const lhsCount = this.algService.numberOfGroup1Agents;
+    const rhsCount = this.algService.numberOfGroup2Agents;
 
-    for (let i = 1; i < this.algService.numberOfGroup1Agents + 1; i++) {
-      const agent = String(i);
-      const [posX, posY] = this.layoutService.getPositionOfAgent(
-        'circle' + agent
-      );
-      this.textRenderer.drawText(
-        this.getPreferenceText(agent),
-        posX + this.getOffsetX('LHS', i),
-        posY + this.defaultOffsetY
-      );
-    }
-
-    for (let i = 0; i < this.algService.numberOfGroup2Agents; i++) {
-      const agent = String.fromCharCode(65 + i);
-      const [posX, posY] = this.layoutService.getPositionOfAgent(
-        'circle' + agent
-      );
-      this.textRenderer.drawText(
-        this.getPreferenceText(agent),
-        posX + this.getOffsetX('RHS'),
-        posY + this.defaultOffsetY
-      );
-    }
+    this.drawPreferences(lhsCount, (i) => String(i + 1), 'LHS');
+    this.drawPreferences(rhsCount, (i) => String.fromCharCode(65 + i), 'RHS');
   }
 
   drawAllPreferences1Group() {
+    // Given agents arranged clockwise from 6 o'clock
+    // the first half should have their preferences on their left
+    // and the second should have their preferences on their right
     this.textRenderer.setFontSize(this.prefFontSize);
+    const numAgents = this.algService.numberOfGroup1Agents;
+    const lhsCount = Math.ceil(numAgents / 2);
+    const rhsCount = numAgents - lhsCount;
 
-    const num = this.algService.numberOfGroup1Agents;
-
-    for (let i = 1; i < num / 2 + 1; i++) {
-      const agent = String(i);
-      const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
-      this.textRenderer.drawText(
-        this.getPreferenceText(agent),
-        posX + this.getOffsetX('LHS', i),
-        posY + this.defaultOffsetY
-      );
-    }
-
-    for (let i = num / 2 + 1; i < num + 1; i++) {
-      const agent = String(i);
-      const [posX, posY] = this.layoutService.getPositionOfAgent('circle' + i);
-      this.textRenderer.drawText(
-        this.getPreferenceText(agent),
-        posX + this.getOffsetX('RHS'),
-        posY + this.defaultOffsetY
-      );
-    }
+    this.drawPreferences(lhsCount, (i) => String(i + 1), 'LHS');
+    this.drawPreferences(rhsCount, (i) => String(lhsCount + (i + 1)), 'RHS');
   }
 
   drawRelevantPreferences() {
-    for (let agent of this.cmd.relevantPreferences) {
-      const [posX, posY] = this.layoutService.getPositionOfAgent(
-        'circle' + agent
-      );
-      if (agent.match(/[A-Z]/i)) {
-        this.textRenderer.drawText(
-          this.getPreferenceText(agent),
-          posX + this.getOffsetX('RHS'),
-          posY + this.defaultOffsetY
-        );
-      } else {
-        this.textRenderer.drawText(
-          this.getPreferenceText(agent),
-          posX + this.getOffsetX('LHS', Number(agent)),
-          posY + this.defaultOffsetY
-        );
-      }
-    }
+    this.textRenderer.setFontSize(this.prefFontSize);
+    const relevantPrefs = this.cmd.relevantPreferences;
+    const lhsAgents = relevantPrefs.filter((a) => !/[A-Z]/i.test(a));
+    const rhsAgents = relevantPrefs.filter((a) => /[A-Z]/i.test(a));
+
+    this.drawPreferences(lhsAgents.length, (i) => lhsAgents[i], 'LHS');
+    this.drawPreferences(rhsAgents.length, (i) => rhsAgents[i], 'RHS');
   }
 
   drawHospitalCapacity() {
@@ -161,78 +144,75 @@ export class PreferenceRendererService {
     for (let i = 0; i < this.algService.numberOfGroup2Agents; i++) {
       currentLetter = String.fromCharCode(65 + i);
       currentCapacity = hospitalCapacityMap[currentLetter];
-      const [posX, posY] = this.layoutService.getPositionOfAgent(
+      const pos = this.layoutService.getPositionOfAgent(
         'circle' + currentLetter
       );
 
       this.textRenderer.drawText(
         '(' + String(currentCapacity) + ')',
-        posX + this.capacityOffsetX,
-        posY + this.defaultOffsetY
+        pos.x + this.capacityOffsetX,
+        pos.y + this.defaultOffsetY
       );
     }
   }
 
-  drawSPAlecturers() {
-    this.ctx.strokeStyle = this.colourHexService.getHex('black');
-    this.ctx.lineWidth = 1.5;
-    this.textRenderer.setFontSize(14);
+  private drawBracket(top: Position, bottom: Position): void {
+    // bracket to the right of projects circles
+    const bracketRightOffsetX = this.bracketOffsetX + this.bracketWidth;
     const radiusOfCircles = this.agentRenderer.getRadiusOfCircles();
+    this.ctx.moveTo(top.x + this.bracketOffsetX, top.y - radiusOfCircles);
+    this.ctx.lineTo(top.x + bracketRightOffsetX, top.y - radiusOfCircles);
+    this.ctx.lineTo(bottom.x + bracketRightOffsetX, bottom.y + radiusOfCircles);
+    this.ctx.lineTo(bottom.x + this.bracketOffsetX, bottom.y + radiusOfCircles);
+    this.ctx.stroke();
+  }
 
+  private drawLecturerText(lecturerNum: number, location: Position): void {
+    const lecturerCapacity = this.cmd.algorithmSpecificData['lecturerCapacity'];
+    const lecturerRanking = this.cmd.algorithmSpecificData['lecturerRanking'];
+    const lecturerText = `Lecturer ${String(lecturerNum)} (${
+      lecturerCapacity[lecturerNum]
+    })\n${String(lecturerRanking[lecturerNum - 1])}`;
+    this.textRenderer.drawText(lecturerText, location.x, location.y);
+  }
+
+  private getProjectPositions(projectList: string[]): [Position, Position] {
+    const first = projectList[0];
+    const last = projectList[projectList.length - 1];
+    const firstProject = String(first[first.length - 1]);
+    const lastProject = String(last[last.length - 1]);
+    const posFirst = this.layoutService.getPositionOfAgent(
+      'circle' + firstProject
+    );
+    const posLast = this.layoutService.getPositionOfAgent(
+      'circle' + lastProject
+    );
+    return [posFirst, posLast];
+  }
+
+  drawSPAlecturers(): void {
+    this.ctx.strokeStyle = this.colourHexService.getHex('black');
+    this.ctx.lineWidth = this.lecturerBracketWidth;
     this.ctx.beginPath();
+    this.textRenderer.setFontSize(this.lecturerFontSize);
 
-    let lecturerNum = 1;
-    let text = '';
-    for (let projectList of this.cmd.algorithmSpecificData[
-      'lecturerProjects'
-    ]) {
-      // get coords
-      const first = projectList[0];
-      const last = projectList[projectList.length - 1];
-      const firstProjectLetter = first.slice(-1)[0];
-      const lastProjectLetter = last.slice(-1)[0];
+    const lecturerProjects = this.cmd.algorithmSpecificData['lecturerProjects'];
 
-      const [posFirstX, posFirstY] = this.layoutService.getPositionOfAgent(
-        'circle' + String(firstProjectLetter)
-      );
-      const [posLastX, posLastY] = this.layoutService.getPositionOfAgent(
-        'circle' + String(lastProjectLetter)
-      );
-
-      const centerPos = {
-        posX: posFirstX,
-        posY: (posLastY + posFirstY) / 2 + 10,
+    lecturerProjects.forEach((projectList: string[], idx: number) => {
+      const lecturerNum = idx + 1;
+      const [posFirst, posLast] = this.getProjectPositions(projectList);
+      const centralY = (posLast.y + posFirst.y) / 2;
+      const lecturerOffsetX =
+        this.bracketOffsetX +
+        this.bracketWidth +
+        this.lecturerOffsetFromBracket;
+      const lecturerTextPos = {
+        x: posFirst.x + lecturerOffsetX,
+        y: centralY - this.lecturerFontSize / 2,
       };
 
-      // bracket lines, around project circles
-      this.ctx.moveTo(posFirstX + 85, posFirstY - radiusOfCircles);
-      this.ctx.lineTo(posFirstX + 100, posFirstY - radiusOfCircles);
-
-      this.ctx.lineTo(posLastX + 100, posLastY + radiusOfCircles);
-
-      this.ctx.moveTo(posLastX + 85, posLastY + radiusOfCircles);
-      this.ctx.lineTo(posLastX + 100, posLastY + radiusOfCircles);
-
-      // lecturer text
-      text =
-        'Lecturer' +
-        String(lecturerNum) +
-        ' (' +
-        this.cmd.algorithmSpecificData['lecturerCapacity'][lecturerNum] +
-        ')';
-      this.textRenderer.drawText(
-        text,
-        centerPos.posX + 120,
-        centerPos.posY - 20
-      );
-
-      text = String(
-        this.cmd.algorithmSpecificData['lecturerRanking'][lecturerNum - 1]
-      );
-      this.textRenderer.drawText(text, centerPos.posX + 120, centerPos.posY);
-      lecturerNum++;
-    }
-
-    this.ctx.stroke();
+      this.drawBracket(posFirst, posLast);
+      this.drawLecturerText(lecturerNum, lecturerTextPos);
+    });
   }
 }
