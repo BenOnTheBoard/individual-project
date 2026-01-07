@@ -166,6 +166,7 @@ export class PreferenceRendererService {
     // bracket to the right of projects circles
     const bracketRightOffsetX = this.bracketOffsetX + this.bracketWidth;
     const radiusOfCircles = this.agentRenderer.getRadiusOfCircles();
+    this.ctx.beginPath();
     this.ctx.moveTo(top.x + this.bracketOffsetX, top.y - radiusOfCircles);
     this.ctx.lineTo(top.x + bracketRightOffsetX, top.y - radiusOfCircles);
     this.ctx.lineTo(bottom.x + bracketRightOffsetX, bottom.y + radiusOfCircles);
@@ -199,7 +200,6 @@ export class PreferenceRendererService {
   public drawLecturers(): void {
     this.ctx.strokeStyle = this.colourHexService.getHex('black');
     this.ctx.lineWidth = this.lecturerBracketWidth;
-    this.ctx.beginPath();
     this.textRenderer.setFontSize(this.lecturerFontSize);
 
     const lecturerProjects = this.cmd.algorithmSpecificData['lecturerProjects'];
