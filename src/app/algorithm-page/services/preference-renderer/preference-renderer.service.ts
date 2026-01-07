@@ -6,6 +6,7 @@ import { Step } from '../../algorithms/interfaces/Step';
 import { ColourHexService } from '../colour-hex.service';
 import { AgentRendererService } from '../agent-renderer/agent-renderer.service';
 import { Position } from 'src/app/utils/position';
+import { UtilsService } from 'src/app/utils/utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -35,7 +36,8 @@ export class PreferenceRendererService {
     public agentRenderer: AgentRendererService,
     public layoutService: LayoutService,
     public textRenderer: TextRendererService,
-    public colourHexService: ColourHexService
+    public colourHexService: ColourHexService,
+    public utils: UtilsService
   ) {}
 
   setContext(ctx: CanvasRenderingContext2D): void {
@@ -179,8 +181,8 @@ export class PreferenceRendererService {
   private getProjectPositions(projectList: string[]): [Position, Position] {
     const first = projectList[0];
     const last = projectList[projectList.length - 1];
-    const firstProject = String(first[first.length - 1]);
-    const lastProject = String(last[last.length - 1]);
+    const firstProject = this.utils.getLastChar(first);
+    const lastProject = this.utils.getLastChar(last);
     const posFirst = this.layoutService.getPositionOfAgent(
       'circle' + firstProject
     );
