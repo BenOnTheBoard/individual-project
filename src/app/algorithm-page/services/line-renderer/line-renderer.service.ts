@@ -26,7 +26,7 @@ export class LineRendererService {
     this.ctx = ctx;
   }
 
-  private prepareContext(colour: string) {
+  private prepareContext(colour: string): void {
     this.ctx.strokeStyle = this.colourHexService.getHex(colour);
     this.ctx.lineWidth = this.lineWidth;
   }

@@ -28,7 +28,7 @@ export class CanvasService {
     public colourHexService: ColourHexService
   ) {}
 
-  setCanvas(canvasRef: ElementRef<HTMLCanvasElement>): void {
+  public setCanvas(canvasRef: ElementRef<HTMLCanvasElement>): void {
     this.canvasElement = canvasRef.nativeElement;
     const ctx = this.canvasElement.getContext('2d');
     if (!ctx) {
@@ -45,17 +45,17 @@ export class CanvasService {
     this.textRenderer.setContext(this.ctx);
   }
 
-  setCommand(command: Step) {
+  public setCommand(command: Step): void {
     this.currentCommand = command;
     this.redrawCanvas();
   }
 
-  initialise() {
+  public initialise(): void {
     this.prefRenderer.resetFirstRun();
   }
 
   private arrangeSRAgents(): void {
-    this.layoutService.calculateRoommatePositions(this.canvasElement);
+    this.layoutService.calculateSRPositions(this.canvasElement);
     for (let line of this.currentCommand['currentLines']) {
       this.lineRenderer.drawLine(line, true);
     }

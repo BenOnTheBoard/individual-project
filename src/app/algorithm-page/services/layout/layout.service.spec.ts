@@ -70,10 +70,10 @@ describe('LayoutService', () => {
     });
   });
 
-  describe('calculateRoommatePositions', () => {
+  describe('calculateSRPositions', () => {
     it('should place agents in a circular layout', () => {
       mockAlgService.numberOfGroup1Agents = 4;
-      service.calculateRoommatePositions(mockCanvas);
+      service.calculateSRPositions(mockCanvas);
 
       const positions = service.getPositions();
       expect(Object.keys(positions).length).toBe(5);
@@ -86,9 +86,7 @@ describe('LayoutService', () => {
 
     it('should handle zero agents gracefully', () => {
       mockAlgService.numberOfGroup1Agents = 0;
-      expect(() =>
-        service.calculateRoommatePositions(mockCanvas)
-      ).not.toThrow();
+      expect(() => service.calculateSRPositions(mockCanvas)).not.toThrow();
     });
   });
 

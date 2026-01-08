@@ -41,7 +41,7 @@ export class LayoutService {
     group: 'LHS' | 'RHS' | 'SR',
     index: number,
     pos: Position
-  ) {
+  ): void {
     let key: string;
     if (group == 'LHS' || group == 'SR') {
       key = 'circle' + index;
@@ -77,7 +77,7 @@ export class LayoutService {
   public calculateBipartitePositions(
     canvas: HTMLCanvasElement,
     currentCommand: Object
-  ) {
+  ): void {
     const LHSHeightOffset =
       this.heightOffsetMap.get(this.algService.numberOfGroup1Agents) || 0;
     const RHSHeightOffset =
@@ -125,7 +125,7 @@ export class LayoutService {
     }
   }
 
-  public calculateRoommatePositions(canvas: HTMLCanvasElement) {
+  public calculateSRPositions(canvas: HTMLCanvasElement): void {
     const { canvasMiddle, centre } = this.getCanvasMetrics(canvas);
     const origin = { x: centre.x, y: canvasMiddle };
     const spacingAngle = (Math.PI * 2) / this.algService.numberOfGroup1Agents;
