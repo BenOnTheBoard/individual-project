@@ -16,7 +16,7 @@ export class TextRendererService {
   private readonly endChar = 256;
 
   private font = 'Arial';
-  private sizes: Array<number> = [];
+  private charSizes: number[] = [];
   private fontSize?: number;
 
   private ctx?: CanvasRenderingContext2D;
@@ -32,7 +32,7 @@ export class TextRendererService {
     // precompute width ratios
     for (let i = this.startChar; i < this.endChar; i++) {
       const char = String.fromCharCode(i);
-      this.sizes[i - this.startChar] =
+      this.charSizes[i - this.startChar] =
         this.ctx.measureText(char).width / fontSize;
     }
   }
@@ -58,7 +58,7 @@ export class TextRendererService {
     }
 
     const xStart = state.pos.x;
-    const stack: string[] = [];
+    const colourStack: string[] = [];
     let subText = '';
     let width = 0;
 
@@ -76,7 +76,7 @@ export class TextRendererService {
 
       if (!'{}\n'.includes(ch)) {
         subText += ch;
-        width += this.sizes[charCode - this.startChar] * this.fontSize;
+        width += this.charSizes[charCode - this.startChar] * this.fontSize;
       } else {
         if (subText.length > 0) {
           this.renderTextSegment(subText, state);
@@ -92,20 +92,20 @@ export class TextRendererService {
             break;
 
           case '{':
-            stack.push(state.colour);
+            colourStack.push(state.colour);
             i++;
             const next = text[i];
             if (next === '#') {
-              const candidate = text.substring(i, i + 7);
-              if (/^#[0-9A-Fa-f]{6}$/.test(candidate)) {
-                state.colour = candidate;
+              const hexCandidate = text.substring(i, i + 7);
+              if (/^#[0-9A-Fa-f]{6}$/.test(hexCandidate)) {
+                state.colour = hexCandidate;
                 i += 6;
               }
             }
             break;
 
           case '}':
-            const prevColour = stack.pop();
+            const prevColour = colourStack.pop();
             if (prevColour) {
               state.colour = prevColour;
             }
