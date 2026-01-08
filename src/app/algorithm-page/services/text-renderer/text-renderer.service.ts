@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ColourHexService } from '../colour-hex.service';
+import { Position } from 'src/app/utils/position';
 
 interface TextRenderState {
   colour: string;
-  x: number;
-  y: number;
+  pos: Position;
 }
 
 @Injectable({
@@ -45,7 +45,7 @@ export class TextRendererService {
   private renderTextSegment(text: string, state: TextRenderState): void {
     this.ctx.save();
     this.ctx.fillStyle = state.colour;
-    this.ctx.translate(state.x, state.y);
+    this.ctx.translate(state.pos.x, state.pos.y);
     this.ctx.fillText(text, 0, 0);
     this.ctx.restore();
   }
@@ -57,7 +57,7 @@ export class TextRendererService {
       throw new Error('Context not provided.');
     }
 
-    const xStart = state.x;
+    const xStart = state.pos.x;
     const stack: string[] = [];
     let subText = '';
     let width = 0;
@@ -80,15 +80,15 @@ export class TextRendererService {
       } else {
         if (subText.length > 0) {
           this.renderTextSegment(subText, state);
-          state.x += width;
+          state.pos.x += width;
           subText = '';
           width = 0;
         }
 
         switch (ch) {
           case '\n':
-            state.x = xStart;
-            state.y += this.fontSize;
+            state.pos.x = xStart;
+            state.pos.y += this.fontSize;
             break;
 
           case '{':
@@ -119,18 +119,12 @@ export class TextRendererService {
     }
   }
 
-  public drawText(
-    text: string,
-    x: number,
-    y: number,
-    colour: string = 'black'
-  ): void {
+  public drawText(text: string, pos: Position, colour: string = 'black'): void {
     // fallback prevents crashes from invalid caller input
     const fontColour = this.colourHexService.getHex(colour) || '#000000';
     const newRenderState: TextRenderState = {
       colour: fontColour,
-      x,
-      y,
+      pos,
     };
     this.drawTextFromState(text, newRenderState);
   }
