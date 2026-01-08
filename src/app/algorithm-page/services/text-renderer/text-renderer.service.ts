@@ -93,13 +93,11 @@ export class TextRendererService {
 
           case '{':
             colourStack.push(state.colour);
-            i++;
-            const next = text[i];
-            if (next === '#') {
-              const hexCandidate = text.substring(i, i + 7);
+            if (text[i + 1] === '#') {
+              const hexCandidate = text.substring(i + 1, i + 8);
               if (/^#[0-9A-Fa-f]{6}$/.test(hexCandidate)) {
                 state.colour = hexCandidate;
-                i += 6;
+                i += 7;
               }
             }
             break;
