@@ -22,7 +22,7 @@ describe('TextRendererService', () => {
   });
 
   it('should draw simple text', () => {
-    service.drawText('Hello', 10, 20);
+    service.drawText('Hello', { x: 10, y: 20 });
 
     expect(mockCtx.fillStyle).toBe('#000000');
     expect(mockCtx.translate).toHaveBeenCalledWith(10, 20);
@@ -30,15 +30,15 @@ describe('TextRendererService', () => {
   });
 
   it('should write in specified colours', () => {
-    service.drawText('Test', 0, 0, 'red');
+    service.drawText('Test', { x: 0, y: 0 }, 'red');
     expect(mockCtx.fillStyle).toBe('#EB2A2A');
   });
 
   it('should handle newlines', () => {
+    const pos = { x: 0, y: 0 };
     service.drawTextFromState('Line1\nLine2', {
       colour: '#000000',
-      x: 0,
-      y: 0,
+      pos,
     });
 
     expect(mockCtx.translate).toHaveBeenCalledTimes(2);
@@ -49,10 +49,10 @@ describe('TextRendererService', () => {
   });
 
   it('should parse internal bracketed hex colors', () => {
+    const pos = { x: 0, y: 0 };
     service.drawTextFromState('Text {#FF0000}red', {
       colour: '#000000',
-      x: 0,
-      y: 0,
+      pos,
     });
 
     expect(mockCtx.fillText).toHaveBeenCalledWith('red', 0, 0);

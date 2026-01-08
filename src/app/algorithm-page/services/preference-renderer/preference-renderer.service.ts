@@ -96,11 +96,8 @@ export class PreferenceRendererService {
       const agent = getAgentId(i);
       const pos = this.layoutService.getPositionOfAgent('circle' + agent);
       const offsetX = this.getOffsetX(side, agent);
-      this.textRenderer.drawText(
-        this.getPreferenceText(agent),
-        pos.x + offsetX,
-        pos.y + this.defaultOffsetY
-      );
+      const textPos = { x: pos.x + offsetX, y: pos.y + this.defaultOffsetY };
+      this.textRenderer.drawText(this.getPreferenceText(agent), textPos);
     }
   }
 
@@ -153,12 +150,11 @@ export class PreferenceRendererService {
       const pos = this.layoutService.getPositionOfAgent(
         'circle' + currentLetter
       );
-
-      this.textRenderer.drawText(
-        '(' + String(currentCapacity) + ')',
-        pos.x + this.capacityOffsetX,
-        pos.y + this.defaultOffsetY
-      );
+      const textPos = {
+        x: pos.x + this.capacityOffsetX,
+        y: pos.y + this.defaultOffsetY,
+      };
+      this.textRenderer.drawText('(' + String(currentCapacity) + ')', textPos);
     }
   }
 
@@ -180,7 +176,7 @@ export class PreferenceRendererService {
     const lecturerText = `Lecturer ${String(lecturerNum)} (${
       lecturerCapacity[lecturerNum]
     })\n${String(lecturerRanking[lecturerNum - 1])}`;
-    this.textRenderer.drawText(lecturerText, location.x, location.y);
+    this.textRenderer.drawText(lecturerText, location);
   }
 
   private getProjectPositions(projectList: string[]): [Position, Position] {

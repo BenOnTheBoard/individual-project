@@ -59,7 +59,11 @@ export class AgentRendererService {
       const label = labelGenerator(i);
       const pos = this.layoutService.getPositionOfAgent('circle' + label);
       this.drawCircle(pos, false);
-      this.textRenderer.drawText(label, pos.x - offset, pos.y + offset);
+      const textPos = {
+        x: pos.x - offset,
+        y: pos.y + offset,
+      };
+      this.textRenderer.drawText(label, textPos);
     }
   }
 
