@@ -55,9 +55,7 @@ export class AgentRendererService {
     this.textRenderer.setFontSize(this.radius);
     const offset = (this.radius * Math.sqrt(2)) / 4;
 
-    console.log(agentCount);
     for (let i = 0; i < agentCount; i++) {
-      console.log(i);
       const label = labelGenerator(i);
       const pos = this.layoutService.getPositionOfAgent('circle' + label);
       this.drawCircle(pos, false);
