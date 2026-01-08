@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
-
-export interface Position {
-  PosX: number;
-  PosY: number;
-}
+import { Position } from 'src/app/utils/position';
+import { UtilsService } from 'src/app/utils/utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,25 +20,27 @@ export class LayoutService {
 
   private positions: Record<string, Position> = {};
 
-  constructor(public algService: AlgorithmRetrievalService) {}
+  constructor(
+    public algService: AlgorithmRetrievalService,
+    public utils: UtilsService
+  ) {}
 
   public getPositions(): Record<string, Position> {
     return this.positions;
   }
 
-  public getPositionOfAgent(agent: string): [number, number] {
+  public getPositionOfAgent(agent: string): Position {
     const position = this.positions[agent];
     if (!position) {
       throw new Error(`Position not found for agent: ${agent}`);
     }
-    return [position.PosX, position.PosY];
+    return position;
   }
 
   private setCirclePosition(
     group: 'LHS' | 'RHS' | 'SR',
     index: number,
-    x: number,
-    y: number
+    pos: Position
   ) {
     let key: string;
     if (group == 'LHS' || group == 'SR') {
@@ -49,29 +48,29 @@ export class LayoutService {
     } else if (group == 'RHS') {
       key = 'circle' + String.fromCharCode(index + 64);
     }
-    this.positions[key] = { PosX: x, PosY: y };
+    this.positions[key] = { x: pos.x, y: pos.y };
   }
 
   private getCanvasMetrics(canvas: HTMLCanvasElement): {
     effectiveWidth: number;
     effectiveHeight: number;
     canvasMiddle: number;
-    centreX: number;
-    centreY: number;
+    centre: Position;
   } {
     const { width, height } = canvas;
     const effectiveHeight = height * (1 - this.yMargin);
     const effectiveWidth = width * (1 - this.xMargin);
     const canvasMiddle = effectiveHeight / 2 + this.canvasYOffset;
-    const centreX = effectiveWidth / 2 + width * this.centreXOffsetPercentage;
-    const centreY = effectiveHeight / 2;
+    const centre = {
+      x: effectiveWidth / 2 + width * this.centreXOffsetPercentage,
+      y: effectiveHeight / 2,
+    };
 
     return {
       effectiveWidth,
       effectiveHeight,
       canvasMiddle,
-      centreX,
-      centreY,
+      centre,
     };
   }
 
@@ -84,18 +83,13 @@ export class LayoutService {
     const RHSHeightOffset =
       this.heightOffsetMap.get(this.algService.numberOfGroup2Agents) || 0;
 
-    const { effectiveWidth, effectiveHeight, canvasMiddle, centreX, centreY } =
+    const { effectiveWidth, effectiveHeight, canvasMiddle, centre } =
       this.getCanvasMetrics(canvas);
 
     const LHSCircleSpacing =
       effectiveHeight / this.algService.numberOfGroup1Agents + LHSHeightOffset;
     const RHSCircleSpacing =
       effectiveHeight / this.algService.numberOfGroup2Agents + RHSHeightOffset;
-
-    // reset
-    this.positions = {
-      middle: { PosX: centreX, PosY: centreY },
-    };
 
     const LHSPosX = currentCommand['algorithmSpecificData']['hospitalCapacity']
       ? canvas.width * this.xMargin - this.hospitalCapacityOffset
@@ -105,43 +99,49 @@ export class LayoutService {
     const middleIdxLHS = (this.algService.numberOfGroup1Agents - 1) / 2;
     const middleIdxRHS = (this.algService.numberOfGroup2Agents - 1) / 2;
 
+    // reset
+    this.positions = {
+      middle: { x: centre.x, y: centre.y },
+    };
+
     // LHS Positions
     for (let i = 0; i < this.algService.numberOfGroup1Agents; i++) {
       const offset = i - middleIdxLHS;
-      const newPosY = canvasMiddle + offset * LHSCircleSpacing;
-      this.setCirclePosition('LHS', i + 1, LHSPosX, newPosY);
+      const newPos = {
+        x: LHSPosX,
+        y: canvasMiddle + offset * LHSCircleSpacing,
+      };
+      this.setCirclePosition('LHS', i + 1, newPos);
     }
 
     // RHS Circles
     for (let i = 0; i < this.algService.numberOfGroup2Agents; i++) {
       const offset = i - middleIdxRHS;
-      const newPosY = canvasMiddle + offset * RHSCircleSpacing;
-      this.setCirclePosition('RHS', i + 1, RHSPosX, newPosY);
+      const newPos = {
+        x: RHSPosX,
+        y: canvasMiddle + offset * RHSCircleSpacing,
+      };
+      this.setCirclePosition('RHS', i + 1, newPos);
     }
   }
 
-  private polarToCartesian(r: number, theta: number): [number, number] {
-    const x = r * Math.cos(theta);
-    const y = r * Math.sin(theta);
-    return [x, y];
-  }
-
   public calculateRoommatePositions(canvas: HTMLCanvasElement) {
-    const { canvasMiddle, centreX, centreY } = this.getCanvasMetrics(canvas);
+    const { canvasMiddle, centre } = this.getCanvasMetrics(canvas);
+    const origin = { x: centre.x, y: canvasMiddle };
+    const spacingAngle = (Math.PI * 2) / this.algService.numberOfGroup1Agents;
 
     // reset
     this.positions = {
-      middle: { PosX: centreX, PosY: centreY },
+      middle: { x: centre.x, y: centre.y },
     };
 
-    const spacingAngle = (Math.PI * 2) / this.algService.numberOfGroup1Agents;
-
     for (let i = 0; i < this.algService.numberOfGroup1Agents; i++) {
-      const [x, y] = this.polarToCartesian(
+      const pos = this.utils.polarToCartesian(
         this.SRRadius,
-        spacingAngle * (i + 2)
+        spacingAngle * (i + 2),
+        origin
       );
-      this.setCirclePosition('SR', i + 1, x + centreX, y + canvasMiddle);
+      this.setCirclePosition('SR', i + 1, pos);
     }
   }
 }

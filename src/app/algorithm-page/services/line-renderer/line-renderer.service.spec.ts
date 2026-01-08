@@ -36,10 +36,10 @@ describe('LineRendererService', () => {
 
     mockLayoutService.getPositionOfAgent
       .withArgs('circle1')
-      .and.returnValue([0, 0]);
+      .and.returnValue({ x: 0, y: 0 });
     mockLayoutService.getPositionOfAgent
       .withArgs('circleA')
-      .and.returnValue([100, 100]);
+      .and.returnValue({ x: 100, y: 100 });
   });
 
   it('draws a line when withArrow is false', () => {
