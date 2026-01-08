@@ -13,6 +13,7 @@ export class LineRendererService {
   // arrow head shouldn't be under a circle
   // so we pull it back a little, diag px
   private readonly arrowHeadPullback = 35;
+  private readonly arrowWingAngle = (3 * Math.PI) / 4; // from pointing direction
   private ctx: CanvasRenderingContext2D;
 
   constructor(
@@ -48,6 +49,8 @@ export class LineRendererService {
   }
 
   private drawArrowSegment(from: Position, to: Position): void {
+    // assumes this.ctx.beginPath was called as in drawLine
+    // does not call this.ctx.stroke assuming this is done as in drawLine
     const dx = to.x - from.x;
     const dy = to.y - from.y;
     const angle = Math.atan2(dy, dx);
@@ -63,7 +66,7 @@ export class LineRendererService {
     this.ctx.lineTo(head.x, head.y);
 
     for (const side of [1, -1]) {
-      theta = angle + (side * (3 * Math.PI)) / 4;
+      theta = angle + side * this.arrowWingAngle;
       arrowWingEnd = this.utils.polarToCartesian(this.arrowSize, theta, head);
       this.ctx.moveTo(head.x, head.y);
       this.ctx.lineTo(arrowWingEnd.x, arrowWingEnd.y);
