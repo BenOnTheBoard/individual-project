@@ -11,9 +11,10 @@ interface TextRenderState {
   providedIn: 'root',
 })
 export class TextRendererService {
-  // start and end of supported chars
+  // start and end of supported chars, not inc. specials
   private readonly startChar = 32;
   private readonly endChar = 256;
+  private readonly supportedSpecialChars = '{}\n';
 
   private font = 'Arial';
   private charSizes: number[] = [];
@@ -68,13 +69,13 @@ export class TextRendererService {
 
       // we don't support it, skip
       if (
-        !'{}\n'.includes(ch) &&
+        !this.supportedSpecialChars.includes(ch) &&
         (charCode < this.startChar || charCode >= this.endChar)
       ) {
         continue;
       }
 
-      if (!'{}\n'.includes(ch)) {
+      if (!this.supportedSpecialChars.includes(ch)) {
         subText += ch;
         width += this.charSizes[charCode - this.startChar] * this.fontSize;
       } else {
