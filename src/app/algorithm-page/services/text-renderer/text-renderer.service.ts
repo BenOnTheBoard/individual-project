@@ -24,7 +24,7 @@ export class TextRendererService {
 
   constructor(public colourHexService: ColourHexService) {}
 
-  setFontSize(fontSize: number): void {
+  public setFontSize(fontSize: number): void {
     if (!this.ctx) {
       return;
     }
@@ -53,7 +53,7 @@ export class TextRendererService {
 
   // FROM: https://stackoverflow.com/questions/43904201/how-can-i-colour-different-words-in-the-same-line-with-html5-canvas
   // adapted for use in this project
-  public drawTextFromState(text: string, state: TextRenderState): void {
+  private drawTextFromState(text: string, state: TextRenderState): void {
     if (!this.ctx) {
       throw new Error('Context not provided.');
     }
