@@ -104,7 +104,6 @@ export class LayoutService {
       middle: { x: centre.x, y: centre.y },
     };
 
-    // LHS Positions
     for (let i = 0; i < this.algService.numberOfGroup1Agents; i++) {
       const offset = i - middleIdxLHS;
       const newPos = {
@@ -114,7 +113,6 @@ export class LayoutService {
       this.setCirclePosition('LHS', i + 1, newPos);
     }
 
-    // RHS Circles
     for (let i = 0; i < this.algService.numberOfGroup2Agents; i++) {
       const offset = i - middleIdxRHS;
       const newPos = {

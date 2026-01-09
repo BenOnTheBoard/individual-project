@@ -10,9 +10,7 @@ import { UtilsService } from 'src/app/utils/utils.service';
 export class LineRendererService {
   private readonly lineWidth = 3;
   private readonly arrowSize = 20;
-  // arrow head shouldn't be under a circle
-  // so we pull it back a little, diag px
-  private readonly arrowHeadPullback = 35;
+  private readonly arrowHeadPullback = 35; // diag. px. arrow head shouldn't be under a circle
   private readonly arrowWingAngle = (3 * Math.PI) / 4; // from pointing direction
   private ctx: CanvasRenderingContext2D;
 
@@ -34,21 +32,20 @@ export class LineRendererService {
   public drawLine(line: string[], withArrow: boolean = false): void {
     const from = this.layoutService.getPositionOfAgent('circle' + line[0]);
     const to = this.layoutService.getPositionOfAgent('circle' + line[1]);
-    const colour: string = line[2];
-
+    const colour = line[2];
     this.prepareContext(colour);
 
     this.ctx.beginPath();
     this.ctx.moveTo(from.x, from.y);
     if (withArrow && colour != 'green') {
-      this.drawArrowSegment(from, to);
+      this.drawArrowWings(from, to);
     } else {
       this.ctx.lineTo(to.x, to.y);
     }
     this.ctx.stroke();
   }
 
-  private drawArrowSegment(from: Position, to: Position): void {
+  private drawArrowWings(from: Position, to: Position): void {
     // assumes this.ctx.beginPath was called as in drawLine
     // does not call this.ctx.stroke assuming this is done as in drawLine
     const dx = to.x - from.x;
@@ -60,16 +57,12 @@ export class LineRendererService {
       y: to.y - dy * scalingFactor,
     };
 
-    let theta: number;
-    let arrowWingEnd: Position;
-
     this.ctx.lineTo(head.x, head.y);
-
     for (const side of [1, -1]) {
-      theta = angle + side * this.arrowWingAngle;
-      arrowWingEnd = this.utils.polarToCartesian(this.arrowSize, theta, head);
+      const theta = angle + side * this.arrowWingAngle;
+      const wingEnd = this.utils.polarToCartesian(this.arrowSize, theta, head);
       this.ctx.moveTo(head.x, head.y);
-      this.ctx.lineTo(arrowWingEnd.x, arrowWingEnd.y);
+      this.ctx.lineTo(wingEnd.x, wingEnd.y);
     }
   }
 }
