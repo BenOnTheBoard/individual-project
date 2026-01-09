@@ -35,14 +35,14 @@ export class AgentRendererService {
   }
 
   public drawCircle(pos: Position, strokeOnly: boolean): void {
-    this.ctx.strokeStyle = this.colourHexService.getHex('black');
-    this.ctx.lineWidth = this.defaultBorderWidth;
+    if (!strokeOnly) {
+      this.ctx.strokeStyle = this.colourHexService.getHex('black');
+      this.ctx.lineWidth = this.defaultBorderWidth;
+    }
 
     this.ctx.beginPath();
     this.ctx.arc(pos.x, pos.y, this.radius, 0, Math.PI * 2);
-    if (!strokeOnly) {
-      this.ctx.fill();
-    }
+    if (!strokeOnly) this.ctx.fill();
     this.ctx.stroke();
   }
 
@@ -84,10 +84,6 @@ export class AgentRendererService {
   }
 
   public selectCircles(circles: string[]) {
-    let originalLineWidth: number = this.ctx.lineWidth;
-    let originalStrokeStyle: string | CanvasGradient | CanvasPattern =
-      this.ctx.strokeStyle;
-
     this.ctx.lineWidth = this.selectionBorderWidth;
     this.ctx.strokeStyle = this.colourHexService.getHex(this.selectionColour);
 
@@ -95,8 +91,5 @@ export class AgentRendererService {
       const pos = this.layoutService.getPositionOfAgent('circle' + label);
       this.drawCircle(pos, true);
     }
-
-    this.ctx.lineWidth = originalLineWidth;
-    this.ctx.strokeStyle = originalStrokeStyle;
   }
 }

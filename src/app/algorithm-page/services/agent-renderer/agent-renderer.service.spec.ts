@@ -91,14 +91,11 @@ describe('AgentRendererService', () => {
     expect(mockTextRenderer.drawText).toHaveBeenCalledTimes(2);
   });
 
-  it('should select circles with green border and restore original values', () => {
+  it('should select circles with green border', () => {
     mockCtx.lineWidth = 2;
     mockCtx.strokeStyle = 'black';
 
     service.selectCircles(['1', '2']);
-
-    expect(mockCtx.lineWidth).toEqual(2); // Restored
-    expect(mockCtx.strokeStyle).toEqual('black'); // Restored
 
     expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledTimes(2);
     expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledWith(
