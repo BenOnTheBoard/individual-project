@@ -35,11 +35,7 @@ describe('TextRendererService', () => {
   });
 
   it('should handle newlines', () => {
-    const pos = { x: 0, y: 0 };
-    service.drawTextFromState('Line1\nLine2', {
-      colour: '#000000',
-      pos,
-    });
+    service.drawText('Line1\nLine2', { x: 0, y: 0 }, 'black');
 
     expect(mockCtx.translate).toHaveBeenCalledTimes(2);
     expect(mockCtx.fillText).toHaveBeenCalledWith('Line1', 0, 0);
@@ -49,11 +45,7 @@ describe('TextRendererService', () => {
   });
 
   it('should parse internal bracketed hex colors', () => {
-    const pos = { x: 0, y: 0 };
-    service.drawTextFromState('Text {#FF0000}red', {
-      colour: '#000000',
-      pos,
-    });
+    service.drawText('Text {#FF0000}red', { x: 0, y: 0 }, 'black');
 
     expect(mockCtx.fillText).toHaveBeenCalledWith('red', 0, 0);
     expect(mockCtx.translate).toHaveBeenCalledWith(50, 0);

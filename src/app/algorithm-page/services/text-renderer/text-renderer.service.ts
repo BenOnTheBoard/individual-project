@@ -25,9 +25,8 @@ export class TextRendererService {
   constructor(public colourHexService: ColourHexService) {}
 
   public setFontSize(fontSize: number): void {
-    if (!this.ctx) {
-      return;
-    }
+    if (!this.ctx) return;
+
     this.ctx.font = `${fontSize}px ${this.font}`;
     this.fontSize = fontSize;
     // precompute width ratios
@@ -54,9 +53,7 @@ export class TextRendererService {
   // FROM: https://stackoverflow.com/questions/43904201/how-can-i-colour-different-words-in-the-same-line-with-html5-canvas
   // adapted for use in this project
   private drawTextFromState(text: string, state: TextRenderState): void {
-    if (!this.ctx) {
-      throw new Error('Context not provided.');
-    }
+    if (!this.ctx) throw new Error('Context not provided.');
 
     const xStart = state.pos.x;
     const colourStack: string[] = [];
@@ -71,9 +68,8 @@ export class TextRendererService {
       if (
         !this.supportedSpecialChars.includes(ch) &&
         (charCode < this.startChar || charCode >= this.endChar)
-      ) {
+      )
         continue;
-      }
 
       if (!this.supportedSpecialChars.includes(ch)) {
         subText += ch;
@@ -105,9 +101,7 @@ export class TextRendererService {
 
           case '}':
             const prevColour = colourStack.pop();
-            if (prevColour) {
-              state.colour = prevColour;
-            }
+            if (prevColour) state.colour = prevColour;
             break;
         }
       }
@@ -121,10 +115,7 @@ export class TextRendererService {
   public drawText(text: string, pos: Position, colour: string = 'black'): void {
     // fallback prevents crashes from invalid caller input
     const fontColour = this.colourHexService.getHex(colour) || '#000000';
-    const newRenderState: TextRenderState = {
-      colour: fontColour,
-      pos,
-    };
+    const newRenderState = { colour: fontColour, pos: pos };
     this.drawTextFromState(text, newRenderState);
   }
 }
