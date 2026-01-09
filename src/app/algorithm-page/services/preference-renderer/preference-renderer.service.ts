@@ -50,16 +50,16 @@ export class PreferenceRendererService {
 
   public setCurrentCommand(command: Step): void {
     this.cmd = command;
-    if (this.firstRun) {
-      this.firstRun = false;
-      this.textRenderer.setFontSize(this.prefFontSize);
-      this.lineSizes = new Map();
-      for (let i = 1; i < this.algService.numberOfGroup1Agents + 1; i++) {
-        let lineSize = this.ctx.measureText(
-          this.cmd.group1CurrentPreferences.get(String(i)).join(', ')
-        ).width;
-        this.lineSizes.set(String(i), lineSize);
-      }
+    if (!this.firstRun) return;
+
+    this.firstRun = false;
+    this.textRenderer.setFontSize(this.prefFontSize);
+    this.lineSizes = new Map();
+    for (let i = 1; i < this.algService.numberOfGroup1Agents + 1; i++) {
+      let lineSize = this.ctx.measureText(
+        this.cmd.group1CurrentPreferences.get(String(i)).join(', ')
+      ).width;
+      this.lineSizes.set(String(i), lineSize);
     }
   }
 
@@ -139,22 +139,17 @@ export class PreferenceRendererService {
 
   public drawCapacities(): void {
     this.textRenderer.setFontSize(this.prefFontSize);
-    const hospitalCapacityMap =
-      this.cmd.algorithmSpecificData['hospitalCapacity'];
-    let currentLetter: string;
-    let currentCapacity: number;
+    const capacityMap = this.cmd.algorithmSpecificData['hospitalCapacity'];
 
     for (let i = 0; i < this.algService.numberOfGroup2Agents; i++) {
-      currentLetter = String.fromCharCode(65 + i);
-      currentCapacity = hospitalCapacityMap[currentLetter];
-      const pos = this.layoutService.getPositionOfAgent(
-        'circle' + currentLetter
-      );
+      const letter = String.fromCharCode(65 + i);
+      const capacity = capacityMap[letter];
+      const pos = this.layoutService.getPositionOfAgent('circle' + letter);
       const textPos = {
         x: pos.x + this.capacityOffsetX,
         y: pos.y + this.defaultOffsetY,
       };
-      this.textRenderer.drawText('(' + String(currentCapacity) + ')', textPos);
+      this.textRenderer.drawText(`(${String(capacity)})`, textPos);
     }
   }
 
