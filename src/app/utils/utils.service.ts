@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { Position } from './position';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +41,17 @@ export class UtilsService {
 
   getLastChar(name: string) {
     return name.slice(name.length - 1);
+  }
+
+  polarToCartesian(
+    r: number,
+    theta: number,
+    origin: Position = { x: 0, y: 0 }
+  ): Position {
+    return {
+      x: origin.x + r * Math.cos(theta),
+      y: origin.y + r * Math.sin(theta),
+    };
   }
 
   static validateEven(): ValidatorFn {
