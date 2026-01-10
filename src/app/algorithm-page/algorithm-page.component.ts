@@ -266,59 +266,47 @@ export class AlgorithmPageComponent implements OnInit {
   // function run when toggle sidebar button clicked (top left)
   async toggleSidebar(): Promise<void> {
     this.duringAnimation = true;
+    this.animation.hideMainContent();
 
     if (!this.showCode) {
-      // hide sidebar and content
       this.animation.hideSidebar();
-      this.animation.hideMainContent();
-
       await this.utils.delay(700);
-
-      this.showCode = !this.showCode;
-      this.animation.showMainContent();
     } else {
-      this.animation.hideMainContent();
       await this.utils.delay(400);
-
-      this.showCode = !this.showCode;
       this.animation.showSidebar();
       await this.utils.delay(200);
-
-      this.animation.showMainContent();
     }
 
+    this.showCode = !this.showCode;
+    this.drawService.clearCanvas();
+    this.animation.showMainContent();
     await this.utils.delay(200);
+    this.drawService.redrawCanvas();
 
     this.duringAnimation = false;
-    this.drawService.redrawCanvas();
   }
 
   // function run when toggle sidebar button clicked (top left)
   async toggleInfoSidebar(): Promise<void> {
     this.duringAnimation = true;
+    this.animation.hideMainContent();
 
     if (!this.showInfo) {
       this.animation.hideInfoSidebar();
-      this.animation.hideMainContent();
       await this.utils.delay(700);
-
-      this.showInfo = !this.showInfo;
-      this.animation.showMainContent();
     } else {
-      this.animation.hideMainContent();
       await this.utils.delay(400);
-
-      this.showInfo = !this.showInfo;
       this.animation.showInfoSidebar();
       await this.utils.delay(200);
-
-      this.animation.showMainContent();
     }
 
+    this.showInfo = !this.showInfo;
+    this.drawService.clearCanvas();
+    this.animation.showMainContent();
     await this.utils.delay(200);
+    this.drawService.redrawCanvas();
 
     this.duringAnimation = false;
-    this.drawService.redrawCanvas();
   }
 
   ChangeStableSR(): void {
