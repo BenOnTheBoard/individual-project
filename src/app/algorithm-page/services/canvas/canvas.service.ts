@@ -103,7 +103,7 @@ export class CanvasService {
     }
   }
 
-  private clearCanvas(): void {
+  public clearCanvas(): void {
     const elt = this.canvasElement;
     this.ctx.clearRect(0, 0, elt.width, elt.height);
   }

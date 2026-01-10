@@ -5,8 +5,6 @@
 
 <!-- navbar -->
 <nav class="navbar alg-navbar sticky-top navbar-light p-0 moveToTop shadow-lg">
-
-
   <div class="col-3 text-left align-middle" style="height: 100%">
     <div class="align-middle" style="display: inline-block; height: 100%">
 
@@ -74,19 +72,12 @@
       data-trigger="manual" (click)="this.toggleInfoSidebar(); $event.stopImmediatePropagation()"
       [ngClass]="{'disabled': this.tutorialStep != 0 || this.duringAnimation}">{{this.showInfo ? "menu" :
       "menu_open"}}</mat-icon>
-
-
-
   </div>
-
-
-
 </nav>
 
 
 <!-- main content -->
 <div class="container-fluid main">
-
   <!-- sidebar -->
   <sidebar [(showCode)]="showCode" [(tutorialStep)]="tutorialStep"></sidebar>
 
@@ -98,15 +89,13 @@
 
     <agent-titles [(showCode)]="showCode"></agent-titles>
 
-    <div class="mainContentPopover" (resized)="this.drawService.redrawCanvas()" id="parent" style="min-height: 400px;"
-      data-toggle="popover" data-placement="left" title="Algorithm Display"
+    <div class="mainContentPopover" (window:resize)="this.drawService.redrawCanvas()" id="parent"
+      style="min-height: 400px;" data-toggle="popover" data-placement="left" title="Algorithm Display"
       data-content="This is where you can see the animation for the algorithm! Green lines mean there is a matching between 2 circles, and red lines mean there is a proposal currently being considered. If you want more information, click on the info button next to the tutorial button!"
       data-trigger="manual">
       <canvas #canvas id="myCanvas" style="min-height: 280px; max-width: 100%; height: 100%"></canvas>
     </div>
 
     <playback-controls></playback-controls>
-
   </div>
-
 </div>
