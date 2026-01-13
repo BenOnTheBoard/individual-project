@@ -1,13 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {
   FormControl,
-  FormGroupDirective,
   FormsModule,
-  NgForm,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { Algorithm } from '../../../Algorithm';
@@ -18,21 +15,6 @@ import { CommonModule } from '@angular/common';
 import { UtilsService } from 'src/app/utils/utils.service';
 
 declare var anime: any;
-
-/** Error when invalid control is dirty, touched, or submitted. */
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
-  ): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(
-      control &&
-      control.invalid &&
-      (control.dirty || control.touched || isSubmitted)
-    );
-  }
-}
 
 @Component({
   selector: 'algorithm-card',
@@ -73,38 +55,27 @@ export class AlgorithmCardComponent implements OnInit {
     UtilsService.validateEven(),
   ]);
 
-  SReven: boolean = true;
-
-  isValid(): boolean {
-    return false;
-  }
-
   constructor(
     public algorithmService: AlgorithmRetrievalService,
+    public utils: UtilsService,
     public router: Router
   ) {}
 
   ngOnInit(): void {}
 
-  // on clicking "Generate Preferences" change the global algorithm to the one passed into this dialog
   async onGeneratePreferences(): Promise<void> {
+    // change the global algorithm to the one passed into this dialog
     this.algorithmService.currentAlgorithm = this.algorithm;
 
-    // makes sure the SR value is not odd or too large
-    if (this.algorithmService.currentAlgorithm.id == 'smp-room-irv') {
-      this.algorithmService.numberOfGroup1Agents = this.numberOfSRAgents.value;
-    } else {
-      this.algorithmService.numberOfGroup1Agents =
-        this.numberOfGroup1Agents.value;
-    }
+    this.algorithmService.numberOfGroup1Agents =
+      this.algorithmService.currentAlgorithm.id == 'smp-room-irv'
+        ? this.numberOfSRAgents.value
+        : this.numberOfGroup1Agents.value;
 
-    if (!this.numberOfGroup2Agents.value) {
-      this.algorithmService.numberOfGroup2Agents =
-        this.numberOfGroup1Agents.value;
-    } else {
-      this.algorithmService.numberOfGroup2Agents =
-        this.numberOfGroup2Agents.value;
-    }
+    const specifiesGroup2Count = !this.numberOfGroup2Agents.value;
+    this.algorithmService.numberOfGroup2Agents = specifiesGroup2Count
+      ? this.numberOfGroup1Agents.value
+      : this.numberOfGroup2Agents.value;
 
     anime({
       targets: '.main-page',
@@ -122,12 +93,7 @@ export class AlgorithmCardComponent implements OnInit {
       duration: 500,
     });
 
-    await this.delay(700);
-
+    await this.utils.delay(700);
     this.router.navigateByUrl('/animation', { skipLocationChange: true });
-  }
-
-  delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

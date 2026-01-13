@@ -136,7 +136,7 @@
           <div class="row justify-content-start">
             <mat-form-field style="width: 200px;">
               <mat-label>Number of People</mat-label>
-              <input id={{algorithm.id}} [formControl]="numberOfSRAgents" (ngModelchange)="this.isValid()"
+              <input id={{algorithm.id}} [formControl]="numberOfSRAgents"
                 (keyup.enter)="((numberOfSRAgents.hasError('required') || numberOfSRAgents.hasError('max') || numberOfSRAgents.hasError('min')|| numberOfSRAgents.hasError('even')) ? '' : this.onGeneratePreferences())"
                 type="number" matInput placeholder="4" value="4" min="1" max="8"
                 onkeydown="if(event.key==='.'){event.preventDefault();}"
