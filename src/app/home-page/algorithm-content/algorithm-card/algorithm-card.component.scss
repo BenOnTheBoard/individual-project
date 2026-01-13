@@ -4,7 +4,13 @@
 }
 
 .cardButton {
+  border-radius: 70px;
+  width: 250px;
+  height: 45px;
   transition: 200ms background-color;
+  font-size: 18px;
+  font-weight: 500;
+  color: black;
 }
 
 .cardButton:hover {

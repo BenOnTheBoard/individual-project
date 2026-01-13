@@ -204,21 +204,20 @@
 
       <div class="col-5 text-right">
         @if ((algorithm.name == 'Stable Marriage Problem') && !(this.hasGroup1Error())) {
-        <button class="cardButton" mat-stroked-button style="border-radius: 70px; width: 220px; height: 45px;"
-          cdkFocusInitial [disabled]="this.hasGroup1Error()" (click)="this.onGeneratePreferences()">
-          <span style="font-size: 18px; font-weight: 500; color: black;">Generate Preferences</span>
+        <button class="cardButton" mat-stroked-button cdkFocusInitial [disabled]="this.hasGroup1Error()"
+          (click)="this.onGeneratePreferences()">
+          Generate Preferences
         </button>
         } @else if ((algorithm.name == 'Hospitals/Residents Problem' || algorithm.name == 'Student Project Allocation')
         && !(this.hasGroup1Error() || this.hasGroup2Error())) {
-        <button class="cardButton" mat-stroked-button style="border-radius: 70px; width: 220px; height: 45px;"
-          cdkFocusInitial [disabled]="this.hasGroup1Error() || this.hasGroup2Error()"
-          (click)="this.onGeneratePreferences()">
-          <span style="font-size: 18px; font-weight: 500; color: black;">Generate Preferences</span>
+        <button class="cardButton" mat-stroked-button cdkFocusInitial
+          [disabled]="this.hasGroup1Error() || this.hasGroup2Error()" (click)="this.onGeneratePreferences()">
+          <span>Generate Preferences</span>
         </button>
         } @else if ((algorithm.name == 'Stable Roommates Problem') && !(this.hasSRError())) {
-        <button class="cardButton" mat-stroked-button style="border-radius: 70px; width: 220px; height: 45px;"
-          cdkFocusInitial [disabled]="this.hasSRError()" (click)="this.onGeneratePreferences()">
-          <span style="font-size: 18px; font-weight: 500; color: black;">Generate Preferences</span>
+        <button class="cardButton" mat-stroked-button cdkFocusInitial [disabled]="this.hasSRError()"
+          (click)="this.onGeneratePreferences()">
+          <span>Generate Preferences</span>
         </button>
         }
       </div>
