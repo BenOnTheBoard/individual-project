@@ -63,18 +63,6 @@ export class AlgorithmCardComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  hasGroup1Error(): boolean {
-    return !(this.numberOfGroup1Agents.errors === null);
-  }
-
-  hasGroup2Error(): boolean {
-    return !(this.numberOfGroup2Agents.errors === null);
-  }
-
-  hasSRError(): boolean {
-    return !(this.numberOfSRAgents.errors === null);
-  }
-
   isFormValid(): boolean {
     switch (this.algorithm.name) {
       case 'Stable Marriage Problem':
