@@ -25,7 +25,7 @@
           @if (algorithm.name == 'Stable Marriage Problem') {
           <div class="row justify-content-start">
             <mat-form-field>
-              <mat-label>Number of Men and Women</mat-label>
+              <mat-label>Number of Men/Women</mat-label>
               <input id={{algorithm.id}} [formControl]="numberOfGroup1Agents"
                 (keyup.enter)="this.hasGroup1Error() ? '' : this.onGeneratePreferences()" type="number" matInput
                 placeholder="5" value="5" min="1" max="9" onkeydown="if(event.key==='.'){event.preventDefault();}"
@@ -41,7 +41,7 @@
           }
 
           @if (algorithm.name == 'Hospitals/Residents Problem') {
-          <div class="row justify-content-center">
+          <div class="row justify-content-start">
             <mat-form-field class="mr-1">
               <mat-label>Number of Residents</mat-label>
               <input [formControl]="numberOfGroup1Agents"
@@ -97,7 +97,7 @@
           }
 
           @if (algorithm.name == 'Student Project Allocation') {
-          <div class="row justify-content-center">
+          <div class="row justify-content-start">
             <mat-form-field class="mr-1">
               <mat-label>Number of Students</mat-label>
               <input [formControl]="numberOfGroup1Agents"
