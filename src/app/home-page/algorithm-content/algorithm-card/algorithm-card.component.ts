@@ -63,6 +63,18 @@ export class AlgorithmCardComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  hasGroup1Error(): boolean {
+    return !(this.numberOfGroup1Agents.errors === null);
+  }
+
+  hasGroup2Error(): boolean {
+    return !(this.numberOfGroup2Agents.errors === null);
+  }
+
+  hasSRError(): boolean {
+    return !(this.numberOfSRAgents.errors === null);
+  }
+
   async onGeneratePreferences(): Promise<void> {
     // change the global algorithm to the one passed into this dialog
     this.algorithmService.currentAlgorithm = this.algorithm;
