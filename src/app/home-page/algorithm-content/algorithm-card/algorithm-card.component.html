@@ -44,7 +44,7 @@
           </div>
           }
 
-          @if (algorithm.id == 'hr-resident-egs') {
+          @if (algorithm.name == 'Hospitals/Residents Problem') {
           <div class="row justify-content-center">
             <mat-form-field class="mr-1">
               <mat-label>Number of Residents</mat-label>
@@ -78,51 +78,7 @@
               </mat-error>
               }
               @if (numberOfGroup2Agents.hasError('min') || numberOfGroup2Agents.hasError('max')) {
-              <mat-error>
-                Please input a number between 1 and 9
-              </mat-error>
-              }
-            </mat-form-field>
-          </div>
-          }
-
-          @if (algorithm.id == 'hr-hospital-egs') {
-          <div class="row justify-content-center">
-            <mat-form-field class="mr-1">
-              <mat-label>Number of Residents</mat-label>
-              <input id="hr3" [formControl]="numberOfGroup1Agents"
-                (keyup.enter)="this.hasGroup1Error() || this.hasGroup2Error() ? '' :  this.onGeneratePreferences()"
-                type="number" matInput placeholder="5" value="5" min="2" max="9"
-                onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false" onDrop="return false"
-                onPaste="return false">
-              @if (numberOfGroup1Agents.hasError('required')) {
-              <mat-error>
-                This field is <strong>required</strong>
-              </mat-error>
-              }
-              @if (numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
-              <mat-error>
-                Please input a number between 1 and 9
-              </mat-error>
-              }
-            </mat-form-field>
-
-            <mat-form-field class="ml-1">
-              <mat-label>Number of Hospitals</mat-label>
-              <input id="hr4" [formControl]="numberOfGroup2Agents"
-                (keyup.enter)="this.hasGroup1Error() || this.hasGroup2Error() ? '' :  this.onGeneratePreferences()"
-                type="number" matInput placeholder="5" value="5" min="2" max="9"
-                onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false" onDrop="return false"
-                onPaste="return false">
-              @if (numberOfGroup2Agents.hasError('required')) {
-              <mat-error>
-                This field is <strong>required</strong>
-              </mat-error>
-              }
-              @if (numberOfGroup2Agents.hasError('min') || numberOfGroup2Agents.hasError('max')) {
-              <mat-error>
-                Please input a number between 1 and 9
-              </mat-error>
+              <mat-error>Please input a number between 1 and 9</mat-error>
               }
             </mat-form-field>
           </div>
