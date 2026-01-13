@@ -50,9 +50,7 @@
                 onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false" onDrop="return false"
                 onPaste="return false">
               @if (numberOfGroup1Agents.hasError('required')) {
-              <mat-error>
-                This field is <strong>required</strong>
-              </mat-error>
+              <mat-error>This field is <strong>required</strong></mat-error>
               }
               @if (numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
               <mat-error>Please input a number between 1 and 9</mat-error>
@@ -139,7 +137,7 @@
         @if ((algorithm.name == 'Stable Marriage Problem') && !(this.hasGroup1Error())) {
         <button class="cardButton" mat-stroked-button cdkFocusInitial [disabled]="this.hasGroup1Error()"
           (click)="this.onGeneratePreferences()">
-          Generate Preferences
+          <span>Generate Preferences</span>
         </button>
         } @else if ((algorithm.name == 'Hospitals/Residents Problem' || algorithm.name == 'Student Project Allocation')
         && !(this.hasGroup1Error() || this.hasGroup2Error())) {
