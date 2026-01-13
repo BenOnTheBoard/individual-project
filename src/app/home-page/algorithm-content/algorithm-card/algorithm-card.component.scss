@@ -4,12 +4,13 @@
 }
 
 .cardButton {
-  border-radius: 70px;
-  width: 250px;
+  border-radius: 30px;
+  width: 210px;
   height: 45px;
   transition: 200ms background-color;
   font-size: 18px;
   font-weight: 500;
+  letter-spacing: 0;
   color: black;
 }
 
@@ -38,7 +39,7 @@
 }
 
 mat-form-field {
-  width: 200px;
+  width: 250px;
 }
 
 input::-webkit-outer-spin-button,
