@@ -5,8 +5,7 @@
         <h1 id="card-title">{{ algorithm.name }}</h1>
       </div>
       <div class="col-5 mt-2 pr-4 text-right">
-        <h2 class="card-subtitle text-muted">{{ algorithm.orientation[0]
-          }}-Oriented</h2>
+        <h2 class="card-subtitle text-muted">{{ algorithm.orientation[0] }}-Oriented</h2>
       </div>
     </div>
 
@@ -19,7 +18,6 @@
     <div class="divider mt-3"></div>
 
     <div class="row mt-4">
-
       <div class="col-7">
         <form class="example-form pl-3">
           @if (algorithm.name == 'Stable Marriage Problem') {
@@ -134,25 +132,14 @@
       </div>
 
       <div class="col-5 text-right">
-        @if ((algorithm.name == 'Stable Marriage Problem') && !(this.hasGroup1Error())) {
-        <button class="cardButton" mat-stroked-button cdkFocusInitial [disabled]="this.hasGroup1Error()"
-          (click)="this.onGeneratePreferences()">
-          <span>Generate Preferences</span>
+        <button class="cardButton flex-fill" mat-stroked-button cdkFocusInitial [disabled]="!isFormValid()"
+          (click)="onGeneratePreferences()">
+          Generate Preferences
         </button>
-        } @else if ((algorithm.name == 'Hospitals/Residents Problem' || algorithm.name == 'Student Project Allocation')
-        && !(this.hasGroup1Error() || this.hasGroup2Error())) {
-        <button class="cardButton" mat-stroked-button cdkFocusInitial
-          [disabled]="this.hasGroup1Error() || this.hasGroup2Error()" (click)="this.onGeneratePreferences()">
-          <span>Generate Preferences</span>
-        </button>
-        } @else if ((algorithm.name == 'Stable Roommates Problem') && !(this.hasSRError())) {
-        <button class="cardButton" mat-stroked-button cdkFocusInitial [disabled]="this.hasSRError()"
-          (click)="this.onGeneratePreferences()">
-          <span>Generate Preferences</span>
-        </button>
-        }
       </div>
     </div>
+
+
 
   </div>
 </div>

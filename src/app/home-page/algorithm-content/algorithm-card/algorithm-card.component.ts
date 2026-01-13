@@ -56,7 +56,7 @@ export class AlgorithmCardComponent implements OnInit {
   ]);
 
   constructor(
-    public algorithmService: AlgorithmRetrievalService,
+    public algRetriever: AlgorithmRetrievalService,
     public utils: UtilsService,
     public router: Router
   ) {}
@@ -75,17 +75,33 @@ export class AlgorithmCardComponent implements OnInit {
     return !(this.numberOfSRAgents.errors === null);
   }
 
+  isFormValid(): boolean {
+    switch (this.algorithm.name) {
+      case 'Stable Marriage Problem':
+        return this.numberOfGroup1Agents.valid;
+      case 'Hospitals/Residents Problem':
+      case 'Student Project Allocation':
+        return (
+          this.numberOfGroup1Agents.valid && this.numberOfGroup2Agents.valid
+        );
+      case 'Stable Roommates Problem':
+        return this.numberOfSRAgents.valid;
+      default:
+        return false;
+    }
+  }
+
   async onGeneratePreferences(): Promise<void> {
     // change the global algorithm to the one passed into this dialog
-    this.algorithmService.currentAlgorithm = this.algorithm;
+    this.algRetriever.currentAlgorithm = this.algorithm;
 
-    this.algorithmService.numberOfGroup1Agents =
-      this.algorithmService.currentAlgorithm.id == 'smp-room-irv'
-        ? this.numberOfSRAgents.value
-        : this.numberOfGroup1Agents.value;
+    const isRoommates = this.algRetriever.currentAlgorithm.id == 'smp-room-irv';
+    this.algRetriever.numberOfGroup1Agents = isRoommates
+      ? this.numberOfSRAgents.value
+      : this.numberOfGroup1Agents.value;
 
     const specifiesGroup2Count = !this.numberOfGroup2Agents.value;
-    this.algorithmService.numberOfGroup2Agents = specifiesGroup2Count
+    this.algRetriever.numberOfGroup2Agents = specifiesGroup2Count
       ? this.numberOfGroup1Agents.value
       : this.numberOfGroup2Agents.value;
 
