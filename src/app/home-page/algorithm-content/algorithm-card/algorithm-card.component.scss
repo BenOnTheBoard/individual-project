@@ -17,6 +17,30 @@
   background: rgb(211, 211, 211);
 }
 
+#card-title {
+  font-size: 30px;
+  font-weight: 400;
+}
+.card-subtitle {
+  font-size: 22px;
+  font-weight: 400;
+}
+
+#description {
+  height: 180px;
+  overflow: scroll;
+}
+
+.card-text {
+  font-size: 18px;
+  line-height: 25px;
+  font-weight: 400;
+}
+
+mat-form-field {
+  width: 200px;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
