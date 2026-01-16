@@ -1,40 +1,20 @@
-<div style="min-width: 300px">
-  <h1>Edit Preferences</h1>
+<div id="dialog-container">
+  <h1><u>Edit Preferences</u></h1>
 
-  @if (this.algorithmService.currentAlgorithm.id != 'smp-room-irv') {
   <div>
     <p>
       Click on the number below and use arrow keys to change the number of
-      {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[0]).toLowerCase() }}
-      and {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[1]).toLowerCase() }}
+      {{ this.group1Plural.toLowerCase() }}
+      @if (this.algorithmService.currentAlgorithm.id != 'smp-room-irv') {
+      and {{ this.group2Plural.toLowerCase() }}
+      }.
     </p>
     <p>
-      Each person is represented as their ID, either a letter or a number, below you can change the <br>
-      preference list of the corresponding person.
-    </p>
-    <p>
-      Missing preferences are shown as pairs - (Person ID , Missing person ID on preference list).
+      Each agent is represented as their ID, either a letter or a number.<br>
+      Below you can change each agent's list. Missing preferences are shown as pairs:<br>
+      (Agent ID , Missing agent's ID).
     </p>
   </div>
-  }
-
-  @if (this.algorithmService.currentAlgorithm.id == 'smp-room-irv') {
-  <div>
-    <p>
-      Click on the number below and use arrow keys to change the number of
-      {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[0]).toLowerCase() }}
-    </p>
-    <p>
-      Each person is represented by their ID, in this case a number, below you can change the preference <br>
-      list of the corresponding person.
-    </p>
-    <p>
-      Missing preferences are shown as pairs - (Person ID, Missing person ID on preference list).
-    </p>
-  </div>
-  }
-
-  <!-- input size -->
 
   <form class="example-form pl-3">
     @if (this.algorithmService.currentAlgorithm.name == 'Stable Marriage Problem') {
@@ -42,9 +22,8 @@
       <mat-form-field style="width: 200px;">
         <mat-label>Number of Men and Women</mat-label>
         <input [formControl]="numberOfGroup1Agents" type="number" matInput placeholder="5" value="5"
-          (ngModelChange)="this.generatePreferenceString()" min="1" max="9"
-          oninput="this.value = this.value > 0 && this.value < 10 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
-          onDrag="return false" onDrop="return false" onPaste="return false">
+          (ngModelChange)="this.generatePreferenceString()" min="1" max="9" onDrag="return false" onDrop="return false"
+          onPaste="return false">
         @if (numberOfGroup1Agents.hasError('required')){
         <mat-error>
           This field is <strong>required</strong>
@@ -64,9 +43,8 @@
       <mat-form-field style="width: 200px;" class="mr-1">
         <mat-label>Number of Residents</mat-label>
         <input [formControl]="numberOfGroup1Agents" type="number" matInput placeholder="5" value="5"
-          (ngModelChange)="this.generatePreferenceString()" min="2" max="9"
-          oninput="this.value = this.value > 1 && this.value < 10 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
-          onDrag="return false" onDrop="return false" onPaste="return false">
+          (ngModelChange)="this.generatePreferenceString()" min="2" max="9" onDrag="return false" onDrop="return false"
+          onPaste="return false">
         @if (numberOfGroup1Agents.hasError('required')){
         <mat-error>
           This field is <strong>required</strong>
@@ -82,9 +60,8 @@
       <mat-form-field style="width: 200px;" class="ml-1">
         <mat-label>Number of Hospitals</mat-label>
         <input [formControl]="numberOfGroup2Agents" type="number" matInput placeholder="5" value="5"
-          (ngModelChange)="this.generatePreferenceString()" min="2" max="9"
-          oninput="this.value = this.value > 1 && this.value < 10 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
-          onDrag="return false" onDrop="return false" onPaste="return false">
+          (ngModelChange)="this.generatePreferenceString()" min="2" max="9" onDrag="return false" onDrop="return false"
+          onPaste="return false">
         @if (numberOfGroup2Agents.hasError('required')){
         <mat-error>
           This field is <strong>required</strong>
@@ -104,9 +81,8 @@
       <mat-form-field style="width: 200px;">
         <mat-label>Number of People</mat-label>
         <input [formControl]="numberOfGroup1Agents" type="number" matInput placeholder="5" value="5"
-          (ngModelChange)="this.generatePreferenceString1Group()" min="1" max="10"
-          oninput="this.value = this.value > 0 && this.value < 11 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value))"
-          onDrag="return false" onDrop="return false" onPaste="return false">
+          (ngModelChange)="this.generatePreferenceString1Group()" min="1" max="10" onDrag="return false"
+          onDrop="return false" onPaste="return false">
         @if (numberOfGroup1Agents.hasError('required')) {
         <mat-error>
           This field is <strong>required</strong>
@@ -127,9 +103,8 @@
       <mat-form-field style="width: 200px;" class="mr-1">
         <mat-label>Number of Students</mat-label>
         <input [formControl]="numberOfGroup1Agents" type="number" matInput placeholder="5" value="5"
-          (ngModelChange)="this.generatePreferenceString()" min="2" max="9"
-          oninput="this.value = this.value > 1 && this.value < 10 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
-          onDrag="return false" onDrop="return false" onPaste="return false">
+          (ngModelChange)="this.generatePreferenceString()" min="2" max="9" onDrag="return false" onDrop="return false"
+          onPaste="return false">
         @if (numberOfGroup1Agents.hasError('required')){
         <mat-error>
           This field is <strong>required</strong>
@@ -145,9 +120,8 @@
       <mat-form-field style="width: 200px;" class="ml-1">
         <mat-label>Number of Projects</mat-label>
         <input [formControl]="numberOfGroup2Agents" type="number" matInput placeholder="5" value="5"
-          (ngModelChange)="this.generatePreferenceString()" min="2" max="9"
-          oninput="this.value = this.value > 1 && this.value < 10 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
-          onDrag="return false" onDrop="return false" onPaste="return false">
+          (ngModelChange)="this.generatePreferenceString()" min="2" max="9" onDrag="return false" onDrop="return false"
+          onPaste="return false">
         @if (numberOfGroup2Agents.hasError('required')){
         <mat-error>
           This field is <strong>required</strong>
@@ -164,25 +138,19 @@
 
   </form>
 
-
-  <!-- input values -->
-
-  <h2 class="mt-2">Input New Preferences</h2>
-
-  <!-- NEW  -->
+  <h1 class="mt-2"><u>Input New Preferences</u></h1>
 
   <div class="parent">
     <!-- group 1 -->
     <div class="child">
-      <p><strong> {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[0])
-          }}</strong></p>
+      <p><strong> {{ this.group1Plural }}</strong></p>
 
       @for (item of this.preferenceTextGroup1; let i = $index; track $index) {
       <div>
         <div class="parent row">
           <span class="child labels">{{ i + 1 }}</span>
           <input class="child custom-field" type="text" [(ngModel)]="this.preferenceTextGroup1[i]"
-            value="this.preferenceTextGroup1[i]" (ngModelchange)="this.generateMissingPreferences($event)">
+            value="this.preferenceTextGroup1[i]">
 
         </div>
       </div>
@@ -193,15 +161,14 @@
     @if ((this.algorithmService.currentAlgorithm.name != 'Stable Roommates Problem') &&
     (this.algorithmService.currentAlgorithm.name != 'Student Project Allocation')) {
     <div class="child">
-      <p><strong>{{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[1])
-          }}</strong></p>
+      <p><strong>{{ this.group2Plural }}</strong></p>
 
       @for (item of this.preferenceTextGroup2; let i = $index; track $index) {
       <div>
         <div class="parent row">
           <span class="child labels">{{ this.keyList[i] }}</span>
           <input class="child custom-field" type="text" [(ngModel)]="this.preferenceTextGroup2[i]"
-            value="this.preferenceTextGroup2[i]" (ngModelchange)="this.generateMissingPreferences($event)">
+            value="this.preferenceTextGroup2[i]">
 
         </div>
       </div>
@@ -220,8 +187,7 @@
 
         @if (this.missingPreferencesGroup1.length > 0) {
         <div class="col-6">
-          <p> <strong> {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[0]) }}
-            </strong> </p>
+          <p><strong> {{ this.group1Plural }}</strong></p>
 
           @for (item of this.missingPreferencesGroup1; let lastItem = $last; ; track item) {
           <span>
@@ -233,11 +199,15 @@
         </div>
         }
 
-        @if (((this.missingPreferencesGroup2.length > 0) && (this.algorithmService.currentAlgorithm.name != 'Stable
-        Roommates Problem'))) {
+        @if (((this.missingPreferencesGroup2.length > 0) && (this.algorithmService.currentAlgorithm.name !=
+        'Stable Roommates Problem'))) {
         <div class="col-6">
-          <p> <strong> {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[1]) }}
+          <p> <strong> {{ this.group2Plural }}
             </strong> </p>
+
+          <p>{{this.missingPreferences}}</p>
+          <p>{{this.missingPreferencesGroup1}}</p>
+          <p>{{this.missingPreferencesGroup2}}</p>
 
           @for (item of this.missingPreferencesGroup2; let lastItem = $last; track item) {
           <span>
@@ -255,18 +225,10 @@
       <br>
     </div>
 
-    <div class="container">
-      <div class="row justify-content-end">
-        <form>
-          <div class="right-align">
-            <button class="buttons" mat-stroked-button (click)="fixInputs()">Fix!</button>
-          </div>
-        </form>
-
-        <div class="col-3 ">
-          <button class="buttons" mat-stroked-button (click)="callGenerateAlgorithmPreferences()"
-            [disabled]="this.currentInputCheck()">Generate!</button>
-        </div>
+    <div class="row justify-content-end">
+      <div class="col-3 ">
+        <button class="buttons" mat-stroked-button (click)="callGenerateAlgorithmPreferences()"
+          [disabled]="this.currentInputCheck()">Generate!</button>
       </div>
     </div>
 

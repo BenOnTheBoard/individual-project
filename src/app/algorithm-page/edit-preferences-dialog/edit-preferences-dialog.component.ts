@@ -31,48 +31,14 @@ export class EditPreferencesDialogComponent implements OnInit {
   group1Preferences: Map<string, Array<string>> = new Map();
   group2Preferences: Map<string, Array<string>> = new Map();
 
-  preferences: string = '';
-
-  // key list to convert number to letters inpit page display
-  keyList = [
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'I',
-    'J',
-    'K',
-    'L',
-    'M',
-    'N',
-    'O',
-    'P',
-    'Q',
-    'R',
-    'S',
-    'T',
-    'U',
-    'V',
-    'W',
-    'X',
-    'Y',
-    'Z',
-  ];
-
+  keyList = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   equalGroups: boolean = false;
-
-  constructor(
-    public algorithmService: AlgorithmRetrievalService,
-    public playbackService: PlaybackService,
-    public canvasService: CanvasService,
-    public utils: UtilsService,
-    public dialogRef: MatDialogRef<EditPreferencesDialogComponent>,
-    private _snackBar: MatSnackBar
-  ) {}
+  group1Plural = this.algorithmService.pluralMap.get(
+    this.algorithmService.currentAlgorithm.orientation[0]
+  );
+  group2Plural = this.algorithmService.pluralMap.get(
+    this.algorithmService.currentAlgorithm.orientation[1]
+  );
 
   @Input() algorithm: Algorithm;
 
@@ -86,19 +52,23 @@ export class EditPreferencesDialogComponent implements OnInit {
     [Validators.required, Validators.min(1), Validators.max(9)]
   );
 
-  preferencesForm: FormControl;
-  formString: string;
-  missingPreferences: Array<Array<string>>;
-
-  missingPreferencesGroup1: Array<Array<string>>;
-  missingPreferencesGroup2: Array<Array<string>>;
+  missingPreferences: string[][];
+  missingPreferencesGroup1: string[][];
+  missingPreferencesGroup2: string[][];
 
   preferenceTextGroup1 = [];
   preferenceTextGroup2 = [];
 
-  fix: boolean = false;
-
   valid: boolean = true;
+
+  constructor(
+    public algorithmService: AlgorithmRetrievalService,
+    public playbackService: PlaybackService,
+    public canvasService: CanvasService,
+    public utils: UtilsService,
+    public dialogRef: MatDialogRef<EditPreferencesDialogComponent>,
+    private _snackBar: MatSnackBar
+  ) {}
 
   @HostListener('document:keydown.enter')
   onEnter() {
@@ -117,32 +87,16 @@ export class EditPreferencesDialogComponent implements OnInit {
     this.group2Preferences =
       this.playbackService.commandList[0]['group2CurrentPreferences'];
 
-    this.preferencesForm = new FormControl(this.preferences);
-
     if (this.algorithmService.currentAlgorithm.equalGroups) {
       this.equalGroups = true;
     }
 
-    if (this.fix) {
-      // use existing letters and only add new ones
-      if (
-        this.algorithmService.currentAlgorithm.name ==
-        'Stable Roommates Problem'
-      ) {
-        this.fixPreferenceString1Group();
-      } else {
-        this.fixPreferenceString();
-      }
+    if (
+      this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem'
+    ) {
+      this.generatePreferenceString1Group();
     } else {
-      // call function to fill textboxes with current preferences
-      if (
-        this.algorithmService.currentAlgorithm.name ==
-        'Stable Roommates Problem'
-      ) {
-        this.generatePreferenceString1Group();
-      } else {
-        this.generatePreferenceString();
-      }
+      this.generatePreferenceString();
     }
   }
 
@@ -157,17 +111,6 @@ export class EditPreferencesDialogComponent implements OnInit {
       }
     } else {
       this.generateAlgorithmPreferences();
-    }
-  }
-
-  // calls correct function to generate preference string - based on current alg
-  callgeneratePreferenceString(): void {
-    if (
-      this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem'
-    ) {
-      this.generatePreferenceString1Group();
-    } else {
-      this.generatePreferenceString();
     }
   }
 
@@ -685,262 +628,5 @@ export class EditPreferencesDialogComponent implements OnInit {
     }
 
     return numbersValid;
-  }
-
-  checkIfPreference(str: string): boolean {
-    let re = /^.:/;
-    return re.test(str);
-  }
-
-  fixInputs() {
-    this.fix = true;
-    this.ngOnInit();
-    this.fix = false;
-  }
-
-  fixPreferenceString() {
-    let letters: Array<string> = [];
-    let numbers: Array<string> = [];
-
-    let preferenceTextGroup1Copy = Object.assign([], this.preferenceTextGroup1);
-    let preferenceTextGroup2Copy = Object.assign([], this.preferenceTextGroup2);
-
-    this.preferenceTextGroup1 = [];
-    this.preferenceTextGroup2 = [];
-
-    this.missingPreferencesGroup1 = [];
-    this.missingPreferencesGroup2 = [];
-
-    for (let i = 1; i <= this.numberOfGroup2Agents.value; i++) {
-      letters.push(String.fromCharCode(i + 64));
-    }
-
-    for (let i = 1; i <= this.numberOfGroup1Agents.value; i++) {
-      numbers.push(String(i));
-    }
-
-    // FIX GROUP 1
-    // Add Missing
-    for (let ranking of preferenceTextGroup1Copy.values()) {
-      for (let char of letters) {
-        if (!ranking.includes(char)) {
-          // letter in ranking that is not supposed to be
-          ranking.push(char);
-        }
-      }
-    }
-    // remove Extra
-    for (let ranking of preferenceTextGroup1Copy.values()) {
-      for (let char of ranking) {
-        if (!letters.includes(char)) {
-          // remove from ranking
-          let index = ranking.indexOf(char);
-          ranking.splice(index, 1);
-        }
-      }
-    }
-
-    // FIX GROUP 2
-    // Add Missing
-    for (let ranking of preferenceTextGroup2Copy.values()) {
-      for (let char of numbers) {
-        if (!ranking.includes(char)) {
-          // letter in ranking that is not supposed to be
-          ranking.push(char);
-        }
-      }
-    }
-    // remove Extra
-    for (let ranking of preferenceTextGroup2Copy.values()) {
-      for (let char of ranking) {
-        if (!numbers.includes(char)) {
-          // remove from ranking
-          let index = ranking.indexOf(char);
-          ranking.splice(index, 1);
-        }
-      }
-    }
-
-    if (this.equalGroups) {
-      this.numberOfGroup2Agents.setValue(this.numberOfGroup1Agents.value);
-    }
-
-    // GROUP 1 //
-    let counter = 0;
-    // for each ranking
-    for (let agent of preferenceTextGroup1Copy) {
-      // stop adding rankings if the number added is equal to the number needed
-      if (counter >= this.numberOfGroup1Agents.value) {
-        break;
-      }
-      // build new ranking
-      let newRanking = [];
-      for (let char of agent) {
-        newRanking.push(char);
-      }
-      // add new rankings
-      this.preferenceTextGroup1.push(newRanking);
-      counter++;
-    }
-
-    // GROUP 2 //
-    counter = 0;
-    // for each ranking
-    for (let agent of preferenceTextGroup2Copy) {
-      // stop adding rankings if the number added is equal to the number needed
-      if (counter >= this.numberOfGroup2Agents.value) {
-        break;
-      }
-      // build new ranking
-      let newRanking = [];
-      for (let char of agent) {
-        newRanking.push(char);
-      }
-      // add new rankings
-      this.preferenceTextGroup2.push(newRanking);
-      counter++;
-    }
-  }
-
-  fixPreferenceString1Group() {
-    let letters: Array<string> = [];
-    let numbers: Array<string> = [];
-
-    let preferenceTextGroup1Copy = Object.assign([], this.preferenceTextGroup1);
-
-    this.preferenceTextGroup1 = [];
-    this.preferenceTextGroup2 = [];
-
-    this.missingPreferencesGroup1 = [];
-    this.missingPreferencesGroup2 = [];
-
-    for (let i = 1; i <= this.numberOfGroup2Agents.value; i++) {
-      letters.push(String.fromCharCode(i + 64));
-    }
-
-    for (let i = 1; i <= this.numberOfGroup1Agents.value; i++) {
-      numbers.push(String(i));
-    }
-
-    // FIX GROUP 1
-    // Add Missing
-    for (let [key, ranking] of preferenceTextGroup1Copy.entries()) {
-      for (let char of numbers) {
-        if (!ranking.includes(char) && Number(char) != key + 1) {
-          // letter in ranking that is not supposed to be
-          ranking.push(char);
-        }
-      }
-    }
-    // remove Extra
-    for (let [key, ranking] of preferenceTextGroup1Copy.entries()) {
-      for (let char of ranking) {
-        if (!numbers.includes(char) || Number(char) == key + 1) {
-          // remove from ranking
-          let index = ranking.indexOf(char);
-          ranking.splice(index, 1);
-        }
-      }
-    }
-
-    // GROUP 1 //
-    let counter = 0;
-    // for each ranking
-    for (let agent of preferenceTextGroup1Copy) {
-      // stop adding rankings if the number added is equal to the number needed
-      if (counter >= this.numberOfGroup1Agents.value) {
-        break;
-      }
-      // build new ranking
-      let newRanking = [];
-      for (let char of agent) {
-        newRanking.push(char);
-      }
-      // add new rankings
-      this.preferenceTextGroup1.push(newRanking);
-      counter++;
-    }
-  }
-
-  // NOT USED - from old input preferenace system - needs updated in the form of a fix button or toggle
-  generateMissingPreferences(preferenceString) {
-    let newPreferences: Map<string, Array<string>> = new Map();
-    this.missingPreferences = [];
-
-    this.missingPreferencesGroup1 = [];
-    this.missingPreferencesGroup2 = [];
-
-    // dont check for SR
-    if (
-      this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem'
-    ) {
-      return;
-    }
-
-    for (let line of preferenceString.split('\n')) {
-      if (this.checkIfPreference(line)) {
-        line = line.replace(/:\s+,/g, ':');
-        line = line.replace(/,\s+,/g, ',');
-        line = line.replace(/, $/g, '');
-        line = line.replace(/,$/g, '');
-        line = line.replace(/\s+/g, ''); // remove whitespace from line from https://stackoverflow.com/questions/24580912/trim-all-white-space-from-string-javascript
-        let agentId: string = line.slice(0, line.indexOf(':'));
-        let agentPreferences = line.slice(line.indexOf(':') + 1).split(',');
-
-        newPreferences.set(agentId, agentPreferences.slice());
-      }
-    }
-
-    this.valid = true;
-
-    for (let agent of newPreferences) {
-      let agentId: string = agent[0];
-      let currentPreferences: string[] = agent[1];
-      let isGroup1: boolean = isNaN(Number(agentId));
-
-      for (
-        let i = 1;
-        i <=
-        (isGroup1
-          ? this.numberOfGroup1Agents.value
-          : this.numberOfGroup2Agents.value);
-        i++
-      ) {
-        let currentNumInPreference = false;
-        for (let preference of currentPreferences) {
-          if (
-            (isGroup1 ? String(i) : String.fromCharCode(i + 64)) == preference
-          ) {
-            currentNumInPreference = true;
-          }
-        }
-        if (!currentNumInPreference) {
-          let added: boolean = false;
-
-          for (let preference of this.missingPreferences) {
-            if (
-              this.utils.checkArrayEquality(preference, [
-                isGroup1 ? String(i) : String.fromCharCode(i + 64),
-                agentId,
-              ])
-            ) {
-              added = true;
-              this.missingPreferences.splice(
-                this.missingPreferences.indexOf(preference),
-                1
-              );
-            }
-          }
-
-          if (!added) {
-            this.missingPreferences.push([
-              agentId,
-              isGroup1 ? String(i) : String.fromCharCode(i + 64),
-            ]);
-          }
-        }
-      }
-    }
-    this.valid = this.missingPreferences.length == 0;
   }
 }
