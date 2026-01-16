@@ -40,6 +40,7 @@ import { ExecutionLogComponent } from './algorithm-page/sidebar/execution-log/ex
 import { AgentTitlesComponent } from './algorithm-page/agent-titles/agent-titles.component';
 import { InfoSidebarComponent } from './algorithm-page/info-sidebar/info-sidebar.component';
 import { RouterModule, RouterOutlet } from '@angular/router';
+import { AgentCountFormComponent } from './forms/agent-count-form/agent-count-form.component';
 
 @NgModule({
   imports: [
@@ -85,6 +86,7 @@ import { RouterModule, RouterOutlet } from '@angular/router';
     RouterModule,
     RouterOutlet,
     MatFormField,
+    AgentCountFormComponent,
   ],
 })
 export class AppModule {}
