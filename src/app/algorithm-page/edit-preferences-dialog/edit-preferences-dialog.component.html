@@ -16,127 +16,17 @@
     </p>
   </div>
 
-  <form class="example-form pl-3">
-    @if (this.algorithmService.currentAlgorithm.name == 'Stable Marriage Problem') {
-    <div class="row justify-content-start">
-      <mat-form-field style="width: 200px;">
-        <mat-label>Number of Men and Women</mat-label>
-        <input [formControl]="numberOfGroup1Agents" type="number" matInput placeholder="5" value="5"
-          (ngModelChange)="this.generatePreferenceString()" min="1" max="9" onDrag="return false" onDrop="return false"
-          onPaste="return false">
-        @if (numberOfGroup1Agents.hasError('required')){
-        <mat-error>
-          This field is <strong>required</strong>
-        </mat-error>
-        }
-        @if (numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
-        <mat-error>
-          Please input a number between 1 and 9
-        </mat-error>
-        }
-      </mat-form-field>
+  <div class="row mt-4">
+    <div class="col-7">
+      <app-agent-count-form [algorithm]="this.algorithmService.currentAlgorithm"></app-agent-count-form>
     </div>
-    }
-
-    @if (this.algorithmService.currentAlgorithm.name == 'Hospitals/Residents Problem') {
-    <div class="row justify-content-center">
-      <mat-form-field style="width: 200px;" class="mr-1">
-        <mat-label>Number of Residents</mat-label>
-        <input [formControl]="numberOfGroup1Agents" type="number" matInput placeholder="5" value="5"
-          (ngModelChange)="this.generatePreferenceString()" min="2" max="9" onDrag="return false" onDrop="return false"
-          onPaste="return false">
-        @if (numberOfGroup1Agents.hasError('required')){
-        <mat-error>
-          This field is <strong>required</strong>
-        </mat-error>
-        }
-        @if (numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
-        <mat-error>
-          Please input a number between 1 and 9
-        </mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field style="width: 200px;" class="ml-1">
-        <mat-label>Number of Hospitals</mat-label>
-        <input [formControl]="numberOfGroup2Agents" type="number" matInput placeholder="5" value="5"
-          (ngModelChange)="this.generatePreferenceString()" min="2" max="9" onDrag="return false" onDrop="return false"
-          onPaste="return false">
-        @if (numberOfGroup2Agents.hasError('required')){
-        <mat-error>
-          This field is <strong>required</strong>
-        </mat-error>
-        }
-        @if (numberOfGroup2Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
-        <mat-error>
-          Please input a number between 1 and 9
-        </mat-error>
-        }
-      </mat-form-field>
+    <div class="col-5 text-right">
+      <button class="cardButton flex-fill" mat-stroked-button cdkFocusInitial [disabled]="!this.agentForm.isFormValid()"
+        (click)="this.generatePreferenceString()">
+        Generate Preferences
+      </button>
     </div>
-    }
-
-    @if (this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem') {
-    <div class="row justify-content-start">
-      <mat-form-field style="width: 200px;">
-        <mat-label>Number of People</mat-label>
-        <input [formControl]="numberOfGroup1Agents" type="number" matInput placeholder="5" value="5"
-          (ngModelChange)="this.generatePreferenceString1Group()" min="1" max="10" onDrag="return false"
-          onDrop="return false" onPaste="return false">
-        @if (numberOfGroup1Agents.hasError('required')) {
-        <mat-error>
-          This field is <strong>required</strong>
-        </mat-error>
-        }
-        @if (numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
-        <mat-error>
-          Please input a number between 1 and 8
-        </mat-error>
-        }
-      </mat-form-field>
-    </div>
-    }
-
-    <!-- SPA -->
-    @if (this.algorithmService.currentAlgorithm.name == 'Student Project Allocation') {
-    <div class="row justify-content-center">
-      <mat-form-field style="width: 200px;" class="mr-1">
-        <mat-label>Number of Students</mat-label>
-        <input [formControl]="numberOfGroup1Agents" type="number" matInput placeholder="5" value="5"
-          (ngModelChange)="this.generatePreferenceString()" min="2" max="9" onDrag="return false" onDrop="return false"
-          onPaste="return false">
-        @if (numberOfGroup1Agents.hasError('required')){
-        <mat-error>
-          This field is <strong>required</strong>
-        </mat-error>
-        }
-        @if (numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
-        <mat-error>
-          Please input a number between 1 and 9
-        </mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field style="width: 200px;" class="ml-1">
-        <mat-label>Number of Projects</mat-label>
-        <input [formControl]="numberOfGroup2Agents" type="number" matInput placeholder="5" value="5"
-          (ngModelChange)="this.generatePreferenceString()" min="2" max="9" onDrag="return false" onDrop="return false"
-          onPaste="return false">
-        @if (numberOfGroup2Agents.hasError('required')){
-        <mat-error>
-          This field is <strong>required</strong>
-        </mat-error>
-        }
-        @if (numberOfGroup2Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
-        <mat-error>
-          Please input a number between 1 and 9
-        </mat-error>
-        }
-      </mat-form-field>
-    </div>
-    }
-
-  </form>
+  </div>
 
   <h1 class="mt-2"><u>Input New Preferences</u></h1>
 
@@ -228,10 +118,8 @@
     <div class="row justify-content-end">
       <div class="col-3 ">
         <button class="buttons" mat-stroked-button (click)="callGenerateAlgorithmPreferences()"
-          [disabled]="this.currentInputCheck()">Generate!</button>
+          [disabled]="!this.isValidPreferences()">Generate Instance</button>
       </div>
     </div>
-
-
   </div>
 </div>
