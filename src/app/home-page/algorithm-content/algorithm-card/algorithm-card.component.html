@@ -161,7 +161,7 @@
           </div>
           }
 
-          @if (algorithm.name == 'Student Project Allocation') {
+          @if (algorithm.name == 'Student-Project Allocation') {
           <div class="row justify-content-center">
             <mat-form-field style="width: 200px;" class="mr-1">
               <mat-label>Number of Students</mat-label>
@@ -233,7 +233,7 @@
           (click)="this.onGeneratePreferences()">
           <span style="font-size: 18px; font-weight: 500; color: black;">Generate Preferences</span>
         </button>
-        } @else if ((algorithm.name == 'Student Project Allocation') && !(numberOfGroup1Agents.hasError('required') ||
+        } @else if ((algorithm.name == 'Student-Project Allocation') && !(numberOfGroup1Agents.hasError('required') ||
         numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min')
         || numberOfGroup2Agents.hasError('required') || numberOfGroup2Agents.hasError('max') ||
         numberOfGroup2Agents.hasError('min'))) {

@@ -42,10 +42,10 @@ export class AlgorithmRetrievalService {
         name: 'Stable Marriage Problem',
         orientation: ['Man', 'Woman'],
         equalGroups: true,
-        algorithm: 'Gale-Shapley Stable Matching',
+        algorithm: 'Gale-Shapley Algorithm',
         service: this.gsStableMarriageService,
         description:
-          'The stable marriage problem is the problem of finding a stable matching between two equally sized sets of elements. In this case: <b>men and women</b>.<br><br>To do this, the Gale-Shapley Stable Marriage algorithm is used.',
+          'The stable marriage problem is the problem of finding a one-to-one stable matching between two equally sized sets of agents: <b>men</b> and <b>women</b>.<br>Here we demonstrate the original Gale-Shapley algorithm.',
         helpTextMap: {
           1: 'Ensure there are no pre-existing matches between men and women',
           2: 'While there is still a man without a match, select the first one (%man%)',
@@ -82,10 +82,10 @@ export class AlgorithmRetrievalService {
         name: 'Stable Marriage Problem',
         orientation: ['Man', 'Woman'],
         equalGroups: true,
-        algorithm: 'Extended Gale-Shapley Stable Matching',
+        algorithm: 'Extended Gale-Shapley Algorithm',
         service: this.egsStableMarriageService,
         description:
-          'The stable marriage problem is the problem of finding a stable matching between two equally sized sets of elements. In this case: <b>men and women</b>.<br><br>To do this, the Extended Gale-Shapley Stable Marriage algorithm is used.',
+          'The stable marriage problem is the problem of finding a one-to-one stable matching between two equally sized sets of agents: <b>men</b> and <b>women</b>.<br>Here we demonstrate a modified version of the original algorithm which will form the basis of the more complex algorithms on this page.',
         helpTextMap: {
           1: 'Set all men and women to have no engagements',
           2: 'While there are some men who are not engaged, select the next one (%currentAgent%)',
@@ -124,10 +124,10 @@ export class AlgorithmRetrievalService {
         name: 'Hospitals/Residents Problem',
         orientation: ['Resident', 'Hospital'],
         equalGroups: false,
-        algorithm: 'Extended Gale-Shapley Stable Matching',
+        algorithm: 'Capacitated Extended Gale-Shapley Algorithm',
         service: this.HrResidentEgsService,
         description:
-          'The Hospitals/Residents Problem is the problem of finding a stable matching between a set of <b>hospitals and residents</b>, where a hospital can take multiple residents.<br><br>This is the <b>resident-oriented</b> version of the algorithm, so <b>residents will propose to hospitals</b>.<br><br>To do this, the Extended Gale-Shapley Stable Marriage algorithm is used.',
+          'The Hospitals/Residents Problem is the problem of finding a many-to-one stable matching between a set of <b>hospitals</b> and <b>residents</b>, where a hospital can be assigned multiple residents up to some capacity.',
         helpTextMap: {
           1: 'Clear the matches of all residents and hospitals',
           2: "The next resident who doesn't have a match and still has some hospitals in their preference list is selected (%currentAgent%)",
@@ -168,10 +168,10 @@ export class AlgorithmRetrievalService {
         name: 'Hospitals/Residents Problem',
         orientation: ['Hospital', 'Resident'],
         equalGroups: false,
-        algorithm: 'Extended Gale-Shapley Stable Matching',
+        algorithm: 'Capacitated Extended Gale-Shapley Algorithm',
         service: this.HrHospitalEgsService,
         description:
-          'The Hospitals/Residents Problem is the problem of finding a stable matching between a set of <b>hospitals and residents</b>, where a hospital can take multiple residents.<br><br>This is the <b>hospital-oriented</b> version of the algorithm, so <b>hospitals will propose to residents</b>.<br><br>To do this, the Extended Gale-Shapley Stable Marriage algorithm is used.',
+          'The Hospitals/Residents Problem is the problem of finding a many-to-one stable matching between a set of <b>hospitals</b> and <b>residents</b>, where a hospital can be assigned multiple residents up to some capacity.',
         helpTextMap: {
           1: 'Set all hospitals and residents to be completely free',
           2: 'While some hospital (%hospital%) is undersubscribed and has a resident on their preference list that is not assigned to them',
@@ -208,7 +208,7 @@ export class AlgorithmRetrievalService {
         algorithm: "Irving's Algorithm",
         service: this.StableRoomIrvService,
         description:
-          'The stable roommates problem is the problem of finding a stable matching between 1 group of elements. In this case <b>people</b>.<br> <br>To do this the Irving’s algorithm is used',
+          'The stable roommates problem is the problem of finding a one-to-one stable matching amongst a single set of agents, which we thus refer to neutrally as <b>people</b>.<br>We demonstrate the algorithm due to Robert W. Irving.',
         helpTextMap: {
           1: 'Set all people to be free',
           2: 'While some person %person% has not been assigned to a anyone and has a non-empty preference list',
@@ -276,13 +276,13 @@ export class AlgorithmRetrievalService {
       'spa-stu-egs',
       {
         id: 'spa-stu-egs',
-        name: 'Student Project Allocation',
+        name: 'Student-Project Allocation',
         orientation: ['Student', 'Project'],
         equalGroups: false,
-        algorithm: 'Extended Gale-Shapley Stable Matching',
+        algorithm: 'A.I.M. Algorithm',
         service: this.SpaStudentEgsService,
         description:
-          'The Student Project Allocation Problem is the problem of finding a stable matching between 2 groups. In this case <b>students</b> and <b>projects</b>, there is also the added condition that projects are presented by lecturers, and each lecturer has preferences and a capacity. <br><br> This is the <b>student-oriented</b> version of the algorithm, so <b>students will propose to projects</b>. <br><br> To do this the Extended Gale-Shapley Algorithm is used. ',
+          'The Student-Project Allocation Problem is the problem of finding a many-to-one stable matching between <b>students</b> and <b>projects</b>. Projects are not agents, but do have a fixed maximum capacity. They are offered by <b>lecturers</b>, and it is the lecturer that has preferences over the students. One lecturer may offer many projects.<br>We demonstrate the algorithm due to Abraham, Irving and Manlove.',
         helpTextMap: {
           1: 'set each student, lecturer, and project to be free and unmatched',
           2: 'While some student %student% is free and has a non-empty preference list',
@@ -349,7 +349,6 @@ export class AlgorithmRetrievalService {
     ['Woman', 'Women'],
     ['Resident', 'Residents'],
     ['Hospital', 'Hospitals'],
-
     ['Person', 'People'],
     ['Student', 'Students'],
     ['Project', 'Projects'],

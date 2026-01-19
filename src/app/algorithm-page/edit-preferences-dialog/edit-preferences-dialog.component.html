@@ -122,7 +122,7 @@
     }
 
     <!-- SPA -->
-    @if (this.algorithmService.currentAlgorithm.name == 'Student Project Allocation') {
+    @if (this.algorithmService.currentAlgorithm.name == 'Student-Project Allocation') {
     <div class="row justify-content-center">
       <mat-form-field style="width: 200px;" class="mr-1">
         <mat-label>Number of Students</mat-label>
@@ -191,7 +191,7 @@
 
     <!-- group 2 -->
     @if ((this.algorithmService.currentAlgorithm.name != 'Stable Roommates Problem') &&
-    (this.algorithmService.currentAlgorithm.name != 'Student Project Allocation')) {
+    (this.algorithmService.currentAlgorithm.name != 'Student-Project Allocation')) {
     <div class="child">
       <p><strong>{{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[1])
           }}</strong></p>
