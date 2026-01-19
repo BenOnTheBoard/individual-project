@@ -18,7 +18,8 @@
 
   <div class="row mt-4">
     <div class="col-7">
-      <app-agent-count-form [algorithm]="this.algorithmService.currentAlgorithm"></app-agent-count-form>
+      <app-agent-count-form [algorithm]="this.algorithmService.currentAlgorithm"
+        (enterEvent)="generatePreferenceString()"></app-agent-count-form>
     </div>
     <div class="col-5 text-right">
       <button class="cardButton flex-fill" mat-stroked-button cdkFocusInitial [disabled]="!this.agentForm.isFormValid()"
