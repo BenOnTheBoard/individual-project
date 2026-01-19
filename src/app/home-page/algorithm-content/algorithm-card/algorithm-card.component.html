@@ -19,7 +19,8 @@
 
     <div class="row mt-4">
       <div class="col-7">
-        <app-agent-count-form [algorithm]="this.algorithm"></app-agent-count-form>
+        <app-agent-count-form [algorithm]="this.algorithm"
+          (enterEvent)="onGeneratePreferences()"></app-agent-count-form>
       </div>
 
       <div class="col-5 text-right">

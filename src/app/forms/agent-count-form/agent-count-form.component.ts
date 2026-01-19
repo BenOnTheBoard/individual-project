@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +25,7 @@ import { UtilsService } from 'src/app/utils/utils.service';
 })
 export class AgentCountFormComponent implements OnInit {
   @Input() algorithm: Algorithm;
+  @Output() enterEvent = new EventEmitter();
 
   protected numberOfGroup1Agents = new FormControl<number | null>(null, [
     Validators.required,
@@ -39,6 +47,15 @@ export class AgentCountFormComponent implements OnInit {
   ]);
 
   ngOnInit(): void {}
+
+  @HostListener('document:keydown.enter', ['$event'])
+  onEnter(event: KeyboardEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (this.isFormValid()) {
+      this.enterEvent.emit(null);
+    }
+  }
 
   isFormValid(): boolean {
     switch (this.algorithm.name) {

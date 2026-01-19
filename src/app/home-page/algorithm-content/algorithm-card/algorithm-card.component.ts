@@ -33,7 +33,7 @@ declare var anime: any;
 export class AlgorithmCardComponent implements OnInit {
   @Input() algorithm: Algorithm;
   @ViewChild(AgentCountFormComponent, { static: true })
-  agentForm!: AgentCountFormComponent;
+  protected agentForm!: AgentCountFormComponent;
 
   constructor(
     public algRetriever: AlgorithmRetrievalService,

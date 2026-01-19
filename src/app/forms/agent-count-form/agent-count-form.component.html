@@ -3,10 +3,9 @@
   <div class="row justify-content-start">
     <mat-form-field>
       <mat-label>Number of Men/Women</mat-label>
-      <input id={{algorithm.id}} [formControl]="numberOfGroup1Agents" (keyup.enter)="isFormValid() ? null : null"
-        type="number" matInput placeholder="5" value="5" min="1" max="9"
-        onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false" onDrop="return false"
-        onPaste="return false">
+      <input id={{algorithm.id}} [formControl]="numberOfGroup1Agents" type="number" matInput placeholder="5" value="5"
+        min="1" max="9" onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false"
+        onDrop="return false" onPaste="return false">
       @if (numberOfGroup1Agents.hasError('required')) {
       <mat-error>This field is <strong>required</strong></mat-error>
       }
@@ -21,9 +20,9 @@
   <div class="row justify-content-start">
     <mat-form-field class="mr-1">
       <mat-label>Number of Residents</mat-label>
-      <input [formControl]="numberOfGroup1Agents" (keyup.enter)="isFormValid() ? null : null" type="number" matInput
-        placeholder="5" value="5" min="2" max="9" onkeydown="if(event.key==='.'){event.preventDefault();}"
-        onDrag="return false" onDrop="return false" onPaste="return false">
+      <input [formControl]="numberOfGroup1Agents" type="number" matInput placeholder="5" value="5" min="2" max="9"
+        onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false" onDrop="return false"
+        onPaste="return false">
       @if (numberOfGroup1Agents.hasError('required')) {
       <mat-error>This field is <strong>required</strong></mat-error>
       }
@@ -34,9 +33,9 @@
 
     <mat-form-field class="ml-1">
       <mat-label>Number of Hospitals</mat-label>
-      <input [formControl]="numberOfGroup2Agents" (keyup.enter)="isFormValid() ? null : null" type="number" matInput
-        placeholder="5" value="5" min="2" max="9" onkeydown="if(event.key==='.'){event.preventDefault();}"
-        onDrag="return false" onDrop="return false" onPaste="return false">
+      <input [formControl]="numberOfGroup2Agents" type="number" matInput placeholder="5" value="5" min="2" max="9"
+        onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false" onDrop="return false"
+        onPaste="return false">
       @if (numberOfGroup2Agents.hasError('required')) {
       <mat-error>This field is <strong>required</strong></mat-error>
       }
@@ -52,10 +51,9 @@
   <div class="row justify-content-start">
     <mat-form-field>
       <mat-label>Number of People</mat-label>
-      <input id={{algorithm.id}} [formControl]="numberOfSRAgents" (keyup.enter)="isFormValid() ? null : null"
-        type="number" matInput placeholder="4" value="4" min="1" max="8"
-        onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false" onDrop="return false"
-        onPaste="return false">
+      <input id={{algorithm.id}} [formControl]="numberOfSRAgents" type="number" matInput placeholder="4" value="4"
+        min="1" max="8" onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false"
+        onDrop="return false" onPaste="return false">
       @if (numberOfSRAgents.hasError('required')) {
       <mat-error>This field is <strong>required</strong></mat-error>
       }
@@ -73,9 +71,9 @@
   <div class="row justify-content-start">
     <mat-form-field class="mr-1">
       <mat-label>Number of Students</mat-label>
-      <input [formControl]="numberOfGroup1Agents" (keyup.enter)="isFormValid() ? null : null" type="number" matInput
-        placeholder="5" value="5" min="2" max="9" onkeydown="if(event.key==='.'){event.preventDefault();}"
-        onDrag="return false" onDrop="return false" onPaste="return false">
+      <input [formControl]="numberOfGroup1Agents" type="number" matInput placeholder="5" value="5" min="2" max="9"
+        onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false" onDrop="return false"
+        onPaste="return false">
       @if (numberOfGroup1Agents.hasError('required')) {
       <mat-error>This field is <strong>required</strong></mat-error>
       }
@@ -86,9 +84,9 @@
 
     <mat-form-field class="ml-1">
       <mat-label>Number of Projects</mat-label>
-      <input [formControl]="numberOfGroup2Agents" (keyup.enter)="isFormValid() ? null : null" type="number" matInput
-        placeholder="5" value="5" min="2" max="9" onkeydown="if(event.key==='.'){event.preventDefault();}"
-        onDrag="return false" onDrop="return false" onPaste="return false">
+      <input [formControl]="numberOfGroup2Agents" type="number" matInput placeholder="5" value="5" min="2" max="9"
+        onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false" onDrop="return false"
+        onPaste="return false">
       @if (numberOfGroup2Agents.hasError('required')) {
       <mat-error>This field is <strong>required</strong></mat-error>
       }
