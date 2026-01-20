@@ -431,7 +431,7 @@ export class EditPreferencesDialogComponent implements OnInit {
       }
     } else if (
       this.algorithmService.currentAlgorithm.name ==
-      'Student Project Allocation'
+      'Student-Project Allocation'
     ) {
       valid = this.SPAisvalid();
     } else {
@@ -456,7 +456,7 @@ export class EditPreferencesDialogComponent implements OnInit {
     //GROUP 2
     if (
       this.algorithmService.currentAlgorithm.name !=
-      'Student Project Allocation'
+      'Student-Project Allocation'
     ) {
       num = 1;
       for (let agent of this.preferenceTextGroup2) {
