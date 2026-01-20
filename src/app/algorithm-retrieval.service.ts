@@ -8,7 +8,6 @@ import { HrHospitalEgsService } from './algorithm-page/algorithms/algorithm-serv
 import { SpaStudentEgsService } from './algorithm-page/algorithms/algorithm-services/spa-stu-egs/spa-student-egs.service';
 
 // ------------------------------------------------------- ALGORITHM TEMPLATE
-
 // [
 //   "smp-man-egs", {
 //     id: "smp-man-egs",
@@ -18,11 +17,9 @@ import { SpaStudentEgsService } from './algorithm-page/algorithms/algorithm-serv
 //     service: null,
 //     description: "The stable marriage problem is the problem of finding a stable matching between two equally sized sets of elements. In this case: <b>men and women</b>.<br><br>To do this, the Extended Gale-Shapley Stable Marriage algorithm is used.",
 //     helpTextMap: {
-
 //     },
 //   }
 // ],
-
 // -------------------------------------------------------
 
 @Injectable({
@@ -48,15 +45,15 @@ export class AlgorithmRetrievalService {
           'The stable marriage problem is the problem of finding a one-to-one stable matching between two equally sized sets of agents: <b>men</b> and <b>women</b>.<br>Here we demonstrate the original Gale-Shapley algorithm.',
         helpTextMap: {
           1: 'Start with no matches between men and women.',
-          2: 'While there are unmatched man, select the first one (%man%).',
-          3: 'He selects %woman% because she is the next most preferred woman for %man% whom he has not yet proposed to.',
-          4: 'We check to see whether %woman% has a match already.',
+          2: '%man% is currently unmatched.',
+          3: '%man% selects %woman%, the next most preferred woman whom he has not yet proposed to.',
+          4: 'We check whether %woman% has a match already.',
           5: '%woman% is free; match her with %man%.',
           6: '%woman% is currently matched to %match%, so we must compare %match% to %man%.',
           7: 'We check whether %woman% prefers %match% to %man%.',
           8: '%woman% prefers %man% to %match% so we free up %match% and assign %woman% to %man%.',
           9: '%woman% prefers %match% to %man%.',
-          10: 'No change is made to the matching.',
+          10: "We don't change the matching.",
           11: 'We have arrived at a stable matching.',
         },
         code: [
@@ -88,7 +85,7 @@ export class AlgorithmRetrievalService {
           'The stable marriage problem is the problem of finding a one-to-one stable matching between two equally sized sets of agents: <b>men</b> and <b>women</b>.<br>Here we demonstrate a modified version of the original algorithm which will form the basis of the more complex algorithms on this page.',
         helpTextMap: {
           1: 'Start with no engagements between men and women.',
-          2: 'While there are unengaged men, select the next one (%currentAgent%).',
+          2: '%currentAgent% is currently unengaged.',
           3: '%currentAgent% selects %potentialProposee% because she is the most preferred woman remaining on his list.',
           4: 'We check whether %woman% is engaged already.',
           5: '%woman% is engaged to %currentPartner%, so we break the engagement between them.',
@@ -96,7 +93,7 @@ export class AlgorithmRetrievalService {
           7: 'We engage %man% and %woman%.',
           8: "We loop over all the men on %woman%'s list whom she prefers %man% to.",
           9: "The next worst man on %woman%'s list is %nextWorstMan%.",
-          10: "Remove %nextWorstMan% and %woman% from each other's lists.",
+          10: "We remove %nextWorstMan% and %woman% from each other's lists.",
           11: 'All men to whom %woman% prefers %man% have been removed.',
           12: 'We have arrived at a stable matching.',
         },
@@ -129,21 +126,21 @@ export class AlgorithmRetrievalService {
         description:
           'The Hospitals/Residents Problem is the problem of finding a many-to-one stable matching between a set of <b>hospitals</b> and <b>residents</b>, where a hospital can be assigned multiple residents up to some capacity.',
         helpTextMap: {
-          1: 'Start with no engagements between residents and hospitals.',
+          1: 'Start with no assignments between residents and hospitals.',
           2: "%currentAgent% is the next resident who doesn't have a hospital and still has some hospitals in their preference list.",
-          3: '%currentAgent% selects %potentialProposee%,the first hospital left on its list.',
-          4: 'We check if %hospital% is currently full. If not, we provisionally assign %resident% to %hospital%.',
+          3: '%currentAgent% selects %potentialProposee%, the first hospital left on its list.',
+          4: 'We check whether %hospital% is currently full. If not, we provisionally assign %resident% to %hospital%.',
           5: "%hospital%'s number of residents is equal to its max capacity, so choose the worst resident assigned to %hospital% (%worstResident%).",
           6: 'We unassign %hospital% and %worstResident%.',
           7: 'Assign %resident% to %hospital%.',
-          8: 'We check if %hospital% is full after assigning %resident% to %hospital%.',
-          9: "%hospital% is fully subscribed, so choose the worst resident assigned to them (%worstResident%) and remove each successor from %hospital%'s preference list.",
+          8: 'We check whether %hospital% is full after assigning %resident% to %hospital%.',
+          9: "%hospital% is fully subscribed, so we choose the worst resident assigned to them (%worstResident%) and remove each successor from %hospital%'s preference list.",
           10: '%hospital% selects %nextResident% as the next resident to be removed from its list.',
           11: "We remove %nextResident% from %hospital%'s list.",
           12: 'We have arrived at a stable matching.',
         },
         code: [
-          'Set each hospital and resident to be completely free',
+          'Set each hospital and resident to be free',
           'While (some resident r is free) and (r has a nonempty list):',
           "\th := first hospital on r's list",
           '\tIf h is fully subscribed then:',
@@ -171,9 +168,9 @@ export class AlgorithmRetrievalService {
         description:
           'The Hospitals/Residents Problem is the problem of finding a many-to-one stable matching between a set of <b>hospitals</b> and <b>residents</b>, where a hospital can be assigned multiple residents up to some capacity.',
         helpTextMap: {
-          1: 'Start with no engagements between residents and hospitals.',
+          1: 'Start with no assignments between residents and hospitals.',
           2: '%hospital% is undersubscribed and has a resident on their preference list that is not assigned to them.',
-          3: "%hospital% selects %resident% from hospital's preference list.",
+          3: '%hospital% selects %resident%, the best resident on its preference list.',
           4: 'We check whether %resident% is assigned to another hospital.',
           5: 'We unassign %resident% and %oldHospital% from each other.',
           6: 'We assign %resident% and %hospital% to each other.',
@@ -182,9 +179,9 @@ export class AlgorithmRetrievalService {
           9: 'We have arrived at a stable matching.',
         },
         code: [
-          'Set each hospital and resident to be completely free',
-          'While some hospital h is undersubscibed, and has a non-empty preference list:',
-          "\tr := first resident on h's prefernace list not assigned to h",
+          'Set each hospital and resident to be free',
+          'While some hospital h is undersubscribed, and has a non-empty preference list:',
+          "\tr := first resident on h's preference list not assigned to h",
           "\tIf r is assigned to another hospital h':",
           "\t\tUnassign r and h'",
           '\tProvisionally assign r to h',
@@ -207,30 +204,30 @@ export class AlgorithmRetrievalService {
         description:
           'The stable roommates problem is the problem of finding a one-to-one stable matching amongst a single set of agents, which we thus refer to neutrally as <b>people</b>.<br>We demonstrate the algorithm due to Robert W. Irving.',
         helpTextMap: {
-          1: 'Start with no engagements amongst people.',
+          1: 'Start with no assignments amongst people.',
           2: '%person% is not assigned to anyone.',
-          3: "We check if %person%'s preference list is empty.",
+          3: "We check whether %person%'s preference list is empty.",
           4: 'Any empty list indicates that the instance has no stable matchings.',
           5: '%person% selects %selected%, the first person left on their preference list.',
           6: 'We set %person% to be assigned to %selected%.',
-          7: 'We check if another person than %person% is assigned to %selected%.',
+          7: 'We check whether another person than %person% is assigned to %selected%.',
           8: 'If they are, then unassign them. unassign %old_person% from %selected%.',
           9: 'We loop over each person %selected% prefers %person% to.',
-          10: "We remove %removee% from %person% from eachother's lists.",
+          10: "We remove %removee% from %person% from each other's lists.",
           11: '%person% has more than one person left in their preference list.',
           12: "We look for rotations within %person%'s preference list, that is a cycle of ordered pairs through preference lists.",
-          13: 'If we can find a rotation.', //%rotation%
-          14: "We delete pairs in rotation, removing %removee% from %person% from eachother's lists.",
-          15: 'We check if any person has a preference list of length one.',
+          13: 'If we can find a rotation...', //%rotation%
+          14: "We delete pairs in rotation, removing %removee% from %person% from each other's lists.",
+          15: 'We check whether any person has a preference list of length one.',
           16: 'We assign %person% to %preference%, the last person in their preference list.',
-          17: "We check if %person%'s preference list is empty.",
+          17: "We check whether %person%'s preference list is empty.",
           18: 'Any empty list indicates that the instance has no stable matchings.',
           19: 'We have arrived at a stable matching.',
         },
         code: [
           'Set each person to be free',
           'While some person p is free:',
-          '\tIf person p has a empty preference list:',
+          '\tIf person p has an empty preference list:',
           '\t\tEnd - no stable matching',
           "\tperson b := first preference on p's list",
           '\tAssign p to b',
@@ -239,14 +236,14 @@ export class AlgorithmRetrievalService {
           '\tFor each person c that b prefers p to:',
           "\t\tRemove c from p's list and remove p from c's list",
           'While some person p has more than one person left in their preference list',
-          "Look for rotations in perosn p's preference list",
+          "Look for rotations in person p's preference list",
           'If rotation r is found:',
           '\tDelete pairs in rotation r',
           '\tIf there is a person b with a preference of length one:',
           '\t\tperson b := last preference',
           'If any people have empty preference lists:',
           '\tEnd - no stable matching',
-          'We have arrived at a stable matching.',
+          'The current set of assignments is stable',
         ],
       },
     ],
