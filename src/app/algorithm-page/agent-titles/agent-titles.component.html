@@ -1,10 +1,10 @@
-@if (this.algorithmService.currentAlgorithm.id != 'hr-hospital-egs') {
+@if (this.algRetriever.currentAlgorithm.id != 'hr-hospital-egs') {
 <div class="d-flex justify-content-around flex-wrap flex-md-nowrap align-items-center"
   style="height:120px; border-bottom: 1px solid rgba(184, 184, 184, 0.658);">
 
-  @if (!this.showCode || (this.algorithmService.currentAlgorithm.id != 'smp-room-irv')) {
+  @if (!this.showCode || (this.algRetriever.currentAlgorithm.id != 'smp-room-irv')) {
   <h1 id="lhsName" class="h2 mt-3 row text-center border-bottom mr-3">
-    {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[0]) }}
+    {{ this.algRetriever.getSide(true, true) }}
   </h1>
   }
 
@@ -16,19 +16,19 @@
   </div>
   }
 
-  @if (this.algorithmService.currentAlgorithm.id != 'smp-room-irv') {
+  @if (this.algRetriever.currentAlgorithm.id != 'smp-room-irv') {
   <h1 id="rhsName" class="h2 mt-3">
-    {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[1]) }}
+    {{ this.algRetriever.getSide(false, true) }}
   </h1>
   }
 </div>
 }
 
-@if (this.algorithmService.currentAlgorithm.id == 'hr-hospital-egs') {
+@if (this.algRetriever.currentAlgorithm.id == 'hr-hospital-egs') {
 <div class="d-flex justify-content-around flex-wrap flex-md-nowrap align-items-center"
   style="height:120px; border-bottom: 1px solid rgba(184, 184, 184, 0.658);">
   <h1 id="lhsName" class="h2 mt-3">
-    {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[1]) }}
+    {{ this.algRetriever.getSide(false, true) }}
   </h1>
 
   @if (this.showCode) {
@@ -40,7 +40,7 @@
   }
 
   <h1 id="rhsName" class="h2 mt-3">
-    {{ this.algorithmService.pluralMap.get(this.algorithmService.currentAlgorithm.orientation[0]) }}
+    {{ this.algRetriever.getSide(true, true) }}
   </h1>
 </div>
 }

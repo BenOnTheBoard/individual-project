@@ -16,12 +16,12 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       // break the provisional assignment of r to h'
       let matchPosition: number = this.findPositionInMatches(
         potentialProposee,
-        potentialProposee.match[0]
+        potentialProposee.match[0],
       );
 
       if (
         potentialProposee.match[0].ranking.filter(
-          (agent) => agent.match[0] != currentAgent
+          (agent) => agent.match[0] != currentAgent,
         ).length > 0 &&
         !this.freeAgentsOfGroup1.includes(potentialProposee.match[0].name) &&
         potentialProposee.match[0].ranking.length > 0
@@ -41,15 +41,15 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
         this.originalGroup1CurrentPreferences
           .get(this.utils.getLastChar(potentialProposee.match[0].name))
           .findIndex(
-            (woman) => woman == this.utils.getLastChar(potentialProposee.name)
+            (woman) => woman == this.utils.getLastChar(potentialProposee.name),
           ),
-        'grey'
+        'grey',
       );
       this.changePreferenceStyle(
         this.group2CurrentPreferences,
         this.utils.getLastChar(potentialProposee.name),
         matchPosition,
-        'grey'
+        'grey',
       );
 
       this.update(5, {
@@ -61,9 +61,9 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       potentialProposee.match[0].ranking.splice(
         this.findPositionInMatches(
           potentialProposee.match[0],
-          potentialProposee
+          potentialProposee,
         ),
-        1
+        1,
       );
     } else {
       this.update(6, { '%woman%': potentialProposee.name });
@@ -90,15 +90,15 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       this.originalGroup1CurrentPreferences
         .get(agentLastChar)
         .findIndex(
-          (woman) => woman == this.utils.getLastChar(potentialProposee.name)
+          (woman) => woman == this.utils.getLastChar(potentialProposee.name),
         ),
-      'green'
+      'green',
     );
     this.changePreferenceStyle(
       this.group2CurrentPreferences,
       proposeeLastChar,
       this.findPositionInMatches(potentialProposee, currentAgent),
-      'green'
+      'green',
     );
 
     this.update(7, {
@@ -111,7 +111,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
 
   removeRuledOutPreferences(currentAgent: Agent, potentialProposee: Agent) {
     let currentAgentPosition: number = potentialProposee.ranking.findIndex(
-      (agent: { name: string }) => agent.name == currentAgent.name
+      (agent: { name: string }) => agent.name == currentAgent.name,
     );
 
     let proposeeRankingClearCounter: number = currentAgentPosition + 1;
@@ -128,10 +128,10 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     ) {
       let proposeePosition: number = this.findPositionInMatches(
         potentialProposee.ranking[i],
-        potentialProposee
+        potentialProposee,
       );
       this.relevantPreferences.push(
-        this.utils.getLastChar(potentialProposee.ranking[i].name)
+        this.utils.getLastChar(potentialProposee.ranking[i].name),
       );
       // remove h' and r from each other's lists
       this.update(9, {
@@ -145,16 +145,16 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
         this.originalGroup1CurrentPreferences
           .get(this.utils.getLastChar(potentialProposee.ranking[i].name))
           .findIndex(
-            (woman) => woman == this.utils.getLastChar(potentialProposee.name)
+            (woman) => woman == this.utils.getLastChar(potentialProposee.name),
           ),
-        'grey'
+        'grey',
       );
 
       this.changePreferenceStyle(
         this.group2CurrentPreferences,
         this.utils.getLastChar(potentialProposee.name),
         proposeeRankingClearCounter,
-        'grey'
+        'grey',
       );
 
       this.update(10, {

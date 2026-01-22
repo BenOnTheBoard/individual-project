@@ -25,7 +25,7 @@ export class CanvasService {
     public lineRenderer: LineRendererService,
     public prefRenderer: PreferenceRendererService,
     public textRenderer: TextRendererService,
-    public colourHexService: ColourHexService
+    public colourHexService: ColourHexService,
   ) {}
 
   public setCanvas(canvasRef: ElementRef<HTMLCanvasElement>): void {
@@ -65,7 +65,7 @@ export class CanvasService {
   private arrangeBipartiteAgents(): void {
     this.layoutService.calculateBipartitePositions(
       this.canvasElement,
-      this.currentCommand
+      this.currentCommand,
     );
     for (let line of this.currentCommand['currentLines']) {
       this.lineRenderer.drawLine(line);
@@ -81,7 +81,7 @@ export class CanvasService {
       this.arrangeBipartiteAgents();
     }
     this.agentRenderer.selectCircles(
-      this.currentCommand.currentlySelectedAgents
+      this.currentCommand.currentlySelectedAgents,
     );
   }
 

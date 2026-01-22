@@ -71,10 +71,10 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
     for (let agent of Array.from(this.group1Agents.keys())) {
       tempCopyList = [];
       for (let preferenceAgent of preferences.get(
-        this.utils.getLastChar(String(agent))
+        this.utils.getLastChar(String(agent)),
       )) {
         tempCopyList.push(
-          this.group2Agents.get(this.group2Name + preferenceAgent)
+          this.group2Agents.get(this.group2Name + preferenceAgent),
         );
       }
       this.group1Agents.get(agent).ranking = tempCopyList;

@@ -37,7 +37,7 @@ export class PreferenceRendererService {
     public layoutService: LayoutService,
     public textRenderer: TextRendererService,
     public colourHexService: ColourHexService,
-    public utils: UtilsService
+    public utils: UtilsService,
   ) {}
 
   setContext(ctx: CanvasRenderingContext2D): void {
@@ -57,7 +57,7 @@ export class PreferenceRendererService {
     this.lineSizes = new Map();
     for (let i = 1; i < this.algService.numberOfGroup1Agents + 1; i++) {
       let lineSize = this.ctx.measureText(
-        this.cmd.group1CurrentPreferences.get(String(i)).join(', ')
+        this.cmd.group1CurrentPreferences.get(String(i)).join(', '),
       ).width;
       this.lineSizes.set(String(i), lineSize);
     }
@@ -75,7 +75,7 @@ export class PreferenceRendererService {
 
   private getOffsetX(group: 'LHS' | 'RHS', agent?: string): number {
     const isHospital = Boolean(
-      this.cmd.algorithmSpecificData['hospitalCapacity']
+      this.cmd.algorithmSpecificData['hospitalCapacity'],
     );
 
     if (group == 'LHS') {
@@ -90,7 +90,7 @@ export class PreferenceRendererService {
   private drawPreferenceList(
     count: number,
     getAgentId: (index: number) => string,
-    side: 'LHS' | 'RHS'
+    side: 'LHS' | 'RHS',
   ): void {
     for (let i = 0; i < count; i++) {
       const agent = getAgentId(i);
@@ -110,7 +110,7 @@ export class PreferenceRendererService {
     this.drawPreferenceList(
       rhsCount,
       (i) => String.fromCharCode(65 + i),
-      'RHS'
+      'RHS',
     );
   }
 
@@ -180,10 +180,10 @@ export class PreferenceRendererService {
     const firstProject = this.utils.getLastChar(first);
     const lastProject = this.utils.getLastChar(last);
     const posFirst = this.layoutService.getPositionOfAgent(
-      'circle' + firstProject
+      'circle' + firstProject,
     );
     const posLast = this.layoutService.getPositionOfAgent(
-      'circle' + lastProject
+      'circle' + lastProject,
     );
     return [posFirst, posLast];
   }

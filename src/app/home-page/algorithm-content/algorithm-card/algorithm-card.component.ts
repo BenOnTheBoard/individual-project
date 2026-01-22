@@ -38,7 +38,7 @@ export class AlgorithmCardComponent implements OnInit {
   constructor(
     public algRetriever: AlgorithmRetrievalService,
     public utils: UtilsService,
-    public router: Router
+    public router: Router,
   ) {}
 
   ngOnInit(): void {}

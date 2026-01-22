@@ -336,4 +336,13 @@ export class AlgorithmRetrievalService {
   getListOfAlgorithms(): Array<Algorithm> {
     return Array.from(this.mapOfAvailableAlgorithms.values());
   }
+
+  getSide(proposing: boolean, plural: boolean): string {
+    const sideDigit = proposing ? 0 : 1;
+    const side = this.currentAlgorithm.orientation[sideDigit];
+    if (plural) {
+      return this.pluralMap.get(side);
+    }
+    return side;
+  }
 }

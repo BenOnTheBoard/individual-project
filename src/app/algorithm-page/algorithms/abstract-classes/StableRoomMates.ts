@@ -115,7 +115,7 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
       for (let person of this.group1Agents.values()) {
         for (let i = 0; i < this.group1Agents.size - 1; i++) {
           person.ranking[i] = this.group1Agents.get(
-            this.group1Name + String(instance[count][i])
+            this.group1Name + String(instance[count][i]),
           );
         }
         count++;
@@ -129,10 +129,10 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
     for (let agent of Array.from(this.group1Agents.keys())) {
       tempCopyList = [];
       for (let preferenceAgent of preferences.get(
-        this.utils.getLastChar(String(agent))
+        this.utils.getLastChar(String(agent)),
       )) {
         tempCopyList.push(
-          this.group1Agents.get(this.group1Name + preferenceAgent)
+          this.group1Agents.get(this.group1Name + preferenceAgent),
         );
       }
       this.group1Agents.get(agent).ranking = tempCopyList;

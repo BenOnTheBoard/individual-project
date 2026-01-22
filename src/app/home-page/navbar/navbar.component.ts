@@ -19,7 +19,10 @@ export class NavbarComponent implements OnInit {
     '/feedback': '.feedbackContent',
   };
 
-  constructor(public router: Router, public utils: UtilsService) {}
+  constructor(
+    public router: Router,
+    public utils: UtilsService,
+  ) {}
 
   ngOnInit(): void {}
 
