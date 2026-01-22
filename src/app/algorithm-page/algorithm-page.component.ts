@@ -17,7 +17,6 @@ import { UtilsService } from '../utils/utils.service';
 import { AnimationGuideDialogComponent } from './animation-guide-dialog/animation-guide-dialog.component';
 import { AlgorithmAnimationService } from './animations/algorithm-animation.service';
 import { CanvasService } from './services/canvas/canvas.service';
-import { EditPreferencesDialogComponent } from './edit-preferences-dialog/edit-preferences-dialog.component';
 import { PlaybackService } from './services/playback/playback.service';
 import { InfoSidebarComponent } from './info-sidebar/info-sidebar.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -120,7 +119,7 @@ export class AlgorithmPageComponent implements OnInit {
     public animation: AlgorithmAnimationService,
     public utils: UtilsService,
     public dialog: MatDialog, // injecting the dialog component
-    public router: Router // injecting the router service (for programmatic route navigation)
+    public router: Router, // injecting the router service (for programmatic route navigation)
   ) {}
 
   ngOnInit(): void {
@@ -143,7 +142,7 @@ export class AlgorithmPageComponent implements OnInit {
     this.playback.setAlgorithm(
       this.algorithmService.currentAlgorithm.id,
       this.algorithmService.numberOfGroup1Agents,
-      this.algorithmService.numberOfGroup2Agents
+      this.algorithmService.numberOfGroup2Agents,
     );
 
     // initialise all of the popovers for the tutorial (they won't appear without this function)
@@ -166,7 +165,6 @@ export class AlgorithmPageComponent implements OnInit {
   // (< arrow) or (a) == backstep in algorithm
   // (> arrow) or (d) == forward step in algorithm
   // (r) or (#) == generate new preferences
-  // (e) or (]) == open edit preferences dialog
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
     if (!this.dialogOpen && this.tutorialStep == 0) {
@@ -190,24 +188,11 @@ export class AlgorithmPageComponent implements OnInit {
         }
       } else if (event.key == 'r' || event.key == '#') {
         this.generateNewPreferences();
-      } else if (event.key == 'e' || event.key == ']') {
-        this.openEditPreferencesDialog();
       }
     }
   }
 
   // --------------------------------------------------------------------------------- | GENERAL FUNCTIONS
-
-  // open the edit preferences dialog with a callback function
-  openEditPreferencesDialog(): void {
-    const dialogRef = this.dialog.open(EditPreferencesDialogComponent);
-
-    this.dialogOpen = true;
-
-    dialogRef.afterClosed().subscribe(() => {
-      this.dialogOpen = false;
-    });
-  }
 
   // open the animation guide dialog with a callback function
   openAnimationGuideDialog(): void {
@@ -250,13 +235,13 @@ export class AlgorithmPageComponent implements OnInit {
         this.algorithmService.numberOfGroup1Agents,
         this.algorithmService.numberOfGroup2Agents,
         null,
-        this.SRstable
+        this.SRstable,
       );
     } else {
       this.playback.setAlgorithm(
         this.algorithmService.currentAlgorithm.id,
         this.algorithmService.numberOfGroup1Agents,
-        this.algorithmService.numberOfGroup2Agents
+        this.algorithmService.numberOfGroup2Agents,
       );
     }
     this.animation.fadeCanvasIn();
