@@ -50,7 +50,7 @@ export class StableRoomIrvService extends StableRoomMates {
       });
 
       currentLetter = String.fromCharCode(
-        ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65
+        ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65,
       );
     }
 
@@ -69,26 +69,26 @@ export class StableRoomIrvService extends StableRoomMates {
           .get(this.utils.getLastChar(person.name))
           .indexOf(this.utils.getLastChar(person.lastProposed.name));
         let personRanking = this.originalGroup1CurrentPreferences.get(
-          this.utils.getLastChar(person.name)
+          this.utils.getLastChar(person.name),
         );
 
         for (let i = personMatchIndex - 1; i >= 0; i--) {
           // get better person
           let betterPersonName = Number(personRanking[i]);
           let betterPerson = this.group1Agents.get(
-            this.group1Name + String(betterPersonName)
+            this.group1Name + String(betterPersonName),
           );
 
           // current person index within better persons ranking
           let currentPersonIndex = this.findPositionInOriginalMatches1Group(
             betterPerson,
-            person
+            person,
           );
 
           // betterPerson matchPosition
           let matchPosition = this.findPositionInOriginalMatches1Group(
             betterPerson,
-            betterPerson.lastProposed
+            betterPerson.lastProposed,
           );
 
           if (currentPersonIndex < matchPosition) {
@@ -129,7 +129,7 @@ export class StableRoomIrvService extends StableRoomMates {
 
           this.removePersonFromArray(
             this.currentLines,
-            this.utils.getLastChar(person.name)
+            this.utils.getLastChar(person.name),
           );
           // add new free person to list
           this.freeAgentsOfGroup1.push(this.utils.getLastChar(person.name));
@@ -157,7 +157,7 @@ export class StableRoomIrvService extends StableRoomMates {
       this.originalGroup1CurrentPreferences
         .get(this.utils.getLastChar(agent1.name))
         .indexOf(this.utils.getLastChar(agent2.name)),
-      'grey'
+      'grey',
     );
 
     this.changePreferenceStyle(
@@ -166,7 +166,7 @@ export class StableRoomIrvService extends StableRoomMates {
       this.originalGroup1CurrentPreferences
         .get(this.utils.getLastChar(agent2.name))
         .indexOf(this.utils.getLastChar(agent1.name)),
-      'grey'
+      'grey',
     );
   }
 
@@ -256,7 +256,7 @@ export class StableRoomIrvService extends StableRoomMates {
               this.numberOfAgents,
               this.numberOfGroup2Agents,
               null,
-              this.SRstable
+              this.SRstable,
             );
           }
 
@@ -269,13 +269,13 @@ export class StableRoomIrvService extends StableRoomMates {
             this.group1CurrentPreferences,
             this.utils.getLastChar(last_person.name),
             last_pref,
-            'black'
+            'black',
           );
         }
 
         // store prevouis person
         last_person = person;
-        (last_pref = this.originalGroup1CurrentPreferences
+        ((last_pref = this.originalGroup1CurrentPreferences
           .get(this.utils.getLastChar(person.name))
           .indexOf(this.utils.getLastChar(person.ranking[0].name))),
           //highlight pref in persons list
@@ -285,8 +285,8 @@ export class StableRoomIrvService extends StableRoomMates {
             this.originalGroup1CurrentPreferences
               .get(this.utils.getLastChar(person.name))
               .indexOf(this.utils.getLastChar(person.ranking[0].name)),
-            'red'
-          );
+            'red',
+          ));
 
         //person b := first preferance on p's list
         this.update(5, {
@@ -356,7 +356,7 @@ export class StableRoomIrvService extends StableRoomMates {
       this.group1CurrentPreferences,
       this.utils.getLastChar(last_person.name),
       last_pref,
-      'black'
+      'black',
     );
 
     let agents_multiple_prefs = this.check_pref_count();
@@ -434,7 +434,7 @@ export class StableRoomIrvService extends StableRoomMates {
                 // remove lines starting from person_inner
                 this.removePersonFromArray(
                   this.currentLines,
-                  this.utils.getLastChar(person_inner.name)
+                  this.utils.getLastChar(person_inner.name),
                 );
 
                 // let person_inner propose to their last remaining person
@@ -443,12 +443,12 @@ export class StableRoomIrvService extends StableRoomMates {
                 // remove lines going to their new proposal
                 this.removeTargetFromArray(
                   this.currentLines,
-                  this.utils.getLastChar(person_inner.lastProposed.name)
+                  this.utils.getLastChar(person_inner.lastProposed.name),
                 );
                 // with lines are green early, without overlapping reds
                 this.removePersonFromArray(
                   this.currentLines,
-                  this.utils.getLastChar(person_inner.lastProposed.name)
+                  this.utils.getLastChar(person_inner.lastProposed.name),
                 );
 
                 // update value in list
@@ -458,9 +458,9 @@ export class StableRoomIrvService extends StableRoomMates {
                   this.originalGroup1CurrentPreferences
                     .get(this.utils.getLastChar(person_inner.name))
                     .indexOf(
-                      this.utils.getLastChar(person_inner.ranking[0].name)
+                      this.utils.getLastChar(person_inner.ranking[0].name),
                     ),
-                  'green'
+                  'green',
                 );
 
                 // draw line to new proposal from, to, colour
@@ -499,7 +499,7 @@ export class StableRoomIrvService extends StableRoomMates {
             // person b := last preferance
             this.update(16, {
               '%person%': person_inner.name,
-              '%preferance%': person_inner.lastProposed.name,
+              '%preference%': person_inner.lastProposed.name,
             });
           }
         }
@@ -517,7 +517,7 @@ export class StableRoomIrvService extends StableRoomMates {
               this.numberOfAgents,
               this.numberOfGroup2Agents,
               null,
-              this.SRstable
+              this.SRstable,
             );
           }
 
@@ -540,17 +540,17 @@ export class StableRoomIrvService extends StableRoomMates {
             this.originalGroup1CurrentPreferences
               .get(this.utils.getLastChar(person_inner.name))
               .indexOf(this.utils.getLastChar(person_inner.ranking[0].name)),
-            'green'
+            'green',
           );
 
           this.removePersonFromArray(
             this.currentLines,
-            this.utils.getLastChar(person_inner.name)
+            this.utils.getLastChar(person_inner.name),
           );
 
           this.removeTargetFromArray(
             this.currentLines,
-            this.utils.getLastChar(person_inner.lastProposed.name)
+            this.utils.getLastChar(person_inner.lastProposed.name),
           );
 
           person_inner.lastProposed = person_inner.ranking.slice(0)[0];

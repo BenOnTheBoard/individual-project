@@ -664,7 +664,7 @@ describe('workspace-project App', () => {
     element(by.id('spa2')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.id('title_main')).getText()).toContain(
-      'Student Project Allocation'
+      'Student-Project Allocation'
     );
     expect(element(by.id('title')).getText()).toContain('Set Up');
   });

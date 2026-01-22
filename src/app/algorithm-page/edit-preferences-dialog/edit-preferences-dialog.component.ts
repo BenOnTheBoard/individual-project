@@ -36,10 +36,10 @@ export class EditPreferencesDialogComponent implements OnInit {
   keyList = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   equalGroups: boolean = false;
   group1Plural = this.algorithmService.pluralMap.get(
-    this.algorithmService.currentAlgorithm.orientation[0]
+    this.algorithmService.currentAlgorithm.orientation[0],
   );
   group2Plural = this.algorithmService.pluralMap.get(
-    this.algorithmService.currentAlgorithm.orientation[1]
+    this.algorithmService.currentAlgorithm.orientation[1],
   );
 
   @Input() algorithm: Algorithm;
@@ -59,7 +59,7 @@ export class EditPreferencesDialogComponent implements OnInit {
     public canvasService: CanvasService,
     public utils: UtilsService,
     public dialogRef: MatDialogRef<EditPreferencesDialogComponent>,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
   ) {}
 
   @HostListener('document:keydown.enter')
@@ -153,7 +153,7 @@ export class EditPreferencesDialogComponent implements OnInit {
         // filter out value that are too large
         let agentCopy = Object.assign([], agent[1]);
         let safe_values = agentCopy.filter(
-          (pref) => pref.charCodeAt(0) - 64 <= group2Count
+          (pref) => pref.charCodeAt(0) - 64 <= group2Count,
         );
 
         this.preferenceTextGroup1.push(safe_values);
@@ -214,7 +214,7 @@ export class EditPreferencesDialogComponent implements OnInit {
         // filter out values in the ranking which are too large
         let agentCopy = Object.assign([], agent[1]);
         let safe_values = agentCopy.filter(
-          (pref) => pref.charCodeAt(0) - 64 <= group2Count
+          (pref) => pref.charCodeAt(0) - 64 <= group2Count,
         );
         // add rankning
         this.preferenceTextGroup1.push(safe_values);
@@ -363,7 +363,7 @@ export class EditPreferencesDialogComponent implements OnInit {
     //GROUP 2
     if (
       this.algorithmService.currentAlgorithm.name !=
-      'Student Project Allocation'
+      'Student-Project Allocation'
     ) {
       num = 1;
       for (let agent of this.preferenceTextGroup2) {
@@ -390,7 +390,7 @@ export class EditPreferencesDialogComponent implements OnInit {
       this.algorithmService.currentAlgorithm.id,
       this.algorithmService.numberOfGroup1Agents,
       this.algorithmService.numberOfGroup2Agents,
-      newPreferences
+      newPreferences,
     );
 
     this.dialogRef.close();
@@ -541,7 +541,7 @@ export class EditPreferencesDialogComponent implements OnInit {
       this.algorithmService.currentAlgorithm.id,
       this.algorithmService.numberOfGroup1Agents,
       this.algorithmService.numberOfGroup2Agents,
-      newPreferences
+      newPreferences,
     );
 
     this.dialogRef.close();
