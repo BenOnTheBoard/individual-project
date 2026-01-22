@@ -20,7 +20,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatAnimatedIconComponent } from './algorithm-page/mat-animated-icon/mat-animated-icon.component';
 import { PlaybackControlsComponent } from './algorithm-page/playback-controls/playback-controls.component';
-import { CodeDisplayComponent } from './algorithm-page/code-display/code-display.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { HomeContentComponent } from './home-page/home-content/home-content.component';
 import { AboutContentComponent } from './home-page/about-content/about-content.component';
@@ -30,7 +29,6 @@ import { AlgorithmCardComponent } from './home-page/algorithm-content/algorithm-
 import { IconBannerComponent } from './home-page/icon-banner/icon-banner.component';
 import { FeedbackBannerComponent } from './home-page/feedback-banner/feedback-banner.component';
 import { NavbarComponent } from './home-page/navbar/navbar.component';
-import { EditPreferencesDialogComponent } from './algorithm-page/edit-preferences-dialog/edit-preferences-dialog.component';
 import { AnimationGuideDialogComponent } from './algorithm-page/animation-guide-dialog/animation-guide-dialog.component';
 import { SidebarComponent } from './algorithm-page/sidebar/sidebar.component';
 import { AlgDescriptionComponent } from './algorithm-page/sidebar/alg-description/alg-description.component';
@@ -48,7 +46,6 @@ import { AgentCountFormComponent } from './forms/agent-count-form/agent-count-fo
     AlgorithmPageComponent,
     MatAnimatedIconComponent,
     PlaybackControlsComponent,
-    CodeDisplayComponent,
     HomePageComponent,
     HomeContentComponent,
     AboutContentComponent,
@@ -58,7 +55,6 @@ import { AgentCountFormComponent } from './forms/agent-count-form/agent-count-fo
     IconBannerComponent,
     FeedbackBannerComponent,
     NavbarComponent,
-    EditPreferencesDialogComponent,
     AnimationGuideDialogComponent,
     SidebarComponent,
     AlgDescriptionComponent,
