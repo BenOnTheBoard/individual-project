@@ -11,7 +11,7 @@ export class AgentTitlesComponent implements OnInit {
   @Input() showCode: boolean;
 
   constructor(
-    public algorithmService: AlgorithmRetrievalService,
+    public algRetriever: AlgorithmRetrievalService,
     public playback: PlaybackService,
   ) {}
 
