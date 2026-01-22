@@ -1,0 +1,22 @@
+.dev-table {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px 30px;
+  align-items: start;
+  max-width: 1000px;
+  font-size: 20px;
+}
+
+.dev-name {
+  font-weight: bold;
+}
+
+.dev-links a {
+  color: #0366d6;
+  text-decoration: none;
+  margin-right: 6px;
+}
+
+.dev-links a:hover {
+  text-decoration: underline;
+}
