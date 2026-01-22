@@ -1,13 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroupDirective,
-  FormsModule,
-  NgForm,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { Algorithm } from '../../../Algorithm';
@@ -16,23 +8,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { UtilsService } from 'src/app/utils/utils.service';
+import { AgentCountFormComponent } from 'src/app/forms/agent-count-form/agent-count-form.component';
 
 declare var anime: any;
-
-/** Error when invalid control is dirty, touched, or submitted. */
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
-  ): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(
-      control &&
-      control.invalid &&
-      (control.dirty || control.touched || isSubmitted)
-    );
-  }
-}
 
 @Component({
   selector: 'algorithm-card',
@@ -49,62 +27,35 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     ReactiveFormsModule,
     CommonModule,
     FormsModule,
+    AgentCountFormComponent,
   ],
 })
 export class AlgorithmCardComponent implements OnInit {
   @Input() algorithm: Algorithm;
-
-  numberOfGroup1Agents = new FormControl<number | null>(null, [
-    Validators.required,
-    Validators.min(1),
-    Validators.max(9),
-  ]);
-
-  numberOfGroup2Agents = new FormControl<number | null>(null, [
-    Validators.required,
-    Validators.min(1),
-    Validators.max(9),
-  ]);
-
-  numberOfSRAgents = new FormControl<number | null>(null, [
-    Validators.required,
-    Validators.min(1),
-    Validators.max(8),
-    UtilsService.validateEven(),
-  ]);
-
-  SReven: boolean = true;
-
-  isValid(): boolean {
-    return false;
-  }
+  @ViewChild(AgentCountFormComponent, { static: true })
+  protected agentForm!: AgentCountFormComponent;
 
   constructor(
-    public algorithmService: AlgorithmRetrievalService,
+    public algRetriever: AlgorithmRetrievalService,
+    public utils: UtilsService,
     public router: Router
   ) {}
 
   ngOnInit(): void {}
 
-  // on clicking "Generate Preferences" change the global algorithm to the one passed into this dialog
   async onGeneratePreferences(): Promise<void> {
-    this.algorithmService.currentAlgorithm = this.algorithm;
+    // change the global algorithm to the one passed into this dialog
+    this.algRetriever.currentAlgorithm = this.algorithm;
 
-    // makes sure the SR value is not odd or too large
-    if (this.algorithmService.currentAlgorithm.id == 'smp-room-irv') {
-      this.algorithmService.numberOfGroup1Agents = this.numberOfSRAgents.value;
-    } else {
-      this.algorithmService.numberOfGroup1Agents =
-        this.numberOfGroup1Agents.value;
-    }
+    const isRoommates = this.algRetriever.currentAlgorithm.id == 'smp-room-irv';
+    this.algRetriever.numberOfGroup1Agents = isRoommates
+      ? this.agentForm.getSRAgentCount()
+      : this.agentForm.getGroup1AgentCount();
 
-    if (!this.numberOfGroup2Agents.value) {
-      this.algorithmService.numberOfGroup2Agents =
-        this.numberOfGroup1Agents.value;
-    } else {
-      this.algorithmService.numberOfGroup2Agents =
-        this.numberOfGroup2Agents.value;
-    }
+    const specifiesGroup2Count = !this.agentForm.getGroup2AgentCount();
+    this.algRetriever.numberOfGroup2Agents = specifiesGroup2Count
+      ? this.agentForm.getGroup1AgentCount()
+      : this.agentForm.getGroup2AgentCount();
 
     anime({
       targets: '.main-page',
@@ -122,12 +73,7 @@ export class AlgorithmCardComponent implements OnInit {
       duration: 500,
     });
 
-    await this.delay(700);
-
+    await this.utils.delay(700);
     this.router.navigateByUrl('/animation', { skipLocationChange: true });
-  }
-
-  delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

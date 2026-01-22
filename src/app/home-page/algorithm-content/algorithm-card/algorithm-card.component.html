@@ -2,250 +2,33 @@
   <div class="card-body">
     <div class="row mt-2">
       <div class="col-7">
-        <h1 class="card-title" style="font-size: 30px; font-weight: 400;">{{ algorithm.name }}</h1>
+        <h1 id="card-title">{{ algorithm.name }}</h1>
       </div>
       <div class="col-5 mt-2 pr-4 text-right">
-        <h6 class="card-subtitle text-muted" style="font-size: 20px; font-weight: 400">{{ algorithm.orientation[0]
-          }}-Oriented</h6>
+        <h2 class="card-subtitle text-muted">{{ algorithm.orientation[0] }}-Oriented</h2>
       </div>
     </div>
 
-    <h5 class="card-subtitle mb-4 text-muted" style="font-size: 22px; font-weight: 400">{{ algorithm.algorithm }}</h5>
+    <h2 class="card-subtitle mb-4 text-muted">{{ algorithm.algorithm }}</h2>
 
-    <div class="mt-3" style="height: 150px; overflow:scroll">
-      <p class="card-text" style="font-size: 18px; line-height: 25px; font-weight: 400;"
-        [innerHTML]="algorithm.description"></p>
+    <div class="mt-3" id="description">
+      <p class="card-text" [innerHTML]="algorithm.description"></p>
     </div>
 
     <div class="divider mt-3"></div>
 
     <div class="row mt-4">
-
       <div class="col-7">
-        <form class="example-form pl-3">
-          @if (algorithm.name == 'Stable Marriage Problem') {
-          <div class="row justify-content-start">
-            <mat-form-field style="width: 200px;">
-              <mat-label>Number of Men and Women</mat-label>
-              <input id={{algorithm.id}} [formControl]="numberOfGroup1Agents"
-                (keyup.enter)="(numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min')) ? '' : this.onGeneratePreferences()"
-                type="number" matInput placeholder="5" value="5" min="1" max="9"
-                onkeydown="if(event.key==='.'){event.preventDefault();}"
-                oninput="this.value = this.value > 0 && this.value < 10 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
-                onDrag="return false" onDrop="return false" onPaste="return false">
-              @if (numberOfGroup1Agents.hasError('required')) {
-              <mat-error>
-                This field is <strong>required</strong>
-              </mat-error>
-              }
-              @if (numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
-              <mat-error>
-                Please input a number between 1 and 9
-              </mat-error>
-              }
-            </mat-form-field>
-          </div>
-          }
-
-          @if (algorithm.id == 'hr-resident-egs') {
-          <div class="row justify-content-center">
-            <mat-form-field style="width: 200px;" class="mr-1">
-              <mat-label>Number of Residents</mat-label>
-              <input id="hr1" [formControl]="numberOfGroup1Agents"
-                (keyup.enter)="numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min') || numberOfGroup2Agents.hasError('required') || numberOfGroup2Agents.hasError('max') || numberOfGroup2Agents.hasError('min') ? '' :  this.onGeneratePreferences()"
-                type="number" matInput placeholder="5" value="5" min="2" max="9"
-                oninput="this.value = this.value > 1 && this.value < 10 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
-                onDrag="return false" onDrop="return false" onPaste="return false">
-              @if (numberOfGroup1Agents.hasError('required')) {
-              <mat-error>
-                This field is <strong>required</strong>
-              </mat-error>
-              }
-              @if (numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
-              <mat-error>
-                Please input a number between 1 and 9
-              </mat-error>
-              }
-            </mat-form-field>
-
-            <mat-form-field style="width: 200px;" class="ml-1">
-              <mat-label>Number of Hospitals</mat-label>
-              <input id="hr2" [formControl]="numberOfGroup2Agents"
-                (keyup.enter)="numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min') || numberOfGroup2Agents.hasError('required') || numberOfGroup2Agents.hasError('max') || numberOfGroup2Agents.hasError('min') ? '' :  this.onGeneratePreferences()"
-                type="number" matInput placeholder="5" value="5" min="2" max="9"
-                oninput="this.value = this.value > 1 && this.value < 10 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
-                onDrag="return false" onDrop="return false" onPaste="return false">
-              @if (numberOfGroup2Agents.hasError('required')) {
-              <mat-error>
-                This field is <strong>required</strong>
-              </mat-error>
-              }
-              @if (numberOfGroup2Agents.hasError('min') || numberOfGroup2Agents.hasError('max')) {
-              <mat-error>
-                Please input a number between 1 and 9
-              </mat-error>
-              }
-            </mat-form-field>
-          </div>
-          }
-
-          @if (algorithm.id == 'hr-hospital-egs') {
-          <div class="row justify-content-center">
-            <mat-form-field style="width: 200px;" class="mr-1">
-              <mat-label>Number of Residents</mat-label>
-              <input id="hr3" [formControl]="numberOfGroup1Agents"
-                (keyup.enter)="numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min') || numberOfGroup2Agents.hasError('required') || numberOfGroup2Agents.hasError('max') || numberOfGroup2Agents.hasError('min') ? '' :  this.onGeneratePreferences()"
-                type="number" matInput placeholder="5" value="5" min="2" max="9"
-                oninput="this.value = this.value > 1 && this.value < 10 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
-                onDrag="return false" onDrop="return false" onPaste="return false">
-              @if (numberOfGroup1Agents.hasError('required')) {
-              <mat-error>
-                This field is <strong>required</strong>
-              </mat-error>
-              }
-              @if (numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
-              <mat-error>
-                Please input a number between 1 and 9
-              </mat-error>
-              }
-            </mat-form-field>
-
-            <mat-form-field style="width: 200px;" class="ml-1">
-              <mat-label>Number of Hospitals</mat-label>
-              <input id="hr4" [formControl]="numberOfGroup2Agents"
-                (keyup.enter)="numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min') || numberOfGroup2Agents.hasError('required') || numberOfGroup2Agents.hasError('max') || numberOfGroup2Agents.hasError('min') ? '' :  this.onGeneratePreferences()"
-                type="number" matInput placeholder="5" value="5" min="2" max="9"
-                oninput="this.value = this.value > 1 && this.value < 10 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
-                onDrag="return false" onDrop="return false" onPaste="return false">
-              @if (numberOfGroup2Agents.hasError('required')) {
-              <mat-error>
-                This field is <strong>required</strong>
-              </mat-error>
-              }
-              @if (numberOfGroup2Agents.hasError('min') || numberOfGroup2Agents.hasError('max')) {
-              <mat-error>
-                Please input a number between 1 and 9
-              </mat-error>
-              }
-            </mat-form-field>
-          </div>
-          }
-
-          <!-- Roommates -->
-          @if (algorithm.name == 'Stable Roommates Problem') {
-          <div class="row justify-content-start">
-            <mat-form-field style="width: 200px;">
-              <mat-label>Number of People</mat-label>
-              <input id={{algorithm.id}} [formControl]="numberOfSRAgents" (ngModelchange)="this.isValid()"
-                (keyup.enter)="((numberOfSRAgents.hasError('required') || numberOfSRAgents.hasError('max') || numberOfSRAgents.hasError('min')|| numberOfSRAgents.hasError('even')) ? '' : this.onGeneratePreferences())"
-                type="number" matInput placeholder="4" value="4" min="1" max="8"
-                onkeydown="if(event.key==='.'){event.preventDefault();}"
-                oninput="this.value = this.value > 0 && this.value < 9 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
-                onDrag="return false" onDrop="return false" onPaste="return false">
-              @if (numberOfSRAgents.hasError('required')) {
-              <mat-error>
-                This field is <strong>required</strong>
-              </mat-error>
-              }
-              @if (numberOfSRAgents.hasError('min') || numberOfSRAgents.hasError('max')) {
-              <mat-error>
-                Please input a number between 1 and 8
-              </mat-error>
-              }
-              @if (numberOfSRAgents.hasError('even')) {
-              <mat-error>
-                Please input an even number.
-              </mat-error>
-              }
-            </mat-form-field>
-          </div>
-          }
-
-          @if (algorithm.name == 'Student-Project Allocation') {
-          <div class="row justify-content-center">
-            <mat-form-field style="width: 200px;" class="mr-1">
-              <mat-label>Number of Students</mat-label>
-              <input id="spa1" [formControl]="numberOfGroup1Agents"
-                (keyup.enter)="numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min') || numberOfGroup2Agents.hasError('required') || numberOfGroup2Agents.hasError('max') || numberOfGroup2Agents.hasError('min') ? '' :  this.onGeneratePreferences()"
-                type="number" matInput placeholder="5" value="5" min="2" max="9"
-                oninput="this.value = this.value > 1 && this.value < 10 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
-                onDrag="return false" onDrop="return false" onPaste="return false">
-              @if (numberOfGroup1Agents.hasError('required')) {
-              <mat-error>
-                This field is <strong>required</strong>
-              </mat-error>
-              }
-              @if (numberOfGroup1Agents.hasError('min') || numberOfGroup1Agents.hasError('max')) {
-              <mat-error>
-                Please input a number between 1 and 9
-              </mat-error>
-              }
-            </mat-form-field>
-
-            <mat-form-field style="width: 200px;" class="ml-1">
-              <mat-label>Number of Projects</mat-label>
-              <input id="spa2" [formControl]="numberOfGroup2Agents"
-                (keyup.enter)="numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min') || numberOfGroup2Agents.hasError('required') || numberOfGroup2Agents.hasError('max') || numberOfGroup2Agents.hasError('min') ? '' :  this.onGeneratePreferences()"
-                type="number" matInput placeholder="5" value="5" min="2" max="9"
-                oninput="this.value = this.value > 1 && this.value < 10 ? (!!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null) : Number(String(this.value).charAt(1))"
-                onDrag="return false" onDrop="return false" onPaste="return false">
-              @if (numberOfGroup2Agents.hasError('required')) {
-              <mat-error>
-                This field is <strong>required</strong>
-              </mat-error>
-              }
-              @if (numberOfGroup2Agents.hasError('min') || numberOfGroup2Agents.hasError('max')) {
-              <mat-error>
-                Please input a number between 1 and 9
-              </mat-error>
-              }
-            </mat-form-field>
-          </div>
-          }
-
-        </form>
+        <app-agent-count-form [algorithm]="this.algorithm"
+          (enterEvent)="onGeneratePreferences()"></app-agent-count-form>
       </div>
 
       <div class="col-5 text-right">
-        @if ((algorithm.name == 'Stable Marriage Problem') && !(numberOfGroup1Agents.hasError('required') ||
-        numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min'))) {
-        <button class="cardButton" mat-stroked-button style="border-radius: 70px; width: 220px; height: 45px;"
-          cdkFocusInitial
-          [disabled]="numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min')"
-          (click)="this.onGeneratePreferences()">
-          <span style="font-size: 18px; font-weight: 500; color: black;">Generate Preferences</span>
+        <button class="cardButton flex-fill" mat-stroked-button cdkFocusInitial
+          [disabled]="!this.agentForm.isFormValid()" (click)="onGeneratePreferences()">
+          Generate Preferences
         </button>
-        } @else if ((algorithm.name == 'Hospitals/Residents Problem') && !(numberOfGroup1Agents.hasError('required') ||
-        numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min')
-        || numberOfGroup2Agents.hasError('required') || numberOfGroup2Agents.hasError('max') ||
-        numberOfGroup2Agents.hasError('min'))) {
-        <button class="cardButton" mat-stroked-button style="border-radius: 70px; width: 220px; height: 45px;"
-          cdkFocusInitial
-          [disabled]="numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min') || numberOfGroup2Agents.hasError('required') || numberOfGroup2Agents.hasError('max') || numberOfGroup2Agents.hasError('min')"
-          (click)="this.onGeneratePreferences()">
-          <span style="font-size: 18px; font-weight: 500; color: black;">Generate Preferences</span>
-        </button>
-        } @else if ((algorithm.name == 'Stable Roommates Problem') && !(numberOfSRAgents.hasError('required') ||
-        numberOfSRAgents.hasError('max') || numberOfSRAgents.hasError('min') || numberOfSRAgents.hasError('even'))) {
-        <button class="cardButton" mat-stroked-button style="border-radius: 70px; width: 220px; height: 45px;"
-          cdkFocusInitial
-          [disabled]="numberOfSRAgents.hasError('required') || numberOfSRAgents.hasError('max') || numberOfSRAgents.hasError('min') || numberOfSRAgents.hasError('even')"
-          (click)="this.onGeneratePreferences()">
-          <span style="font-size: 18px; font-weight: 500; color: black;">Generate Preferences</span>
-        </button>
-        } @else if ((algorithm.name == 'Student-Project Allocation') && !(numberOfGroup1Agents.hasError('required') ||
-        numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min')
-        || numberOfGroup2Agents.hasError('required') || numberOfGroup2Agents.hasError('max') ||
-        numberOfGroup2Agents.hasError('min'))) {
-        <button class="cardButton" mat-stroked-button style="border-radius: 70px; width: 220px; height: 45px;"
-          cdkFocusInitial
-          [disabled]="numberOfGroup1Agents.hasError('required') || numberOfGroup1Agents.hasError('max') || numberOfGroup1Agents.hasError('min') || numberOfGroup2Agents.hasError('required') || numberOfGroup2Agents.hasError('max') || numberOfGroup2Agents.hasError('min')"
-          (click)="this.onGeneratePreferences()">
-          <span style="font-size: 18px; font-weight: 500; color: black;">Generate Preferences</span>
-        </button>
-        }
       </div>
     </div>
-
   </div>
 </div>
