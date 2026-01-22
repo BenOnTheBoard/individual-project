@@ -22,7 +22,7 @@ export class LayoutService {
 
   constructor(
     public algService: AlgorithmRetrievalService,
-    public utils: UtilsService
+    public utils: UtilsService,
   ) {}
 
   public getPositions(): Record<string, Position> {
@@ -40,7 +40,7 @@ export class LayoutService {
   private setCirclePosition(
     group: 'LHS' | 'RHS' | 'SR',
     index: number,
-    pos: Position
+    pos: Position,
   ): void {
     let key: string;
     if (group == 'LHS' || group == 'SR') {
@@ -76,7 +76,7 @@ export class LayoutService {
 
   public calculateBipartitePositions(
     canvas: HTMLCanvasElement,
-    currentCommand: Object
+    currentCommand: Object,
   ): void {
     const LHSHeightOffset =
       this.heightOffsetMap.get(this.algService.numberOfGroup1Agents) || 0;
@@ -137,7 +137,7 @@ export class LayoutService {
       const pos = this.utils.polarToCartesian(
         this.SRRadius,
         spacingAngle * (i + 2),
-        origin
+        origin,
       );
       this.setCirclePosition('SR', i + 1, pos);
     }

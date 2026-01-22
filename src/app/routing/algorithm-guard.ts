@@ -15,12 +15,12 @@ import { AlgorithmRetrievalService } from '../algorithm-retrieval.service';
 export class AlgorithmGuard implements CanActivate {
   constructor(
     public algorithmService: AlgorithmRetrievalService,
-    private _router: Router
+    private _router: Router,
   ) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    state: RouterStateSnapshot,
   ):
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree>

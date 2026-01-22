@@ -54,7 +54,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       this.hospitalCapacity[currentLetter] = availableSpaces;
 
       currentLetter = String.fromCharCode(
-        ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65
+        ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65,
       );
     }
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
@@ -114,13 +114,13 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       this.originalGroup1CurrentPreferences
         .get(this.utils.getLastChar(resident.name))
         .findIndex((h) => h == this.utils.getLastChar(hospital.name)),
-      'grey'
+      'grey',
     );
     this.changePreferenceStyle(
       this.group2CurrentPreferences,
       this.utils.getLastChar(hospital.name),
       matchPosition_resident_original,
-      'red'
+      'red',
     );
 
     let hospitalLastChar = this.utils.getLastChar(hospital.name);
@@ -137,7 +137,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       this.group2CurrentPreferences,
       this.utils.getLastChar(hospital.name),
       matchPosition_resident_original,
-      'grey'
+      'grey',
     );
 
     this.update(1);
@@ -147,9 +147,9 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     // remove resident from hospital match
     hospital.match.splice(
       hospital.match.findIndex(
-        (agent: { name: string }) => agent.name == resident.name
+        (agent: { name: string }) => agent.name == resident.name,
       ),
-      1
+      1,
     );
 
     // REMOVE EACH OTHER FROM RANKING LIST
@@ -177,7 +177,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       this.originalGroup1CurrentPreferences
         .get(agentLastChar)
         .findIndex((h) => h == this.utils.getLastChar(hospital.name)),
-      'green'
+      'green',
     );
 
     this.changePreferenceStyle(
@@ -186,7 +186,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       this.originalGroup2CurrentPreferences
         .get(proposeeLastChar)
         .findIndex((h) => h == this.utils.getLastChar(resident.name)),
-      'green'
+      'green',
     );
 
     if (hospital.match.length >= hospital.availableSpaces - 1) {
@@ -202,7 +202,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     // given h and r - remove h' of h on r's list
     let hospitalPosition: number = this.findPositionInMatches(
       resident,
-      hospital
+      hospital,
     );
 
     if (hospitalPosition + 1 < resident.ranking.length) {
@@ -219,7 +219,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
         // resident index within hospital to be removed
         let residentIndex: number = this.findPositionInMatches(
           removedHospital,
-          resident
+          resident,
         );
 
         removedHospital.ranking.splice(residentIndex, 1);
@@ -237,14 +237,14 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
           this.group1CurrentPreferences,
           this.utils.getLastChar(resident.name),
           i,
-          'grey'
+          'grey',
         );
         // grey out res from hos
         this.changePreferenceStyle(
           this.group2CurrentPreferences,
           this.utils.getLastChar(removedHospital.name),
           pos,
-          'grey'
+          'grey',
         );
 
         // remove h' and r from each others preferance list
@@ -261,7 +261,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       let worstResident: Agent = this.getWorstResident(hospital);
       let worstResidentPosition: number = this.findPositionInMatches(
         hospital,
-        worstResident
+        worstResident,
       );
 
       let hospitalRankingClearCounter: number = worstResidentPosition + 1;
@@ -279,10 +279,10 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       ) {
         let hospitalPosition: number = this.findPositionInMatches(
           hospital.ranking[i],
-          hospital
+          hospital,
         );
         this.relevantPreferences.push(
-          this.utils.getLastChar(hospital.ranking[i].name)
+          this.utils.getLastChar(hospital.ranking[i].name),
         );
 
         this.changePreferenceStyle(
@@ -291,13 +291,13 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
           this.originalGroup1CurrentPreferences
             .get(this.utils.getLastChar(hospital.ranking[i].name))
             .findIndex((h) => h == this.utils.getLastChar(hospital.name)),
-          'grey'
+          'grey',
         );
         this.changePreferenceStyle(
           this.group2CurrentPreferences,
           this.utils.getLastChar(hospital.name),
           hospitalRankingClearCounter,
-          'grey'
+          'grey',
         );
 
         // remove r' and h from each others preferance list

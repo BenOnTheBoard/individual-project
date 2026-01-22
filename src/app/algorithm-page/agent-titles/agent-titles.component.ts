@@ -12,7 +12,7 @@ export class AgentTitlesComponent implements OnInit {
 
   constructor(
     public algorithmService: AlgorithmRetrievalService,
-    public playback: PlaybackService
+    public playback: PlaybackService,
   ) {}
 
   ngOnInit(): void {}

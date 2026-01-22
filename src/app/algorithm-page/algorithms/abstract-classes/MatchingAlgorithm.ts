@@ -42,7 +42,7 @@ export abstract class MatchingAlgorithm {
 
   initialise(
     numberOfAgents: number,
-    numberOfGroup2Agents: number = numberOfAgents
+    numberOfGroup2Agents: number = numberOfAgents,
   ) {
     this.freeAgentsOfGroup1 = [];
 
@@ -96,7 +96,7 @@ export abstract class MatchingAlgorithm {
       });
 
       currentLetter = String.fromCharCode(
-        ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65
+        ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65,
       );
     }
   }
@@ -123,10 +123,10 @@ export abstract class MatchingAlgorithm {
     for (let agent of Array.from(this.group1Agents.keys())) {
       tempCopyList = [];
       for (let preferenceAgent of preferences.get(
-        this.utils.getLastChar(String(agent))
+        this.utils.getLastChar(String(agent)),
       )) {
         tempCopyList.push(
-          this.group2Agents.get(this.group2Name + preferenceAgent)
+          this.group2Agents.get(this.group2Name + preferenceAgent),
         );
       }
       this.group1Agents.get(agent).ranking = tempCopyList;
@@ -135,10 +135,10 @@ export abstract class MatchingAlgorithm {
     for (let agent of Array.from(this.group2Agents.keys())) {
       tempCopyList = [];
       for (let preferenceAgent of preferences.get(
-        this.utils.getLastChar(String(agent))
+        this.utils.getLastChar(String(agent)),
       )) {
         tempCopyList.push(
-          this.group1Agents.get(this.group1Name + preferenceAgent)
+          this.group1Agents.get(this.group1Name + preferenceAgent),
         );
       }
       this.group2Agents.get(agent).ranking = tempCopyList;
@@ -169,17 +169,17 @@ export abstract class MatchingAlgorithm {
       matches: new Map(),
       stepVariables: stepVariables,
       group1CurrentPreferences: this.utils.cloneMap(
-        this.group1CurrentPreferences
+        this.group1CurrentPreferences,
       ),
       group2CurrentPreferences: this.utils.cloneMap(
-        this.group2CurrentPreferences
+        this.group2CurrentPreferences,
       ),
       currentlySelectedAgents: JSON.parse(
-        JSON.stringify(this.currentlySelectedAgents)
+        JSON.stringify(this.currentlySelectedAgents),
       ),
       currentLines: JSON.parse(JSON.stringify(this.currentLines)),
       algorithmSpecificData: JSON.parse(
-        JSON.stringify(this.algorithmSpecificData)
+        JSON.stringify(this.algorithmSpecificData),
       ),
       relevantPreferences: JSON.parse(JSON.stringify(this.relevantPreferences)),
     };
@@ -208,37 +208,37 @@ export abstract class MatchingAlgorithm {
 
   findPositionInMatches(currentAgent: Agent, agentToFind: Agent): number {
     let position: number = currentAgent.ranking.findIndex(
-      (agent: { name: string }) => agent.name == agentToFind.name
+      (agent: { name: string }) => agent.name == agentToFind.name,
     );
     return position;
   }
 
   findPositionInOriginalMatches(currentAgent: Agent, agentToFind: Agent) {
     let originalPreferences = this.originalGroup1CurrentPreferences.get(
-      currentAgent.name[currentAgent.name.length - 1]
+      currentAgent.name[currentAgent.name.length - 1],
     );
     let position: number = originalPreferences.indexOf(
-      agentToFind.name[agentToFind.name.length - 1]
+      agentToFind.name[agentToFind.name.length - 1],
     );
     return position;
   }
 
   findPositionInOriginalMatches1Group(currentAgent: Agent, agentToFind: Agent) {
     let originalPreferences = this.originalGroup1CurrentPreferences.get(
-      this.utils.getLastChar(currentAgent.name)
+      this.utils.getLastChar(currentAgent.name),
     );
     let position: number = originalPreferences.indexOf(
-      this.utils.getLastChar(agentToFind.name)
+      this.utils.getLastChar(agentToFind.name),
     );
     return position;
   }
 
   findPositionInOriginalMatchesGroup2(currentAgent: Agent, agentToFind: Agent) {
     let originalPreferences = this.originalGroup2CurrentPreferences.get(
-      currentAgent.name[currentAgent.name.length - 1]
+      currentAgent.name[currentAgent.name.length - 1],
     );
     let position: number = originalPreferences.indexOf(
-      agentToFind.name[agentToFind.name.length - 1]
+      agentToFind.name[agentToFind.name.length - 1],
     );
     return position;
   }
@@ -280,7 +280,7 @@ export abstract class MatchingAlgorithm {
     preferenceList: Map<String, Array<String>>,
     person: string,
     position: number,
-    style: string
+    style: string,
   ) {
     let currentAgent: string = '';
 
@@ -331,11 +331,11 @@ export abstract class MatchingAlgorithm {
           if (!agentMatches.includes(agentPreferences[i].name)) {
             let matchPosition = this.findPositionInOriginalMatches(
               agentPreferences[i],
-              agentPreferences[i].match[0]
+              agentPreferences[i].match[0],
             );
             let currentAgentPosition = this.findPositionInOriginalMatches(
               agentPreferences[i],
-              this.group2Agents.get(agent)
+              this.group2Agents.get(agent),
             );
             if (currentAgentPosition < matchPosition) {
               stability = false;
@@ -352,7 +352,7 @@ export abstract class MatchingAlgorithm {
     for (let matchAgent of agentMatches) {
       let matchPosition = this.findPositionInMatches(
         this.group2Agents.get(currentAgent),
-        this.group1Agents.get(matchAgent)
+        this.group1Agents.get(matchAgent),
       );
       if (matchPosition > furthestIndex) {
         furthestIndex = matchPosition;
@@ -367,7 +367,7 @@ export abstract class MatchingAlgorithm {
     numberOfAgents: number,
     numberOfGroup2Agents: number = numberOfAgents,
     preferences: Map<String, Array<String>>,
-    SRstable: boolean = true
+    SRstable: boolean = true,
   ): AlgorithmData {
     if (numberOfGroup2Agents != numberOfAgents) {
       this.initialise(numberOfAgents, numberOfGroup2Agents);
@@ -391,12 +391,12 @@ export abstract class MatchingAlgorithm {
 
     this.group1CurrentPreferences = this.getGroupRankings(this.group1Agents);
     this.originalGroup1CurrentPreferences = this.getGroupRankings(
-      this.group1Agents
+      this.group1Agents,
     );
 
     this.group2CurrentPreferences = this.getGroupRankings(this.group2Agents);
     this.originalGroup2CurrentPreferences = this.getGroupRankings(
-      this.group2Agents
+      this.group2Agents,
     );
 
     this.match();

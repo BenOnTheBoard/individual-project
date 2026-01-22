@@ -58,7 +58,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       this.hospitalCapacity[currentLetter] = projectCapacity;
 
       currentLetter = String.fromCharCode(
-        ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65
+        ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65,
       );
     }
 
@@ -112,14 +112,14 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
       // current student information
       let studentRanking = this.originalGroup1CurrentPreferences.get(
-        this.utils.getLastChar(student.name)
+        this.utils.getLastChar(student.name),
       );
 
       for (let i = studentMatchIndex - 1; i >= 0; i--) {
         // get project + lecturer that is more preferred than the current
         let betterProjectname = studentRanking[i];
         let betterProject = this.group2Agents.get(
-          this.group2Name + betterProjectname
+          this.group2Name + betterProjectname,
         );
 
         let betterProjectLecturer = this.getProjectLecturer(betterProject);
@@ -129,7 +129,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
         let currentStudentIndex = this.getCurrentStudentIndex(
           student,
-          betterProjectLecturer
+          betterProjectLecturer,
         );
 
         // IF bother under subbed (a)
@@ -305,7 +305,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   deleteFullPairsProject(
     worstStudent: Student,
     project: Project,
-    lecturer: Lecturer
+    lecturer: Lecturer,
   ) {
     // loop though the lectures rakning in revese - remove the project from the ranking if each one
     // stop once we get to the student passed in - worstStudent
@@ -333,7 +333,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
           this.originalGroup1CurrentPreferences
             .get(this.utils.getLastChar(lecturer.ranking[i].name))
             .indexOf(this.utils.getLastChar(project.name)),
-          'grey'
+          'grey',
         );
 
         // remove p from S_i's preference list
@@ -372,7 +372,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
             this.originalGroup1CurrentPreferences
               .get(this.utils.getLastChar(lecturer.ranking[i].name))
               .indexOf(this.utils.getLastChar(projectObject.name)),
-            'grey'
+            'grey',
           );
 
           // remove p from S_i's preference list
@@ -514,7 +514,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         this.originalGroup1CurrentPreferences
           .get(this.utils.getLastChar(student.name))
           .indexOf(this.utils.getLastChar(preferedProject.name)),
-        'red'
+        'red',
       );
 
       // provisionally assign student to project
@@ -596,7 +596,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         this.deleteFullPairsProject(
           worstStudent,
           preferedProject,
-          projectLecturer
+          projectLecturer,
         );
       }
 
@@ -626,7 +626,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         this.originalGroup1CurrentPreferences
           .get(this.utils.getLastChar(student.name))
           .indexOf(this.utils.getLastChar(preferedProject.name)),
-        'black'
+        'black',
       );
 
       // update viz
@@ -643,7 +643,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
           this.originalGroup1CurrentPreferences
             .get(this.utils.getLastChar(student.name))
             .indexOf(this.utils.getLastChar(student.match[0].name)),
-          'green'
+          'green',
         );
 
         greenLine = [

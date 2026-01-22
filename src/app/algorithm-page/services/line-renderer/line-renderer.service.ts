@@ -17,7 +17,7 @@ export class LineRendererService {
   constructor(
     public layoutService: LayoutService,
     public colourHexService: ColourHexService,
-    public utils: UtilsService
+    public utils: UtilsService,
   ) {}
 
   public setContext(ctx: CanvasRenderingContext2D): void {

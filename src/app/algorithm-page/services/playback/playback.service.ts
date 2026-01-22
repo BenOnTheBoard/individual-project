@@ -25,7 +25,7 @@ export class PlaybackService {
 
   constructor(
     public exeService: ExecutionService,
-    public drawService: CanvasService
+    public drawService: CanvasService,
   ) {}
 
   initialise(): void {
@@ -60,7 +60,7 @@ export class PlaybackService {
     numberOfAgents: number,
     numberOfGroup2Agents: number = numberOfAgents,
     preferences: Map<String, Array<String>> = null,
-    SRstable: boolean = true
+    SRstable: boolean = true,
   ): void {
     this.initialise();
     this.algorithmData = this.exeService.getExecutionFlow(
@@ -68,7 +68,7 @@ export class PlaybackService {
       numberOfAgents,
       numberOfGroup2Agents,
       preferences,
-      SRstable
+      SRstable,
     );
     this.commandList = this.algorithmData['commands'];
     this.resetPlaybackData();

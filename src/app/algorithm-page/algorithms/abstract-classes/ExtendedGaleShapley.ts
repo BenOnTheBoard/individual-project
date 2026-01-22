@@ -55,12 +55,12 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
 
   abstract provisionallyAssign(
     currentAgent: Agent,
-    potentialProposee: Agent
+    potentialProposee: Agent,
   ): void;
 
   abstract removeRuledOutPreferences(
     currentAgent: Agent,
-    potentialProposee: Agent
+    potentialProposee: Agent,
   ): void;
 
   abstract breakAssignment(currentAgent: Agent, potentialProposee: Agent): void;

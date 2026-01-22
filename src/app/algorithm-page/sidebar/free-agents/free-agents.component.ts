@@ -10,7 +10,7 @@ import { PlaybackService } from '../../services/playback/playback.service';
 export class FreeAgentsComponent implements OnInit {
   constructor(
     public playback: PlaybackService, // injecting the playback service
-    public algorithmService: AlgorithmRetrievalService
+    public algorithmService: AlgorithmRetrievalService,
   ) {} // injecting the algorithm service) { }
 
   ngOnInit(): void {}
