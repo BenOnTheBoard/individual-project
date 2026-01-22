@@ -72,47 +72,32 @@
     @if ((this.missingPreferencesGroup1.length != 0) || (this.missingPreferencesGroup2.length != 0)) {
     <h2>Missing Preferences</h2>
     }
-
     <div class="container">
       <div class="row justify-content-around">
-
         @if (this.missingPreferencesGroup1.length > 0) {
         <div class="col-6">
-          <p><strong> {{ this.group1Plural }}</strong></p>
+          <p><strong>{{ this.group1Plural }}</strong></p>
 
           @for (item of this.missingPreferencesGroup1; let lastItem = $last; ; track item) {
-          <span>
-            @if (!lastItem) {
-            <span class="labels">({{ item }})</span><span>, </span>
-            }
+          <span class="labels">
+            ({{ item }})@if (!lastItem) {,}
           </span>
           }
         </div>
         }
-
         @if (((this.missingPreferencesGroup2.length > 0) && (this.algorithmService.currentAlgorithm.name !=
         'Stable Roommates Problem'))) {
         <div class="col-6">
-          <p> <strong> {{ this.group2Plural }}
-            </strong> </p>
-
-          <p>{{this.missingPreferences}}</p>
-          <p>{{this.missingPreferencesGroup1}}</p>
-          <p>{{this.missingPreferencesGroup2}}</p>
+          <p><strong>{{ this.group2Plural }}</strong></p>
 
           @for (item of this.missingPreferencesGroup2; let lastItem = $last; track item) {
-          <span>
-            @if (!lastItem) {
-            <span class="labels">({{ item }})</span><span>, </span>
-            }
+          <span class="labels">
+            ({{ item }})@if (!lastItem) {,}
           </span>
           }
         </div>
         }
-
-
       </div>
-
       <br>
     </div>
 

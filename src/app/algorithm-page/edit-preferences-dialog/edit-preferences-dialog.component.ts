@@ -44,7 +44,6 @@ export class EditPreferencesDialogComponent implements OnInit {
 
   @Input() algorithm: Algorithm;
 
-  missingPreferences: string[][];
   missingPreferencesGroup1: string[][];
   missingPreferencesGroup2: string[][];
 
@@ -83,12 +82,10 @@ export class EditPreferencesDialogComponent implements OnInit {
     this.generatePreferenceString();
   }
 
-  // calls correct function to generate algoirhtm preferences - based on current alg
   callGenerateAlgorithmPreferences(): void {
     if (
       this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem'
     ) {
-      console.log('input value', this.agentForm.getGroup1AgentCount());
       if (this.agentForm.getSRAgentCount() % 2 == 0) {
         this.generateAlgorithmPreferences1Group();
       }
@@ -110,8 +107,6 @@ export class EditPreferencesDialogComponent implements OnInit {
   generateBipartitePreferenceString(): void {
     this.preferenceTextGroup1 = [];
     this.preferenceTextGroup2 = [];
-
-    this.missingPreferences = [];
 
     this.missingPreferencesGroup1 = [];
     this.missingPreferencesGroup2 = [];
@@ -151,7 +146,7 @@ export class EditPreferencesDialogComponent implements OnInit {
       // addes pre-generated rankings
       for (let agent of this.group1Preferences) {
         // filter out value that are too large
-        let agentCopy = Object.assign([], agent[1]);
+        let agentCopy = this.utils.cloneList(agent[1]);
         let safe_values = agentCopy.filter(
           (pref) => pref.charCodeAt(0) - 64 <= group2Count,
         );
@@ -180,7 +175,7 @@ export class EditPreferencesDialogComponent implements OnInit {
       // GROUP 2 //
       // addes pre-generated rankings
       for (let agent of this.group2Preferences) {
-        let agentCopy = Object.assign([], agent[1]);
+        let agentCopy = this.utils.cloneList(agent[1]);
         this.preferenceTextGroup2.push(agentCopy);
       }
       // adds new rankings to end of pre-generated rankings
@@ -212,7 +207,7 @@ export class EditPreferencesDialogComponent implements OnInit {
           break;
         }
         // filter out values in the ranking which are too large
-        let agentCopy = Object.assign([], agent[1]);
+        let agentCopy = this.utils.cloneList(agent[1]);
         let safe_values = agentCopy.filter(
           (pref) => pref.charCodeAt(0) - 64 <= group2Count,
         );
@@ -230,8 +225,10 @@ export class EditPreferencesDialogComponent implements OnInit {
           break;
         }
         // filter out values in the ranking which are too large
-        let agentCopy = Object.assign([], agent[1]);
-        let safe_values = agentCopy.filter((pref) => pref <= group1Count);
+        let agentCopy = this.utils.cloneList(agent[1]);
+        let safe_values = agentCopy.filter(
+          (pref) => Number(pref) <= group1Count,
+        );
         // add rankning
         this.preferenceTextGroup2.push(safe_values);
         counter++;
@@ -241,8 +238,6 @@ export class EditPreferencesDialogComponent implements OnInit {
 
   generateSRPreferenceString(): void {
     this.preferenceTextGroup1 = [];
-    this.missingPreferences = [];
-
     this.missingPreferencesGroup1 = [];
     this.missingPreferencesGroup2 = [];
 
@@ -265,7 +260,7 @@ export class EditPreferencesDialogComponent implements OnInit {
       // GROUP 1 //
       // addes pre-generated rankings
       for (let agent of this.group1Preferences) {
-        let agentCopy = Object.assign([], agent[1]);
+        let agentCopy = this.utils.cloneList(agent[1]);
         this.preferenceTextGroup1.push(agentCopy);
       }
       // adds new rankings to end of pre-generated rankings
@@ -307,8 +302,10 @@ export class EditPreferencesDialogComponent implements OnInit {
           break;
         }
         // filter out values in the ranking which are too large
-        let agentCopy = Object.assign([], agent[1]); //.sort()
-        let safe_values = agentCopy.filter((pref) => pref <= agentCount);
+        let agentCopy = this.utils.cloneList(agent[1]);
+        let safe_values = agentCopy.filter(
+          (pref) => Number(pref) <= agentCount,
+        );
         // add rankning
         this.preferenceTextGroup1.push(safe_values);
         counter++;
@@ -346,6 +343,139 @@ export class EditPreferencesDialogComponent implements OnInit {
       default:
         return this.isValid();
     }
+  }
+
+  // function to disable/enable button - false = enabled / true = disabled
+  isValid(): boolean {
+    // values that should be in each list
+    // letters
+
+    let numbers = [];
+    let letters = [];
+    this.missingPreferencesGroup1 = [];
+    this.missingPreferencesGroup2 = [];
+
+    let lettersValid = true;
+    let numbersValid = true;
+
+    // Gets all letters/numbers that should be in each preference
+    for (let i = 1; i <= this.agentForm.getGroup2AgentCount(); i++) {
+      letters.push(String.fromCharCode(i + 64));
+    }
+    for (let i = 1; i <= this.agentForm.getGroup1AgentCount(); i++) {
+      numbers.push(String(i));
+    }
+
+    // GROUP 1
+    for (let [key, ranking] of this.preferenceTextGroup1.entries()) {
+      for (let char of letters) {
+        if (!ranking.includes(char)) {
+          // letter in ranking that is not supposed to be
+          lettersValid = false;
+
+          //input missing preferences
+          this.missingPreferencesGroup1.push([key + 1, char]);
+        }
+      }
+      // checks for smae size
+      if (ranking.length != letters.length) {
+        lettersValid = false;
+      }
+    }
+
+    // GROUP 2
+    for (let [key, ranking] of this.preferenceTextGroup2.entries()) {
+      for (let num of numbers) {
+        if (!ranking.includes(num)) {
+          // letter in ranking that is not supposed to be
+          numbersValid = false;
+
+          //input missing preferences
+          this.missingPreferencesGroup2.push([
+            String.fromCharCode(65 + key),
+            num,
+          ]);
+        }
+      }
+      // checks for smae size
+      if (ranking.length != numbers.length) {
+        numbersValid = false;
+      }
+    }
+
+    return lettersValid && numbersValid;
+  }
+
+  SPAisvalid() {
+    // values that should be in each list
+    // letters
+
+    let letters = [];
+    this.missingPreferencesGroup1 = [];
+    this.missingPreferencesGroup2 = [];
+
+    let lettersValid = true;
+
+    // Gets all letters/numbers that should be in each preference
+    for (let i = 1; i <= this.agentForm.getGroup2AgentCount(); i++) {
+      letters.push(String.fromCharCode(i + 64));
+    }
+
+    // GROUP 1
+    for (let [key, ranking] of this.preferenceTextGroup1.entries()) {
+      for (let char of letters) {
+        if (!ranking.includes(char)) {
+          // letter in ranking that is not supposed to be
+          lettersValid = false;
+
+          //input missing preferences
+          this.missingPreferencesGroup1.push([key + 1, char]);
+        }
+      }
+      // checks for smae size
+      if (ranking.length != letters.length) {
+        lettersValid = false;
+      }
+    }
+
+    return lettersValid;
+  }
+
+  // Checks is instance of SR (1 group matchings) is valid
+  isValid1Group(): boolean {
+    // values that should be in each list
+    // letters
+
+    let numbers = [];
+    this.missingPreferencesGroup1 = [];
+
+    let numbersValid = true;
+
+    // Gets all letters/numbers that should be in each preference
+    for (let i = 1; i <= this.agentForm.getGroup1AgentCount(); i++) {
+      numbers.push(String(i));
+    }
+
+    // GROUP 1
+    for (let [key, ranking] of this.preferenceTextGroup1.entries()) {
+      for (let num of numbers) {
+        // ranking does not include value in numbers -
+        if (!ranking.includes(num)) {
+          // checks if the missing number is not the key, if its not the key then its a rouge number
+          if (num != key + 1) {
+            numbersValid = false;
+            //input missing preferences
+            this.missingPreferencesGroup1.push([key + 1, num]);
+          }
+        }
+      }
+      // checks for correct length
+      if (ranking.length != numbers.length - 1) {
+        numbersValid = false;
+      }
+    }
+
+    return numbersValid;
   }
 
   generateAlgorithmPreferences(): void {
@@ -400,109 +530,6 @@ export class EditPreferencesDialogComponent implements OnInit {
     });
   }
 
-  // function to disable/enable button - false = enabled / true = disabled
-  isValid(): boolean {
-    // values that should be in each list
-    // letters
-
-    let numbers = [];
-    let letters = [];
-    this.missingPreferences = [];
-
-    this.missingPreferencesGroup1 = [];
-    this.missingPreferencesGroup2 = [];
-
-    let lettersValid = true;
-    let numbersValid = true;
-
-    // Gets all letters/numbers that should be in each preference
-    for (let i = 1; i <= this.agentForm.getGroup2AgentCount(); i++) {
-      letters.push(String.fromCharCode(i + 64));
-    }
-    for (let i = 1; i <= this.agentForm.getGroup1AgentCount(); i++) {
-      numbers.push(String(i));
-    }
-
-    // GROUP 1
-    for (let [key, ranking] of this.preferenceTextGroup1.entries()) {
-      for (let char of letters) {
-        if (!ranking.includes(char)) {
-          // letter in ranking that is not supposed to be
-          lettersValid = false;
-
-          //input missing preferences
-          this.missingPreferences.push([key + 1, char]);
-          this.missingPreferencesGroup1.push([key + 1, char]);
-        }
-      }
-      // checks for smae size
-      if (ranking.length != letters.length) {
-        lettersValid = false;
-      }
-    }
-
-    // GROUP 2
-    for (let [key, ranking] of this.preferenceTextGroup2.entries()) {
-      for (let num of numbers) {
-        if (!ranking.includes(num)) {
-          // letter in ranking that is not supposed to be
-          numbersValid = false;
-
-          //input missing preferences
-          this.missingPreferences.push([String.fromCharCode(65 + key), num]);
-          this.missingPreferencesGroup2.push([
-            String.fromCharCode(65 + key),
-            num,
-          ]);
-        }
-      }
-      // checks for smae size
-      if (ranking.length != numbers.length) {
-        numbersValid = false;
-      }
-    }
-
-    return lettersValid && numbersValid;
-  }
-
-  SPAisvalid() {
-    // values that should be in each list
-    // letters
-
-    let letters = [];
-    this.missingPreferences = [];
-
-    this.missingPreferencesGroup1 = [];
-    this.missingPreferencesGroup2 = [];
-
-    let lettersValid = true;
-
-    // Gets all letters/numbers that should be in each preference
-    for (let i = 1; i <= this.agentForm.getGroup2AgentCount(); i++) {
-      letters.push(String.fromCharCode(i + 64));
-    }
-
-    // GROUP 1
-    for (let [key, ranking] of this.preferenceTextGroup1.entries()) {
-      for (let char of letters) {
-        if (!ranking.includes(char)) {
-          // letter in ranking that is not supposed to be
-          lettersValid = false;
-
-          //input missing preferences
-          this.missingPreferences.push([key + 1, char]);
-          this.missingPreferencesGroup1.push([key + 1, char]);
-        }
-      }
-      // checks for smae size
-      if (ranking.length != letters.length) {
-        lettersValid = false;
-      }
-    }
-
-    return lettersValid;
-  }
-
   generateAlgorithmPreferences1Group(): void {
     //// UPDATE REAL PREFERANCES
 
@@ -549,44 +576,5 @@ export class EditPreferencesDialogComponent implements OnInit {
     this._snackBar.open('Preferences changed', 'Dismiss', {
       duration: 2000,
     });
-  }
-
-  // Checks is instance of SR (1 group matchings) is valid
-  isValid1Group(): boolean {
-    // values that should be in each list
-    // letters
-
-    let numbers = [];
-    this.missingPreferences = [];
-    this.missingPreferencesGroup1 = [];
-
-    let numbersValid = true;
-
-    // Gets all letters/numbers that should be in each preference
-    for (let i = 1; i <= this.agentForm.getGroup1AgentCount(); i++) {
-      numbers.push(String(i));
-    }
-
-    // GROUP 1
-    for (let [key, ranking] of this.preferenceTextGroup1.entries()) {
-      for (let num of numbers) {
-        // ranking does not include value in numbers -
-        if (!ranking.includes(num)) {
-          // checks if the missing number is not the key, if its not the key then its a rouge number
-          if (num != key + 1) {
-            numbersValid = false;
-            //input missing preferences
-            this.missingPreferences.push([key + 1, num]);
-            this.missingPreferencesGroup1.push([key + 1, num]);
-          }
-        }
-      }
-      // checks for correct length
-      if (ranking.length != numbers.length - 1) {
-        numbersValid = false;
-      }
-    }
-
-    return numbersValid;
   }
 }

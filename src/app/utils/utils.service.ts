@@ -39,6 +39,10 @@ export class UtilsService {
     return mapCloned;
   }
 
+  cloneList<T>(list: T[]): T[] {
+    return [...list];
+  }
+
   getLastChar(name: string) {
     return name.slice(name.length - 1);
   }
@@ -46,7 +50,7 @@ export class UtilsService {
   polarToCartesian(
     r: number,
     theta: number,
-    origin: Position = { x: 0, y: 0 }
+    origin: Position = { x: 0, y: 0 },
   ): Position {
     return {
       x: origin.x + r * Math.cos(theta),
