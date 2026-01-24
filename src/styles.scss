@@ -114,3 +114,16 @@ button:focus {
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
   background-color: transparent !important;
 }
+
+/* Generic Titling Classes */
+.page-section-header {
+  font-size: 40px;
+  line-height: 50px;
+  font-weight: 600;
+}
+
+.page-section-text {
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 300;
+}

@@ -2,10 +2,5 @@
 
 <div class="main-page">
     <router-outlet #outlet="outlet"></router-outlet>
-
-    @if (!(router.url === '/feedback')) {
-    <feedback-banner></feedback-banner>
-    }
-
     <icon-banner></icon-banner>
 </div>

@@ -42,7 +42,7 @@ Flow:
   - Set listener functions for the following actions:
     - keypress down:
         handleKeyboardEvent(event: KeyboardEvent): void
-    - home link (algmatch) clicked:
+    - home link (Algmatch) clicked:
         async goHome(): Promise<void>
     - generate new preferences button clicked:
         async generateNewPreferences(): Promise<void>
