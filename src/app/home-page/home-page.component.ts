@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { IconBannerComponent } from './icon-banner/icon-banner.component';
-import { FeedbackBannerComponent } from './feedback-banner/feedback-banner.component';
 import { NavbarComponent } from './navbar/navbar.component';
 declare var anime: any;
 
@@ -9,12 +8,7 @@ declare var anime: any;
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss'],
-  imports: [
-    NavbarComponent,
-    IconBannerComponent,
-    FeedbackBannerComponent,
-    RouterOutlet,
-  ],
+  imports: [NavbarComponent, IconBannerComponent, RouterOutlet],
 })
 export class HomePageComponent implements OnInit {
   constructor(public router: Router) {}

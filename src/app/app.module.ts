@@ -27,7 +27,6 @@ import { AlgorithmContentComponent } from './home-page/algorithm-content/algorit
 import { FeedbackContentComponent } from './home-page/feedback-content/feedback-content.component';
 import { AlgorithmCardComponent } from './home-page/algorithm-content/algorithm-card/algorithm-card.component';
 import { IconBannerComponent } from './home-page/icon-banner/icon-banner.component';
-import { FeedbackBannerComponent } from './home-page/feedback-banner/feedback-banner.component';
 import { NavbarComponent } from './home-page/navbar/navbar.component';
 import { AnimationGuideDialogComponent } from './algorithm-page/animation-guide-dialog/animation-guide-dialog.component';
 import { SidebarComponent } from './algorithm-page/sidebar/sidebar.component';
@@ -53,7 +52,6 @@ import { AgentCountFormComponent } from './forms/agent-count-form/agent-count-fo
     FeedbackContentComponent,
     AlgorithmCardComponent,
     IconBannerComponent,
-    FeedbackBannerComponent,
     NavbarComponent,
     AnimationGuideDialogComponent,
     SidebarComponent,

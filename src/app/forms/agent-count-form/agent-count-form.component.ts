@@ -62,7 +62,7 @@ export class AgentCountFormComponent implements OnInit {
       case 'Stable Marriage Problem':
         return this.numberOfGroup1Agents.valid;
       case 'Hospitals/Residents Problem':
-      case 'Student Project Allocation':
+      case 'Student-Project Allocation':
         return (
           this.numberOfGroup1Agents.valid && this.numberOfGroup2Agents.valid
         );
