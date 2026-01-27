@@ -17,39 +17,6 @@ export class AlgorithmAnimationService {
       duration: 900,
     });
 
-    // animation for sliding the sidebar right from X-500 its position
-    anime({
-      targets: '.sidebar',
-      easing: 'easeInOutQuint',
-      translateX: [-500, 0],
-      delay: 270,
-      duration: 1000,
-    });
-
-    anime({
-      targets: '.info-sidebar',
-      easing: 'easeInOutQuint',
-      translateX: [0, 500],
-      opacity: [0, 1],
-      duration: 600,
-    });
-
-    anime({
-      targets: '#infosidebarContent',
-      easing: 'easeInOutQuint',
-      opacity: [0, 1],
-      duration: 600,
-    });
-
-    // animation for fading the sidebar content in as the sidebar slides in
-    anime({
-      targets: '#sidebarContent',
-      easing: 'easeInOutQuint',
-      opacity: [0, 1],
-      delay: 270,
-      duration: 1500,
-    });
-
     // animation for fading the main content in as the sidebar finishes sliding in
     anime({
       targets: '#mainContent',
@@ -67,20 +34,6 @@ export class AlgorithmAnimationService {
       translateY: [0, -150],
       delay: 400,
       duration: 900,
-    });
-
-    anime({
-      targets: '.sidebar',
-      easing: 'easeInOutQuint',
-      translateX: [0, -500],
-      duration: 600,
-    });
-
-    anime({
-      targets: '#sidebarContent',
-      easing: 'easeInOutQuint',
-      opacity: [1, 0],
-      duration: 600,
     });
 
     anime({
@@ -106,60 +59,6 @@ export class AlgorithmAnimationService {
       easing: 'easeInOutQuint',
       opacity: [0, 1],
       duration: 300,
-    });
-  }
-
-  hideSidebar(): void {
-    anime({
-      targets: '.sidebar',
-      easing: 'easeInOutQuint',
-      translateX: [0, -800],
-      delay: 200,
-      duration: 700,
-    });
-  }
-
-  showSidebar(): void {
-    anime({
-      targets: '.sidebar',
-      easing: 'easeInOutQuint',
-      translateX: [-500, 0],
-      duration: 600,
-    });
-
-    anime({
-      targets: '#sidebarContent',
-      easing: 'easeInOutQuint',
-      opacity: [0, 1],
-      duration: 600,
-    });
-  }
-
-  hideInfoSidebar(): void {
-    anime({
-      targets: '.info-sidebar',
-      easing: 'easeInOutQuint',
-      opacity: [1, 0],
-      direction: 'reverse',
-      delay: 200,
-      duration: 3700,
-    });
-  }
-
-  showInfoSidebar(): void {
-    anime({
-      targets: '.info-sidebar',
-      easing: 'easeInOutQuint',
-      direction: 'reverse',
-      opacity: [0, 1],
-      duration: 1000,
-    });
-
-    anime({
-      targets: '#infosidebarContent',
-      easing: 'easeInOutQuint',
-      opacity: [0.5, 1],
-      duration: 600,
     });
   }
 

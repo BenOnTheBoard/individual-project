@@ -1,7 +1,7 @@
-<nav class="d-none infosidebar" [ngClass]="{'col-md-3 d-md-block': !this.showInfo}">
+<nav #sidebarContainer class="infosidebar col-md-3 d-md-block">
   <div class="infosidebar-sticky shadow-lg">
     @if (this.algorithmService.currentAlgorithm.name) {
-    <div class="grid-container-algorithm infotext" id="infosidebarContent">
+    <div #sidebarContent class="grid-container-algorithm infotext" id="infosidebarContent">
 
       <!-- This file contains the information for all the explanations on the sidebar 
       

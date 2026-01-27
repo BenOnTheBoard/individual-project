@@ -93,6 +93,12 @@ export class AlgorithmPageComponent implements OnInit {
   @ViewChild('canvas', { static: true })
   canvas: ElementRef<HTMLCanvasElement>;
 
+  @ViewChild('leftSidebar')
+  leftSidebar: SidebarComponent;
+
+  @ViewChild('rightSidebar')
+  rightSidebar: SidebarComponent;
+
   showCode: boolean = false;
   dialogOpen: boolean = false;
 
@@ -253,14 +259,7 @@ export class AlgorithmPageComponent implements OnInit {
     this.duringAnimation = true;
     this.animation.hideMainContent();
 
-    if (!this.showCode) {
-      this.animation.hideSidebar();
-      await this.utils.delay(700);
-    } else {
-      await this.utils.delay(400);
-      this.animation.showSidebar();
-      await this.utils.delay(200);
-    }
+    this.leftSidebar.toggleSidebar();
 
     this.showCode = !this.showCode;
     this.drawService.clearCanvas();
@@ -276,14 +275,7 @@ export class AlgorithmPageComponent implements OnInit {
     this.duringAnimation = true;
     this.animation.hideMainContent();
 
-    if (!this.showInfo) {
-      this.animation.hideInfoSidebar();
-      await this.utils.delay(700);
-    } else {
-      await this.utils.delay(400);
-      this.animation.showInfoSidebar();
-      await this.utils.delay(200);
-    }
+    this.rightSidebar.toggleSidebar();
 
     this.showInfo = !this.showInfo;
     this.drawService.clearCanvas();
