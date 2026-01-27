@@ -73,17 +73,17 @@
   </div>
 </nav>
 
+<!--- these are absolutely positioned-->
+<sidebar [(showCode)]="showCode" [(tutorialStep)]="tutorialStep"></sidebar>
+<app-info-sidebar [(showInfo)]="showInfo" [(tutorialStep)]="tutorialStep"></app-info-sidebar>
 
-<!-- main content -->
-<div class="container-fluid main">
+<div class="container-fluid main row">
   <!-- sidebar -->
-  <sidebar [(showCode)]="showCode" [(tutorialStep)]="tutorialStep"></sidebar>
-
-  <app-info-sidebar [(showInfo)]="showInfo" [(tutorialStep)]="tutorialStep"></app-info-sidebar>
+  <div class="spacer" [ngClass]="{'col-md-3' : !this.showCode, 'd-none': this.showCode}"></div>
 
   <div class="grid-container-algorithm" id="mainContent"
     style="background-color: white; height: 100%; display: grid; grid-template-rows: 0.39fr 3.4fr 0.8fr; padding-left: 0px; padding-right: 0px"
-    [ngClass]="{'col-md-6 offset-md-3' : (!this.showCode && !this.showInfo), 'col-md-9': (this.showCode && !this.showInfo), 'offset-sm-3 col-sm-9' : (!this.showCode && this.showInfo) , 'moveContentToTop': this.tutorialStep == 3}">
+    [ngClass]="{'col-md-6' : !this.showCode && !this.showInfo, 'col-md-9' : this.showCode != this.showInfo, 'col-md-12': this.showCode && this.showInfo, 'moveContentToTop': this.tutorialStep == 3}">
 
     <agent-titles [(showCode)]="showCode"></agent-titles>
 
@@ -96,4 +96,6 @@
 
     <playback-controls></playback-controls>
   </div>
+  <!-- info sidebar -->
+  <div class="spacer" [ngClass]="{'col-md-3' : !this.showInfo, 'd-none': this.showInfo}"></div>
 </div>
