@@ -74,8 +74,8 @@
 </nav>
 
 <!--- these are absolutely positioned-->
-<sidebar [(showCode)]="showCode" [(tutorialStep)]="tutorialStep"></sidebar>
-<app-info-sidebar [(showInfo)]="showInfo" [(tutorialStep)]="tutorialStep"></app-info-sidebar>
+<sidebar #leftSidebar [(showCode)]="showCode" [(tutorialStep)]="tutorialStep"></sidebar>
+<app-info-sidebar #rightSidebar [(showInfo)]="showInfo" [(tutorialStep)]="tutorialStep"></app-info-sidebar>
 
 <div class="container-fluid main row">
   <!-- sidebar -->
