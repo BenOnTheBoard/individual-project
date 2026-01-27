@@ -228,9 +228,9 @@ export class AlgorithmPageComponent implements OnInit {
 
     this.showInfo = !this.showInfo;
     this.drawService.clearCanvas();
-    this.drawService.redrawCanvas();
-
     this.showMainContent();
+    await this.utils.delay(200);
+    this.drawService.redrawCanvas();
 
     this.duringAnimation = false;
   }
