@@ -1,16 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
-import { UtilsService } from 'src/app/utils/utils.service';
-import { AlgorithmAnimationService } from '../animations/algorithm-animation.service';
-import { CanvasService } from '../services/canvas/canvas.service';
-import { PlaybackService } from '../services/playback/playback.service';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { AlgDescriptionComponent } from './alg-description/alg-description.component';
 import { PseudocodeComponent } from './pseudocode/pseudocode.component';
 import { FreeAgentsComponent } from './free-agents/free-agents.component';
 import { ExecutionLogComponent } from './execution-log/execution-log.component';
 import { NgClass } from '@angular/common';
+import { UtilsService } from 'src/app/utils/utils.service';
+declare var anime: any; // declaring the animejs animation library for use in this file
 
 @Component({
   selector: 'sidebar',
@@ -28,15 +30,81 @@ export class SidebarComponent implements OnInit {
   @Input() showCode: boolean;
   @Input() tutorialStep: number;
 
-  constructor(
-    public playback: PlaybackService, // injecting the playback service
-    public algorithmService: AlgorithmRetrievalService, // injecting the algorithm service
-    public drawService: CanvasService, // injecting the canvas service
-    public animation: AlgorithmAnimationService,
-    public utils: UtilsService,
-    public dialog: MatDialog, // injecting the dialog component
-    public router: Router, // injecting the router service (for programmatic route navigation)
-  ) {}
+  @ViewChild('sidebarContainer')
+  private sidebar: ElementRef;
+  private sidebarWidth: number;
+
+  @ViewChild('sidebarContent')
+  private sidebarContent: ElementRef;
+
+  private isInAnimation: boolean;
+
+  constructor(private utils: UtilsService) {}
 
   ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    this.updateSidebarWidth();
+  }
+
+  @HostListener('window:resize')
+  onResize(): void {
+    this.updateSidebarWidth();
+    this.setCurrentPosition();
+  }
+
+  private updateSidebarWidth(): void {
+    this.sidebarWidth = this.sidebar.nativeElement.offsetWidth;
+  }
+
+  private setCurrentPosition(): void {
+    const targetX = !this.showCode ? '0px' : `-${this.sidebarWidth}px`;
+    this.sidebar.nativeElement.style.transform = `translateX(${targetX})`;
+  }
+
+  private hideSidebar(): void {
+    anime({
+      targets: this.sidebar.nativeElement,
+      easing: 'easeInOutQuint',
+      translateX: [0, `-${this.sidebarWidth}px`],
+      delay: 200,
+      duration: 700,
+      complete: () => {
+        this.isInAnimation = false;
+      },
+    });
+  }
+
+  private showSidebar(): void {
+    anime({
+      targets: this.sidebar.nativeElement,
+      easing: 'easeInOutQuint',
+      translateX: [`-${this.sidebarWidth}px`, 0],
+      duration: 600,
+      complete: () => {
+        this.isInAnimation = false;
+      },
+    });
+
+    anime({
+      targets: this.sidebarContent.nativeElement,
+      easing: 'easeInOutQuint',
+      opacity: [0, 1],
+      duration: 600,
+    });
+  }
+
+  async toggleSidebar(): Promise<void> {
+    if (this.isInAnimation) return;
+    this.isInAnimation = true;
+
+    if (!this.showCode) {
+      this.hideSidebar();
+      await this.utils.delay(700);
+    } else {
+      await this.utils.delay(400);
+      this.showSidebar();
+      await this.utils.delay(200);
+    }
+  }
 }
