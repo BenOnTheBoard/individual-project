@@ -15,61 +15,13 @@ import { Router } from '@angular/router';
 import { AlgorithmRetrievalService } from '../algorithm-retrieval.service';
 import { UtilsService } from '../utils/utils.service';
 import { AnimationGuideDialogComponent } from './animation-guide-dialog/animation-guide-dialog.component';
-import { AlgorithmAnimationService } from './animations/algorithm-animation.service';
 import { CanvasService } from './services/canvas/canvas.service';
 import { PlaybackService } from './services/playback/playback.service';
 import { InfoSidebarComponent } from './info-sidebar/info-sidebar.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
 declare var $: any; // declaring jquery for use in this file
-
-// -------------------------------------------------- FILE DESCRIPTION
-
-/*
-
-algorithm-page.component.ts
-
-This is the Typescript file for the algorithm page (algorithm-page.component.html).
-
-Purpose:
-  - Acts as a "main" class for the algorithm page
-  - Mediates interaction between all other services
-
-Flow:
-  - When algorithm page is to be loaded, run the constructor, injecting all necessary services
-  - ngOnInit() is then run, linking the global canvas variable for the canvasService (having a canvasService allows us to make calls to draw elements from anywhere)
-  - Set listener functions for the following actions:
-    - keypress down:
-        handleKeyboardEvent(event: KeyboardEvent): void
-    - home link (Algmatch) clicked:
-        async goHome(): Promise<void>
-    - generate new preferences button clicked:
-        async generateNewPreferences(): Promise<void>
-    - toggle sidebar button clicked:
-        async toggleSidebar(): Promise<void>
-
-Functions in this file:
-  - ngOnInit(): void
-  - ngAfterViewInit(): void
-  - handleKeyboardEvent(event: KeyboardEvent): void
-
-  - openEditPreferencesDialog(): void
-  - openAnimationGuideDialog(): void
-
-  - async goHome(): Promise<void>
-  - async generateNewPreferences(): Promise<void>
-  - async toggleSidebar(): Promise<void>
-
-  - nextTutorialStep(): void
-  - startTutorial(): void
-  - sidebarTutorial(): void
-  - mainContentTutorial(): void
-  - stopTutorial(): void
-
-*/
-
-// -------------------------------------------------- CODE
+declare var anime: any; // declaring the animejs animation library for use in this file
 
 @Component({
   selector: 'algorithm-page',
@@ -122,7 +74,6 @@ export class AlgorithmPageComponent implements OnInit {
     public playback: PlaybackService, // injecting the playback service
     public algorithmService: AlgorithmRetrievalService, // injecting the algorithm service
     public drawService: CanvasService, // injecting the canvas service
-    public animation: AlgorithmAnimationService,
     public utils: UtilsService,
     public dialog: MatDialog, // injecting the dialog component
     public router: Router, // injecting the router service (for programmatic route navigation)
@@ -151,18 +102,17 @@ export class AlgorithmPageComponent implements OnInit {
       this.algorithmService.numberOfGroup2Agents,
     );
 
-    // initialise all of the popovers for the tutorial (they won't appear without this function)
+    // initialise all of the popovers for the tutorial
     $(function () {
       $('[data-toggle="popover"]').popover();
     });
 
-    // initialise the tutorial to the beginning
     this.tutorialStep = 0;
   }
 
   // function that runs when page is visible to user
   ngAfterViewInit(): void {
-    this.animation.loadPage();
+    this.initShowPage();
     this.drawService.redrawCanvas();
   }
 
@@ -213,15 +163,12 @@ export class AlgorithmPageComponent implements OnInit {
 
   // --------------------------------------------------------------------------------- | ON CLICK FUNCTIONS
 
-  // function run when home link clicked
-  // start animation for going home, delay 1000ms, then change route to home
   async goHome(): Promise<void> {
-    this.animation.goHome();
+    this.goHome();
     await this.utils.delay(1000);
     this.router.navigateByUrl('/');
   }
 
-  // function run when generate new preferences button clicked
   async generateNewPreferences(): Promise<void> {
     // clears any code highlighting
     var command = this.playback.commandList[this.playback.previousStepCounter];
@@ -230,7 +177,7 @@ export class AlgorithmPageComponent implements OnInit {
     a.style.color = '';
 
     // animates changing of preferences (fade in/out)
-    this.animation.fadeCanvasOut();
+    this.fadeCanvasOut();
     await this.utils.delay(300);
 
     if (
@@ -250,20 +197,21 @@ export class AlgorithmPageComponent implements OnInit {
         this.algorithmService.numberOfGroup2Agents,
       );
     }
-    this.animation.fadeCanvasIn();
+    this.fadeCanvasIn();
     this.drawService.redrawCanvas();
   }
 
   // function run when toggle sidebar button clicked (top left)
   async toggleSidebar(): Promise<void> {
+    if (this.duringAnimation) return;
     this.duringAnimation = true;
-    this.animation.hideMainContent();
+    this.hideMainContent();
 
     this.leftSidebar.toggleSidebar();
 
     this.showCode = !this.showCode;
     this.drawService.clearCanvas();
-    this.animation.showMainContent();
+    this.showMainContent();
     await this.utils.delay(200);
     this.drawService.redrawCanvas();
 
@@ -272,16 +220,17 @@ export class AlgorithmPageComponent implements OnInit {
 
   // function run when toggle sidebar button clicked (top left)
   async toggleInfoSidebar(): Promise<void> {
+    if (this.duringAnimation) return;
     this.duringAnimation = true;
-    this.animation.hideMainContent();
+    this.hideMainContent();
 
     this.rightSidebar.toggleSidebar();
 
     this.showInfo = !this.showInfo;
     this.drawService.clearCanvas();
-    this.animation.showMainContent();
-    await this.utils.delay(200);
     this.drawService.redrawCanvas();
+
+    this.showMainContent();
 
     this.duringAnimation = false;
   }
@@ -342,5 +291,80 @@ export class AlgorithmPageComponent implements OnInit {
     $('.navbarPopover').popover('hide');
     $('.sidebarPopover').popover('hide');
     $('.mainContentPopover').popover('hide');
+  }
+
+  // --------------------------------------------------------------------------------- | ANIMATIONS
+
+  initShowPage(): void {
+    // animation for sliding the navbar down from Y-150 its position
+    anime({
+      targets: '.navbar',
+      easing: 'easeOutQuint',
+      translateY: [-150, 0],
+      delay: 200,
+      duration: 900,
+    });
+
+    // animation for fading the main content in as the sidebar finishes sliding in
+    anime({
+      targets: '#mainContent',
+      easing: 'easeInOutQuint',
+      opacity: [0, 1],
+      delay: 670,
+      duration: 900,
+    });
+  }
+
+  fadeToHome(): void {
+    anime({
+      targets: '.navbar',
+      easing: 'easeOutQuint',
+      translateY: [0, -150],
+      delay: 400,
+      duration: 900,
+    });
+
+    anime({
+      targets: '#mainContent',
+      easing: 'easeInOutQuint',
+      opacity: [1, 0],
+      duration: 600,
+    });
+  }
+
+  fadeCanvasOut(): void {
+    anime({
+      targets: '#myCanvas',
+      easing: 'easeInOutQuint',
+      opacity: [1, 0],
+      duration: 300,
+    });
+  }
+
+  fadeCanvasIn(): void {
+    anime({
+      targets: '#myCanvas',
+      easing: 'easeInOutQuint',
+      opacity: [0, 1],
+      duration: 300,
+    });
+  }
+
+  hideMainContent(): void {
+    anime({
+      targets: '#mainContent',
+      easing: 'easeInOutQuint',
+      opacity: [1, 0],
+      duration: 500,
+    });
+  }
+
+  showMainContent(): void {
+    anime({
+      targets: '#mainContent',
+      easing: 'easeInOutQuint',
+      opacity: [0, 1],
+      duration: 500,
+    });
   }
 }
