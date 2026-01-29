@@ -34,9 +34,6 @@ export class SidebarComponent implements OnInit {
   private sidebar: ElementRef;
   private sidebarWidth: number;
 
-  @ViewChild('sidebarContent')
-  private sidebarContent: ElementRef;
-
   private isInAnimation: boolean;
 
   constructor(private utils: UtilsService) {}
@@ -62,7 +59,7 @@ export class SidebarComponent implements OnInit {
     this.sidebar.nativeElement.style.transform = `translateX(${targetX})`;
   }
 
-  private hideSidebar(): void {
+  private async hideSidebar(): Promise<void> {
     anime({
       targets: this.sidebar.nativeElement,
       easing: 'easeInOutQuint',
@@ -75,7 +72,7 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  private showSidebar(): void {
+  private async showSidebar(): Promise<void> {
     anime({
       targets: this.sidebar.nativeElement,
       easing: 'easeInOutQuint',
@@ -85,12 +82,16 @@ export class SidebarComponent implements OnInit {
         this.isInAnimation = false;
       },
     });
+  }
 
+  async fadeSidebar(fadeOut: boolean, duration: number): Promise<void> {
+    const direction = fadeOut ? 'reverse' : 'normal';
     anime({
-      targets: this.sidebarContent.nativeElement,
+      targets: this.sidebar.nativeElement,
       easing: 'easeInOutQuint',
       opacity: [0, 1],
-      duration: 600,
+      direction: direction,
+      duration: duration,
     });
   }
 

@@ -23,9 +23,6 @@ export class InfoSidebarComponent implements OnInit {
   private sidebar: ElementRef;
   private sidebarWidth: number;
 
-  @ViewChild('sidebarContent')
-  private sidebarContent: ElementRef;
-
   private isInAnimation: boolean;
 
   constructor(
@@ -77,12 +74,16 @@ export class InfoSidebarComponent implements OnInit {
         this.isInAnimation = false;
       },
     });
+  }
 
+  async fadeSidebar(fadeOut: boolean, duration: number): Promise<void> {
+    const direction = fadeOut ? 'reverse' : 'normal';
     anime({
-      targets: this.sidebarContent.nativeElement,
+      targets: this.sidebar.nativeElement,
       easing: 'easeInOutQuint',
       opacity: [0, 1],
-      duration: 600,
+      direction: direction,
+      duration: duration,
     });
   }
 
