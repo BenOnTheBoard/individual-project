@@ -143,7 +143,7 @@ export class AlgorithmPageComponent implements OnInit {
   // --------------------------------------------------------------------------------- | ON CLICK FUNCTIONS
 
   async goHome(): Promise<void> {
-    this.goHome();
+    this.fadeToHome();
     await this.utils.delay(1000);
     this.router.navigateByUrl('/');
   }
