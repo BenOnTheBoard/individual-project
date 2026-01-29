@@ -1,7 +1,10 @@
 import { Component, input, OnInit, output } from '@angular/core';
+import { PlaybackService } from '../services/playback/playback.service';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { CanvasService } from '../services/canvas/canvas.service';
+import { UtilsService } from 'src/app/utils/utils.service';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { AnimationGuideDialogComponent } from '../animation-guide-dialog/animation-guide-dialog.component';
@@ -29,9 +32,12 @@ export class NavbarComponent implements OnInit {
   tutorialStepEmitter = output<number>();
 
   constructor(
+    public playback: PlaybackService,
     public algorithmService: AlgorithmRetrievalService,
     public drawService: CanvasService,
+    public utils: UtilsService,
     public dialog: MatDialog,
+    public router: Router,
   ) {}
 
   ngOnInit(): void {}
