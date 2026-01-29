@@ -102,28 +102,22 @@ export class PlaybackService {
 
   jumpToStep(step: number): void {
     this.pause = true;
-    this.uncolourCurrentLine();
     this.stepCounter = step;
     this.updateCurrentCommand();
-    this.colourCurrentLine();
   }
 
   backStep(): void {
-    this.uncolourCurrentLine();
     if (this.stepCounter > 0) {
       this.stepCounter--;
     }
     this.updateCurrentCommand();
-    this.colourCurrentLine();
   }
 
   forwardStep(): void {
-    this.uncolourCurrentLine();
     if (this.stepCounter < this.numCommands) {
       this.stepCounter++;
     }
     this.updateCurrentCommand();
-    this.colourCurrentLine();
   }
 
   async toggle() {
@@ -147,12 +141,9 @@ export class PlaybackService {
         break;
       }
 
-      this.colourCurrentLine();
-
       await this.sleep(this.speed);
 
       if (!this.pause) {
-        this.uncolourCurrentLine();
         this.stepCounter++;
         this.updateCurrentCommand();
         if (this.stepCounter >= this.numCommands) {
@@ -166,18 +157,6 @@ export class PlaybackService {
     return new Promise((resolve) => setTimeout(resolve, msec));
   }
 
-  uncolourCurrentLine(): void {
-    let codeLineHTML = document.getElementById('line' + this.currentLine);
-    codeLineHTML.style.backgroundColor = '';
-    codeLineHTML.style.color = '';
-  }
-
-  colourCurrentLine(): void {
-    let codeLineHTML = document.getElementById('line' + this.currentLine);
-    codeLineHTML.style.backgroundColor = 'black';
-    codeLineHTML.style.color = '#37FF00';
-  }
-
   onSliderChange(val: number) {
     if (this.firstRun) {
       this.firstRun = false;
@@ -188,16 +167,7 @@ export class PlaybackService {
     }
 
     this.pause = true;
-
     this.stepCounter = val;
-
-    var command = this.commandList[this.previousStepCounter];
-    let a = document.getElementById('line' + command['lineNumber']);
-    a.style.backgroundColor = '';
-    a.style.color = '';
-
     this.updateCurrentCommand();
-
-    this.colourCurrentLine();
   }
 }
