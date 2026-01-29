@@ -27,8 +27,9 @@ export class NavbarComponent implements OnInit {
   // for instructions to page
   commandEmitter = output<string>();
   // delivering info to page
-  dialogOpen = output<boolean>();
-  tutorialStep = output<number>();
+  dialogOpenEmitter = output<boolean>();
+  SRStableEmitter = output<boolean>();
+  tutorialStepEmitter = output<number>();
 
   constructor(
     public playback: PlaybackService,
@@ -43,7 +44,7 @@ export class NavbarComponent implements OnInit {
 
   updateTutorialStep(step: number): void {
     this.step = step;
-    this.tutorialStep.emit(this.step);
+    this.tutorialStepEmitter.emit(this.step);
   }
 
   updateToNextTutorialStep() {
@@ -57,12 +58,12 @@ export class NavbarComponent implements OnInit {
 
   toggleRightSidebar(): void {
     this.showInfo = !this.showInfo;
-    this.commandEmitter.emit('toggleLeftSidebar');
+    this.commandEmitter.emit('toggleRightSidebar');
   }
 
   toggleSRStable(): void {
     this.SRStable = !this.SRStable;
-    this.commandEmitter.emit('toggleSRStable');
+    this.SRStableEmitter.emit(this.SRStable);
   }
 
   emitGoHome(): void {
@@ -74,10 +75,10 @@ export class NavbarComponent implements OnInit {
   }
 
   openAnimationGuideDialog(): void {
-    this.dialogOpen.emit(true);
+    this.dialogOpenEmitter.emit(true);
     const dialogRef = this.dialog.open(AnimationGuideDialogComponent);
     dialogRef.afterClosed().subscribe(() => {
-      this.dialogOpen.emit(false);
+      this.dialogOpenEmitter.emit(false);
     });
   }
 
