@@ -71,30 +71,16 @@ export class AlgorithmPageComponent implements OnInit {
   // --------------------------------------------------------------------------------- | INIT FUNCTIONS
 
   constructor(
-    public playback: PlaybackService, // injecting the playback service
-    public algorithmService: AlgorithmRetrievalService, // injecting the algorithm service
-    public drawService: CanvasService, // injecting the canvas service
+    public playback: PlaybackService,
+    public algorithmService: AlgorithmRetrievalService,
+    public drawService: CanvasService,
     public utils: UtilsService,
-    public dialog: MatDialog, // injecting the dialog component
-    public router: Router, // injecting the router service (for programmatic route navigation)
+    public dialog: MatDialog,
+    public router: Router,
   ) {}
 
   ngOnInit(): void {
     this.drawService.setCanvas(this.canvas);
-
-    // debugging: use the following lines (113-121) to test individual algorithms
-    // you can use this in conjunction with changing the routing in order to direct to the animation page (so you don't have to keep selecting an algorithm through the main page, etc.)
-    // let group1 = 5;
-    // let group2 = 5;
-    // // let alg: string = "smp-man-gs";
-    // let alg: string = "hr-resident-egs";
-
-    // this.algorithmService.numberOfGroup1Agents = group1;
-    // this.algorithmService.numberOfGroup2Agents = group2;
-
-    // this.algorithmService.currentAlgorithm = this.algorithmService.mapOfAvailableAlgorithms.get(alg);
-    // this.playback.setAlgorithm(alg, group1, group2);
-
     this.drawService.initialise();
     this.playback.setAlgorithm(
       this.algorithmService.currentAlgorithm.id,
@@ -110,21 +96,14 @@ export class AlgorithmPageComponent implements OnInit {
     this.tutorialStep = 0;
   }
 
-  // function that runs when page is visible to user
   ngAfterViewInit(): void {
     this.initShowPage();
     this.drawService.redrawCanvas();
   }
 
-  // creating a listener function for keydown events
-  // Key:
-  // (< arrow) or (a) == backstep in algorithm
-  // (> arrow) or (d) == forward step in algorithm
-  // (r) or (#) == generate new preferences
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
     if (!this.dialogOpen && this.tutorialStep == 0) {
-      // disable events on tutorial or edit preferences open
       if (event.key == 'ArrowRight' || event.key == 'd') {
         if (
           !(
@@ -247,10 +226,7 @@ export class AlgorithmPageComponent implements OnInit {
 
   // --------------------------------------------------------------------------------- | TUTORIAL FUNCTIONS
 
-  // function run when ">" arrow clicked in tutorial
-  // progresses to next stage of tutorial
   nextTutorialStep(): void {
-    // step 1 (shows sidebar so tutorial doesn't break)
     if (this.tutorialStep == 0) {
       if (this.showCode) {
         this.toggleSidebar();
@@ -268,7 +244,6 @@ export class AlgorithmPageComponent implements OnInit {
     }
   }
 
-  // functions to hide/show appropriate popovers for tutorial steps
   startTutorial(): void {
     this.tutorialStep += 1;
     $('.navbarPopover').popover('show');
@@ -296,7 +271,6 @@ export class AlgorithmPageComponent implements OnInit {
   // --------------------------------------------------------------------------------- | ANIMATIONS
 
   initShowPage(): void {
-    // animation for sliding the navbar down from Y-150 its position
     anime({
       targets: '.navbar',
       easing: 'easeOutQuint',
@@ -305,7 +279,6 @@ export class AlgorithmPageComponent implements OnInit {
       duration: 900,
     });
 
-    // animation for fading the main content in as the sidebar finishes sliding in
     anime({
       targets: '#mainContent',
       easing: 'easeInOutQuint',
