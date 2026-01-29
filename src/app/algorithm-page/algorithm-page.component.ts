@@ -279,6 +279,9 @@ export class AlgorithmPageComponent implements OnInit {
       duration: 900,
     });
 
+    this.leftSidebar.fadeSidebar(false, 600);
+    this.rightSidebar.fadeSidebar(false, 600);
+
     anime({
       targets: '#mainContent',
       easing: 'easeInOutQuint',
@@ -296,6 +299,9 @@ export class AlgorithmPageComponent implements OnInit {
       delay: 400,
       duration: 900,
     });
+
+    this.leftSidebar.fadeSidebar(true, 600);
+    this.rightSidebar.fadeSidebar(true, 600);
 
     anime({
       targets: '#mainContent',
