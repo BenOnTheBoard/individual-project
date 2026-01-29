@@ -18,10 +18,7 @@
     <div class="col-4 text-center navbarPopover" data-toggle="popover" data-placement="bottom" title="Tutorial"
         data-content="This short tutorial will walk you through the sections of this page. Click the arrow in the top right to move to the next step of the tutorial! Or you can click the x, also in the top right of the screen, to stop the tutorial."
         data-trigger="manual">
-        <span style="color: white; font-size: 0.98rem; font-weight: 350;">{{ this.algorithmService.currentAlgorithm.name
-            }}
-            / {{ this.algorithmService.currentAlgorithm.algorithm }} / {{ this.algorithmService.getSide(true, false)
-            }}-Oriented</span>
+        <span style="color: white; font-size: 0.98rem; font-weight: 350;">{{this.getTitle()}}</span>
     </div>
 
     @if (this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem') {
@@ -30,9 +27,6 @@
     </div>
     }
     <div class="col-3 text-right">
-
-        <!-- If stable roommates then show these  -->
-
         @if (this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem') {
         <mat-icon class="navbarIconButton unselectable mr-4" matTooltip="Stable/Unstable" mat-button
             (click)="this.toggleSRStable()" [ngClass]="{'disabled': this.step != 0}">{{this.SRStable

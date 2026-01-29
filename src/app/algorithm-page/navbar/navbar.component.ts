@@ -74,6 +74,14 @@ export class NavbarComponent implements OnInit {
     this.commandEmitter.emit('generatePreferences');
   }
 
+  getTitle(): string {
+    const name = this.algorithmService.currentAlgorithm.name;
+    console.log(name);
+    const algorithm = this.algorithmService.currentAlgorithm.algorithm;
+    const proposalSide = this.algorithmService.getSide(true, false);
+    return `${name} / ${algorithm} / ${proposalSide}-Oriented`;
+  }
+
   openAnimationGuideDialog(): void {
     this.dialogOpenEmitter.emit(true);
     const dialogRef = this.dialog.open(AnimationGuideDialogComponent);
