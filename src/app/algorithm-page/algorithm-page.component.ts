@@ -14,12 +14,12 @@ import { PlaybackControlsComponent } from './playback-controls/playback-controls
 import { Router } from '@angular/router';
 import { AlgorithmRetrievalService } from '../algorithm-retrieval.service';
 import { UtilsService } from '../utils/utils.service';
-import { AnimationGuideDialogComponent } from './animation-guide-dialog/animation-guide-dialog.component';
 import { CanvasService } from './services/canvas/canvas.service';
 import { PlaybackService } from './services/playback/playback.service';
 import { InfoSidebarComponent } from './info-sidebar/info-sidebar.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NavbarComponent } from './navbar/navbar.component';
 declare var $: any; // declaring jquery for use in this file
 declare var anime: any; // declaring the animejs animation library for use in this file
 
@@ -32,6 +32,7 @@ declare var anime: any; // declaring the animejs animation library for use in th
     MatTooltipModule,
     CommonModule,
     NgClass,
+    NavbarComponent,
     SidebarComponent,
     InfoSidebarComponent,
     AgentTitlesComponent,
@@ -65,8 +66,7 @@ export class AlgorithmPageComponent implements OnInit {
   numPeople: number;
 
   // where SR is going to generate a stable matching or a unstable matching
-  SRstable: boolean = true;
-  SRstableText: string = 'Generating Stable Matchings';
+  SRStable: boolean = true;
 
   // --------------------------------------------------------------------------------- | INIT FUNCTIONS
 
@@ -127,17 +127,21 @@ export class AlgorithmPageComponent implements OnInit {
     }
   }
 
-  // --------------------------------------------------------------------------------- | GENERAL FUNCTIONS
-
-  // open the animation guide dialog with a callback function
-  openAnimationGuideDialog(): void {
-    const dialogRef = this.dialog.open(AnimationGuideDialogComponent);
-
-    this.dialogOpen = true;
-
-    dialogRef.afterClosed().subscribe(() => {
-      this.dialogOpen = false;
-    });
+  handleNavbarCommand(command: string): void {
+    switch (command) {
+      case 'toggleLeftSidebar':
+        this.toggleSidebar();
+        break;
+      case 'toggleRightSidebar':
+        this.toggleInfoSidebar();
+        break;
+      case 'goHome':
+        this.goHome();
+        break;
+      case 'generatePreferences':
+        this.generateNewPreferences();
+        break;
+    }
   }
 
   // --------------------------------------------------------------------------------- | ON CLICK FUNCTIONS
@@ -167,7 +171,7 @@ export class AlgorithmPageComponent implements OnInit {
         this.algorithmService.numberOfGroup1Agents,
         this.algorithmService.numberOfGroup2Agents,
         null,
-        this.SRstable,
+        this.SRStable,
       );
     } else {
       this.playback.setAlgorithm(
@@ -212,16 +216,6 @@ export class AlgorithmPageComponent implements OnInit {
     this.drawService.redrawCanvas();
 
     this.duringAnimation = false;
-  }
-
-  ChangeStableSR(): void {
-    if (this.SRstable == true) {
-      this.SRstable = false;
-      this.SRstableText = 'Generating Unstable Matchings';
-    } else {
-      this.SRstable = true;
-      this.SRstableText = 'Generating Stable Matchings';
-    }
   }
 
   // --------------------------------------------------------------------------------- | TUTORIAL FUNCTIONS
