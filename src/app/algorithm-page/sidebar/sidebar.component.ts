@@ -11,7 +11,6 @@ import { PseudocodeComponent } from './pseudocode/pseudocode.component';
 import { FreeAgentsComponent } from './free-agents/free-agents.component';
 import { ExecutionLogComponent } from './execution-log/execution-log.component';
 import { NgClass } from '@angular/common';
-import { UtilsService } from 'src/app/utils/utils.service';
 declare var anime: any; // declaring the animejs animation library for use in this file
 
 @Component({
@@ -36,7 +35,7 @@ export class SidebarComponent implements OnInit {
 
   private isInAnimation: boolean;
 
-  constructor(private utils: UtilsService) {}
+  constructor() {}
 
   ngOnInit(): void {}
 
@@ -101,11 +100,8 @@ export class SidebarComponent implements OnInit {
 
     if (!this.showCode) {
       this.hideSidebar();
-      await this.utils.delay(700);
     } else {
-      await this.utils.delay(400);
       this.showSidebar();
-      await this.utils.delay(200);
     }
   }
 }

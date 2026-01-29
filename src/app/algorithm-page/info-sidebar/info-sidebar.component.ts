@@ -7,7 +7,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
-import { UtilsService } from 'src/app/utils/utils.service';
 declare var anime: any; // declaring the animejs animation library for use in this file
 
 @Component({
@@ -25,10 +24,7 @@ export class InfoSidebarComponent implements OnInit {
 
   private isInAnimation: boolean;
 
-  constructor(
-    public algorithmService: AlgorithmRetrievalService,
-    public utils: UtilsService,
-  ) {}
+  constructor(public algorithmService: AlgorithmRetrievalService) {}
 
   ngOnInit(): void {}
 
