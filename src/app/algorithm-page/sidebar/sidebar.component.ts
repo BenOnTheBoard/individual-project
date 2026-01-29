@@ -11,7 +11,6 @@ import { PseudocodeComponent } from './pseudocode/pseudocode.component';
 import { FreeAgentsComponent } from './free-agents/free-agents.component';
 import { ExecutionLogComponent } from './execution-log/execution-log.component';
 import { NgClass } from '@angular/common';
-import { UtilsService } from 'src/app/utils/utils.service';
 declare var anime: any; // declaring the animejs animation library for use in this file
 
 @Component({
@@ -34,12 +33,9 @@ export class SidebarComponent implements OnInit {
   private sidebar: ElementRef;
   private sidebarWidth: number;
 
-  @ViewChild('sidebarContent')
-  private sidebarContent: ElementRef;
-
   private isInAnimation: boolean;
 
-  constructor(private utils: UtilsService) {}
+  constructor() {}
 
   ngOnInit(): void {}
 
@@ -62,7 +58,7 @@ export class SidebarComponent implements OnInit {
     this.sidebar.nativeElement.style.transform = `translateX(${targetX})`;
   }
 
-  private hideSidebar(): void {
+  private async hideSidebar(): Promise<void> {
     anime({
       targets: this.sidebar.nativeElement,
       easing: 'easeInOutQuint',
@@ -75,7 +71,7 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  private showSidebar(): void {
+  private async showSidebar(): Promise<void> {
     anime({
       targets: this.sidebar.nativeElement,
       easing: 'easeInOutQuint',
@@ -85,12 +81,16 @@ export class SidebarComponent implements OnInit {
         this.isInAnimation = false;
       },
     });
+  }
 
+  async fadeSidebar(fadeOut: boolean, duration: number): Promise<void> {
+    const direction = fadeOut ? 'reverse' : 'normal';
     anime({
-      targets: this.sidebarContent.nativeElement,
+      targets: this.sidebar.nativeElement,
       easing: 'easeInOutQuint',
       opacity: [0, 1],
-      duration: 600,
+      direction: direction,
+      duration: duration,
     });
   }
 
@@ -100,11 +100,8 @@ export class SidebarComponent implements OnInit {
 
     if (!this.showCode) {
       this.hideSidebar();
-      await this.utils.delay(700);
     } else {
-      await this.utils.delay(400);
       this.showSidebar();
-      await this.utils.delay(200);
     }
   }
 }

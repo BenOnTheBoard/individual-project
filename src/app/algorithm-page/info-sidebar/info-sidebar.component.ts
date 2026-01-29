@@ -7,7 +7,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
-import { UtilsService } from 'src/app/utils/utils.service';
 declare var anime: any; // declaring the animejs animation library for use in this file
 
 @Component({
@@ -23,15 +22,9 @@ export class InfoSidebarComponent implements OnInit {
   private sidebar: ElementRef;
   private sidebarWidth: number;
 
-  @ViewChild('sidebarContent')
-  private sidebarContent: ElementRef;
-
   private isInAnimation: boolean;
 
-  constructor(
-    public algorithmService: AlgorithmRetrievalService,
-    public utils: UtilsService,
-  ) {}
+  constructor(public algorithmService: AlgorithmRetrievalService) {}
 
   ngOnInit(): void {}
 
@@ -77,12 +70,16 @@ export class InfoSidebarComponent implements OnInit {
         this.isInAnimation = false;
       },
     });
+  }
 
+  async fadeSidebar(fadeOut: boolean, duration: number): Promise<void> {
+    const direction = fadeOut ? 'reverse' : 'normal';
     anime({
-      targets: this.sidebarContent.nativeElement,
+      targets: this.sidebar.nativeElement,
       easing: 'easeInOutQuint',
       opacity: [0, 1],
-      duration: 600,
+      direction: direction,
+      duration: duration,
     });
   }
 
