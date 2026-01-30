@@ -8,10 +8,10 @@
             data-content="Click this to hide or expand the sidebar underneath when not in this tutorial!"
             data-trigger="manual" (click)="this.toggleLeftSidebar();"
             matTooltip="{{this.showCode ? 'Expand Panel' : 'Close Panel'}}"
-            [ngClass]="{'disabled': this.step != 0 || this.duringAnimation}">{{this.showCode ? "menu" :
+            [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}">{{this.showCode ? "menu" :
             "menu_open"}}</mat-icon>
         <a class="unselectable" style="cursor: pointer;vertical-align: -2px"
-            [ngClass]="{'disabled': this.step != 0 || this.duringAnimation}" (click)="this.emitGoHome()"
+            [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}" (click)="this.emitGoHome()"
             matTooltip="Go Home"><span class="display-1" style="font-size: 20px;"><span id="alg">alg</span><span
                     id="match">match</span></span></a>
     </div>
@@ -52,7 +52,8 @@
             title="Actions"
             data-content="In order from left to right, you can: stop this tutorial, generate new preferences, edit preferences, toggle all preferences or only relevant preferences, see an animation guide, or advance the tutorial."
             data-trigger="manual" matTooltip="{{this.step == 0 ? 'Tutorial' : 'Advance Tutorial'}}"
-            (click)="this.updateToNextTutorialStep()" [ngClass]="{'disabled': this.duringAnimation}">{{this.step == 0 ?
+            (click)="this.updateToNextTutorialStep()" [ngClass]="{'disabled': this.duringAnimation()}">{{this.step == 0
+            ?
             "help_outline" : "arrow_forward_ios"}}</mat-icon>
 
         <!-- text explanation side bar  -->
@@ -61,7 +62,7 @@
             data-toggle="popover" data-placement="bottom"
             matTooltip="{{this.showInfo ? 'Expand Panel' : 'Close Panel'}}" data-trigger="manual"
             (click)="this.toggleRightSidebar(); $event.stopImmediatePropagation()"
-            [ngClass]="{'disabled': this.step != 0 || this.duringAnimation}">{{this.showInfo ? "menu"
+            [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}">{{this.showInfo ? "menu"
             :"menu_open"}}</mat-icon>
     </div>
 </nav>
