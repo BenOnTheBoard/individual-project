@@ -14,7 +14,6 @@ import { PlaybackControlsComponent } from './playback-controls/playback-controls
 import { Router } from '@angular/router';
 import { AlgorithmRetrievalService } from '../algorithm-retrieval.service';
 import { UtilsService } from '../utils/utils.service';
-import { AnimationGuideDialogComponent } from './animation-guide-dialog/animation-guide-dialog.component';
 import { CanvasService } from './services/canvas/canvas.service';
 import { PlaybackService } from './services/playback/playback.service';
 import { InfoSidebarComponent } from './info-sidebar/info-sidebar.component';
@@ -129,17 +128,21 @@ export class AlgorithmPageComponent implements OnInit {
     }
   }
 
-  // --------------------------------------------------------------------------------- | GENERAL FUNCTIONS
-
-  // open the animation guide dialog with a callback function
-  openAnimationGuideDialog(): void {
-    const dialogRef = this.dialog.open(AnimationGuideDialogComponent);
-
-    this.dialogOpen = true;
-
-    dialogRef.afterClosed().subscribe(() => {
-      this.dialogOpen = false;
-    });
+  handleNavbarCommand(command: string): void {
+    switch (command) {
+      case 'toggleLeftSidebar':
+        this.toggleSidebar();
+        break;
+      case 'toggleRightSidebar':
+        this.toggleInfoSidebar();
+        break;
+      case 'goHome':
+        this.goHome();
+        break;
+      case 'generatePreferences':
+        this.generateNewPreferences();
+        break;
+    }
   }
 
   // --------------------------------------------------------------------------------- | ON CLICK FUNCTIONS
@@ -216,55 +219,43 @@ export class AlgorithmPageComponent implements OnInit {
     this.duringAnimation = false;
   }
 
-  ChangeStableSR(): void {
-    if (this.SRstable == true) {
-      this.SRstable = false;
-      this.SRstableText = 'Generating Unstable Matchings';
-    } else {
-      this.SRstable = true;
-      this.SRstableText = 'Generating Stable Matchings';
-    }
-  }
-
   // --------------------------------------------------------------------------------- | TUTORIAL FUNCTIONS
 
-  nextTutorialStep(): void {
-    if (this.tutorialStep == 0) {
-      if (this.showCode) {
-        this.toggleSidebar();
-      }
-      this.startTutorial();
-      // step 2
-    } else if (this.tutorialStep == 1) {
-      this.sidebarTutorial();
-      // step 3
-    } else if (this.tutorialStep == 2) {
-      this.mainContentTutorial();
-      // step 4
-    } else if (this.tutorialStep == 3) {
-      this.stopTutorial();
+  tutorialUpdate(newStep: number): void {
+    switch (newStep) {
+      case 0:
+        this.stopTutorial();
+        break;
+      case 1:
+        if (this.showCode) {
+          this.toggleSidebar();
+        }
+        this.startTutorial();
+        break;
+      case 2:
+        this.sidebarTutorial();
+        break;
+      case 3:
+        this.mainContentTutorial();
+        break;
     }
   }
 
   startTutorial(): void {
-    this.tutorialStep += 1;
     $('.navbarPopover').popover('show');
   }
 
   sidebarTutorial(): void {
-    this.tutorialStep += 1;
     $('.navbarPopover').popover('hide');
     $('.sidebarPopover').popover('show');
   }
 
   mainContentTutorial(): void {
-    this.tutorialStep += 1;
     $('.sidebarPopover').popover('hide');
     $('.mainContentPopover').popover('show');
   }
 
   stopTutorial(): void {
-    this.tutorialStep = 0;
     $('.navbarPopover').popover('hide');
     $('.sidebarPopover').popover('hide');
     $('.mainContentPopover').popover('hide');
