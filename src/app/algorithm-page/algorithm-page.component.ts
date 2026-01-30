@@ -45,10 +45,10 @@ export class AlgorithmPageComponent implements OnInit {
   @ViewChild('canvas', { static: true })
   canvas: ElementRef<HTMLCanvasElement>;
 
-  @ViewChild('leftSidebar')
+  @ViewChild('leftSidebar', { static: true })
   leftSidebar: SidebarComponent;
 
-  @ViewChild('rightSidebar')
+  @ViewChild('rightSidebar', { static: true })
   rightSidebar: SidebarComponent;
 
   showCode: boolean = false;
