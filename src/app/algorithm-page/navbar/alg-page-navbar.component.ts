@@ -1,17 +1,17 @@
 import { Component, input, OnInit, output } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { CanvasService } from '../services/canvas/canvas.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { AnimationGuideDialogComponent } from '../animation-guide-dialog/animation-guide-dialog.component';
-import { BrowserModule } from '@angular/platform-browser';
 
 @Component({
   selector: 'alg-page-navbar',
   templateUrl: './alg-page-navbar.component.html',
   styleUrl: './alg-page-navbar.component.scss',
-  imports: [MatIconModule, MatTooltip, BrowserModule],
+  imports: [MatIconModule, MatTooltip, CommonModule],
 })
 export class AlgPageNavbarComponent implements OnInit {
   duringAnimation = input<boolean>();
