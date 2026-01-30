@@ -20,6 +20,7 @@ import { PlaybackService } from './services/playback/playback.service';
 import { InfoSidebarComponent } from './info-sidebar/info-sidebar.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AlgPageNavbarComponent } from './navbar/alg-page-navbar.component';
 declare var $: any; // declaring jquery for use in this file
 declare var anime: any; // declaring the animejs animation library for use in this file
 
@@ -36,6 +37,7 @@ declare var anime: any; // declaring the animejs animation library for use in th
     InfoSidebarComponent,
     AgentTitlesComponent,
     PlaybackControlsComponent,
+    AlgPageNavbarComponent,
   ],
 })
 export class AlgorithmPageComponent implements OnInit {

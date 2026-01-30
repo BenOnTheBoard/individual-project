@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NavbarComponent } from './navbar.component';
+import { AlgPageNavbarComponent } from './alg-page-navbar.component';
 
 describe('Navbar', () => {
-  let component: NavbarComponent;
-  let fixture: ComponentFixture<NavbarComponent>;
+  let component: AlgPageNavbarComponent;
+  let fixture: ComponentFixture<AlgPageNavbarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NavbarComponent],
+      imports: [AlgPageNavbarComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(NavbarComponent);
+    fixture = TestBed.createComponent(AlgPageNavbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

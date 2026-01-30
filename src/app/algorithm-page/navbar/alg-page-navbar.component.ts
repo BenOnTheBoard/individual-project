@@ -9,11 +9,11 @@ import { BrowserModule } from '@angular/platform-browser';
 
 @Component({
   selector: 'alg-page-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss',
+  templateUrl: './alg-page-navbar.component.html',
+  styleUrl: './alg-page-navbar.component.scss',
   imports: [MatIconModule, MatTooltip, BrowserModule],
 })
-export class NavbarComponent implements OnInit {
+export class AlgPageNavbarComponent implements OnInit {
   duringAnimation = input<boolean>();
 
   showCode = false;
@@ -66,6 +66,13 @@ export class NavbarComponent implements OnInit {
 
   emitGeneratePreferences(): void {
     this.commandEmitter.emit('generatePreferences');
+  }
+
+  getTitle(): string {
+    const name = this.algorithmService.currentAlgorithm.name;
+    const algorithm = this.algorithmService.currentAlgorithm.algorithm;
+    const optimisedSide = this.algorithmService.getSide(true, false);
+    return `${name} / ${algorithm} / ${optimisedSide}`;
   }
 
   openAnimationGuideDialog(): void {
