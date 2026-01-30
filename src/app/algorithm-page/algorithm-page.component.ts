@@ -6,7 +6,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { CommonModule, NgClass } from '@angular/common';
 import { AgentTitlesComponent } from './agent-titles/agent-titles.component';
@@ -40,9 +39,6 @@ declare var anime: any; // declaring the animejs animation library for use in th
   ],
 })
 export class AlgorithmPageComponent implements OnInit {
-  // --------------------------------------------------------------------------------- | INSTANCE VARIABLES
-
-  // looks for the canvas element on the algorithm page and assigns it to the canvas variable
   @ViewChild('canvas', { static: true })
   canvas: ElementRef<HTMLCanvasElement>;
 
@@ -52,22 +48,16 @@ export class AlgorithmPageComponent implements OnInit {
   @ViewChild('rightSidebar', { static: true })
   rightSidebar: SidebarComponent;
 
-  showCode: boolean = false;
   dialogOpen: boolean = false;
-
-  showInfo: boolean = false;
-
-  tutorialStep: number;
-
   duringAnimation: boolean = false;
+  showCode: boolean = false;
+  showInfo: boolean = false;
+  SRstable: boolean = true;
+  tutorialStep: number;
 
   firstSelection: boolean = true;
   algorithm = new FormControl<string | null>('');
   numPeople: number;
-
-  // where SR is going to generate a stable matching or a unstable matching
-  SRstable: boolean = true;
-  SRstableText: string = 'Generating Stable Matchings';
 
   // --------------------------------------------------------------------------------- | INIT FUNCTIONS
 
@@ -76,7 +66,6 @@ export class AlgorithmPageComponent implements OnInit {
     public algorithmService: AlgorithmRetrievalService,
     public drawService: CanvasService,
     public utils: UtilsService,
-    public dialog: MatDialog,
     public router: Router,
   ) {}
 
@@ -128,6 +117,8 @@ export class AlgorithmPageComponent implements OnInit {
     }
   }
 
+  // --------------------------------------------------------------------------------- | ON CLICK FUNCTIONS
+
   handleNavbarCommand(command: string): void {
     switch (command) {
       case 'toggleLeftSidebar':
@@ -145,8 +136,6 @@ export class AlgorithmPageComponent implements OnInit {
     }
   }
 
-  // --------------------------------------------------------------------------------- | ON CLICK FUNCTIONS
-
   async goHome(): Promise<void> {
     this.fadeToHome();
     await this.utils.delay(1000);
@@ -154,13 +143,6 @@ export class AlgorithmPageComponent implements OnInit {
   }
 
   async generateNewPreferences(): Promise<void> {
-    // clears any code highlighting
-    var command = this.playback.commandList[this.playback.previousStepCounter];
-    let a = document.getElementById('line' + command['lineNumber']);
-    a.style.backgroundColor = '';
-    a.style.color = '';
-
-    // animates changing of preferences (fade in/out)
     this.fadeCanvasOut();
     await this.utils.delay(300);
 
@@ -185,7 +167,6 @@ export class AlgorithmPageComponent implements OnInit {
     this.drawService.redrawCanvas();
   }
 
-  // function run when toggle sidebar button clicked (top left)
   async toggleSidebar(): Promise<void> {
     if (this.duringAnimation) return;
     this.duringAnimation = true;
@@ -202,7 +183,6 @@ export class AlgorithmPageComponent implements OnInit {
     this.duringAnimation = false;
   }
 
-  // function run when toggle sidebar button clicked (top left)
   async toggleInfoSidebar(): Promise<void> {
     if (this.duringAnimation) return;
     this.duringAnimation = true;
