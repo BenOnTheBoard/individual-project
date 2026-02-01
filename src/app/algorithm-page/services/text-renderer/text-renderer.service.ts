@@ -64,7 +64,6 @@ export class TextRendererService {
       const ch = text[i];
       const charCode = text.charCodeAt(i);
 
-      // we don't support it, skip
       if (
         !this.supportedSpecialChars.includes(ch) &&
         (charCode < this.startChar || charCode >= this.endChar)
@@ -113,7 +112,6 @@ export class TextRendererService {
   }
 
   public drawText(text: string, pos: Position, colour: string = 'black'): void {
-    // fallback prevents crashes from invalid caller input
     const fontColour = this.colourHexService.getHex(colour) || '#000000';
     const newRenderState = { colour: fontColour, pos: pos };
     this.drawTextFromState(text, newRenderState);

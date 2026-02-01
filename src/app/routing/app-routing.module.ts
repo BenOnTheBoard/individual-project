@@ -38,7 +38,7 @@ export const routes: Routes = [
     component: AlgorithmPageComponent,
     canActivate: [AlgorithmGuard],
   },
-  { path: '**', redirectTo: '' }, // Wildcard route
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
