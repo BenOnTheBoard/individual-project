@@ -1,4 +1,11 @@
-import { Component, input, OnInit, output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  input,
+  OnInit,
+  output,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { CanvasService } from '../services/canvas/canvas.service';
@@ -6,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { AnimationGuideDialogComponent } from '../animation-guide-dialog/animation-guide-dialog.component';
+declare var anime: any; // declaring the animejs animation library for use in this file
 
 @Component({
   selector: 'alg-page-navbar',
@@ -27,6 +35,11 @@ export class AlgPageNavbarComponent implements OnInit {
   dialogOpenEmitter = output<boolean>();
   SRStableEmitter = output<boolean>();
   tutorialStepEmitter = output<number>();
+
+  @ViewChild('algPageNavbar', { static: true })
+  private navbar: ElementRef;
+  // unlike sidebar width, navbar height won't change
+  private isInAnimation = false;
 
   constructor(
     public algorithmService: AlgorithmRetrievalService,
@@ -87,5 +100,23 @@ export class AlgPageNavbarComponent implements OnInit {
     this.drawService.alwaysShowPreferences =
       !this.drawService.alwaysShowPreferences;
     this.drawService.redrawCanvas();
+  }
+
+  async toggleNavbar(fadeOut: boolean, duration: number): Promise<void> {
+    if (this.isInAnimation) return;
+    this.isInAnimation = true;
+
+    const direction = fadeOut ? 'reverse' : 'normal';
+    const barHeight = this.navbar.nativeElement.offsetHeight;
+    anime({
+      targets: this.navbar.nativeElement,
+      easing: 'easeOutQuint',
+      translateY: [`-${barHeight}px`, 0],
+      direction: direction,
+      duration: duration,
+      complete: () => {
+        this.isInAnimation = false;
+      },
+    });
   }
 }
