@@ -6,7 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AlgorithmPageComponent } from './algorithm-page.component';
 import { AlgorithmRetrievalService } from '../algorithm-retrieval.service';
 import { CanvasService } from './services/canvas/canvas.service';
-import { AlgorithmAnimationService } from './animations/algorithm-animation.service';
 
 describe('AlgorithmPageComponent', () => {
   let component: AlgorithmPageComponent;
@@ -22,21 +21,6 @@ describe('AlgorithmPageComponent', () => {
         AlgorithmPageComponent,
       ],
       providers: [
-        {
-          provide: AlgorithmAnimationService,
-          useValue: {
-            loadPage: jasmine.createSpy('loadPage'),
-            goHome: jasmine.createSpy('goHome'),
-            fadeCanvasOut: jasmine.createSpy('fadeCanvasOut'),
-            fadeCanvasIn: jasmine.createSpy('fadeCanvasIn'),
-            hideSidebar: jasmine.createSpy('hideSidebar'),
-            hideMainContent: jasmine.createSpy('hideMainContent'),
-            showMainContent: jasmine.createSpy('showMainContent'),
-            showSidebar: jasmine.createSpy('showSidebar'),
-            hideInfoSidebar: jasmine.createSpy('hideInfoSidebar'),
-            showInfoSidebar: jasmine.createSpy('showInfoSidebar'),
-          },
-        },
         {
           provide: AlgorithmRetrievalService,
           useValue: {

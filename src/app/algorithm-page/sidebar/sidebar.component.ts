@@ -54,7 +54,7 @@ export class SidebarComponent implements OnInit {
   }
 
   private setCurrentPosition(): void {
-    const targetX = !this.showCode ? '0px' : `-${this.sidebarWidth}px`;
+    const targetX = this.showCode ? '0px' : `-${this.sidebarWidth}px`;
     this.sidebar.nativeElement.style.transform = `translateX(${targetX})`;
   }
 
@@ -98,7 +98,7 @@ export class SidebarComponent implements OnInit {
     if (this.isInAnimation) return;
     this.isInAnimation = true;
 
-    if (!this.showCode) {
+    if (this.showCode) {
       this.hideSidebar();
     } else {
       this.showSidebar();

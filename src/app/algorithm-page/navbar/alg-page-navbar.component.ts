@@ -24,8 +24,8 @@ declare var anime: any; // declaring the animejs animation library for use in th
 export class AlgPageNavbarComponent implements OnInit {
   protected duringAnimation = input<boolean>();
 
-  protected showCode = false;
-  protected showInfo = false;
+  protected showCode = true;
+  protected showInfo = true;
   protected SRStable = true;
   protected step = 0;
 

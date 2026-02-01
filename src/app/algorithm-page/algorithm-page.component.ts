@@ -54,8 +54,8 @@ export class AlgorithmPageComponent implements OnInit {
 
   protected dialogOpen: boolean = false;
   protected duringAnimation: boolean = false;
-  protected showCode: boolean = false;
-  protected showInfo: boolean = false;
+  protected showCode: boolean = true;
+  protected showInfo: boolean = true;
   protected SRstable: boolean = true;
   protected tutorialStep: number;
 
@@ -204,7 +204,7 @@ export class AlgorithmPageComponent implements OnInit {
         this.stopTutorial();
         break;
       case 1:
-        if (this.showCode) {
+        if (!this.showCode) {
           this.toggleSidebar('left');
         }
         this.startTutorial();
