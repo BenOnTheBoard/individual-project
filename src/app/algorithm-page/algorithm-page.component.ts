@@ -51,11 +51,15 @@ export class AlgorithmPageComponent implements OnInit {
   private navbar: AlgPageNavbarComponent;
 
   private readonly barsFadeDuration = 600; // side and navbar fade in and out duration
+  private readonly sidebarSlideDuration = 700;
+  private readonly canvasFadeDuration = 300;
+  private readonly mainContentFadeDuration = 500;
+  private readonly mainContentInitFadeDuration = 1200;
 
   protected dialogOpen: boolean = false;
   protected duringAnimation: boolean = false;
-  protected showCode: boolean = false;
-  protected showInfo: boolean = false;
+  protected isCodeShowing: boolean = true;
+  protected isInfoShowing: boolean = true;
   protected SRstable: boolean = true;
   protected tutorialStep: number;
 
@@ -122,10 +126,10 @@ export class AlgorithmPageComponent implements OnInit {
   protected handleNavbarCommand(command: string): void {
     switch (command) {
       case 'toggleLeftSidebar':
-        this.toggleSidebar();
+        this.toggleSidebar('left');
         break;
       case 'toggleRightSidebar':
-        this.toggleInfoSidebar();
+        this.toggleSidebar('right');
         break;
       case 'goHome':
         this.goHome();
@@ -143,7 +147,7 @@ export class AlgorithmPageComponent implements OnInit {
   }
 
   protected async generateNewPreferences(): Promise<void> {
-    this.fadeCanvasOut();
+    this.fadeCanvas(true);
     await this.utils.delay(300);
 
     if (
@@ -163,40 +167,38 @@ export class AlgorithmPageComponent implements OnInit {
         this.algorithmService.numberOfGroup2Agents,
       );
     }
-    this.fadeCanvasIn();
+    this.fadeCanvas(false);
     this.drawService.redrawCanvas();
   }
 
-  protected async toggleSidebar(): Promise<void> {
+  protected async toggleSidebar(side: 'left' | 'right'): Promise<void> {
     if (this.duringAnimation) return;
     this.duringAnimation = true;
-    this.hideMainContent();
 
-    this.leftSidebar.toggleSidebar();
+    this.fadeMainContent(true);
 
-    this.showCode = !this.showCode;
+    if (side == 'left') {
+      this.toggleLeftSidebar();
+    } else {
+      this.toggleRightSidebar();
+    }
+
     this.drawService.clearCanvas();
-    this.showMainContent();
+    this.fadeMainContent(false);
     await this.utils.delay(200);
-    this.drawService.redrawCanvas();
 
+    this.drawService.redrawCanvas();
     this.duringAnimation = false;
   }
 
-  protected async toggleInfoSidebar(): Promise<void> {
-    if (this.duringAnimation) return;
-    this.duringAnimation = true;
-    this.hideMainContent();
+  private toggleLeftSidebar(): void {
+    this.leftSidebar.toggleSidebar(this.sidebarSlideDuration);
+    this.isCodeShowing = !this.isCodeShowing;
+  }
 
-    this.rightSidebar.toggleSidebar();
-
-    this.showInfo = !this.showInfo;
-    this.drawService.clearCanvas();
-    this.showMainContent();
-    await this.utils.delay(200);
-    this.drawService.redrawCanvas();
-
-    this.duringAnimation = false;
+  private toggleRightSidebar(): void {
+    this.rightSidebar.toggleSidebar(this.sidebarSlideDuration);
+    this.isInfoShowing = !this.isInfoShowing;
   }
 
   // --------------------------------------------------------------------------------- | TUTORIAL FUNCTIONS
@@ -207,8 +209,8 @@ export class AlgorithmPageComponent implements OnInit {
         this.stopTutorial();
         break;
       case 1:
-        if (this.showCode) {
-          this.toggleSidebar();
+        if (!this.isCodeShowing) {
+          this.toggleSidebar('left');
         }
         this.startTutorial();
         break;
@@ -242,66 +244,44 @@ export class AlgorithmPageComponent implements OnInit {
   }
 
   // --------------------------------------------------------------------------------- | ANIMATIONS
-
-  protected initShowPage(): void {
-    this.navbar.toggleNavbar(false, this.barsFadeDuration);
-    this.leftSidebar.fadeSidebar(false, this.barsFadeDuration);
-    this.rightSidebar.fadeSidebar(false, this.barsFadeDuration);
-
+  private fadeAnimation(
+    target: string,
+    fadeOut: boolean,
+    duration: number,
+  ): void {
+    const direction = fadeOut ? 'reverse' : 'normal';
     anime({
-      targets: '#mainContent',
+      targets: target,
       easing: 'easeInOutQuint',
       opacity: [0, 1],
-      delay: 670,
-      duration: 900,
+      direction: direction,
+      duration: duration,
     });
   }
 
-  protected fadeToHome(): void {
-    this.navbar.toggleNavbar(true, this.barsFadeDuration);
-    this.leftSidebar.fadeSidebar(true, this.barsFadeDuration);
-    this.rightSidebar.fadeSidebar(true, this.barsFadeDuration);
-    anime({
-      targets: '#mainContent',
-      easing: 'easeInOutQuint',
-      opacity: [1, 0],
-      duration: 600,
-    });
+  private fadeCanvas(fadeOut: boolean, setDuration?: number): void {
+    const duration = setDuration ?? this.canvasFadeDuration;
+    this.fadeAnimation('#myCanvas', fadeOut, duration);
   }
 
-  protected fadeCanvasOut(): void {
-    anime({
-      targets: '#myCanvas',
-      easing: 'easeInOutQuint',
-      opacity: [1, 0],
-      duration: 300,
-    });
+  private fadeMainContent(fadeOut: boolean, setDuration?: number): void {
+    const duration = setDuration ?? this.mainContentFadeDuration;
+    this.fadeAnimation('#mainContent', fadeOut, duration);
   }
 
-  protected fadeCanvasIn(): void {
-    anime({
-      targets: '#myCanvas',
-      easing: 'easeInOutQuint',
-      opacity: [0, 1],
-      duration: 300,
-    });
+  private fadeAllBars(fadeOut: boolean): void {
+    this.navbar.toggleNavbar(fadeOut, this.barsFadeDuration);
+    this.leftSidebar.fadeSidebar(fadeOut, this.barsFadeDuration);
+    this.rightSidebar.fadeSidebar(fadeOut, this.barsFadeDuration);
   }
 
-  protected hideMainContent(): void {
-    anime({
-      targets: '#mainContent',
-      easing: 'easeInOutQuint',
-      opacity: [1, 0],
-      duration: 500,
-    });
+  private initShowPage(): void {
+    this.fadeAllBars(false);
+    this.fadeMainContent(false, this.mainContentInitFadeDuration);
   }
 
-  protected showMainContent(): void {
-    anime({
-      targets: '#mainContent',
-      easing: 'easeInOutQuint',
-      opacity: [0, 1],
-      duration: 500,
-    });
+  private fadeToHome(): void {
+    this.fadeAllBars(true);
+    this.fadeMainContent(true, this.barsFadeDuration);
   }
 }

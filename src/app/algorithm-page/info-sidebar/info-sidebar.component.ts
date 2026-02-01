@@ -15,7 +15,7 @@ declare var anime: any; // declaring the animejs animation library for use in th
   styleUrls: ['./info-sidebar.component.scss'],
 })
 export class InfoSidebarComponent implements OnInit {
-  @Input() showInfo: boolean;
+  @Input() isInfoShowing: boolean;
   @Input() tutorialStep: number;
 
   @ViewChild('sidebarContainer', { static: true })
@@ -43,33 +43,8 @@ export class InfoSidebarComponent implements OnInit {
   }
 
   private setCurrentPosition(): void {
-    const targetX = !this.showInfo ? '0px' : `${this.sidebarWidth}px`;
+    const targetX = this.isInfoShowing ? '0px' : `${this.sidebarWidth}px`;
     this.sidebar.nativeElement.style.transform = `translateX(${targetX})`;
-  }
-
-  private hideSidebar(): void {
-    anime({
-      targets: this.sidebar.nativeElement,
-      easing: 'easeInOutQuint',
-      translateX: [0, `${this.sidebarWidth}px`],
-      delay: 200,
-      duration: 700,
-      complete: () => {
-        this.isInAnimation = false;
-      },
-    });
-  }
-
-  private showSidebar(): void {
-    anime({
-      targets: this.sidebar.nativeElement,
-      easing: 'easeInOutQuint',
-      translateX: [`${this.sidebarWidth}px`, 0],
-      duration: 600,
-      complete: () => {
-        this.isInAnimation = false;
-      },
-    });
   }
 
   async fadeSidebar(fadeOut: boolean, duration: number): Promise<void> {
@@ -83,14 +58,20 @@ export class InfoSidebarComponent implements OnInit {
     });
   }
 
-  async toggleSidebar(): Promise<void> {
+  public async toggleSidebar(duration: number): Promise<void> {
     if (this.isInAnimation) return;
     this.isInAnimation = true;
 
-    if (!this.showInfo) {
-      this.hideSidebar();
-    } else {
-      this.showSidebar();
-    }
+    const direction = this.isInfoShowing ? 'reverse' : 'normal';
+    anime({
+      targets: this.sidebar.nativeElement,
+      easing: 'easeInOutQuint',
+      translateX: [`${this.sidebarWidth}px`, 0],
+      direction: direction,
+      duration: duration,
+      complete: () => {
+        this.isInAnimation = false;
+      },
+    });
   }
 }

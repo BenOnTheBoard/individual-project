@@ -5,9 +5,9 @@
             title="Menu button"
             data-content="Click this to hide or expand the sidebar underneath when not in this tutorial!"
             data-trigger="manual" (click)="this.toggleLeftSidebar();"
-            matTooltip="{{this.showCode ? 'Expand Panel' : 'Close Panel'}}"
-            [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}">{{this.showCode ? "menu" :
-            "menu_open"}}</mat-icon>
+            matTooltip="{{this.isCodeShowing ? 'Close Panel' : 'Expand Panel'}}"
+            [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}">{{this.isCodeShowing ? "menu_open" :
+            "menu"}}</mat-icon>
         <a id="algmatch-logo" class="unselectable" [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}"
             (click)="this.emitGoHome()" matTooltip="Go Home"><span id="alg">alg</span><span id="match">match</span></a>
     </div>
@@ -53,9 +53,9 @@
 
         <mat-icon class="navbarIconButton unselectable mr-4 navbarPopover" style="transform: rotate(180deg)"
             data-toggle="popover" data-placement="bottom"
-            matTooltip="{{this.showInfo ? 'Expand Panel' : 'Close Panel'}}" data-trigger="manual"
+            matTooltip="{{this.isInfoShowing ? 'Close Panel' : 'Expand Panel'}}" data-trigger="manual"
             (click)="this.toggleRightSidebar(); $event.stopImmediatePropagation()"
-            [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}">{{this.showInfo ? "menu"
-            :"menu_open"}}</mat-icon>
+            [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}">{{this.isInfoShowing ? "menu_open"
+            :"menu"}}</mat-icon>
     </div>
 </nav>

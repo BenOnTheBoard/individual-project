@@ -26,6 +26,7 @@ describe('AgentTitlesComponent', () => {
               ['Man', 'Men'],
               ['Woman', 'Women'],
             ]),
+            getSide: jasmine.createSpy('getSide'),
           },
         },
       ],
