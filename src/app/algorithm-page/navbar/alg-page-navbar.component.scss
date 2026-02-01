@@ -1,0 +1,64 @@
+@use "_colors.scss" as colors;
+
+.alg-navbar {
+  background-color: colors.$navbar-color;
+  height: 50px;
+  font-family: "DM Sans";
+  z-index: 1000;
+}
+
+.navbar-brand {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  font-size: 1rem;
+  background-color: rgba(0, 0, 0, 0.25);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25);
+}
+
+#alg {
+  color: colors.$logo-alg-color;
+  transition: 200ms color;
+}
+
+#match {
+  color: colors.$logo-match-color;
+  transition: 200ms color;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover span #alg {
+  color: colors.$logo-alg-hover-algpage-color;
+}
+
+a:hover span #match {
+  color: colors.$logo-match-hover-algpage-color;
+}
+
+.navbarIconButton {
+  cursor: pointer;
+  vertical-align: middle;
+  color: colors.$icon-color;
+  transition: 200ms color;
+}
+
+.navbarIconButton:hover {
+  color: colors.$icon-hover-color;
+}
+
+.highlight {
+  /* IE8 */
+  outline: 99999px solid rgba(0, 0, 0, 0.3);
+  /* IE9+ */
+  outline: calc(100 * (1vw + 1vh - 1vmin)) solid rgba(0, 0, 0, 0.3);
+  /* for other browsers */
+  outline: 100vmax solid rgba(0, 0, 0, 0.3);
+  /* pointer-events: none; */
+}
+
+.disabled {
+  pointer-events: none;
+  color: #616161;
+}
