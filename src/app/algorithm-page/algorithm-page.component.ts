@@ -51,6 +51,7 @@ export class AlgorithmPageComponent implements OnInit {
   private navbar: AlgPageNavbarComponent;
 
   private readonly barsFadeDuration = 600; // side and navbar fade in and out duration
+  private readonly sidebarSlideDuration = 700;
 
   protected dialogOpen: boolean = false;
   protected duringAnimation: boolean = false;
@@ -187,12 +188,12 @@ export class AlgorithmPageComponent implements OnInit {
   }
 
   private toggleLeftSidebar(): void {
-    this.leftSidebar.toggleSidebar();
+    this.leftSidebar.toggleSidebar(this.sidebarSlideDuration);
     this.isCodeShowing = !this.isCodeShowing;
   }
 
   private toggleRightSidebar(): void {
-    this.rightSidebar.toggleSidebar();
+    this.rightSidebar.toggleSidebar(this.sidebarSlideDuration);
     this.isInfoShowing = !this.isInfoShowing;
   }
 

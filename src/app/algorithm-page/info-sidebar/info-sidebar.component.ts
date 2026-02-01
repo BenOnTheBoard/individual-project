@@ -47,31 +47,6 @@ export class InfoSidebarComponent implements OnInit {
     this.sidebar.nativeElement.style.transform = `translateX(${targetX})`;
   }
 
-  private hideSidebar(): void {
-    anime({
-      targets: this.sidebar.nativeElement,
-      easing: 'easeInOutQuint',
-      translateX: [0, `${this.sidebarWidth}px`],
-      delay: 200,
-      duration: 700,
-      complete: () => {
-        this.isInAnimation = false;
-      },
-    });
-  }
-
-  private showSidebar(): void {
-    anime({
-      targets: this.sidebar.nativeElement,
-      easing: 'easeInOutQuint',
-      translateX: [`${this.sidebarWidth}px`, 0],
-      duration: 600,
-      complete: () => {
-        this.isInAnimation = false;
-      },
-    });
-  }
-
   async fadeSidebar(fadeOut: boolean, duration: number): Promise<void> {
     const direction = fadeOut ? 'reverse' : 'normal';
     anime({
@@ -83,14 +58,20 @@ export class InfoSidebarComponent implements OnInit {
     });
   }
 
-  async toggleSidebar(): Promise<void> {
+  public async toggleSidebar(duration: number): Promise<void> {
     if (this.isInAnimation) return;
     this.isInAnimation = true;
 
-    if (this.isInfoShowing) {
-      this.hideSidebar();
-    } else {
-      this.showSidebar();
-    }
+    const direction = this.isInfoShowing ? 'reverse' : 'normal';
+    anime({
+      targets: this.sidebar.nativeElement,
+      easing: 'easeInOutQuint',
+      translateX: [`${this.sidebarWidth}px`, 0],
+      direction: direction,
+      duration: duration,
+      complete: () => {
+        this.isInAnimation = false;
+      },
+    });
   }
 }
