@@ -48,6 +48,11 @@ export class AlgorithmPageComponent implements OnInit {
   @ViewChild('rightSidebar', { static: true })
   rightSidebar: InfoSidebarComponent;
 
+  @ViewChild('topNavbar', { static: true })
+  navbar: AlgPageNavbarComponent;
+
+  private readonly barsFadeDuration = 600; // side and navbar fade in and out duration
+
   dialogOpen: boolean = false;
   duringAnimation: boolean = false;
   showCode: boolean = false;
@@ -244,16 +249,9 @@ export class AlgorithmPageComponent implements OnInit {
   // --------------------------------------------------------------------------------- | ANIMATIONS
 
   initShowPage(): void {
-    anime({
-      targets: '.navbar',
-      easing: 'easeOutQuint',
-      translateY: [-150, 0],
-      delay: 200,
-      duration: 900,
-    });
-
-    this.leftSidebar.fadeSidebar(false, 600);
-    this.rightSidebar.fadeSidebar(false, 600);
+    this.navbar.toggleNavbar(false, this.barsFadeDuration);
+    this.leftSidebar.fadeSidebar(false, this.barsFadeDuration);
+    this.rightSidebar.fadeSidebar(false, this.barsFadeDuration);
 
     anime({
       targets: '#mainContent',
@@ -265,17 +263,9 @@ export class AlgorithmPageComponent implements OnInit {
   }
 
   fadeToHome(): void {
-    anime({
-      targets: '.navbar',
-      easing: 'easeOutQuint',
-      translateY: [0, -150],
-      delay: 400,
-      duration: 900,
-    });
-
-    this.leftSidebar.fadeSidebar(true, 600);
-    this.rightSidebar.fadeSidebar(true, 600);
-
+    this.navbar.toggleNavbar(true, this.barsFadeDuration);
+    this.leftSidebar.fadeSidebar(true, this.barsFadeDuration);
+    this.rightSidebar.fadeSidebar(true, this.barsFadeDuration);
     anime({
       targets: '#mainContent',
       easing: 'easeInOutQuint',

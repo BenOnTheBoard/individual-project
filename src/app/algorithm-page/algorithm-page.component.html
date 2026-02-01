@@ -3,7 +3,7 @@
 <div class="covering-panel"></div>
 }
 
-<alg-page-navbar [duringAnimation]="duringAnimation" (commandEmitter)="this.handleNavbarCommand($event)"
+<alg-page-navbar #topNavbar [duringAnimation]="duringAnimation" (commandEmitter)="this.handleNavbarCommand($event)"
   (dialogOpenEmitter)="this.dialogOpen=$event" (SRStableEmitter)="this.SRstable=$event"
   (tutorialStepEmitter)="this.tutorialUpdate($event)"></alg-page-navbar>
 
