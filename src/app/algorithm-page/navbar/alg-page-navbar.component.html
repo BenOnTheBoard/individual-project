@@ -10,10 +10,8 @@
             matTooltip="{{this.showCode ? 'Expand Panel' : 'Close Panel'}}"
             [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}">{{this.showCode ? "menu" :
             "menu_open"}}</mat-icon>
-        <a class="unselectable" style="cursor: pointer;vertical-align: -2px"
-            [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}" (click)="this.emitGoHome()"
-            matTooltip="Go Home"><span class="display-1" style="font-size: 20px;"><span id="alg">alg</span><span
-                    id="match">match</span></span></a>
+        <a id="algmatch-logo" class="unselectable" [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}"
+            (click)="this.emitGoHome()" matTooltip="Go Home"><span id="alg">alg</span><span id="match">match</span></a>
     </div>
     <div class="col-4 text-center navbarPopover" data-toggle="popover" data-placement="bottom" title="Tutorial"
         data-content="This short tutorial will walk you through the sections of this page. Click the arrow in the top right to move to the next step of the tutorial! Or you can click the x, also in the top right of the screen, to stop the tutorial."

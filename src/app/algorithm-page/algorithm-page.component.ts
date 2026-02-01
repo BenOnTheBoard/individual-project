@@ -46,7 +46,7 @@ export class AlgorithmPageComponent implements OnInit {
   leftSidebar: SidebarComponent;
 
   @ViewChild('rightSidebar', { static: true })
-  rightSidebar: SidebarComponent;
+  rightSidebar: InfoSidebarComponent;
 
   dialogOpen: boolean = false;
   duringAnimation: boolean = false;

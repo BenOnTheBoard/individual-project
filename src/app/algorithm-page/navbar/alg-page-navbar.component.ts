@@ -72,7 +72,7 @@ export class AlgPageNavbarComponent implements OnInit {
     const name = this.algorithmService.currentAlgorithm.name;
     const algorithm = this.algorithmService.currentAlgorithm.algorithm;
     const optimisedSide = this.algorithmService.getSide(true, false);
-    return `${name} / ${algorithm} / ${optimisedSide}`;
+    return `${name} / ${algorithm} / ${optimisedSide}-Oriented`;
   }
 
   openAnimationGuideDialog(): void {
