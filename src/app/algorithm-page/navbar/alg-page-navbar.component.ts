@@ -24,8 +24,8 @@ declare var anime: any; // declaring the animejs animation library for use in th
 export class AlgPageNavbarComponent implements OnInit {
   protected duringAnimation = input<boolean>();
 
-  protected showCode = true;
-  protected showInfo = true;
+  protected isCodeShowing = true;
+  protected isInfoShowing = true;
   protected SRStable = true;
   protected step = 0;
 
@@ -59,12 +59,12 @@ export class AlgPageNavbarComponent implements OnInit {
   }
 
   protected toggleLeftSidebar(): void {
-    this.showCode = !this.showCode;
+    this.isCodeShowing = !this.isCodeShowing;
     this.commandEmitter.emit('toggleLeftSidebar');
   }
 
   protected toggleRightSidebar(): void {
-    this.showInfo = !this.showInfo;
+    this.isInfoShowing = !this.isInfoShowing;
     this.commandEmitter.emit('toggleRightSidebar');
   }
 

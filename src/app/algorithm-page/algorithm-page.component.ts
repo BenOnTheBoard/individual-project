@@ -54,8 +54,8 @@ export class AlgorithmPageComponent implements OnInit {
 
   protected dialogOpen: boolean = false;
   protected duringAnimation: boolean = false;
-  protected showCode: boolean = true;
-  protected showInfo: boolean = true;
+  protected isCodeShowing: boolean = true;
+  protected isInfoShowing: boolean = true;
   protected SRstable: boolean = true;
   protected tutorialStep: number;
 
@@ -188,12 +188,12 @@ export class AlgorithmPageComponent implements OnInit {
 
   private toggleLeftSidebar(): void {
     this.leftSidebar.toggleSidebar();
-    this.showCode = !this.showCode;
+    this.isCodeShowing = !this.isCodeShowing;
   }
 
   private toggleRightSidebar(): void {
     this.rightSidebar.toggleSidebar();
-    this.showInfo = !this.showInfo;
+    this.isInfoShowing = !this.isInfoShowing;
   }
 
   // --------------------------------------------------------------------------------- | TUTORIAL FUNCTIONS
@@ -204,7 +204,7 @@ export class AlgorithmPageComponent implements OnInit {
         this.stopTutorial();
         break;
       case 1:
-        if (!this.showCode) {
+        if (!this.isCodeShowing) {
           this.toggleSidebar('left');
         }
         this.startTutorial();

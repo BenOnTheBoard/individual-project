@@ -15,7 +15,7 @@ declare var anime: any; // declaring the animejs animation library for use in th
   styleUrls: ['./info-sidebar.component.scss'],
 })
 export class InfoSidebarComponent implements OnInit {
-  @Input() showInfo: boolean;
+  @Input() isInfoShowing: boolean;
   @Input() tutorialStep: number;
 
   @ViewChild('sidebarContainer', { static: true })
@@ -43,7 +43,7 @@ export class InfoSidebarComponent implements OnInit {
   }
 
   private setCurrentPosition(): void {
-    const targetX = this.showInfo ? '0px' : `${this.sidebarWidth}px`;
+    const targetX = this.isInfoShowing ? '0px' : `${this.sidebarWidth}px`;
     this.sidebar.nativeElement.style.transform = `translateX(${targetX})`;
   }
 
@@ -87,7 +87,7 @@ export class InfoSidebarComponent implements OnInit {
     if (this.isInAnimation) return;
     this.isInAnimation = true;
 
-    if (this.showInfo) {
+    if (this.isInfoShowing) {
       this.hideSidebar();
     } else {
       this.showSidebar();

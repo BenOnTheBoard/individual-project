@@ -26,7 +26,7 @@ declare var anime: any; // declaring the animejs animation library for use in th
   ],
 })
 export class SidebarComponent implements OnInit {
-  @Input() showCode: boolean;
+  @Input() isCodeShowing: boolean;
   @Input() tutorialStep: number;
 
   @ViewChild('sidebarContainer', { static: true })
@@ -54,7 +54,7 @@ export class SidebarComponent implements OnInit {
   }
 
   private setCurrentPosition(): void {
-    const targetX = this.showCode ? '0px' : `-${this.sidebarWidth}px`;
+    const targetX = this.isCodeShowing ? '0px' : `-${this.sidebarWidth}px`;
     this.sidebar.nativeElement.style.transform = `translateX(${targetX})`;
   }
 
@@ -98,7 +98,7 @@ export class SidebarComponent implements OnInit {
     if (this.isInAnimation) return;
     this.isInAnimation = true;
 
-    if (this.showCode) {
+    if (this.isCodeShowing) {
       this.hideSidebar();
     } else {
       this.showSidebar();

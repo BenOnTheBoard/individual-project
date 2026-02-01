@@ -8,7 +8,7 @@ import { PlaybackService } from '../services/playback/playback.service';
   styleUrls: ['./agent-titles.component.scss'],
 })
 export class AgentTitlesComponent implements OnInit {
-  @Input() showCode: boolean;
+  @Input() isCodeShowing: boolean;
 
   constructor(
     public algRetriever: AlgorithmRetrievalService,
