@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
-
 import { SidebarComponent } from './sidebar.component';
 import { CommonModule } from '@angular/common';
 import { AlgDescriptionComponent } from './alg-description/alg-description.component';
@@ -31,7 +30,7 @@ describe('SidebarComponent', () => {
         {
           provide: PlaybackService,
           useValue: {
-            commandList: [{}],
+            commandList: [{ freeAgents: [] }],
             algorithmData: {
               descriptions: [],
             },
@@ -48,6 +47,7 @@ describe('SidebarComponent', () => {
               ['Man', 'Men'],
               ['Woman', 'Women'],
             ]),
+            getSide: jasmine.createSpy('getSide'),
           },
         },
       ],

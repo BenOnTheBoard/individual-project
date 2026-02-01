@@ -38,13 +38,14 @@ describe('AlgorithmPageComponent', () => {
                 {
                   service: {
                     run: jasmine.createSpy('run').and.returnValue({
-                      commands: [{}],
+                      commands: [{ freeAgents: [] }],
                     }),
                   },
                   helpTextMap: {},
                 },
               ],
             ]),
+            getSide: jasmine.createSpy('getSide'),
           },
         },
         {
@@ -62,6 +63,11 @@ describe('AlgorithmPageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AlgorithmPageComponent);
     component = fixture.componentInstance;
+
+    ['fadeAnimation', 'fadeAllBars'].forEach((func) =>
+      spyOn<AlgorithmPageComponent, any>(component, func).and.stub(),
+    );
+
     fixture.detectChanges();
   });
 
