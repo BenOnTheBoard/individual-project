@@ -122,10 +122,10 @@ export class AlgorithmPageComponent implements OnInit {
   protected handleNavbarCommand(command: string): void {
     switch (command) {
       case 'toggleLeftSidebar':
-        this.toggleSidebar();
+        this.toggleSidebar('left');
         break;
       case 'toggleRightSidebar':
-        this.toggleInfoSidebar();
+        this.toggleSidebar('right');
         break;
       case 'goHome':
         this.goHome();
@@ -167,36 +167,33 @@ export class AlgorithmPageComponent implements OnInit {
     this.drawService.redrawCanvas();
   }
 
-  protected async toggleSidebar(): Promise<void> {
+  protected async toggleSidebar(side: 'left' | 'right'): Promise<void> {
     if (this.duringAnimation) return;
     this.duringAnimation = true;
     this.hideMainContent();
 
-    this.leftSidebar.toggleSidebar();
+    if (side == 'left') {
+      this.toggleLeftSidebar();
+    } else {
+      this.toggleRightSidebar();
+    }
 
-    this.showCode = !this.showCode;
     this.drawService.clearCanvas();
     this.showMainContent();
     await this.utils.delay(200);
-    this.drawService.redrawCanvas();
 
+    this.drawService.redrawCanvas();
     this.duringAnimation = false;
   }
 
-  protected async toggleInfoSidebar(): Promise<void> {
-    if (this.duringAnimation) return;
-    this.duringAnimation = true;
-    this.hideMainContent();
+  private toggleLeftSidebar(): void {
+    this.leftSidebar.toggleSidebar();
+    this.showCode = !this.showCode;
+  }
 
+  private toggleRightSidebar(): void {
     this.rightSidebar.toggleSidebar();
-
     this.showInfo = !this.showInfo;
-    this.drawService.clearCanvas();
-    this.showMainContent();
-    await this.utils.delay(200);
-    this.drawService.redrawCanvas();
-
-    this.duringAnimation = false;
   }
 
   // --------------------------------------------------------------------------------- | TUTORIAL FUNCTIONS
@@ -208,7 +205,7 @@ export class AlgorithmPageComponent implements OnInit {
         break;
       case 1:
         if (this.showCode) {
-          this.toggleSidebar();
+          this.toggleSidebar('left');
         }
         this.startTutorial();
         break;
