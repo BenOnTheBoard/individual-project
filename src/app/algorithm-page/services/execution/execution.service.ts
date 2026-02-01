@@ -10,7 +10,6 @@ export class ExecutionService {
   commandMap = {};
   commandList = {};
 
-  // add the services for any new algorithms here
   constructor(public algorithmRetrieval: AlgorithmRetrievalService) {}
 
   initialise(): void {

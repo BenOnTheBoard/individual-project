@@ -14,8 +14,7 @@ describe('HrHospitalRgsService', () => {
     expect(service).toBeDefined();
   });
 
-  // added test from HR/R
-  it('test correctness x10 (hr-hospital-egs)', () => {
+  it('test correctness x1000 (hr-hospital-egs)', () => {
     let stable: boolean = true;
     for (let i = 0; i < 1000; i++) {
       let agent1Count: number = Math.floor(Math.random() * (9 - 2) + 2);
