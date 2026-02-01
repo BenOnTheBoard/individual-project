@@ -6,8 +6,6 @@ import { MatAnimatedIconComponent } from '../mat-animated-icon/mat-animated-icon
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-declare var anime: any;
-
 @Component({
   selector: 'playback-controls',
   templateUrl: './playback-controls.component.html',
