@@ -22,19 +22,19 @@ declare var anime: any; // declaring the animejs animation library for use in th
   imports: [MatIconModule, MatTooltip, CommonModule],
 })
 export class AlgPageNavbarComponent implements OnInit {
-  duringAnimation = input<boolean>();
+  protected duringAnimation = input<boolean>();
 
-  showCode = false;
-  showInfo = false;
-  SRStable = true;
-  step = 0;
+  protected showCode = false;
+  protected showInfo = false;
+  protected SRStable = true;
+  protected step = 0;
 
   // for instructions to page
-  commandEmitter = output<string>();
+  protected commandEmitter = output<string>();
   // delivering info to page
-  dialogOpenEmitter = output<boolean>();
-  SRStableEmitter = output<boolean>();
-  tutorialStepEmitter = output<number>();
+  protected dialogOpenEmitter = output<boolean>();
+  protected SRStableEmitter = output<boolean>();
+  protected tutorialStepEmitter = output<number>();
 
   @ViewChild('algPageNavbar', { static: true })
   private navbar: ElementRef;
@@ -49,46 +49,46 @@ export class AlgPageNavbarComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  updateTutorialStep(step: number): void {
+  protected updateTutorialStep(step: number): void {
     this.step = step;
     this.tutorialStepEmitter.emit(this.step);
   }
 
-  updateToNextTutorialStep() {
+  protected updateToNextTutorialStep() {
     this.updateTutorialStep((this.step + 1) % 4);
   }
 
-  toggleLeftSidebar(): void {
+  protected toggleLeftSidebar(): void {
     this.showCode = !this.showCode;
     this.commandEmitter.emit('toggleLeftSidebar');
   }
 
-  toggleRightSidebar(): void {
+  protected toggleRightSidebar(): void {
     this.showInfo = !this.showInfo;
     this.commandEmitter.emit('toggleRightSidebar');
   }
 
-  toggleSRStable(): void {
+  protected toggleSRStable(): void {
     this.SRStable = !this.SRStable;
     this.SRStableEmitter.emit(this.SRStable);
   }
 
-  emitGoHome(): void {
+  protected emitGoHome(): void {
     this.commandEmitter.emit('goHome');
   }
 
-  emitGeneratePreferences(): void {
+  protected emitGeneratePreferences(): void {
     this.commandEmitter.emit('generatePreferences');
   }
 
-  getTitle(): string {
+  protected getTitle(): string {
     const name = this.algorithmService.currentAlgorithm.name;
     const algorithm = this.algorithmService.currentAlgorithm.algorithm;
     const optimisedSide = this.algorithmService.getSide(true, false);
     return `${name} / ${algorithm} / ${optimisedSide}-Oriented`;
   }
 
-  openAnimationGuideDialog(): void {
+  protected openAnimationGuideDialog(): void {
     this.dialogOpenEmitter.emit(true);
     const dialogRef = this.dialog.open(AnimationGuideDialogComponent);
     dialogRef.afterClosed().subscribe(() => {
@@ -96,13 +96,13 @@ export class AlgPageNavbarComponent implements OnInit {
     });
   }
 
-  refreshCanvas(): void {
+  protected refreshCanvas(): void {
     this.drawService.alwaysShowPreferences =
       !this.drawService.alwaysShowPreferences;
     this.drawService.redrawCanvas();
   }
 
-  async toggleNavbar(fadeOut: boolean, duration: number): Promise<void> {
+  public async toggleNavbar(fadeOut: boolean, duration: number): Promise<void> {
     if (this.isInAnimation) return;
     this.isInAnimation = true;
 

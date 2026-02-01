@@ -5,7 +5,6 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { CommonModule, NgClass } from '@angular/common';
 import { AgentTitlesComponent } from './agent-titles/agent-titles.component';
@@ -40,29 +39,25 @@ declare var anime: any; // declaring the animejs animation library for use in th
 })
 export class AlgorithmPageComponent implements OnInit {
   @ViewChild('canvas', { static: true })
-  canvas: ElementRef<HTMLCanvasElement>;
+  private canvas: ElementRef<HTMLCanvasElement>;
 
   @ViewChild('leftSidebar', { static: true })
-  leftSidebar: SidebarComponent;
+  private leftSidebar: SidebarComponent;
 
   @ViewChild('rightSidebar', { static: true })
-  rightSidebar: InfoSidebarComponent;
+  private rightSidebar: InfoSidebarComponent;
 
   @ViewChild('topNavbar', { static: true })
-  navbar: AlgPageNavbarComponent;
+  private navbar: AlgPageNavbarComponent;
 
   private readonly barsFadeDuration = 600; // side and navbar fade in and out duration
 
-  dialogOpen: boolean = false;
-  duringAnimation: boolean = false;
-  showCode: boolean = false;
-  showInfo: boolean = false;
-  SRstable: boolean = true;
-  tutorialStep: number;
-
-  firstSelection: boolean = true;
-  algorithm = new FormControl<string | null>('');
-  numPeople: number;
+  protected dialogOpen: boolean = false;
+  protected duringAnimation: boolean = false;
+  protected showCode: boolean = false;
+  protected showInfo: boolean = false;
+  protected SRstable: boolean = true;
+  protected tutorialStep: number;
 
   // --------------------------------------------------------------------------------- | INIT FUNCTIONS
 
@@ -124,7 +119,7 @@ export class AlgorithmPageComponent implements OnInit {
 
   // --------------------------------------------------------------------------------- | ON CLICK FUNCTIONS
 
-  handleNavbarCommand(command: string): void {
+  protected handleNavbarCommand(command: string): void {
     switch (command) {
       case 'toggleLeftSidebar':
         this.toggleSidebar();
@@ -141,13 +136,13 @@ export class AlgorithmPageComponent implements OnInit {
     }
   }
 
-  async goHome(): Promise<void> {
+  protected async goHome(): Promise<void> {
     this.fadeToHome();
     await this.utils.delay(1000);
     this.router.navigateByUrl('/');
   }
 
-  async generateNewPreferences(): Promise<void> {
+  protected async generateNewPreferences(): Promise<void> {
     this.fadeCanvasOut();
     await this.utils.delay(300);
 
@@ -172,7 +167,7 @@ export class AlgorithmPageComponent implements OnInit {
     this.drawService.redrawCanvas();
   }
 
-  async toggleSidebar(): Promise<void> {
+  protected async toggleSidebar(): Promise<void> {
     if (this.duringAnimation) return;
     this.duringAnimation = true;
     this.hideMainContent();
@@ -188,7 +183,7 @@ export class AlgorithmPageComponent implements OnInit {
     this.duringAnimation = false;
   }
 
-  async toggleInfoSidebar(): Promise<void> {
+  protected async toggleInfoSidebar(): Promise<void> {
     if (this.duringAnimation) return;
     this.duringAnimation = true;
     this.hideMainContent();
@@ -206,7 +201,7 @@ export class AlgorithmPageComponent implements OnInit {
 
   // --------------------------------------------------------------------------------- | TUTORIAL FUNCTIONS
 
-  tutorialUpdate(newStep: number): void {
+  protected tutorialUpdate(newStep: number): void {
     switch (newStep) {
       case 0:
         this.stopTutorial();
@@ -248,7 +243,7 @@ export class AlgorithmPageComponent implements OnInit {
 
   // --------------------------------------------------------------------------------- | ANIMATIONS
 
-  initShowPage(): void {
+  protected initShowPage(): void {
     this.navbar.toggleNavbar(false, this.barsFadeDuration);
     this.leftSidebar.fadeSidebar(false, this.barsFadeDuration);
     this.rightSidebar.fadeSidebar(false, this.barsFadeDuration);
@@ -262,7 +257,7 @@ export class AlgorithmPageComponent implements OnInit {
     });
   }
 
-  fadeToHome(): void {
+  protected fadeToHome(): void {
     this.navbar.toggleNavbar(true, this.barsFadeDuration);
     this.leftSidebar.fadeSidebar(true, this.barsFadeDuration);
     this.rightSidebar.fadeSidebar(true, this.barsFadeDuration);
@@ -274,7 +269,7 @@ export class AlgorithmPageComponent implements OnInit {
     });
   }
 
-  fadeCanvasOut(): void {
+  protected fadeCanvasOut(): void {
     anime({
       targets: '#myCanvas',
       easing: 'easeInOutQuint',
@@ -283,7 +278,7 @@ export class AlgorithmPageComponent implements OnInit {
     });
   }
 
-  fadeCanvasIn(): void {
+  protected fadeCanvasIn(): void {
     anime({
       targets: '#myCanvas',
       easing: 'easeInOutQuint',
@@ -292,7 +287,7 @@ export class AlgorithmPageComponent implements OnInit {
     });
   }
 
-  hideMainContent(): void {
+  protected hideMainContent(): void {
     anime({
       targets: '#mainContent',
       easing: 'easeInOutQuint',
@@ -301,7 +296,7 @@ export class AlgorithmPageComponent implements OnInit {
     });
   }
 
-  showMainContent(): void {
+  protected showMainContent(): void {
     anime({
       targets: '#mainContent',
       easing: 'easeInOutQuint',
