@@ -1,11 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
-import {
-  MatDialogModule,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { InfoSidebarComponent } from './info-sidebar.component';
@@ -43,7 +39,6 @@ describe('InfoSidebarComponent', () => {
     fixture.detectChanges();
   });
 
-  // can't access this.algorithmService.currentAlgorithm.name - saying .name is undefined within tests
   it('should create', () => {
     expect(component).toBeDefined();
   });

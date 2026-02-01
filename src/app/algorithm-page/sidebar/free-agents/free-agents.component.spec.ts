@@ -29,6 +29,7 @@ describe('FreeAgentsComponent', () => {
               ['Man', 'Men'],
               ['Woman', 'Women'],
             ]),
+            getSide: jasmine.createSpy('getSide'),
           },
         },
       ],

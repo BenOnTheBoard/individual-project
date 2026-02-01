@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
-import { GaleShapley } from '../../abstract-classes/GaleShapley';
+import { MatchingAlgorithm } from '../../abstract-classes/MatchingAlgorithm';
 import { Agent } from '../../interfaces/Agent';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { Man } from '../../interfaces/Man';
+import { UtilsService } from 'src/app/utils/utils.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class GsStableMarriageService extends GaleShapley {
+export class GsStableMarriageService extends MatchingAlgorithm {
   group1Name = 'man';
   group2Name = 'woman';
 
   group1Agents: Map<String, Man> = new Map();
+
+  constructor(public utils: UtilsService) {
+    super(utils);
+  }
 
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
@@ -39,7 +44,7 @@ export class GsStableMarriageService extends GaleShapley {
       });
 
       currentLetter = String.fromCharCode(
-        ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65
+        ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65,
       );
     }
   }
@@ -77,13 +82,13 @@ export class GsStableMarriageService extends GaleShapley {
         this.group2CurrentPreferences,
         woman['name'].substring(5),
         this.findPositionInMatches(woman, man),
-        'red'
+        'red',
       );
       this.changePreferenceStyle(
         this.group1CurrentPreferences,
         man['name'].substring(3),
         this.findPositionInMatches(man, woman),
-        'red'
+        'red',
       );
 
       this.update(3, { '%woman%': woman.name, '%man%': man.name });
@@ -102,13 +107,13 @@ export class GsStableMarriageService extends GaleShapley {
           this.group2CurrentPreferences,
           woman['name'].substring(5),
           this.findPositionInMatches(woman, man),
-          'green'
+          'green',
         );
         this.changePreferenceStyle(
           this.group1CurrentPreferences,
           man['name'].substring(3),
           this.findPositionInMatches(man, woman),
-          'green'
+          'green',
         );
 
         this.removeArrayFromArray(this.currentLines, redLine);
@@ -132,7 +137,7 @@ export class GsStableMarriageService extends GaleShapley {
           this.group2CurrentPreferences,
           woman['name'].substring(5),
           this.findPositionInMatches(woman, man),
-          'red'
+          'red',
         );
         this.update(7, {
           '%woman%': woman.name,
@@ -142,29 +147,29 @@ export class GsStableMarriageService extends GaleShapley {
 
         if (
           woman.ranking.findIndex(
-            (man: { name: string }) => man.name == woman.match[0].name
+            (man: { name: string }) => man.name == woman.match[0].name,
           ) >
           woman.ranking.findIndex(
-            (man: { name: string }) => man.name == manName
+            (man: { name: string }) => man.name == manName,
           )
         ) {
           this.changePreferenceStyle(
             this.group2CurrentPreferences,
             woman['name'].substring(5),
             this.findPositionInMatches(woman, woman['match'][0]),
-            'grey'
+            'grey',
           );
           this.changePreferenceStyle(
             this.group1CurrentPreferences,
             woman.match[0].name.substring(3),
             this.findPositionInMatches(woman.match[0], woman),
-            'grey'
+            'grey',
           );
           this.changePreferenceStyle(
             this.group2CurrentPreferences,
             woman['name'].substring(5),
             this.findPositionInMatches(woman, man),
-            'green'
+            'green',
           );
 
           this.removeArrayFromArray(this.currentLines, redLine);
@@ -190,7 +195,7 @@ export class GsStableMarriageService extends GaleShapley {
             this.group1CurrentPreferences,
             man['name'].substring(3),
             this.findPositionInMatches(man, woman),
-            'green'
+            'green',
           );
 
           this.freeAgentsOfGroup1.shift();
@@ -204,13 +209,13 @@ export class GsStableMarriageService extends GaleShapley {
             this.group1CurrentPreferences,
             man['name'].substring(3),
             this.findPositionInMatches(man, woman),
-            'grey'
+            'grey',
           );
           this.changePreferenceStyle(
             this.group2CurrentPreferences,
             woman['name'].substring(5),
             this.findPositionInMatches(woman, man),
-            'grey'
+            'grey',
           );
           this.removeArrayFromArray(this.currentLines, redLine);
           this.update(9, {

@@ -20,7 +20,7 @@ $mq-retina: "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)";
 /* Font-Size */
 $base-font-size: 1em;
 
-//* Line-Height */
+/* Line-Height */
 $base-line-height: 1.5;
 $header-line-height: 1.25;
 
@@ -108,4 +108,22 @@ button:focus {
 }
 .cdk-overlay-backdrop {
   z-index: 500;
+}
+
+/* mat-form-field apparanet grey background remover */
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: transparent !important;
+}
+
+/* Generic Titling Classes */
+.page-section-header {
+  font-size: 40px;
+  line-height: 50px;
+  font-weight: 600;
+}
+
+.page-section-text {
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 300;
 }

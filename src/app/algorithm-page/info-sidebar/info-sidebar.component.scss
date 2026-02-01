@@ -1,11 +1,6 @@
 @use "_colors";
 @use "_fonts";
 
-/*
-  Sidebar
-  to put on right side of screen
-*/
-
 .infosidebar {
   position: fixed;
   top: 0;
@@ -13,6 +8,7 @@
   right: 0;
   z-index: 100; /* Behind the navbar */
   padding: 0;
+  width: 100%;
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
 }
 

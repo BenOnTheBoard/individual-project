@@ -1,21 +1,14 @@
 @use "../../stylings/_colors.scss" as colors;
 
 :host {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 14px;
   color: #333;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-.single-center-item {
-  height: 100%;
-  display: grid;
-  grid-template-rows: 100%;
-  justify-items: center;
-  align-items: center;
 }
 
 .grid-container {
@@ -27,158 +20,24 @@
   align-items: center;
 }
 
-.title-container {
-  min-height: 100px;
-  display: grid;
-  justify-items: center;
-  align-items: center;
-}
-
-.hidden {
-  opacity: 0;
-}
-
-.vertical-center {
-  min-height: 100%; /* Fallback for browsers do NOT support vh unit */
-
-  display: flex;
-  align-items: center;
-}
-
 body {
   font-size: 0.875rem;
 }
-
-.feather {
-  width: 16px;
-  height: 16px;
-  vertical-align: text-bottom;
-}
-
-/*
-Navbar
-*/
-
-.alg-navbar {
-  background-color: colors.$navbar-color;
-  height: 50px;
-  font-family: "DM Sans";
-  z-index: 1000;
-}
-
-.navbar-brand {
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-  font-size: 1rem;
-  background-color: rgba(0, 0, 0, 0.25);
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25);
-}
-
-.navbar .form-control {
-  padding: 0.75rem 1rem;
-  border-width: 0;
-  border-radius: 0;
-}
-
-.form-control-dark {
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.form-control-dark:focus {
-  border-color: transparent;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
-}
-
-/*
-Utilities
-*/
 
 .border-bottom {
   border-bottom: 1px solid colors.$border-color !important;
 }
 
-#alg {
-  color: colors.$logo-alg-color;
-  transition: 200ms color;
-}
-
-#match {
-  color: colors.$logo-match-color;
-  transition: 200ms color;
-}
-
-a {
-  text-decoration: none;
-}
-
-a:hover span #alg {
-  color: colors.$logo-alg-hover-algpage-color;
-}
-
-a:hover span #match {
-  color: colors.$logo-match-hover-algpage-color;
-}
-
-.navbarIconButton {
-  cursor: pointer;
-  vertical-align: middle;
-  color: colors.$icon-color;
-  transition: 200ms color;
-}
-
-.navbarIconButton:hover {
-  color: colors.$icon-hover-color;
-}
-
-.highlight {
-  /*
-  position: fixed;
-  width: 200px;
-  height: 200px;
-  top: 50px;
-  left: 50px;
-  */
-  /* IE8 */
-  outline: 99999px solid rgba(0, 0, 0, 0.3);
-  /* IE9+ */
-  outline: calc(100 * (1vw + 1vh - 1vmin)) solid rgba(0, 0, 0, 0.3);
-  /* for other browsers */
-  outline: 100vmax solid rgba(0, 0, 0, 0.3);
-  /* pointer-events: none; */
-}
-
-.dim {
-  box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5); /* for IE */
-  box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5); /* for real browsers */
-  border-radius: 60px;
-}
-
 .covering-panel {
-  background: rgba(0, 0, 0, 0.6); /* opaque black */
-  height: 100vh; /* height of the viewport */
-  position: fixed; /* always cover the screen */
-  width: 100%; /* width of the viewport */
-  z-index: 500; /* stay on top of other elements */
-}
-
-.moveNavbarToTop {
-  z-index: 600;
+  background: rgba(0, 0, 0, 0.6);
+  height: 100vh;
+  position: fixed;
+  width: 100%;
+  z-index: 500; /* stays on top of all other elements */
 }
 
 .moveContentToTop {
   z-index: 599;
-}
-
-.mat-h3,
-.mat-subheading-2,
-.mat-typography h3 {
-  margin: 0 0 0 px;
-}
-
-div .bs-popover-left {
-  margin-left: 10rem !important;
 }
 
 .popoverPositioning {
@@ -197,4 +56,9 @@ div .bs-popover-left {
   height: calc(100% - 50px) !important;
   overflow-x: hidden;
   font-family: "DM Sans";
+}
+
+.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }

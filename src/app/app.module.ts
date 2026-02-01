@@ -20,7 +20,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatAnimatedIconComponent } from './algorithm-page/mat-animated-icon/mat-animated-icon.component';
 import { PlaybackControlsComponent } from './algorithm-page/playback-controls/playback-controls.component';
-import { CodeDisplayComponent } from './algorithm-page/code-display/code-display.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { HomeContentComponent } from './home-page/home-content/home-content.component';
 import { AboutContentComponent } from './home-page/about-content/about-content.component';
@@ -28,21 +27,18 @@ import { AlgorithmContentComponent } from './home-page/algorithm-content/algorit
 import { FeedbackContentComponent } from './home-page/feedback-content/feedback-content.component';
 import { AlgorithmCardComponent } from './home-page/algorithm-content/algorithm-card/algorithm-card.component';
 import { IconBannerComponent } from './home-page/icon-banner/icon-banner.component';
-import { FeedbackBannerComponent } from './home-page/feedback-banner/feedback-banner.component';
+import { AlgPageNavbarComponent } from './algorithm-page/navbar/alg-page-navbar.component';
 import { NavbarComponent } from './home-page/navbar/navbar.component';
-import { EditPreferencesDialogComponent } from './algorithm-page/edit-preferences-dialog/edit-preferences-dialog.component';
 import { AnimationGuideDialogComponent } from './algorithm-page/animation-guide-dialog/animation-guide-dialog.component';
 import { SidebarComponent } from './algorithm-page/sidebar/sidebar.component';
 import { AlgDescriptionComponent } from './algorithm-page/sidebar/alg-description/alg-description.component';
 import { FreeAgentsComponent } from './algorithm-page/sidebar/free-agents/free-agents.component';
 import { PseudocodeComponent } from './algorithm-page/sidebar/pseudocode/pseudocode.component';
 import { ExecutionLogComponent } from './algorithm-page/sidebar/execution-log/execution-log.component';
-import { AlgorithmNavbarComponent } from './algorithm-page/algorithm-navbar/algorithm-navbar.component';
-import { AnimationContainerComponent } from './algorithm-page/animation-container/animation-container.component';
-import { AgentTitlesComponent } from './algorithm-page/animation-container/agent-titles/agent-titles.component';
-import { CanvasDisplayComponent } from './algorithm-page/animation-container/canvas-display/canvas-display.component';
+import { AgentTitlesComponent } from './algorithm-page/agent-titles/agent-titles.component';
 import { InfoSidebarComponent } from './algorithm-page/info-sidebar/info-sidebar.component';
-import { provideRouter, RouterModule, RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
+import { AgentCountFormComponent } from './forms/agent-count-form/agent-count-form.component';
 
 @NgModule({
   imports: [
@@ -50,7 +46,6 @@ import { provideRouter, RouterModule, RouterOutlet } from '@angular/router';
     AlgorithmPageComponent,
     MatAnimatedIconComponent,
     PlaybackControlsComponent,
-    CodeDisplayComponent,
     HomePageComponent,
     HomeContentComponent,
     AboutContentComponent,
@@ -58,19 +53,15 @@ import { provideRouter, RouterModule, RouterOutlet } from '@angular/router';
     FeedbackContentComponent,
     AlgorithmCardComponent,
     IconBannerComponent,
-    FeedbackBannerComponent,
+    AlgPageNavbarComponent,
     NavbarComponent,
-    EditPreferencesDialogComponent,
     AnimationGuideDialogComponent,
     SidebarComponent,
     AlgDescriptionComponent,
     FreeAgentsComponent,
     PseudocodeComponent,
     ExecutionLogComponent,
-    AlgorithmNavbarComponent,
-    AnimationContainerComponent,
     AgentTitlesComponent,
-    CanvasDisplayComponent,
     InfoSidebarComponent,
     BrowserModule,
     AppRoutingModule,
@@ -91,6 +82,7 @@ import { provideRouter, RouterModule, RouterOutlet } from '@angular/router';
     RouterModule,
     RouterOutlet,
     MatFormField,
+    AgentCountFormComponent,
   ],
 })
 export class AppModule {}

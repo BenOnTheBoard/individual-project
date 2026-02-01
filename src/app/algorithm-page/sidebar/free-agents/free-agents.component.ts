@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { PlaybackService } from '../../services/playback/playback.service';
+import { UtilsService } from 'src/app/utils/utils.service';
 
 @Component({
   selector: 'free-agents',
@@ -9,9 +10,16 @@ import { PlaybackService } from '../../services/playback/playback.service';
 })
 export class FreeAgentsComponent implements OnInit {
   constructor(
-    public playback: PlaybackService, // injecting the playback service
-    public algorithmService: AlgorithmRetrievalService
-  ) {} // injecting the algorithm service) { }
+    public playback: PlaybackService,
+    public algRetriever: AlgorithmRetrievalService,
+    public utils: UtilsService,
+  ) {}
 
   ngOnInit(): void {}
+
+  getFreeAgentString(): string {
+    const freeAgents: string[] =
+      this.playback.commandList[this.playback.stepCounter]['freeAgents'];
+    return freeAgents.map((item) => item.slice(-1)).join(', ');
+  }
 }

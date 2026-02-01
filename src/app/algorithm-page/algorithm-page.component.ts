@@ -5,72 +5,21 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { CommonModule, NgClass } from '@angular/common';
-import { AgentTitlesComponent } from './animation-container/agent-titles/agent-titles.component';
+import { AgentTitlesComponent } from './agent-titles/agent-titles.component';
 import { PlaybackControlsComponent } from './playback-controls/playback-controls.component';
 import { Router } from '@angular/router';
 import { AlgorithmRetrievalService } from '../algorithm-retrieval.service';
 import { UtilsService } from '../utils/utils.service';
-import { AnimationGuideDialogComponent } from './animation-guide-dialog/animation-guide-dialog.component';
-import { AlgorithmAnimationService } from './animations/algorithm-animation.service';
 import { CanvasService } from './services/canvas/canvas.service';
-import { EditPreferencesDialogComponent } from './edit-preferences-dialog/edit-preferences-dialog.component';
 import { PlaybackService } from './services/playback/playback.service';
 import { InfoSidebarComponent } from './info-sidebar/info-sidebar.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
+import { AlgPageNavbarComponent } from './navbar/alg-page-navbar.component';
 declare var $: any; // declaring jquery for use in this file
-
-// -------------------------------------------------- FILE DESCRIPTION
-
-/*
-
-algorithm-page.component.ts
-
-This is the Typescript file for the algorithm page (algorithm-page.component.html).
-
-Purpose:
-  - Acts as a "main" class for the algorithm page
-  - Mediates interaction between all other services
-
-Flow:
-  - When algorithm page is to be loaded, run the constructor, injecting all necessary services
-  - ngOnInit() is then run, linking the global canvas variable for the canvasService (having a canvasService allows us to make calls to draw elements from anywhere)
-  - Set listener functions for the following actions:
-    - keypress down:
-        handleKeyboardEvent(event: KeyboardEvent): void
-    - home link (algmatch) clicked:
-        async goHome(): Promise<void>
-    - generate new preferences button clicked:
-        async generateNewPreferences(): Promise<void>
-    - toggle sidebar button clicked:
-        async toggleSidebar(): Promise<void>
-
-Functions in this file:
-  - ngOnInit(): void
-  - ngAfterViewInit(): void
-  - handleKeyboardEvent(event: KeyboardEvent): void
-
-  - openEditPreferencesDialog(): void
-  - openAnimationGuideDialog(): void
-
-  - async goHome(): Promise<void>
-  - async generateNewPreferences(): Promise<void>
-  - async toggleSidebar(): Promise<void>
-
-  - nextTutorialStep(): void
-  - startTutorial(): void
-  - sidebarTutorial(): void
-  - mainContentTutorial(): void
-  - stopTutorial(): void
-
-*/
-
-// -------------------------------------------------- CODE
+declare var anime: any; // declaring the animejs animation library for use in this file
 
 @Component({
   selector: 'algorithm-page',
@@ -85,92 +34,70 @@ Functions in this file:
     InfoSidebarComponent,
     AgentTitlesComponent,
     PlaybackControlsComponent,
+    AlgPageNavbarComponent,
   ],
 })
 export class AlgorithmPageComponent implements OnInit {
-  // --------------------------------------------------------------------------------- | INSTANCE VARIABLES
-
-  // looks for the canvas element on the algorithm page and assigns it to the canvas variable
   @ViewChild('canvas', { static: true })
-  canvas: ElementRef<HTMLCanvasElement>;
+  private canvas: ElementRef<HTMLCanvasElement>;
 
-  showCode: boolean = false;
-  dialogOpen: boolean = false;
+  @ViewChild('leftSidebar', { static: true })
+  private leftSidebar: SidebarComponent;
 
-  showInfo: boolean = false;
+  @ViewChild('rightSidebar', { static: true })
+  private rightSidebar: InfoSidebarComponent;
 
-  tutorialStep: number;
+  @ViewChild('topNavbar', { static: true })
+  private navbar: AlgPageNavbarComponent;
 
-  duringAnimation: boolean = false;
+  private readonly barsFadeDuration = 600; // side and navbar fade in and out duration
+  private readonly sidebarSlideDuration = 700;
+  private readonly canvasFadeDuration = 300;
+  private readonly mainContentFadeDuration = 500;
+  private readonly mainContentInitFadeDuration = 1200;
 
-  firstSelection: boolean = true;
-  algorithm = new FormControl<string | null>('');
-  numPeople: number;
-
-  // where SR is going to generate a stable matching or a unstable matching
-  SRstable: boolean = true;
-  SRstableText: string = 'Generating Stable Matchings';
+  protected dialogOpen: boolean = false;
+  protected duringAnimation: boolean = false;
+  protected isCodeShowing: boolean = true;
+  protected isInfoShowing: boolean = true;
+  protected SRstable: boolean = true;
+  protected tutorialStep: number;
 
   // --------------------------------------------------------------------------------- | INIT FUNCTIONS
 
   constructor(
-    public playback: PlaybackService, // injecting the playback service
-    public algorithmService: AlgorithmRetrievalService, // injecting the algorithm service
-    public drawService: CanvasService, // injecting the canvas service
-    public animation: AlgorithmAnimationService,
+    public playback: PlaybackService,
+    public algorithmService: AlgorithmRetrievalService,
+    public drawService: CanvasService,
     public utils: UtilsService,
-    public dialog: MatDialog, // injecting the dialog component
-    public router: Router // injecting the router service (for programmatic route navigation)
+    public router: Router,
   ) {}
 
   ngOnInit(): void {
     this.drawService.setCanvas(this.canvas);
-
-    // debugging: use the following lines (113-121) to test individual algorithms
-    // you can use this in conjunction with changing the routing in order to direct to the animation page (so you don't have to keep selecting an algorithm through the main page, etc.)
-    // let group1 = 5;
-    // let group2 = 5;
-    // // let alg: string = "smp-man-gs";
-    // let alg: string = "hr-resident-egs";
-
-    // this.algorithmService.numberOfGroup1Agents = group1;
-    // this.algorithmService.numberOfGroup2Agents = group2;
-
-    // this.algorithmService.currentAlgorithm = this.algorithmService.mapOfAvailableAlgorithms.get(alg);
-    // this.playback.setAlgorithm(alg, group1, group2);
-
     this.drawService.initialise();
     this.playback.setAlgorithm(
       this.algorithmService.currentAlgorithm.id,
       this.algorithmService.numberOfGroup1Agents,
-      this.algorithmService.numberOfGroup2Agents
+      this.algorithmService.numberOfGroup2Agents,
     );
 
-    // initialise all of the popovers for the tutorial (they won't appear without this function)
+    // initialise all of the popovers for the tutorial
     $(function () {
       $('[data-toggle="popover"]').popover();
     });
 
-    // initialise the tutorial to the beginning
     this.tutorialStep = 0;
   }
 
-  // function that runs when page is visible to user
   ngAfterViewInit(): void {
-    this.animation.loadPage();
+    this.initShowPage();
     this.drawService.redrawCanvas();
   }
 
-  // creating a listener function for keydown events
-  // Key:
-  // (< arrow) or (a) == backstep in algorithm
-  // (> arrow) or (d) == forward step in algorithm
-  // (r) or (#) == generate new preferences
-  // (e) or (]) == open edit preferences dialog
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
     if (!this.dialogOpen && this.tutorialStep == 0) {
-      // disable events on tutorial or edit preferences open
       if (event.key == 'ArrowRight' || event.key == 'd') {
         if (
           !(
@@ -190,56 +117,37 @@ export class AlgorithmPageComponent implements OnInit {
         }
       } else if (event.key == 'r' || event.key == '#') {
         this.generateNewPreferences();
-      } else if (event.key == 'e' || event.key == ']') {
-        this.openEditPreferencesDialog();
       }
     }
   }
 
-  // --------------------------------------------------------------------------------- | GENERAL FUNCTIONS
-
-  // open the edit preferences dialog with a callback function
-  openEditPreferencesDialog(): void {
-    const dialogRef = this.dialog.open(EditPreferencesDialogComponent);
-
-    this.dialogOpen = true;
-
-    dialogRef.afterClosed().subscribe(() => {
-      this.dialogOpen = false;
-    });
-  }
-
-  // open the animation guide dialog with a callback function
-  openAnimationGuideDialog(): void {
-    const dialogRef = this.dialog.open(AnimationGuideDialogComponent);
-
-    this.dialogOpen = true;
-
-    dialogRef.afterClosed().subscribe(() => {
-      this.dialogOpen = false;
-    });
-  }
-
   // --------------------------------------------------------------------------------- | ON CLICK FUNCTIONS
 
-  // function run when home link clicked
-  // start animation for going home, delay 1000ms, then change route to home
-  async goHome(): Promise<void> {
-    this.animation.goHome();
+  protected handleNavbarCommand(command: string): void {
+    switch (command) {
+      case 'toggleLeftSidebar':
+        this.toggleSidebar('left');
+        break;
+      case 'toggleRightSidebar':
+        this.toggleSidebar('right');
+        break;
+      case 'goHome':
+        this.goHome();
+        break;
+      case 'generatePreferences':
+        this.generateNewPreferences();
+        break;
+    }
+  }
+
+  protected async goHome(): Promise<void> {
+    this.fadeToHome();
     await this.utils.delay(1000);
     this.router.navigateByUrl('/');
   }
 
-  // function run when generate new preferences button clicked
-  async generateNewPreferences(): Promise<void> {
-    // clears any code highlighting
-    var command = this.playback.commandList[this.playback.previousStepCounter];
-    let a = document.getElementById('line' + command['lineNumber']);
-    a.style.backgroundColor = '';
-    a.style.color = '';
-
-    // animates changing of preferences (fade in/out)
-    this.animation.fadeCanvasOut();
+  protected async generateNewPreferences(): Promise<void> {
+    this.fadeCanvas(true);
     await this.utils.delay(300);
 
     if (
@@ -250,134 +158,130 @@ export class AlgorithmPageComponent implements OnInit {
         this.algorithmService.numberOfGroup1Agents,
         this.algorithmService.numberOfGroup2Agents,
         null,
-        this.SRstable
+        this.SRstable,
       );
     } else {
       this.playback.setAlgorithm(
         this.algorithmService.currentAlgorithm.id,
         this.algorithmService.numberOfGroup1Agents,
-        this.algorithmService.numberOfGroup2Agents
+        this.algorithmService.numberOfGroup2Agents,
       );
     }
-    this.animation.fadeCanvasIn();
+    this.fadeCanvas(false);
     this.drawService.redrawCanvas();
   }
 
-  // function run when toggle sidebar button clicked (top left)
-  async toggleSidebar(): Promise<void> {
+  protected async toggleSidebar(side: 'left' | 'right'): Promise<void> {
+    if (this.duringAnimation) return;
     this.duringAnimation = true;
 
-    let mainContent = document.getElementById('mainContent');
+    this.fadeMainContent(true);
 
-    if (!this.showCode) {
-      // hide sidebar and content
-      this.animation.hideSidebar();
-      this.animation.hideMainContent();
-
-      await this.utils.delay(700);
-
-      this.showCode = !this.showCode;
-      this.animation.showMainContent();
+    if (side == 'left') {
+      this.toggleLeftSidebar();
     } else {
-      this.animation.hideMainContent();
-      await this.utils.delay(400);
-
-      this.showCode = !this.showCode;
-      this.animation.showSidebar();
-      await this.utils.delay(200);
-
-      this.animation.showMainContent();
+      this.toggleRightSidebar();
     }
 
+    this.drawService.clearCanvas();
+    this.fadeMainContent(false);
     await this.utils.delay(200);
 
-    this.duringAnimation = false;
     this.drawService.redrawCanvas();
+    this.duringAnimation = false;
   }
 
-  // function run when toggle sidebar button clicked (top left)
-  async toggleInfoSidebar(): Promise<void> {
-    this.duringAnimation = true;
-
-    if (!this.showInfo) {
-      this.animation.hideInfoSidebar();
-      this.animation.hideMainContent();
-      await this.utils.delay(700);
-
-      this.showInfo = !this.showInfo;
-      this.animation.showMainContent();
-    } else {
-      this.animation.hideMainContent();
-      await this.utils.delay(400);
-
-      this.showInfo = !this.showInfo;
-      this.animation.showInfoSidebar();
-      await this.utils.delay(200);
-
-      this.animation.showMainContent();
-    }
-
-    await this.utils.delay(200);
-
-    this.duringAnimation = false;
-    this.drawService.redrawCanvas();
+  private toggleLeftSidebar(): void {
+    this.leftSidebar.toggleSidebar(this.sidebarSlideDuration);
+    this.isCodeShowing = !this.isCodeShowing;
   }
 
-  ChangeStableSR(): void {
-    if (this.SRstable == true) {
-      this.SRstable = false;
-      this.SRstableText = 'Generating Unstable Matchings';
-    } else {
-      this.SRstable = true;
-      this.SRstableText = 'Generating Stable Matchings';
-    }
+  private toggleRightSidebar(): void {
+    this.rightSidebar.toggleSidebar(this.sidebarSlideDuration);
+    this.isInfoShowing = !this.isInfoShowing;
   }
 
   // --------------------------------------------------------------------------------- | TUTORIAL FUNCTIONS
 
-  // function run when ">" arrow clicked in tutorial
-  // progresses to next stage of tutorial
-  nextTutorialStep(): void {
-    // step 1 (shows sidebar so tutorial doesn't break)
-    if (this.tutorialStep == 0) {
-      if (this.showCode) {
-        this.toggleSidebar();
-      }
-      this.startTutorial();
-      // step 2
-    } else if (this.tutorialStep == 1) {
-      this.sidebarTutorial();
-      // step 3
-    } else if (this.tutorialStep == 2) {
-      this.mainContentTutorial();
-      // step 4
-    } else if (this.tutorialStep == 3) {
-      this.stopTutorial();
+  protected tutorialUpdate(newStep: number): void {
+    switch (newStep) {
+      case 0:
+        this.stopTutorial();
+        break;
+      case 1:
+        if (!this.isCodeShowing) {
+          this.toggleSidebar('left');
+        }
+        this.startTutorial();
+        break;
+      case 2:
+        this.sidebarTutorial();
+        break;
+      case 3:
+        this.mainContentTutorial();
+        break;
     }
   }
 
-  // functions to hide/show appropriate popovers for tutorial steps
   startTutorial(): void {
-    this.tutorialStep += 1;
     $('.navbarPopover').popover('show');
   }
 
   sidebarTutorial(): void {
-    this.tutorialStep += 1;
     $('.navbarPopover').popover('hide');
     $('.sidebarPopover').popover('show');
   }
 
   mainContentTutorial(): void {
-    this.tutorialStep += 1;
     $('.sidebarPopover').popover('hide');
     $('.mainContentPopover').popover('show');
   }
 
   stopTutorial(): void {
-    this.tutorialStep = 0;
     $('.navbarPopover').popover('hide');
     $('.sidebarPopover').popover('hide');
     $('.mainContentPopover').popover('hide');
+  }
+
+  // --------------------------------------------------------------------------------- | ANIMATIONS
+  private fadeAnimation(
+    target: string,
+    fadeOut: boolean,
+    duration: number,
+  ): void {
+    const direction = fadeOut ? 'reverse' : 'normal';
+    anime({
+      targets: target,
+      easing: 'easeInOutQuint',
+      opacity: [0, 1],
+      direction: direction,
+      duration: duration,
+    });
+  }
+
+  private fadeCanvas(fadeOut: boolean, setDuration?: number): void {
+    const duration = setDuration ?? this.canvasFadeDuration;
+    this.fadeAnimation('#myCanvas', fadeOut, duration);
+  }
+
+  private fadeMainContent(fadeOut: boolean, setDuration?: number): void {
+    const duration = setDuration ?? this.mainContentFadeDuration;
+    this.fadeAnimation('#mainContent', fadeOut, duration);
+  }
+
+  private fadeAllBars(fadeOut: boolean): void {
+    this.navbar.toggleNavbar(fadeOut, this.barsFadeDuration);
+    this.leftSidebar.fadeSidebar(fadeOut, this.barsFadeDuration);
+    this.rightSidebar.fadeSidebar(fadeOut, this.barsFadeDuration);
+  }
+
+  private initShowPage(): void {
+    this.fadeAllBars(false);
+    this.fadeMainContent(false, this.mainContentInitFadeDuration);
+  }
+
+  private fadeToHome(): void {
+    this.fadeAllBars(true);
+    this.fadeMainContent(true, this.barsFadeDuration);
   }
 }

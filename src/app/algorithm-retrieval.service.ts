@@ -9,7 +9,6 @@ import { SpaStudentEgsService } from './algorithm-page/algorithms/algorithm-serv
 import { SmtSuperService } from './algorithm-page/algorithms/algorithm-services/smt-super/smt-super';
 
 // ------------------------------------------------------- ALGORITHM TEMPLATE
-
 // [
 //   "smp-man-egs", {
 //     id: "smp-man-egs",
@@ -19,11 +18,9 @@ import { SmtSuperService } from './algorithm-page/algorithms/algorithm-services/
 //     service: null,
 //     description: "The stable marriage problem is the problem of finding a stable matching between two equally sized sets of elements. In this case: <b>men and women</b>.<br><br>To do this, the Extended Gale-Shapley Stable Marriage algorithm is used.",
 //     helpTextMap: {
-
 //     },
 //   }
 // ],
-
 // -------------------------------------------------------
 
 @Injectable({
@@ -35,14 +32,311 @@ export class AlgorithmRetrievalService {
   numberOfGroup1Agents: number = 5;
   numberOfGroup2Agents: number = 5;
 
-  mapOfAvailableAlgorithms: Map<string, Algorithm>;
+  mapOfAvailableAlgorithms: Map<String, Algorithm> = new Map([
+    [
+      'smp-man-gs',
+      {
+        id: 'smp-man-gs',
+        name: 'Stable Marriage Problem',
+        orientation: ['Man', 'Woman'],
+        equalGroups: true,
+        algorithm: 'Gale-Shapley Algorithm',
+        service: this.gsStableMarriageService,
+        description:
+          'The stable marriage problem is the problem of finding a one-to-one stable matching between two equally sized sets of agents: <b>men</b> and <b>women</b>.<br>Here we demonstrate the original Gale-Shapley algorithm.',
+        helpTextMap: {
+          1: 'Start with no matches between men and women.',
+          2: '%man% is currently unmatched.',
+          3: '%man% selects %woman%, the next most preferred woman whom he has not yet proposed to.',
+          4: 'We check whether %woman% has a match already.',
+          5: '%woman% is free; match her with %man%.',
+          6: '%woman% is currently matched to %match%, so we must compare %match% to %man%.',
+          7: 'We check whether %woman% prefers %match% to %man%.',
+          8: '%woman% prefers %man% to %match% so we free up %match% and assign %woman% to %man%.',
+          9: '%woman% prefers %match% to %man%.',
+          10: "We don't change the matching.",
+          11: 'We have arrived at a stable matching.',
+        },
+        code: [
+          'Set each person to be free',
+          'While some man m is free do:',
+          "\tw := next most preferred woman on m\'s list",
+          '\tIf w is free then:',
+          '\t\tAssign m to w',
+          '\tElse:',
+          "\t\tIf w prefers m to her current partner m\' then:",
+          "\t\t\tAssign m to w and set m\' to be free",
+          '\t\tElse:',
+          "\t\t\tw rejects m and remains with m\'",
+          'The current set of assignments is stable',
+        ],
+      },
+    ],
+
+    [
+      'smp-man-egs',
+      {
+        id: 'smp-man-egs',
+        name: 'Stable Marriage Problem',
+        orientation: ['Man', 'Woman'],
+        equalGroups: true,
+        algorithm: 'Extended Gale-Shapley Algorithm',
+        service: this.egsStableMarriageService,
+        description:
+          'The stable marriage problem is the problem of finding a one-to-one stable matching between two equally sized sets of agents: <b>men</b> and <b>women</b>.<br>Here we demonstrate a modified version of the original algorithm which will form the basis of the more complex algorithms on this page.',
+        helpTextMap: {
+          1: 'Start with no engagements between men and women.',
+          2: '%currentAgent% is currently unengaged.',
+          3: '%currentAgent% selects %potentialProposee% because she is the most preferred woman remaining on his list.',
+          4: 'We check whether %woman% is engaged already.',
+          5: '%woman% is engaged to %currentPartner%, so we break the engagement between them.',
+          6: '%woman% is not engaged.',
+          7: 'We engage %man% and %woman%.',
+          8: "We loop over all the men on %woman%'s list whom she prefers %man% to.",
+          9: "The next worst man on %woman%'s list is %nextWorstMan%.",
+          10: "We remove %nextWorstMan% and %woman% from each other's lists.",
+          11: 'All men to whom %woman% prefers %man% have been removed.',
+          12: 'We have arrived at a stable matching.',
+        },
+        code: [
+          'Set each person to be free',
+          'While some man m is free {',
+          "\tw := first woman on m's list",
+          '\tIf w is currently engaged {',
+          "\t\tBreak engagement between w and w's current partner",
+          '\t}',
+          '\tProvisionally engage m and w',
+          "\tFor each successor m'' of m on w's list {",
+          "\t\tm'' is the next worst man on w's preference list",
+          "\t\tRemove m'' from w's preference list and vice versa",
+          '\t}',
+          '}',
+        ],
+      },
+    ],
+
+    [
+      'hr-resident-egs',
+      {
+        id: 'hr-resident-egs',
+        name: 'Hospitals/Residents Problem',
+        orientation: ['Resident', 'Hospital'],
+        equalGroups: false,
+        algorithm: 'Capacitated Extended Gale-Shapley Algorithm',
+        service: this.HrResidentEgsService,
+        description:
+          'The Hospitals/Residents Problem is the problem of finding a many-to-one stable matching between a set of <b>hospitals</b> and <b>residents</b>, where a hospital can be assigned multiple residents up to some capacity.',
+        helpTextMap: {
+          1: 'Start with no assignments between residents and hospitals.',
+          2: "%currentAgent% is the next resident who doesn't have a hospital and still has some hospitals in their preference list.",
+          3: '%currentAgent% selects %potentialProposee%, the first hospital left on its list.',
+          4: 'We check whether %hospital% is currently full. If not, we provisionally assign %resident% to %hospital%.',
+          5: "%hospital%'s number of residents is equal to its max capacity, so choose the worst resident assigned to %hospital% (%worstResident%).",
+          6: 'We unassign %hospital% and %worstResident%.',
+          7: 'Assign %resident% to %hospital%.',
+          8: 'We check whether %hospital% is full after assigning %resident% to %hospital%.',
+          9: "%hospital% is fully subscribed, so we choose the worst resident assigned to them (%worstResident%) and remove each successor from %hospital%'s preference list.",
+          10: '%hospital% selects %nextResident% as the next resident to be removed from its list.',
+          11: "We remove %nextResident% from %hospital%'s list.",
+          12: 'We have arrived at a stable matching.',
+        },
+        code: [
+          'Set each hospital and resident to be free',
+          'While (some resident r is free) and (r has a nonempty list):',
+          "\th := first hospital on r's list",
+          '\tIf h is fully subscribed then:',
+          "\t\tr' := worst resident provisionally assigned to h",
+          "\t\tAssign r' to be free (clear match)",
+          '\tAssign r to h',
+          '\tIf h is fully subscribed then:',
+          '\t\ts := worst resident provisionally assigned to h',
+          "\t\tFor each successor s' of s on h's list:",
+          "\t\t\tRemove s' and h from each other's lists",
+          'The current set of assignments is stable',
+        ],
+      },
+    ],
+
+    [
+      'hr-hospital-egs',
+      {
+        id: 'hr-hospital-egs',
+        name: 'Hospitals/Residents Problem',
+        orientation: ['Hospital', 'Resident'],
+        equalGroups: false,
+        algorithm: 'Capacitated Extended Gale-Shapley Algorithm',
+        service: this.HrHospitalEgsService,
+        description:
+          'The Hospitals/Residents Problem is the problem of finding a many-to-one stable matching between a set of <b>hospitals</b> and <b>residents</b>, where a hospital can be assigned multiple residents up to some capacity.',
+        helpTextMap: {
+          1: 'Start with no assignments between residents and hospitals.',
+          2: '%hospital% is undersubscribed and has a resident on their preference list that is not assigned to them.',
+          3: '%hospital% selects %resident%, the best resident on its preference list.',
+          4: 'We check whether %resident% is assigned to another hospital.',
+          5: 'We unassign %resident% and %oldHospital% from each other.',
+          6: 'We assign %resident% and %hospital% to each other.',
+          7: "We loop over each hospital h' which %resident% prefers %hospital% to on %resident%'s preference list.",
+          8: "We remove %resident% AND %hospital% from each other's list.",
+          9: 'We have arrived at a stable matching.',
+        },
+        code: [
+          'Set each hospital and resident to be free',
+          'While some hospital h is undersubscribed, and has a non-empty preference list:',
+          "\tr := first resident on h's preference list not assigned to h",
+          "\tIf r is assigned to another hospital h':",
+          "\t\tUnassign r and h'",
+          '\tProvisionally assign r to h',
+          "\tFor each successor h' of h on r's list:",
+          "\t\tRemove h' and r from each others preference list",
+          'The current set of assignments is stable',
+        ],
+      },
+    ],
+
+    [
+      'smp-room-irv',
+      {
+        id: 'smp-room-irv',
+        name: 'Stable Roommates Problem',
+        orientation: ['Person', 'Person'],
+        equalGroups: true,
+        algorithm: "Irving's Algorithm",
+        service: this.StableRoomIrvService,
+        description:
+          'The stable roommates problem is the problem of finding a one-to-one stable matching amongst a single set of agents, which we thus refer to neutrally as <b>people</b>.<br>We demonstrate the algorithm due to Robert W. Irving.',
+        helpTextMap: {
+          1: 'Start with no assignments amongst people.',
+          2: '%person% is not assigned to anyone.',
+          3: "We check whether %person%'s preference list is empty.",
+          4: 'Any empty list indicates that the instance has no stable matchings.',
+          5: '%person% selects %selected%, the first person left on their preference list.',
+          6: 'We set %person% to be assigned to %selected%.',
+          7: 'We check whether another person than %person% is assigned to %selected%.',
+          8: 'If they are, then unassign them. unassign %old_person% from %selected%.',
+          9: 'We loop over each person %selected% prefers %person% to.',
+          10: "We remove %removee% from %person% from each other's lists.",
+          11: '%person% has more than one person left in their preference list.',
+          12: "We look for rotations within %person%'s preference list, that is a cycle of ordered pairs through preference lists.",
+          13: 'If we can find a rotation...', //%rotation%
+          14: "We delete pairs in rotation, removing %removee% from %person% from each other's lists.",
+          15: 'We check whether any person has a preference list of length one.',
+          16: 'We assign %person% to %preference%, the last person in their preference list.',
+          17: "We check whether %person%'s preference list is empty.",
+          18: 'Any empty list indicates that the instance has no stable matchings.',
+          19: 'We have arrived at a stable matching.',
+        },
+        code: [
+          'Set each person to be free',
+          'While some person p is free:',
+          '\tIf person p has an empty preference list:',
+          '\t\tEnd - no stable matching',
+          "\tperson b := first preference on p's list",
+          '\tAssign p to b',
+          '\tIf any person c is assigned to person b:',
+          '\t\tFree up person c',
+          '\tFor each person c that b prefers p to:',
+          "\t\tRemove c from p's list and remove p from c's list",
+          'While some person p has more than one person left in their preference list',
+          "Look for rotations in person p's preference list",
+          'If rotation r is found:',
+          '\tDelete pairs in rotation r',
+          '\tIf there is a person b with a preference of length one:',
+          '\t\tperson b := last preference',
+          'If any people have empty preference lists:',
+          '\tEnd - no stable matching',
+          'The current set of assignments is stable',
+        ],
+      },
+    ],
+
+    [
+      'spa-stu-egs',
+      {
+        id: 'spa-stu-egs',
+        name: 'Student-Project Allocation',
+        orientation: ['Student', 'Project'],
+        equalGroups: false,
+        algorithm: 'A.I.M. Algorithm',
+        service: this.SpaStudentEgsService,
+        description:
+          'The Student-Project Allocation Problem is the problem of finding a many-to-one stable matching between <b>students</b> and <b>projects</b>. Projects are not agents, but they do have a fixed maximum capacity. They are offered by <b>lecturers</b>, and it is the lecturer that has preferences over the students. One lecturer may offer many projects.<br>We demonstrate the algorithm due to Abraham, Irving, and Manlove.',
+        helpTextMap: {
+          1: 'Start with no assignments between students and projects.',
+          2: '%student% is free and has a non-empty preference list.',
+          3: '%student% selects %project%, the most preferred project remaining on their list.',
+          4: '%lecturer% offers that project.',
+          5: 'We assign %project% and %student% to each other.',
+          6: 'We check whether %project% is over-subscribed.',
+          7: 'The worst student assigned to project %project% is %student%.',
+          8: 'We break the provisional assignment between %project% and %student%.',
+          9: 'We check whether %lecturer% is over-subscribed.',
+          10: 'The worst student assigned to %lecturer% is %student%.',
+          11: 'The project that %student% is assigned to is %project%.',
+          12: 'We break the provisional assignment between %project% and %student%.',
+          13: 'We check whether %project% is at capacity.',
+          14: 'The worst student assigned to project %project% is %student%.',
+          15: "We loop over the students on %lecturer%'s list whom they prefer %student% to.",
+          16: 'We check whether %student% has %project% on their preference list.',
+          17: "We remove %project% from %student%'s preference list.",
+          18: 'We check whether %lecturer% is at capacity',
+          19: 'The worst student assigned to a project (%project%) offered by %lecturer% is %student%.',
+          20: "We loop over the students on %lecturer%'s list whom they prefer %student% to.",
+          21: 'We also loop over the projects that %lecturer% offers.',
+          22: "We remove %project% from %student%'s preference list.",
+          23: 'We have arrived at a stable matching.',
+        },
+        code: [
+          'Set each student, lecturer, and project to be free',
+          'While some student s is free:',
+          "\tp = next most preferred project on s's list",
+          '\tl = lecturer who offers p',
+          '\tProvisionally assign s to p',
+          '\tIf p is over-subscribed:',
+          '\t\tSw = worst student assigned to p',
+          '\t\tBreak provisional assignment between Sw and P',
+          '\tElse if l is over-subscribed:',
+          '\t\tSw = worst student assigned to l',
+          '\t\tPw = project that Sw is assigned to',
+          '\t\tBreak provisional assignment between Sw and Pw',
+          '\tIf p is full:',
+          '\t\tSw = worst student assigned to p',
+          "\t\tFor each student S_i less preferred than Sw on l's preference list:",
+          '\t\t\tIf S_i finds project p acceptable:',
+          "\t\t\t\tRemove p from S_i's preference list",
+          '\tIf l is full:',
+          '\t\tSw = worst student assigned to l',
+          "\t\tFor each student S_i less preferred than Sw on l's preference list:",
+          '\t\t\tFor each project P_i that l offers:',
+          "\t\t\t\tRemove P_i from S_i's preference list",
+          'The current set of assignments is stable',
+        ],
+      },
+    ],
+
+    [
+      'smt-super',
+      {
+        id: 'smt-super',
+        name: 'Stable Marriage Problem With Ties',
+        orientation: ['Man', 'Woman'],
+        equalGroups: true,
+        algorithm: "Manlove's Algorithm",
+        service: this.SmtSuperService,
+        description:
+          'In this case, we want to find a one-to-one matching that meets the condition of super-stability.<br><br>We show how to do this using an algorithm due to Manlove.',
+        helpTextMap: {
+          1: 'EThis is a placeholder help text.',
+        },
+        code: ['Steps will be specified here', 'like so - placeholder'],
+      },
+    ],
+  ]);
 
   pluralMap: Map<string, string> = new Map([
     ['Man', 'Men'],
     ['Woman', 'Women'],
     ['Resident', 'Residents'],
     ['Hospital', 'Hospitals'],
-
     ['Person', 'People'],
     ['Student', 'Students'],
     ['Project', 'Projects'],
@@ -56,342 +350,19 @@ export class AlgorithmRetrievalService {
     public StableRoomIrvService: StableRoomIrvService,
     public HrHospitalEgsService: HrHospitalEgsService,
     public SpaStudentEgsService: SpaStudentEgsService,
-    public SmtSuperService: SmtSuperService
-  ) {
-    this.initialiseAlgorithmsMap();
-  }
-
-  initialiseAlgorithmsMap(): void {
-    this.mapOfAvailableAlgorithms = new Map([
-      [
-        'smp-man-gs',
-        {
-          id: 'smp-man-gs',
-          name: 'Stable Marriage Problem',
-          orientation: ['Man', 'Woman'],
-          equalGroups: true,
-          algorithm: 'Gale-Shapley Stable Matching',
-          service: this.gsStableMarriageService,
-          description:
-            'The stable marriage problem is the problem of finding a stable matching between two equally sized sets of elements. In this case: <b>men and women</b>.<br><br>To do this, the Gale-Shapley Stable Marriage algorithm is used.',
-          helpTextMap: {
-            1: 'Ensure there are no pre-existing matches between men and women',
-            2: 'While there is still a man without a match, select the first one (%man%)',
-            3: "%woman% is selected as %man%'s most preferred woman who he has not yet proposed to",
-            4: 'Checking to see if %woman% has a match',
-            5: '%woman% was free, so matching her with %man%',
-            6: "%woman% is currently matched to %match%, so can't instantly engage %woman% and %man%",
-            7: 'Checking if %woman% likes %match% more than %man%',
-            8: '%woman% likes %man% (current proposer) more than %match% (current match) so free %match% and engage %woman% and %man%',
-            9: '%woman% likes %match% more than %man%',
-            10: "No change to anyone's matches",
-            11: 'A stable matching has been generated.',
-          },
-          code: [
-            'set each person to be free;',
-            'while some man m is free do:',
-            '\tw = next most preferred woman on m’s list;',
-            '\tif w is free then',
-            '\t\tassign m to w;',
-            '\telse',
-            "\t\tif w prefers m to her current partner m' then",
-            "\t\t\tassign m to w to be engaged and set m' to be free;",
-            '\t\telse',
-            "\t\t\tw rejects m’s proposal and remains with m';",
-            'the stable matching consists of all n engagements',
-          ],
-        },
-      ],
-
-      [
-        'smp-man-egs',
-        {
-          id: 'smp-man-egs',
-          name: 'Stable Marriage Problem',
-          orientation: ['Man', 'Woman'],
-          equalGroups: true,
-          algorithm: 'Extended Gale-Shapley Stable Matching',
-          service: this.egsStableMarriageService,
-          description:
-            'The stable marriage problem is the problem of finding a stable matching between two equally sized sets of elements. In this case: <b>men and women</b>.<br><br>To do this, the Extended Gale-Shapley Stable Marriage algorithm is used.',
-          helpTextMap: {
-            1: 'Set all men and women to have no engagements',
-            2: 'While there are some men who are not engaged, select the next one (%currentAgent%)',
-            3: "%potentialProposee% is selected as %currentAgent%'s most preferred woman who he has not yet proposed to",
-            4: 'Check if %woman% is currently engaged to someone',
-            5: '%woman% is engaged to %currentPartner%, so break the engagement between them',
-            6: '%woman% is not engaged, so continue with algorithm',
-            7: 'Engage %man% and %woman%',
-            8: "Select each man with a worse preference ranking than %man% on %woman%'s list",
-            9: "%nextWorstMan% is chosen as the next worst man on %woman%'s preference list",
-            10: "Remove %nextWorstMan% and %woman% from each other's lists",
-            11: "All men worse than %man% on %woman%'s preference list have been removed",
-            12: 'A stable matching between men and women has been found',
-          },
-          code: [
-            'set each person to be free;',
-            'while some man m is free {',
-            "\tw = first woman on m's list",
-            '\tif w is currently engaged to someone {',
-            "\t\tbreak engagement between w and w's current partner",
-            '\t}',
-            '\tprovisionally engage m and w',
-            "\tfor each successor m'' of m on w's list {",
-            "\t\tm'' = next worst man on w's preference list",
-            "\t\tremove m'' from w's preference list and vice versa",
-            '\t}',
-            '}', // a stable matching between men and women has been found
-          ],
-        },
-      ],
-
-      [
-        'hr-resident-egs',
-        {
-          id: 'hr-resident-egs',
-          name: 'Hospitals/Residents Problem',
-          orientation: ['Resident', 'Hospital'],
-          equalGroups: false,
-          algorithm: 'Extended Gale-Shapley Stable Matching',
-          service: this.HrResidentEgsService,
-          description:
-            'The Hospitals/Residents Problem is the problem of finding a stable matching between a set of <b>hospitals and residents</b>, where a hospital can take multiple residents.<br><br>This is the <b>resident-oriented</b> version of the algorithm, so <b>residents will propose to hospitals</b>.<br><br>To do this, the Extended Gale-Shapley Stable Marriage algorithm is used.',
-          helpTextMap: {
-            1: 'Clear the matches of all residents and hospitals',
-            2: "The next resident who doesn't have a match and still has some hospitals in their preference list is selected (%currentAgent%)",
-            3: "The first hospital on %currentAgent%'s preference list is selected (%potentialProposee%)",
-            4: 'Check if %hospital% is currently full: is it already matched with %capacity% resident(s)? If not, provisionally assign %resident% to %hospital%',
-            5: "%hospital%'s number of residents is equal to its max capacity, so choose the worst resident assigned to %hospital% (%worstResident%)",
-            6: 'Clear the match between %hospital% and %worstResident%',
-            7: 'Assign %resident% to %hospital%',
-            8: 'Check if %hospital% is full after assigning %resident% to %hospital%',
-            9: "%hospital% is fully subscribed, so choose the worst resident assigned to them (%worstResident%) and remove each successor from %hospital%'s preference list",
-            10: "%nextResident% is chosen as the next resident to be removed from %hospital%'s list",
-            11: "Remove %nextResident% from %hospital%'s list",
-            12: 'A stable matching between residents and hospitals has been found',
-          },
-          code: [
-            'set each hospital and resident to be completely free;',
-            'while (some resident r is free) and (r has a nonempty list)',
-            "\th := first hospital on r's list",
-            '\tif h is fully subscribed then',
-            "\t\tr' := worst resident provisionally assigned to h",
-            "\t\tassign r' to be free (clear match)",
-            '\tprovisionally assign r to h',
-            '\tif h is fully subscribed (after assigning r to h) then',
-            '\t\ts := worst resident provisionally assigned to h',
-            "\t\tfor each successor s' of s on h's list",
-            "\t\t\tremove s' and h from each other's lists",
-            'the stable matching consists of all n engagements',
-          ],
-        },
-      ],
-
-      // ADD NEW ALGORITHMS UNDER HERE
-
-      [
-        'hr-hospital-egs',
-        {
-          id: 'hr-hospital-egs',
-          name: 'Hospitals/Residents Problem',
-          orientation: ['Hospital', 'Resident'],
-          equalGroups: false,
-          algorithm: 'Extended Gale-Shapley Stable Matching',
-          service: this.HrHospitalEgsService,
-          description:
-            'The Hospitals/Residents Problem is the problem of finding a stable matching between a set of <b>hospitals and residents</b>, where a hospital can take multiple residents.<br><br>This is the <b>hospital-oriented</b> version of the algorithm, so <b>hospitals will propose to residents</b>.<br><br>To do this, the Extended Gale-Shapley Stable Marriage algorithm is used.',
-          helpTextMap: {
-            1: 'Set all hospitals and residents to be completely free',
-            2: 'While some hospital (%hospital%) is undersubscribed and has a resident on their preference list that is not assigned to them',
-            3: "Set r to %resident% from hospital's preference list",
-            4: 'If %resident% is assigned to another hospital, unassign them from each other',
-            5: 'Unassign %resident% and %oldHospital% from each other',
-            6: 'Assign %resident% and %hospital% to each other',
-            7: "For each hospital h' after %hospital% on %resident%'s preference list, remove them from each others preference list",
-            8: "remove %resident% from %hospital%'s preference list and %hospital% from %resident%'s preference list",
-            9: 'Stable matching is found',
-          },
-          code: [
-            'Set each hospital and resident to be completely free',
-            'While some hospital h is undersubscibed, and has a resident on their preference list',
-            "\tr := first resident on h's prefernace list not assigned to h",
-            "\tif r is assigned to another hospital h'",
-            "\t\t unassign r and h'",
-
-            '\t provisionally assign r to h',
-            "\t for each successor h' of h on r's list",
-            "\t\t remove h' and r from each others preference list",
-            'stable matching is found ',
-          ],
-        },
-      ],
-
-      [
-        'smp-room-irv',
-        {
-          id: 'smp-room-irv',
-          name: 'Stable Roommates Problem',
-          orientation: ['Person', 'Person'],
-          equalGroups: true,
-          algorithm: "Irving's Algorithm",
-          service: this.StableRoomIrvService,
-          description:
-            'The stable roommates problem is the problem of finding a stable matching between 1 group of elements. In this case <b>people</b>.<br> <br>To do this the Irving’s algorithm is used',
-          helpTextMap: {
-            1: 'Set all people to be free',
-            2: 'While some person %person% has not been assigned to a anyone and has a non-empty preference list',
-            3: "check if %person%'s preference list is empty",
-            4: 'end the algorithm, there is no stable matching',
-
-            5: "the first person on %person%'s preference list is selected - %selected%",
-            6: 'set %person% to be provisonally assigned to selected person %selected%',
-
-            7: 'check if any other person, other than %person% is assigned to %selected% ',
-            8: 'If they are, then unassign them. unassign %old_person% from %selected%',
-
-            9: "look through %selected%'s preference list - %list%, for each person less prefered than %person%",
-            10: "remove %removee% from %person%'s preference list and remove %person% from %removee%'s preference list",
-
-            11: 'While some person %person% has more then 1 person left in their preference list - %list%',
-            12: "look for rotations within %person%'s preference list, that is a cycle of ordered pairs through preference lists",
-            13: 'if a rotation is found', //%rotation%
-            14: "delete pairs in rotation - remove %removee% from %person%'s preference list and remove %person% from %removee%'s preference list",
-
-            15: 'check if any person has only 1 preference left',
-            16: 'assign %person% to the last person in their preference list - %preference%',
-            17: "check if %person%'s preference list is empty",
-            18: 'end the algorithm, there is no stable matching',
-
-            19: 'Stable mathcing found.',
-          },
-          code: [
-            'Set each person to be free',
-            'While some person p is free (not assigned to someone)',
-            '\tif person p has a empty preference list',
-            '\t\tend - no stable matching',
-
-            "\t person b := first preference on p's list",
-            '\t assign p to b',
-
-            '\t if any person a is assigned to person b',
-            '\t\t free a',
-
-            "\t for each person c less preferded than p on b's preference list",
-            "\t\t remove c from p's list and remove p from c's list",
-            // 10 lines so far
-
-            // PAHSE 2
-            'While some person p has more than 1 preference left',
-            "look for rotations in perosn p's preference list",
-            'if rotation r is found',
-            '\t delete pairs in rotation r',
-
-            '\t if a person b has 1 perferance left',
-            '\t\t person b := last preference',
-
-            'if any people have empty preference lists',
-            '\t end - no stable matching',
-
-            'done',
-            // 11 ---> 17 lines
-          ],
-        },
-      ],
-
-      // SPA
-
-      [
-        'spa-stu-egs',
-        {
-          id: 'spa-stu-egs',
-          name: 'Student Project Allocation',
-          orientation: ['Student', 'Project'],
-          equalGroups: false,
-          algorithm: 'Extended Gale-Shapley Stable Matching',
-          service: this.SpaStudentEgsService,
-          description:
-            'The Student Project Allocation Problem is the problem of finding a stable matching between 2 groups. In this case <b>students</b> and <b>projects</b>, there is also the added condition that projects are presented by lecturers, and each lecturer has preferences and a capacity. <br><br> This is the <b>student-oriented</b> version of the algorithm, so <b>students will propose to projects</b>. <br><br> To do this the Extended Gale-Shapley Algorithm is used. ',
-          helpTextMap: {
-            1: 'set each student, lecturer, and project to be free and unmatched',
-            2: 'While some student %student% is free and has a non-empty preference list',
-            3: "%project% is selected as %student%'s most prefered project",
-            4: 'The lecturer %lecturer% offers that project',
-            5: 'The project %project% and the student %student% are assigned to each other',
-            6: 'If the project %project% is over-subscribed',
-            7: 'The worst (least preferable) student assigned to project %project% is %student%',
-            8: 'The provisional assigment between %project% and %student% is broken',
-            9: 'Else if the lecturer %lecturer% is over-subscribed',
-            10: 'The worst (least preferable) student assigned to the lecturer %lecturer% is %student%',
-            11: 'The project that %student% is assigned to is %project%',
-            12: 'The provisional assigment between %project% and %student% is broken',
-
-            13: 'If the project %project% is at capacity',
-            14: 'The worst (least preferable) student assigned to project %project% is %student%',
-            15: "For each student less preferable that %student% on the %lecturer%'s prefernce list",
-            16: 'If the student %student% has the project %project% on their preference list',
-            17: "Remove %project% from %student%'s preference list",
-
-            18: 'If the lecturer %lecturer% is at capacity',
-            19: 'The worst (least preferable) student assigned to a project %project% run by %lecturer% is %student%',
-            20: "For each student less preferable that %student% on the %lecturer%'s prefernce list",
-            21: 'For each project that %lecturer% offers',
-            22: "Remove %project% from %student%'s preference list",
-
-            23: 'Stable matching is found ',
-          },
-          code: [
-            'set each student, lecturer, and project to be free',
-            'while some student s is free:',
-            "\t p = next most prefered project on s's list",
-            '\tl = lecturer who offers p',
-            '\t provisionally assign s to p',
-            '\t if p is over-subscribed:',
-            '\t\t Sw = worst student assigned to p',
-            '\t\t break provisional assignment between Sw and P',
-            '\t else if l is over-subscribed:',
-            '\t\t Sw = worst student assigned to l',
-            '\t\t Pw = project that Sw is assigned to',
-            '\t\t break provisional assignment between Sw and Pw',
-
-            '\t if p is full:',
-            '\t\t Sw = worst student assigned to p',
-            "\t\t for each student S_i less prefered than Sw on l's preference list:",
-            '\t\t\t if S_i finds project p acceptable:',
-            "\t\t\t\t remove p from S_i's preference list",
-
-            '\t if l is full:',
-            '\t\t Sw = worst student assigned to l',
-            "\t\t for each student S_i less prefered than Sw on l's preference list:",
-            '\t\t\t for each project P_i that l offers:',
-            "\t\t\t\t remove P_i from S_i's preference list",
-
-            'Stable matching is found',
-            // 23 lines
-          ],
-        },
-      ],
-
-      [
-        'smt-super',
-        {
-          id: 'smt-super',
-          name: 'Stable Marriage Problem With Ties',
-          orientation: ['Man', 'Woman'],
-          equalGroups: true,
-          algorithm: "Manlove's Algorithm",
-          service: this.SmtSuperService,
-          description:
-            'In this case, we want to find a one-to-one matching that meets the condition of super-stability.<br><br>We show how to do this using an algorithm due to Manlove.',
-          helpTextMap: {
-            1: 'EThis is a placeholder help text.',
-          },
-          code: ['Steps will be specified here', 'like so - placeholder'],
-        },
-      ],
-    ]);
-  }
+    public SmtSuperService: SmtSuperService,
+  ) {}
 
   getListOfAlgorithms(): Array<Algorithm> {
     return Array.from(this.mapOfAvailableAlgorithms.values());
+  }
+
+  getSide(proposing: boolean, plural: boolean): string {
+    const sideDigit = proposing ? 0 : 1;
+    const side = this.currentAlgorithm.orientation[sideDigit];
+    if (plural) {
+      return this.pluralMap.get(side);
+    }
+    return side;
   }
 }

@@ -13,7 +13,7 @@ export class PseudocodeComponent implements OnInit {
 
   constructor(
     public playback: PlaybackService,
-    public algService: AlgorithmRetrievalService
+    public algService: AlgorithmRetrievalService,
   ) {}
 
   ngOnInit(): void {

@@ -38,17 +38,17 @@ describe('workspace-project App', () => {
     page.navigateTo();
     expect(page.getHomePageRow1Text()).toContain('Perfect for beginners');
     expect(page.getHomePageRow1Text()).toContain(
-      'With a simple, intuitive interface, learn how the Gale-Shapley and Extended Gale-Shapley matching algorithms work in different problems with step-by-step playback.'
+      'With a simple, intuitive interface, learn how the Gale-Shapley and Extended Gale-Shapley matching algorithms work in different problems with step-by-step playback.',
     );
 
     expect(page.getHomePageRow2Text()).toContain('Learn visually');
     expect(page.getHomePageRow2Text()).toContain(
-      'Decide to play each algorithm with pseudocode shown or not in conjunction with a visual representation of matching.'
+      'Decide to play each algorithm with pseudocode shown or not in conjunction with a visual representation of matching.',
     );
 
     expect(page.getHomePageRow3Text()).toContain('Control your learning');
     expect(page.getHomePageRow3Text()).toContain(
-      'Use the playback controls for each algorithm to control the speed you learn.'
+      'Use the playback controls for each algorithm to control the speed you learn.',
     );
   });
 
@@ -60,7 +60,7 @@ describe('workspace-project App', () => {
   it('feedback banner text should appear', () => {
     page.navigateTo();
     expect(page.getFeedbackBannerText()).toContain(
-      "If you have any feedback for me, or anything you'd like to see in this app, click the button below to be navigated to the feedback page"
+      "If you have any feedback for me, or anything you'd like to see in this app, click the button below to be navigated to the feedback page",
     );
   });
 
@@ -122,7 +122,7 @@ describe('workspace-project App', () => {
     element(by.id('smp-man-gs')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.css('#algorithmDescription')).getText()).toContain(
-      'Ensure there are no pre-existing matches between men and women'
+      'Ensure there are no pre-existing matches between men and women',
     );
   });
 
@@ -144,7 +144,7 @@ describe('workspace-project App', () => {
     element(by.id('smp-man-gs')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.css('#executionTrace')).getText()).toContain(
-      'Ensure there are no pre-existing matches between men and women.'
+      'Ensure there are no pre-existing matches between men and women.',
     );
   });
 
@@ -180,7 +180,7 @@ describe('workspace-project App', () => {
 
     element(by.id('forwardButton')).click();
     expect(element(by.css('#line2')).getCssValue('color')).toEqual(
-      'rgba(55, 255, 0, 1)'
+      'rgba(55, 255, 0, 1)',
     );
   });
 
@@ -193,7 +193,7 @@ describe('workspace-project App', () => {
 
     element(by.id('forwardButton')).click();
     expect(element(by.css('#algorithmDescription')).getText()).toContain(
-      'While there is still a man without a match, select the first one (man1)'
+      'While there is still a man without a match, select the first one (man1)',
     );
   });
 
@@ -205,7 +205,7 @@ describe('workspace-project App', () => {
     element(by.id('smp-man-gs')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.id('title_main')).getText()).toContain(
-      'Stable Marriage Problem'
+      'Stable Marriage Problem',
     );
     expect(element(by.id('title')).getText()).toContain('Set Up');
   });
@@ -228,7 +228,7 @@ describe('workspace-project App', () => {
     element(by.id('smp-man-egs')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.css('#algorithmDescription')).getText()).toContain(
-      'Set all men and women to have no engagements'
+      'Set all men and women to have no engagements',
     );
   });
 
@@ -240,7 +240,7 @@ describe('workspace-project App', () => {
     element(by.id('smp-man-egs')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.css('#line4')).getText()).toContain(
-      'if w is currently engaged to someone { '
+      'if w is currently engaged to someone { ',
     );
   });
 
@@ -252,7 +252,7 @@ describe('workspace-project App', () => {
     element(by.id('smp-man-egs')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.css('#executionTrace')).getText()).toContain(
-      'Set all men and women to have no engagements.'
+      'Set all men and women to have no engagements.',
     );
   });
 
@@ -276,7 +276,7 @@ describe('workspace-project App', () => {
 
     element(by.id('forwardButton')).click();
     expect(element(by.css('#algorithmDescription')).getText()).toContain(
-      'While there are some men who are not engaged, select the next one (man1)'
+      'While there are some men who are not engaged, select the next one (man1)',
     );
   });
 
@@ -288,7 +288,7 @@ describe('workspace-project App', () => {
     element(by.id('smp-man-egs')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.id('title_main')).getText()).toContain(
-      'Stable Marriage Problem'
+      'Stable Marriage Problem',
     );
     expect(element(by.id('title')).getText()).toContain('Set Up');
   });
@@ -315,7 +315,7 @@ describe('workspace-project App', () => {
     element(by.id('hr2')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.css('#algorithmDescription')).getText()).toContain(
-      'Clear the matches of all residents and hospitals'
+      'Clear the matches of all residents and hospitals',
     );
   });
 
@@ -329,7 +329,7 @@ describe('workspace-project App', () => {
     element(by.id('hr2')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.css('#line4')).getText()).toContain(
-      'if h is fully subscribed then'
+      'if h is fully subscribed then',
     );
   });
 
@@ -343,7 +343,7 @@ describe('workspace-project App', () => {
     element(by.id('hr2')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.css('#executionTrace')).getText()).toContain(
-      'Clear the matches of all residents and hospitals.'
+      'Clear the matches of all residents and hospitals.',
     );
   });
 
@@ -371,7 +371,7 @@ describe('workspace-project App', () => {
 
     element(by.id('forwardButton')).click();
     expect(element(by.css('#algorithmDescription')).getText()).toContain(
-      "The next resident who doesn't have a match and still has some hospitals in their preference list is selected (resident1)"
+      "The next resident who doesn't have a match and still has some hospitals in their preference list is selected (resident1)",
     );
   });
 
@@ -385,7 +385,7 @@ describe('workspace-project App', () => {
     element(by.id('hr2')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.id('title_main')).getText()).toContain(
-      'Hospitals/Residents Problem'
+      'Hospitals/Residents Problem',
     );
     expect(element(by.id('title')).getText()).toContain('Set Up');
   });
@@ -412,7 +412,7 @@ describe('workspace-project App', () => {
     element(by.id('hr4')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.css('#algorithmDescription')).getText()).toContain(
-      'Set all hospitals and residents to be completely free'
+      'Set all hospitals and residents to be completely free',
     );
   });
 
@@ -426,7 +426,7 @@ describe('workspace-project App', () => {
     element(by.id('hr4')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.css('#line4')).getText()).toContain(
-      "if r is assigned to another hospital h'"
+      "if r is assigned to another hospital h'",
     );
   });
 
@@ -440,7 +440,7 @@ describe('workspace-project App', () => {
     element(by.id('hr4')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.css('#executionTrace')).getText()).toContain(
-      'Set all hospitals and residents to be completely free'
+      'Set all hospitals and residents to be completely free',
     );
   });
 
@@ -469,7 +469,7 @@ describe('workspace-project App', () => {
 
     element(by.id('forwardButton')).click();
     expect(element(by.css('#algorithmDescription')).getText()).toContain(
-      'While some hospital (hospitalA) is undersubscribed and has a resident on their preference list that is not assigned to them'
+      'While some hospital (hospitalA) is undersubscribed and has a resident on their preference list that is not assigned to them',
     );
   });
 
@@ -483,7 +483,7 @@ describe('workspace-project App', () => {
     element(by.id('hr4')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.id('title_main')).getText()).toContain(
-      'Hospitals/Residents Problem'
+      'Hospitals/Residents Problem',
     );
     expect(element(by.id('title')).getText()).toContain('Set Up');
   });
@@ -506,7 +506,7 @@ describe('workspace-project App', () => {
     element(by.id('smp-room-irv')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.css('#algorithmDescription')).getText()).toContain(
-      'Set all people to be free'
+      'Set all people to be free',
     );
   });
 
@@ -518,7 +518,7 @@ describe('workspace-project App', () => {
     element(by.id('smp-room-irv')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.css('#line4')).getText()).toContain(
-      'end - no stable matching'
+      'end - no stable matching',
     );
   });
 
@@ -531,7 +531,7 @@ describe('workspace-project App', () => {
 
     // expect(element(by.id('executionTrace')).getText()).toContain("Set all people to be free.");
     expect(element(by.css('#executionTrace')).getText()).toContain(
-      'Set all people to be free.'
+      'Set all people to be free.',
     );
   });
 
@@ -555,7 +555,7 @@ describe('workspace-project App', () => {
 
     element(by.id('forwardButton')).click();
     expect(element(by.css('#algorithmDescription')).getText()).toContain(
-      'While some person person1 has not been assigned to a anyone and has a non-empty preference list'
+      'While some person person1 has not been assigned to a anyone and has a non-empty preference list',
     );
   });
 
@@ -567,7 +567,7 @@ describe('workspace-project App', () => {
     element(by.id('smp-room-irv')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.id('title_main')).getText()).toContain(
-      'Stable Roommates Problem'
+      'Stable Roommates Problem',
     );
     expect(element(by.id('title')).getText()).toContain('Set Up');
   });
@@ -594,7 +594,7 @@ describe('workspace-project App', () => {
     element(by.id('spa2')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.css('#algorithmDescription')).getText()).toContain(
-      'set each student, lecturer, and project to be free and unmatched'
+      'set each student, lecturer, and project to be free and unmatched',
     );
   });
 
@@ -608,7 +608,7 @@ describe('workspace-project App', () => {
     element(by.id('spa2')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.css('#line4')).getText()).toContain(
-      'l = lecturer who offers p'
+      'l = lecturer who offers p',
     );
   });
 
@@ -622,7 +622,7 @@ describe('workspace-project App', () => {
     element(by.id('spa2')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.css('#executionTrace')).getText()).toContain(
-      'set each student, lecturer, and project to be free and unmatched'
+      'set each student, lecturer, and project to be free and unmatched',
     );
   });
 
@@ -650,7 +650,7 @@ describe('workspace-project App', () => {
 
     element(by.id('forwardButton')).click();
     expect(element(by.css('#algorithmDescription')).getText()).toContain(
-      'While some student student1 is free and has a non-empty preference list'
+      'While some student student1 is free and has a non-empty preference list',
     );
   });
 
@@ -664,7 +664,7 @@ describe('workspace-project App', () => {
     element(by.id('spa2')).sendKeys(protractor.Key.ENTER);
 
     expect(element(by.id('title_main')).getText()).toContain(
-      'Student Project Allocation'
+      'Student-Project Allocation',
     );
     expect(element(by.id('title')).getText()).toContain('Set Up');
   });
@@ -675,7 +675,7 @@ describe('workspace-project App', () => {
     expect(logs).not.toContain(
       jasmine.objectContaining({
         level: logging.Level.SEVERE,
-      } as logging.Entry)
+      } as logging.Entry),
     );
   });
 });

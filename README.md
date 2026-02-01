@@ -1,18 +1,12 @@
-# 4th Year Individual Project
+# Algmatch
 
-Hello and welcome to my L4 project repo, this project is extending the web app "Algmatch" to further support the visulisation of stable mathcing algorithms. 
+[You can access the site here.](https://benontheboard.github.io/individual-project/)
 
-For more information check out the [Wiki](https://github.com/CallumOrmond/individual-project/wiki), this contains informaiton about how the site works and the contents on it. It also has the accossiated [dissertation](https://github.com/CallumOrmond/individual-project/wiki/Dissertation) and [presentation](https://github.com/CallumOrmond/individual-project/wiki/Presentation).  
+Matching problems arise whenever an assignment must be found between agents based on their individual preferences. Large-scale examples include the [U.S. National Resident Matching Program](https://www.nrmp.org/), which matches junior doctors to hospitals, so efficient algorithms are necessary. Algmatch seeks to help teach those with no prior knowledge the purpose and function of stable matching algorithms.
 
-To check out the web stite, it can be found here [Algmatch](https://callumormond.github.io/individual-project/)
+We achieve this aim by presenting a step-by-step breakdown of the algorithms' function on a concrete instance in the form of an intuitive animation. We provide various such animations for various problems in order to walk the user from the simplest case up to the more complex and pratically useful ones.
 
+My work on this webapp has been one half of my level four project at the University of Glasgow. The other is the [Algmatch Python package](https://pypi.org/project/algmatch/). Rather than being to aid teaching and learning, the package seeks to aid research at the university. This package proves a centralised collection of efficient and well-tested implementations of various stable matching algorithms. To the best of my knowledge, this is the only publicly available implementation of all the known polynomial-time algorithms for the cases in which the agents are allow to express indifference.
 
-This project was built with with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.7. For more informaiton on hosting the site locally check out the [How to Run](https://github.com/CallumOrmond/individual-project/wiki/How-to-Run) Page.  
-
-This is the Home page of the Site:
-
-![j0gxsnD](https://user-images.githubusercontent.com/77451734/227361671-53f7325d-33bc-4504-ae32-39d7d736f858.png)
-
-Here is a preview of mathcing visulisations:
-
-![L5QFO6Z](https://user-images.githubusercontent.com/77451734/227361748-1bac10fe-da55-4374-81d8-ae2f7eece89b.png)
+<img width="2543" height="1325" alt="image" src="https://github.com/user-attachments/assets/87fc7acf-a442-4cce-b623-583766c9be21" />
+<img width="2559" height="1361" alt="image" src="https://github.com/user-attachments/assets/371a4fdb-61fa-4371-be56-bd13aead8237" />

@@ -6,8 +6,6 @@ import { MatAnimatedIconComponent } from '../mat-animated-icon/mat-animated-icon
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-declare var anime: any;
-
 @Component({
   selector: 'playback-controls',
   templateUrl: './playback-controls.component.html',
@@ -27,7 +25,7 @@ export class PlaybackControlsComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  formatLabel(value: number) : string {
+  formatLabel(value: number): string {
     value = 3050 - value;
     return value >= 1000 ? `${Math.round(value / 1000)}s` : `${value}ms`;
   }
@@ -40,18 +38,14 @@ export class PlaybackControlsComponent implements OnInit {
 
   onStepSliderInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-    const value = Number(input.value)
+    const value = Number(input.value);
     this.playback.jumpToStep(value);
   }
 
   onStepSliderChange(event: Event): void {
     const input = event.target as HTMLInputElement;
-    const value = Number(input.value)
+    const value = Number(input.value);
     this.playback.jumpToStep(value);
     this.playback.onSliderChange(value);
-  }
-
-  delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

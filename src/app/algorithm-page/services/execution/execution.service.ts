@@ -10,7 +10,6 @@ export class ExecutionService {
   commandMap = {};
   commandList = {};
 
-  // add the services for any new algorithms here
   constructor(public algorithmRetrieval: AlgorithmRetrievalService) {}
 
   initialise(): void {
@@ -23,21 +22,21 @@ export class ExecutionService {
     numberOfAgents: number,
     numberOfGroup2Agents: number = numberOfAgents,
     preferences: Map<String, Array<String>>,
-    SRstable: boolean = true
+    SRstable: boolean = true,
   ): Object {
     this.initialise();
     let algorithmService: MatchingAlgorithm =
       this.algorithmRetrieval.mapOfAvailableAlgorithms.get(algorithm).service;
     this.commandMap =
       this.algorithmRetrieval.mapOfAvailableAlgorithms.get(
-        algorithm
+        algorithm,
       ).helpTextMap;
 
     let commandList: AlgorithmData = algorithmService.run(
       numberOfAgents,
       numberOfGroup2Agents,
       preferences,
-      SRstable
+      SRstable,
     );
 
     commandList.descriptions = this.generateDescriptions(commandList);
