@@ -1,0 +1,43 @@
+@use "_colors.scss" as colors;
+
+.alg-navbar {
+  background-color: colors.$navbar-color;
+  height: 48px;
+  font-family: "DM Sans";
+  z-index: 1000;
+}
+
+#alg {
+  color: colors.$logo-alg-color;
+  transition: 200ms color;
+}
+
+#match {
+  color: colors.$logo-match-color;
+  transition: 200ms color;
+}
+
+#algmatch-logo {
+  cursor: pointer;
+  font-size: 20px;
+  vertical-align: -2px;
+}
+
+#algmatch-logo:hover #alg {
+  color: colors.$logo-alg-hover-algpage-color;
+}
+
+#algmatch-logo:hover #match {
+  color: colors.$logo-match-hover-algpage-color;
+}
+
+.navbarIconButton {
+  cursor: pointer;
+  vertical-align: middle;
+  color: colors.$icon-color;
+  transition: 200ms color;
+}
+
+.navbarIconButton:hover {
+  color: colors.$icon-hover-color;
+}

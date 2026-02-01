@@ -18,7 +18,7 @@ export class InfoSidebarComponent implements OnInit {
   @Input() showInfo: boolean;
   @Input() tutorialStep: number;
 
-  @ViewChild('sidebarContainer')
+  @ViewChild('sidebarContainer', { static: true })
   private sidebar: ElementRef;
   private sidebarWidth: number;
 

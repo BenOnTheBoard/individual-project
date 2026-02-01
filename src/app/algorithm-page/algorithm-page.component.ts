@@ -5,8 +5,6 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { CommonModule, NgClass } from '@angular/common';
 import { AgentTitlesComponent } from './agent-titles/agent-titles.component';
@@ -14,12 +12,12 @@ import { PlaybackControlsComponent } from './playback-controls/playback-controls
 import { Router } from '@angular/router';
 import { AlgorithmRetrievalService } from '../algorithm-retrieval.service';
 import { UtilsService } from '../utils/utils.service';
-import { AnimationGuideDialogComponent } from './animation-guide-dialog/animation-guide-dialog.component';
 import { CanvasService } from './services/canvas/canvas.service';
 import { PlaybackService } from './services/playback/playback.service';
 import { InfoSidebarComponent } from './info-sidebar/info-sidebar.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AlgPageNavbarComponent } from './navbar/alg-page-navbar.component';
 declare var $: any; // declaring jquery for use in this file
 declare var anime: any; // declaring the animejs animation library for use in this file
 
@@ -36,37 +34,30 @@ declare var anime: any; // declaring the animejs animation library for use in th
     InfoSidebarComponent,
     AgentTitlesComponent,
     PlaybackControlsComponent,
+    AlgPageNavbarComponent,
   ],
 })
 export class AlgorithmPageComponent implements OnInit {
-  // --------------------------------------------------------------------------------- | INSTANCE VARIABLES
-
-  // looks for the canvas element on the algorithm page and assigns it to the canvas variable
   @ViewChild('canvas', { static: true })
-  canvas: ElementRef<HTMLCanvasElement>;
+  private canvas: ElementRef<HTMLCanvasElement>;
 
-  @ViewChild('leftSidebar')
-  leftSidebar: SidebarComponent;
+  @ViewChild('leftSidebar', { static: true })
+  private leftSidebar: SidebarComponent;
 
-  @ViewChild('rightSidebar')
-  rightSidebar: SidebarComponent;
+  @ViewChild('rightSidebar', { static: true })
+  private rightSidebar: InfoSidebarComponent;
 
-  showCode: boolean = false;
-  dialogOpen: boolean = false;
+  @ViewChild('topNavbar', { static: true })
+  private navbar: AlgPageNavbarComponent;
 
-  showInfo: boolean = false;
+  private readonly barsFadeDuration = 600; // side and navbar fade in and out duration
 
-  tutorialStep: number;
-
-  duringAnimation: boolean = false;
-
-  firstSelection: boolean = true;
-  algorithm = new FormControl<string | null>('');
-  numPeople: number;
-
-  // where SR is going to generate a stable matching or a unstable matching
-  SRstable: boolean = true;
-  SRstableText: string = 'Generating Stable Matchings';
+  protected dialogOpen: boolean = false;
+  protected duringAnimation: boolean = false;
+  protected showCode: boolean = false;
+  protected showInfo: boolean = false;
+  protected SRstable: boolean = true;
+  protected tutorialStep: number;
 
   // --------------------------------------------------------------------------------- | INIT FUNCTIONS
 
@@ -75,7 +66,6 @@ export class AlgorithmPageComponent implements OnInit {
     public algorithmService: AlgorithmRetrievalService,
     public drawService: CanvasService,
     public utils: UtilsService,
-    public dialog: MatDialog,
     public router: Router,
   ) {}
 
@@ -127,35 +117,32 @@ export class AlgorithmPageComponent implements OnInit {
     }
   }
 
-  // --------------------------------------------------------------------------------- | GENERAL FUNCTIONS
-
-  // open the animation guide dialog with a callback function
-  openAnimationGuideDialog(): void {
-    const dialogRef = this.dialog.open(AnimationGuideDialogComponent);
-
-    this.dialogOpen = true;
-
-    dialogRef.afterClosed().subscribe(() => {
-      this.dialogOpen = false;
-    });
-  }
-
   // --------------------------------------------------------------------------------- | ON CLICK FUNCTIONS
 
-  async goHome(): Promise<void> {
+  protected handleNavbarCommand(command: string): void {
+    switch (command) {
+      case 'toggleLeftSidebar':
+        this.toggleSidebar();
+        break;
+      case 'toggleRightSidebar':
+        this.toggleInfoSidebar();
+        break;
+      case 'goHome':
+        this.goHome();
+        break;
+      case 'generatePreferences':
+        this.generateNewPreferences();
+        break;
+    }
+  }
+
+  protected async goHome(): Promise<void> {
     this.fadeToHome();
     await this.utils.delay(1000);
     this.router.navigateByUrl('/');
   }
 
-  async generateNewPreferences(): Promise<void> {
-    // clears any code highlighting
-    var command = this.playback.commandList[this.playback.previousStepCounter];
-    let a = document.getElementById('line' + command['lineNumber']);
-    a.style.backgroundColor = '';
-    a.style.color = '';
-
-    // animates changing of preferences (fade in/out)
+  protected async generateNewPreferences(): Promise<void> {
     this.fadeCanvasOut();
     await this.utils.delay(300);
 
@@ -180,8 +167,7 @@ export class AlgorithmPageComponent implements OnInit {
     this.drawService.redrawCanvas();
   }
 
-  // function run when toggle sidebar button clicked (top left)
-  async toggleSidebar(): Promise<void> {
+  protected async toggleSidebar(): Promise<void> {
     if (this.duringAnimation) return;
     this.duringAnimation = true;
     this.hideMainContent();
@@ -197,8 +183,7 @@ export class AlgorithmPageComponent implements OnInit {
     this.duringAnimation = false;
   }
 
-  // function run when toggle sidebar button clicked (top left)
-  async toggleInfoSidebar(): Promise<void> {
+  protected async toggleInfoSidebar(): Promise<void> {
     if (this.duringAnimation) return;
     this.duringAnimation = true;
     this.hideMainContent();
@@ -214,55 +199,43 @@ export class AlgorithmPageComponent implements OnInit {
     this.duringAnimation = false;
   }
 
-  ChangeStableSR(): void {
-    if (this.SRstable == true) {
-      this.SRstable = false;
-      this.SRstableText = 'Generating Unstable Matchings';
-    } else {
-      this.SRstable = true;
-      this.SRstableText = 'Generating Stable Matchings';
-    }
-  }
-
   // --------------------------------------------------------------------------------- | TUTORIAL FUNCTIONS
 
-  nextTutorialStep(): void {
-    if (this.tutorialStep == 0) {
-      if (this.showCode) {
-        this.toggleSidebar();
-      }
-      this.startTutorial();
-      // step 2
-    } else if (this.tutorialStep == 1) {
-      this.sidebarTutorial();
-      // step 3
-    } else if (this.tutorialStep == 2) {
-      this.mainContentTutorial();
-      // step 4
-    } else if (this.tutorialStep == 3) {
-      this.stopTutorial();
+  protected tutorialUpdate(newStep: number): void {
+    switch (newStep) {
+      case 0:
+        this.stopTutorial();
+        break;
+      case 1:
+        if (this.showCode) {
+          this.toggleSidebar();
+        }
+        this.startTutorial();
+        break;
+      case 2:
+        this.sidebarTutorial();
+        break;
+      case 3:
+        this.mainContentTutorial();
+        break;
     }
   }
 
   startTutorial(): void {
-    this.tutorialStep += 1;
     $('.navbarPopover').popover('show');
   }
 
   sidebarTutorial(): void {
-    this.tutorialStep += 1;
     $('.navbarPopover').popover('hide');
     $('.sidebarPopover').popover('show');
   }
 
   mainContentTutorial(): void {
-    this.tutorialStep += 1;
     $('.sidebarPopover').popover('hide');
     $('.mainContentPopover').popover('show');
   }
 
   stopTutorial(): void {
-    this.tutorialStep = 0;
     $('.navbarPopover').popover('hide');
     $('.sidebarPopover').popover('hide');
     $('.mainContentPopover').popover('hide');
@@ -270,17 +243,10 @@ export class AlgorithmPageComponent implements OnInit {
 
   // --------------------------------------------------------------------------------- | ANIMATIONS
 
-  initShowPage(): void {
-    anime({
-      targets: '.navbar',
-      easing: 'easeOutQuint',
-      translateY: [-150, 0],
-      delay: 200,
-      duration: 900,
-    });
-
-    this.leftSidebar.fadeSidebar(false, 600);
-    this.rightSidebar.fadeSidebar(false, 600);
+  protected initShowPage(): void {
+    this.navbar.toggleNavbar(false, this.barsFadeDuration);
+    this.leftSidebar.fadeSidebar(false, this.barsFadeDuration);
+    this.rightSidebar.fadeSidebar(false, this.barsFadeDuration);
 
     anime({
       targets: '#mainContent',
@@ -291,18 +257,10 @@ export class AlgorithmPageComponent implements OnInit {
     });
   }
 
-  fadeToHome(): void {
-    anime({
-      targets: '.navbar',
-      easing: 'easeOutQuint',
-      translateY: [0, -150],
-      delay: 400,
-      duration: 900,
-    });
-
-    this.leftSidebar.fadeSidebar(true, 600);
-    this.rightSidebar.fadeSidebar(true, 600);
-
+  protected fadeToHome(): void {
+    this.navbar.toggleNavbar(true, this.barsFadeDuration);
+    this.leftSidebar.fadeSidebar(true, this.barsFadeDuration);
+    this.rightSidebar.fadeSidebar(true, this.barsFadeDuration);
     anime({
       targets: '#mainContent',
       easing: 'easeInOutQuint',
@@ -311,7 +269,7 @@ export class AlgorithmPageComponent implements OnInit {
     });
   }
 
-  fadeCanvasOut(): void {
+  protected fadeCanvasOut(): void {
     anime({
       targets: '#myCanvas',
       easing: 'easeInOutQuint',
@@ -320,7 +278,7 @@ export class AlgorithmPageComponent implements OnInit {
     });
   }
 
-  fadeCanvasIn(): void {
+  protected fadeCanvasIn(): void {
     anime({
       targets: '#myCanvas',
       easing: 'easeInOutQuint',
@@ -329,7 +287,7 @@ export class AlgorithmPageComponent implements OnInit {
     });
   }
 
-  hideMainContent(): void {
+  protected hideMainContent(): void {
     anime({
       targets: '#mainContent',
       easing: 'easeInOutQuint',
@@ -338,7 +296,7 @@ export class AlgorithmPageComponent implements OnInit {
     });
   }
 
-  showMainContent(): void {
+  protected showMainContent(): void {
     anime({
       targets: '#mainContent',
       easing: 'easeInOutQuint',

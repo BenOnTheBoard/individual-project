@@ -33,7 +33,7 @@ declare var anime: any;
 export class AlgorithmCardComponent implements OnInit {
   @Input() algorithm: Algorithm;
   @ViewChild(AgentCountFormComponent, { static: true })
-  protected agentForm!: AgentCountFormComponent;
+  protected agentForm: AgentCountFormComponent;
 
   constructor(
     public algRetriever: AlgorithmRetrievalService,
@@ -73,7 +73,7 @@ export class AlgorithmCardComponent implements OnInit {
       duration: 500,
     });
 
-    await this.utils.delay(700);
+    await this.utils.delay(600);
     this.router.navigateByUrl('/animation', { skipLocationChange: true });
   }
 }

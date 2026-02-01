@@ -29,7 +29,7 @@ export class SidebarComponent implements OnInit {
   @Input() showCode: boolean;
   @Input() tutorialStep: number;
 
-  @ViewChild('sidebarContainer')
+  @ViewChild('sidebarContainer', { static: true })
   private sidebar: ElementRef;
   private sidebarWidth: number;
 
