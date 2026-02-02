@@ -125,18 +125,20 @@ export class AlgorithmPageComponent implements OnInit {
 
   protected handleNavbarCommand(command: string): void {
     switch (command) {
+      case 'generatePreferences':
+        this.generateNewPreferences();
+        break;
+      case 'goHome':
+        this.goHome();
+        break;
       case 'toggleLeftSidebar':
         this.toggleSidebar('left');
         break;
       case 'toggleRightSidebar':
         this.toggleSidebar('right');
         break;
-      case 'goHome':
-        this.goHome();
-        break;
-      case 'generatePreferences':
-        this.generateNewPreferences();
-        break;
+      case 'toggleSRStable':
+        this.SRstable != this.SRstable;
     }
   }
 

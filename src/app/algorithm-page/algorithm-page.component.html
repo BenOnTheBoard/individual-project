@@ -3,9 +3,10 @@
 <div class="covering-panel"></div>
 }
 
-<alg-page-navbar #topNavbar [duringAnimation]="duringAnimation" (commandEmitter)="this.handleNavbarCommand($event)"
-  (dialogOpenEmitter)="this.dialogOpen=$event" (SRStableEmitter)="this.SRstable=$event"
-  (tutorialStepEmitter)="this.tutorialUpdate($event)"></alg-page-navbar>
+<alg-page-navbar #topNavbar [duringAnimation]="duringAnimation" [isCodeShowing]="isCodeShowing"
+  [isInfoShowing]="isInfoShowing" [SRStable]="SRstable" (commandEmitter)="this.handleNavbarCommand($event)"
+  (dialogOpenEmitter)="this.dialogOpen=$event;" (tutorialStepEmitter)="this.tutorialUpdate($event)">
+</alg-page-navbar>
 
 <!--- these are absolutely positioned-->
 <sidebar #leftSidebar [(isCodeShowing)]="isCodeShowing" [(tutorialStep)]="tutorialStep"></sidebar>
