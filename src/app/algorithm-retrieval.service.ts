@@ -6,7 +6,6 @@ import { GsStableMarriageService } from './algorithm-page/algorithms/algorithm-s
 import { StableRoomIrvService } from './algorithm-page/algorithms/algorithm-services/smp-room-irv/stable-room-irv.service';
 import { HrHospitalEgsService } from './algorithm-page/algorithms/algorithm-services/hr-hospital-egs/hr-hospital-egs.service';
 import { SpaStudentEgsService } from './algorithm-page/algorithms/algorithm-services/spa-stu-egs/spa-student-egs.service';
-import { SmtSuperService } from './algorithm-page/algorithms/algorithm-services/smt-super/smt-super';
 
 // ------------------------------------------------------- ALGORITHM TEMPLATE
 // [
@@ -312,24 +311,6 @@ export class AlgorithmRetrievalService {
         ],
       },
     ],
-
-    [
-      'smt-super',
-      {
-        id: 'smt-super',
-        name: 'Stable Marriage Problem With Ties',
-        orientation: ['Man', 'Woman'],
-        equalGroups: true,
-        algorithm: "Manlove's Algorithm",
-        service: this.SmtSuperService,
-        description:
-          'In this case, we want to find a one-to-one matching that meets the condition of super-stability.<br><br>We show how to do this using an algorithm due to Manlove.',
-        helpTextMap: {
-          1: 'EThis is a placeholder help text.',
-        },
-        code: ['Steps will be specified here', 'like so - placeholder'],
-      },
-    ],
   ]);
 
   pluralMap: Map<string, string> = new Map([
@@ -350,7 +331,6 @@ export class AlgorithmRetrievalService {
     public StableRoomIrvService: StableRoomIrvService,
     public HrHospitalEgsService: HrHospitalEgsService,
     public SpaStudentEgsService: SpaStudentEgsService,
-    public SmtSuperService: SmtSuperService,
   ) {}
 
   getListOfAlgorithms(): Array<Algorithm> {
