@@ -23,17 +23,15 @@ declare var anime: any; // declaring the animejs animation library for use in th
 })
 export class AlgPageNavbarComponent implements OnInit {
   protected duringAnimation = input<boolean>();
-
-  protected isCodeShowing = true;
-  protected isInfoShowing = true;
-  protected SRStable = true;
+  protected isCodeShowing = input<boolean>();
+  protected isInfoShowing = input<boolean>();
+  protected SRStable = input<boolean>();
   protected step = 0;
 
   // for instructions to page
   protected commandEmitter = output<string>();
-  // delivering info to page
+  // for delivering navbar info to page
   protected dialogOpenEmitter = output<boolean>();
-  protected SRStableEmitter = output<boolean>();
   protected tutorialStepEmitter = output<number>();
 
   @ViewChild('algPageNavbar', { static: true })
@@ -59,18 +57,15 @@ export class AlgPageNavbarComponent implements OnInit {
   }
 
   protected toggleLeftSidebar(): void {
-    this.isCodeShowing = !this.isCodeShowing;
     this.commandEmitter.emit('toggleLeftSidebar');
   }
 
   protected toggleRightSidebar(): void {
-    this.isInfoShowing = !this.isInfoShowing;
     this.commandEmitter.emit('toggleRightSidebar');
   }
 
   protected toggleSRStable(): void {
-    this.SRStable = !this.SRStable;
-    this.SRStableEmitter.emit(this.SRStable);
+    this.commandEmitter.emit('toggleSRStable');
   }
 
   protected emitGoHome(): void {
