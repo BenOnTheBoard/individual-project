@@ -39,7 +39,6 @@ describe('InfoSidebarComponent', () => {
     fixture.detectChanges();
   });
 
-  // can't access this.algorithmService.currentAlgorithm.name - saying .name is undefined within tests
   it('should create', () => {
     expect(component).toBeDefined();
   });

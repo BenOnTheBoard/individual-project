@@ -22,7 +22,7 @@ export class PreferenceRendererService {
   private readonly lecturerBracketWidth = 1.5;
 
   private readonly defaultOffsetY = 10;
-  private readonly defaultOffsetX = 65; // min dist from prefs to centre of circle
+  private readonly defaultOffsetX = 65; // min dist from centre of circle to prefs
 
   private readonly hospitalExtraPrefsOffsetX = 20; // to make space for capacity
   private readonly capacityOffsetX = 45;
