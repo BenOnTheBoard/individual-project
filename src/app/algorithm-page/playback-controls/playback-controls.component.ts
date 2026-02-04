@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { PlaybackService } from '../services/playback/playback.service';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,7 +19,7 @@ import { FormsModule } from '@angular/forms';
   ],
 })
 export class PlaybackControlsComponent implements OnInit {
-  @Input() algorithm: string;
+  readonly algorithm = input<string>(undefined);
 
   constructor(public playback: PlaybackService) {}
 

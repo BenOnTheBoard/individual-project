@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
@@ -9,18 +9,22 @@ import { MatIcon } from '@angular/material/icon';
   imports: [MatIcon, NgClass],
 })
 export class MatAnimatedIconComponent implements OnInit {
-  @Input() start: String;
-  @Input() end: String;
-  @Input() colorStart: String;
-  @Input() colorEnd: String;
-  @Input() animate: boolean;
-  @Input() animateFromParent?: boolean = false;
+  readonly start = input<String>(undefined);
+  readonly end = input<String>(undefined);
+  readonly colorStart = input<String>(undefined);
+  readonly colorEnd = input<String>(undefined);
+  readonly animate = input<boolean>(undefined);
+  readonly animateFromParent = input<boolean>(false);
+
+  #internalAnimate = false;
 
   constructor() {}
 
   ngOnInit() {}
 
   toggle() {
-    if (!this.animateFromParent) this.animate = !this.animate;
+    if (!this.animateFromParent()) {
+      this.#internalAnimate = !this.#internalAnimate;
+    }
   }
 }

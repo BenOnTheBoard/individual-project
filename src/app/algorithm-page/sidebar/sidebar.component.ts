@@ -2,9 +2,9 @@ import {
   Component,
   ElementRef,
   HostListener,
-  Input,
   OnInit,
   viewChild,
+  input
 } from '@angular/core';
 import { AlgDescriptionComponent } from './alg-description/alg-description.component';
 import { PseudocodeComponent } from './pseudocode/pseudocode.component';
@@ -26,8 +26,8 @@ declare var anime: any; // declaring the animejs animation library for use in th
   ],
 })
 export class SidebarComponent implements OnInit {
-  @Input() isCodeShowing: boolean;
-  @Input() tutorialStep: number;
+  readonly isCodeShowing = input<boolean>(undefined);
+  readonly tutorialStep = input<number>(undefined);
 
   private sidebar = viewChild<ElementRef>('sidebarContainer');
   #sidebarWidth: number;
@@ -53,7 +53,7 @@ export class SidebarComponent implements OnInit {
   }
 
   #setCurrentPosition(): void {
-    const targetX = this.isCodeShowing ? '0px' : `-${this.#sidebarWidth}px`;
+    const targetX = this.isCodeShowing() ? '0px' : `-${this.#sidebarWidth}px`;
     this.sidebar().nativeElement.style.transform = `translateX(${targetX})`;
   }
 
@@ -72,7 +72,7 @@ export class SidebarComponent implements OnInit {
     if (this.#isInAnimation) return;
     this.#isInAnimation = true;
 
-    const direction = this.isCodeShowing ? 'reverse' : 'normal';
+    const direction = this.isCodeShowing() ? 'reverse' : 'normal';
     anime({
       targets: this.sidebar().nativeElement,
       easing: 'easeInOutQuint',

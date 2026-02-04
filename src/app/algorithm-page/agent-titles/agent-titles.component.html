@@ -2,13 +2,13 @@
 <div class="d-flex justify-content-around flex-wrap flex-md-nowrap align-items-center"
   style="height:120px; border-bottom: 1px solid rgba(184, 184, 184, 0.658);">
 
-  @if (this.isCodeShowing || (this.algRetriever.currentAlgorithm.id != 'smp-room-irv')) {
+  @if (this.isCodeShowing() || (this.algRetriever.currentAlgorithm.id != 'smp-room-irv')) {
   <h1 id="lhsName" class="h2 mt-3 row text-center border-bottom mr-3">
     {{ this.algRetriever.getSide(true, true) }}
   </h1>
   }
 
-  @if (!this.isCodeShowing) {
+  @if (!this.isCodeShowing()) {
   <div class="row text-center border-bottom mr-3" style="position: fixed; height:114px; width: 350px;">
     <h3 class="col h2 sidebarPopover my-auto text-center" style="font-weight: 400; font-size: 1vw; line-height: 1.5vw;">
       {{ this.playback.description }}
@@ -31,7 +31,7 @@
     {{ this.algRetriever.getSide(false, true) }}
   </h1>
 
-  @if (!this.isCodeShowing) {
+  @if (!this.isCodeShowing()) {
   <div class="row text-center border-bottom mr-3" style="position: fixed; height:114px; width: 350px;">
     <h3 class="col h2 sidebarPopover my-auto text-center" style="font-weight: 400; font-size: 1vw; line-height: 1.5vw;">
       {{ this.playback.description }}

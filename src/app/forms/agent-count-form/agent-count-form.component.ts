@@ -3,9 +3,9 @@ import {
   Component,
   EventEmitter,
   HostListener,
-  Input,
   OnInit,
   Output,
+  input,
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -24,7 +24,7 @@ import { UtilsService } from 'src/app/utils/utils.service';
   templateUrl: './agent-count-form.component.html',
 })
 export class AgentCountFormComponent implements OnInit {
-  @Input() algorithm: Algorithm;
+  readonly algorithm = input<Algorithm>(undefined);
   @Output() enterEvent = new EventEmitter();
 
   protected numberOfGroup1Agents = new FormControl<number | null>(null, [
@@ -58,7 +58,7 @@ export class AgentCountFormComponent implements OnInit {
   }
 
   isFormValid(): boolean {
-    switch (this.algorithm.name) {
+    switch (this.algorithm().name) {
       case 'Stable Marriage Problem':
         return this.numberOfGroup1Agents.valid;
       case 'Hospitals/Residents Problem':

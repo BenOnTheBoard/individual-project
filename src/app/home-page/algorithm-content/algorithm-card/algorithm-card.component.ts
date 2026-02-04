@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, viewChild } from '@angular/core';
+import { Component, OnInit, viewChild, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
@@ -31,7 +31,7 @@ declare var anime: any;
   ],
 })
 export class AlgorithmCardComponent implements OnInit {
-  @Input() algorithm: Algorithm;
+  readonly algorithm = input<Algorithm>(undefined);
   protected readonly agentForm = viewChild(AgentCountFormComponent);
 
   constructor(
@@ -44,7 +44,7 @@ export class AlgorithmCardComponent implements OnInit {
 
   async onGeneratePreferences(): Promise<void> {
     // change the global algorithm to the one passed into this dialog
-    this.algRetriever.currentAlgorithm = this.algorithm;
+    this.algRetriever.currentAlgorithm = this.algorithm();
 
     const isRoommates = this.algRetriever.currentAlgorithm.id == 'smp-room-irv';
     this.algRetriever.numberOfGroup1Agents = isRoommates

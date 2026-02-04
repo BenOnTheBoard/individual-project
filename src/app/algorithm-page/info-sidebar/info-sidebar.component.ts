@@ -2,9 +2,9 @@ import {
   Component,
   ElementRef,
   HostListener,
-  Input,
   OnInit,
   viewChild,
+  input,
 } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 declare var anime: any; // declaring the animejs animation library for use in this file
@@ -15,10 +15,10 @@ declare var anime: any; // declaring the animejs animation library for use in th
   styleUrls: ['./info-sidebar.component.scss'],
 })
 export class InfoSidebarComponent implements OnInit {
-  @Input() isInfoShowing: boolean;
-  @Input() tutorialStep: number;
+  readonly isInfoShowing = input<boolean>(undefined);
+  readonly tutorialStep = input<number>(undefined);
 
-  private readonly sidebar = viewChild<ElementRef>('sidebarContainer');
+  private sidebar = viewChild<ElementRef>('sidebarContainer');
   #sidebarWidth: number;
 
   #isInAnimation: boolean;
@@ -42,7 +42,7 @@ export class InfoSidebarComponent implements OnInit {
   }
 
   #setCurrentPosition(): void {
-    const targetX = this.isInfoShowing ? '0px' : `${this.#sidebarWidth}px`;
+    const targetX = this.isInfoShowing() ? '0px' : `${this.#sidebarWidth}px`;
     this.sidebar().nativeElement.style.transform = `translateX(${targetX})`;
   }
 
@@ -61,7 +61,7 @@ export class InfoSidebarComponent implements OnInit {
     if (this.#isInAnimation) return;
     this.#isInAnimation = true;
 
-    const direction = this.isInfoShowing ? 'reverse' : 'normal';
+    const direction = this.isInfoShowing() ? 'reverse' : 'normal';
     anime({
       targets: this.sidebar().nativeElement,
       easing: 'easeInOutQuint',
