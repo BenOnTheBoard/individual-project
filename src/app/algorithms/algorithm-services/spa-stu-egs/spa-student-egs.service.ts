@@ -405,18 +405,19 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   }
 
   updateLecturerPreferances() {
-    // set all to black
+    let colourHex = this.colourHexService.getHex('black');
+
     for (const lecturerRanking of this.algorithmSpecificData[
       'lecturerRanking'
     ]) {
       for (let i = 0; i < lecturerRanking.length; i++) {
-        lecturerRanking[i] = `{#000000${lecturerRanking[i].slice(-2)[0]}}`;
+        lecturerRanking[i] = `{${colourHex}${lecturerRanking[i].slice(-2)[0]}}`;
       }
     }
 
-    // set matched to green
+    colourHex = this.colourHexService.getHex('green');
+
     for (const student of this.group1Agents.values()) {
-      // if student has match
       if (student.match.length > 0) {
         const project = student.match[0];
         const lecturer = this.getProjectLecturer(project);
@@ -428,7 +429,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
         this.algorithmSpecificData['lecturerRanking'][lectureIndex][
           studentIndex
-        ] = `{#53D26F${this.utils.getLastChar(student.name)}}`;
+        ] = `{${colourHex}${this.utils.getLastChar(student.name)}}`;
       }
     }
   }

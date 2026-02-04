@@ -110,8 +110,9 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     );
 
     const hospitalLastChar = this.utils.getLastChar(hospital.name);
+    const colourHex = this.colourHexService.getHex('black');
     this.algorithmSpecificData['hospitalCapacity'][hospitalLastChar] =
-      `{#000000${String(hospital.availableSpaces)}}`;
+      `{${colourHex}${String(hospital.availableSpaces)}}`;
 
     // unassign r and h'
     this.update(5, {
@@ -176,8 +177,9 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     );
 
     if (hospital.match.length >= hospital.availableSpaces - 1) {
+      const colourHex = this.colourHexService.getHex('green');
       this.algorithmSpecificData['hospitalCapacity'][proposeeLastChar] =
-        `{#53D26F${String(hospital.availableSpaces)}}`;
+        `{${colourHex}${String(hospital.availableSpaces)}}`;
     }
 
     resident.match[0] = hospital;

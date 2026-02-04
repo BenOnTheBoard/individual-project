@@ -165,10 +165,9 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     );
 
     if (hospital.match.length >= hospital.availableSpaces - 1) {
+      const colourHex = this.colourHexService.getHex('green');
       this.algorithmSpecificData['hospitalCapacity'][proposeeLastChar] =
-        '{#53D26F' +
-        this.algorithmSpecificData['hospitalCapacity'][proposeeLastChar] +
-        '}';
+        `{${colourHex}${this.algorithmSpecificData['hospitalCapacity'][proposeeLastChar]}}`;
     }
 
     this.update(7, {
