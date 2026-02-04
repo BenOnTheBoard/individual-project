@@ -1,12 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  HostListener,
-  OnInit,
-  Output,
-  input,
-} from '@angular/core';
+import { Component, HostListener, OnInit, input, output } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -25,7 +18,7 @@ import { UtilsService } from 'src/app/utils/utils.service';
 })
 export class AgentCountFormComponent implements OnInit {
   readonly algorithm = input<Algorithm>(undefined);
-  @Output() enterEvent = new EventEmitter();
+  readonly enterEvent = output();
 
   protected numberOfGroup1Agents = new FormControl<number | null>(null, [
     Validators.required,
