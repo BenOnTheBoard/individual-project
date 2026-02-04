@@ -13,18 +13,16 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
     this.update(1);
 
     while (this.freeAgentsOfGroup1.length > 0) {
-      let currentAgent = this.group1Agents.get(this.freeAgentsOfGroup1[0]);
+      const currentAgent = this.group1Agents.get(this.freeAgentsOfGroup1[0]);
 
       if (
-        currentAgent.ranking.length <= 0 ||
-        !this.getNextPotentialProposee(currentAgent)
+        currentAgent.ranking.length > 0 &&
+        !!this.getNextPotentialProposee(currentAgent)
       ) {
-        this.freeAgentsOfGroup1.shift();
-      } else {
         this.update(2, { '%currentAgent%': currentAgent.name });
 
         // r := first such resident on h's list;
-        let potentialProposee: Agent =
+        const potentialProposee: Agent =
           this.getNextPotentialProposee(currentAgent);
 
         this.update(3, {
@@ -38,9 +36,9 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
         this.provisionallyAssign(currentAgent, potentialProposee);
 
         this.removeRuledOutPreferences(currentAgent, potentialProposee);
-
-        this.freeAgentsOfGroup1.shift();
       }
+
+      this.freeAgentsOfGroup1.shift();
     }
 
     this.currentlySelectedAgents = [];

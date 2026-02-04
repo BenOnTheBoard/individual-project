@@ -20,8 +20,8 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
     let projectLists = [];
 
     // Students - Group 1
-    for (let student of Array.from(this.group1Agents.values())) {
-      let agent1Rankings = Array.from(new Map(this.group2Agents).values());
+    for (const student of Array.from(this.group1Agents.values())) {
+      const agent1Rankings = Array.from(new Map(this.group2Agents).values());
       this.utils.shuffle(agent1Rankings);
       this.group1Agents.get(student.name).ranking = agent1Rankings;
     }
@@ -35,8 +35,8 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
 
     // Projects - Group 2
     let count = 1;
-    for (let project of Array.from(this.group2Agents.values())) {
-      let listIndex = Math.ceil(count / 3) - 1;
+    for (const project of Array.from(this.group2Agents.values())) {
+      const listIndex = Math.ceil(count / 3) - 1;
       projectLists[listIndex].push(project.name);
       count++;
     }
@@ -45,8 +45,8 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
     this.algorithmSpecificData['lecturerRanking'] = [];
     count = 0;
     let lecturerRanking = [];
-    for (let lecturer of Array.from(this.group3Agents.values())) {
-      let agent3Rankings = Array.from(new Map(this.group1Agents).values());
+    for (const lecturer of Array.from(this.group3Agents.values())) {
+      const agent3Rankings = Array.from(new Map(this.group1Agents).values());
       this.utils.shuffle(agent3Rankings);
       this.group3Agents.get(lecturer.name).ranking = agent3Rankings;
 
@@ -54,7 +54,7 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
 
       // add lecture ranking to algorithmspecData for use in canvas display
       lecturerRanking = [];
-      for (let student of agent3Rankings) {
+      for (const student of agent3Rankings) {
         lecturerRanking.push(this.utils.getLastChar(student.name));
       }
       this.algorithmSpecificData['lecturerRanking'].push(lecturerRanking);
@@ -66,11 +66,11 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
   populatePreferences(preferences: Map<String, Array<String>>): void {
     this.generatePreferences();
 
-    let tempCopyList: Agent[];
+    let tempCopyList: Array<Agent>;
 
-    for (let agent of Array.from(this.group1Agents.keys())) {
+    for (const agent of Array.from(this.group1Agents.keys())) {
       tempCopyList = [];
-      for (let preferenceAgent of preferences.get(
+      for (const preferenceAgent of preferences.get(
         this.utils.getLastChar(String(agent)),
       )) {
         tempCopyList.push(
@@ -82,10 +82,10 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
   }
 
   printRanking(group) {
-    for (let agent of group.values()) {
-      let names = [];
+    for (const agent of group.values()) {
+      const names = [];
       if (agent.ranking) {
-        for (let agentInner of agent.ranking) {
+        for (const agentInner of agent.ranking) {
           names.push(agentInner.name);
         }
       }

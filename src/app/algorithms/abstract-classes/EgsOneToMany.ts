@@ -12,76 +12,73 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
   breakAssignment(currentAgent: Agent, potentialProposee: Agent) {
     // if w is currently assigned to someone {
     this.update(4, { '%woman%': potentialProposee.name });
-    if (potentialProposee.match.length >= 1) {
-      // break the provisional assignment of r to h'
-      let matchPosition: number = this.findPositionInMatches(
-        potentialProposee,
-        potentialProposee.match[0],
-      );
-
-      if (
-        potentialProposee.match[0].ranking.filter(
-          (agent) => agent.match[0] != currentAgent,
-        ).length > 0 &&
-        !this.freeAgentsOfGroup1.includes(potentialProposee.match[0].name) &&
-        potentialProposee.match[0].ranking.length > 0
-      ) {
-        this.freeAgentsOfGroup1.push(potentialProposee.match[0].name);
-      }
-
-      this.removeArrayFromArray(this.currentLines, [
-        this.utils.getLastChar(potentialProposee.match[0].name),
-        this.utils.getLastChar(potentialProposee.name),
-        'green',
-      ]);
-
-      this.changePreferenceStyle(
-        this.group1CurrentPreferences,
-        this.utils.getLastChar(potentialProposee.match[0].name),
-        this.originalGroup1CurrentPreferences
-          .get(this.utils.getLastChar(potentialProposee.match[0].name))
-          .findIndex(
-            (woman) => woman == this.utils.getLastChar(potentialProposee.name),
-          ),
-        'grey',
-      );
-      this.changePreferenceStyle(
-        this.group2CurrentPreferences,
-        this.utils.getLastChar(potentialProposee.name),
-        matchPosition,
-        'grey',
-      );
-
-      this.update(5, {
-        '%woman%': potentialProposee.name,
-        '%currentPartner%': potentialProposee.match[0].name,
-      });
-
-      potentialProposee.ranking.splice(matchPosition, 1);
-      potentialProposee.match[0].ranking.splice(
-        this.findPositionInMatches(
-          potentialProposee.match[0],
-          potentialProposee,
-        ),
-        1,
-      );
-    } else {
+    if (potentialProposee.match.length < 1) {
       this.update(6, { '%woman%': potentialProposee.name });
+      return;
     }
+    // break the provisional assignment of r to h'
+    const matchPosition: number = this.findPositionInMatches(
+      potentialProposee,
+      potentialProposee.match[0],
+    );
+
+    if (
+      potentialProposee.match[0].ranking.filter(
+        (agent) => agent.match[0] != currentAgent,
+      ).length > 0 &&
+      !this.freeAgentsOfGroup1.includes(potentialProposee.match[0].name) &&
+      potentialProposee.match[0].ranking.length > 0
+    ) {
+      this.freeAgentsOfGroup1.push(potentialProposee.match[0].name);
+    }
+
+    this.removeArrayFromArray(this.currentLines, [
+      this.utils.getLastChar(potentialProposee.match[0].name),
+      this.utils.getLastChar(potentialProposee.name),
+      'green',
+    ]);
+
+    this.changePreferenceStyle(
+      this.group1CurrentPreferences,
+      this.utils.getLastChar(potentialProposee.match[0].name),
+      this.originalGroup1CurrentPreferences
+        .get(this.utils.getLastChar(potentialProposee.match[0].name))
+        .findIndex(
+          (woman) => woman == this.utils.getLastChar(potentialProposee.name),
+        ),
+      'grey',
+    );
+    this.changePreferenceStyle(
+      this.group2CurrentPreferences,
+      this.utils.getLastChar(potentialProposee.name),
+      matchPosition,
+      'grey',
+    );
+
+    this.update(5, {
+      '%woman%': potentialProposee.name,
+      '%currentPartner%': potentialProposee.match[0].name,
+    });
+
+    potentialProposee.ranking.splice(matchPosition, 1);
+    potentialProposee.match[0].ranking.splice(
+      this.findPositionInMatches(potentialProposee.match[0], potentialProposee),
+      1,
+    );
   }
 
   provisionallyAssign(currentAgent: Agent, potentialProposee: Agent) {
     // provisionally assign r to h;
 
-    let agentLastChar = this.utils.getLastChar(currentAgent.name);
-    let proposeeLastChar = this.utils.getLastChar(potentialProposee.name);
+    const agentLastChar = this.utils.getLastChar(currentAgent.name);
+    const proposeeLastChar = this.utils.getLastChar(potentialProposee.name);
     this.removeArrayFromArray(this.currentLines, [
       agentLastChar,
       proposeeLastChar,
       'red',
     ]);
 
-    let greenLine = [agentLastChar, proposeeLastChar, 'green'];
+    const greenLine = [agentLastChar, proposeeLastChar, 'green'];
     this.currentLines.push(greenLine);
 
     this.changePreferenceStyle(
@@ -110,7 +107,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
   }
 
   removeRuledOutPreferences(currentAgent: Agent, potentialProposee: Agent) {
-    let currentAgentPosition: number = potentialProposee.ranking.findIndex(
+    const currentAgentPosition: number = potentialProposee.ranking.findIndex(
       (agent: { name: string }) => agent.name == currentAgent.name,
     );
 
@@ -126,7 +123,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       i < potentialProposee.ranking.length;
       i++
     ) {
-      let proposeePosition: number = this.findPositionInMatches(
+      const proposeePosition: number = this.findPositionInMatches(
         potentialProposee.ranking[i],
         potentialProposee,
       );
@@ -164,7 +161,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
 
       potentialProposee.ranking[i].ranking.splice(proposeePosition, 1);
       potentialProposee.ranking.splice(i, 1);
-      i -= 1;
+      i--;
 
       proposeeRankingClearCounter++;
 
