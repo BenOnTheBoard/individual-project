@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ColourHexService } from '../colour-hex.service';
+import { ColourHexService } from '../../../utils/colour-hex.service';
 import { Position } from 'src/app/utils/position';
 
 interface TextRenderState {

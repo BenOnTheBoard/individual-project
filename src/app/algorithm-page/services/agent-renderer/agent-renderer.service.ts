@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AlgorithmRetrievalService } from '../../../algorithm-retrieval.service';
 import { LayoutService } from '../layout/layout.service';
 import { TextRendererService } from '../text-renderer/text-renderer.service';
-import { ColourHexService } from '../colour-hex.service';
+import { ColourHexService } from '../../../utils/colour-hex.service';
 import { Position } from 'src/app/utils/position';
 
 @Injectable({
@@ -23,7 +23,7 @@ export class AgentRendererService {
     public algService: AlgorithmRetrievalService,
     public layoutService: LayoutService,
     public textRenderer: TextRendererService,
-    public colourHexService: ColourHexService
+    public colourHexService: ColourHexService,
   ) {}
 
   public setContext(ctx: CanvasRenderingContext2D): void {
@@ -49,7 +49,7 @@ export class AgentRendererService {
   public drawGroup(
     agentCount: number,
     labelGenerator: (i: number) => string,
-    fillStyle: string
+    fillStyle: string,
   ): void {
     this.ctx.fillStyle = fillStyle;
     this.textRenderer.setFontSize(this.radius);
@@ -71,7 +71,7 @@ export class AgentRendererService {
     this.drawGroup(
       this.algService.numberOfGroup1Agents,
       (i: number) => String(i + 1),
-      this.colourHexService.getHex(this.groupOneColour)
+      this.colourHexService.getHex(this.groupOneColour),
     );
   }
 
@@ -79,7 +79,7 @@ export class AgentRendererService {
     this.drawGroup(
       this.algService.numberOfGroup2Agents,
       (i: number) => String.fromCharCode(65 + i),
-      this.colourHexService.getHex(this.groupTwoColour)
+      this.colourHexService.getHex(this.groupTwoColour),
     );
   }
 

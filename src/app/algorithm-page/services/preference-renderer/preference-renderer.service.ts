@@ -3,7 +3,7 @@ import { AlgorithmRetrievalService } from '../../../algorithm-retrieval.service'
 import { LayoutService } from '../layout/layout.service';
 import { TextRendererService } from '../text-renderer/text-renderer.service';
 import { Step } from 'src/app/algorithms/interfaces/Step';
-import { ColourHexService } from '../colour-hex.service';
+import { ColourHexService } from '../../../utils/colour-hex.service';
 import { AgentRendererService } from '../agent-renderer/agent-renderer.service';
 import { Position } from 'src/app/utils/position';
 import { UtilsService } from 'src/app/utils/utils.service';
