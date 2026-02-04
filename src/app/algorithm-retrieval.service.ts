@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Algorithm } from './Algorithm';
 import { HrResidentEgsService } from './algorithm-page/algorithms/algorithm-services/hr-resident-egs/hr-resident-egs.service';
 import { EgsStableMarriageService } from './algorithm-page/algorithms/algorithm-services/smp-man-egs/egs-stable-marriage.service';
@@ -30,6 +30,14 @@ export class AlgorithmRetrievalService {
 
   numberOfGroup1Agents: number = 5;
   numberOfGroup2Agents: number = 5;
+
+  // Algorithm Injections
+  protected gsStableMarriageService = inject(GsStableMarriageService);
+  protected egsStableMarriageService = inject(EgsStableMarriageService);
+  protected HrResidentEgsService = inject(HrResidentEgsService);
+  protected StableRoomIrvService = inject(StableRoomIrvService);
+  protected HrHospitalEgsService = inject(HrHospitalEgsService);
+  protected SpaStudentEgsService = inject(SpaStudentEgsService);
 
   mapOfAvailableAlgorithms: Map<String, Algorithm> = new Map([
     [
@@ -323,15 +331,6 @@ export class AlgorithmRetrievalService {
     ['Project', 'Projects'],
     ['Lecturer', 'Lecturers'],
   ]);
-
-  constructor(
-    public gsStableMarriageService: GsStableMarriageService,
-    public egsStableMarriageService: EgsStableMarriageService,
-    public HrResidentEgsService: HrResidentEgsService,
-    public StableRoomIrvService: StableRoomIrvService,
-    public HrHospitalEgsService: HrHospitalEgsService,
-    public SpaStudentEgsService: SpaStudentEgsService,
-  ) {}
 
   getListOfAlgorithms(): Array<Algorithm> {
     return Array.from(this.mapOfAvailableAlgorithms.values());

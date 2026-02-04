@@ -23,7 +23,7 @@ export class InfoSidebarComponent implements OnInit {
 
   #isInAnimation: boolean;
 
-  constructor(public algorithmService: AlgorithmRetrievalService) {}
+  constructor(public algRetriever: AlgorithmRetrievalService) {}
 
   ngOnInit(): void {}
 

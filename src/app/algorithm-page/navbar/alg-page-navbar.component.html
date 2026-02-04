@@ -19,14 +19,14 @@
         <span style="color: white; font-size: 0.98rem; font-weight: 350;">{{this.getTitle()}}</span>
     </div>
 
-    @if (this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem') {
+    @if (this.algRetriever.currentAlgorithm.name == 'Stable Roommates Problem') {
     <div class="col-2 text-right">
         <span style="color: white; font-size: 0.98rem; font-weight: 350;">Generate Stable Matchings</span>
     </div>
     }
 
     <div class="col-3 text-right">
-        @if (this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem') {
+        @if (this.algRetriever.currentAlgorithm.name == 'Stable Roommates Problem') {
         <mat-icon class="navbarIconButton unselectable mr-4" matTooltip="Stable/Unstable" mat-button
             (click)="this.toggleSRStable()" [ngClass]="{'disabled': this.step != 0}">{{this.SRStable()
             ?"check_box":"check_box_outline_blank"}}</mat-icon>

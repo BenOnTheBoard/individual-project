@@ -39,7 +39,7 @@ export class AlgPageNavbarComponent implements OnInit {
   #isInAnimation = false;
 
   constructor(
-    public algorithmService: AlgorithmRetrievalService,
+    public algRetriever: AlgorithmRetrievalService,
     public drawService: CanvasService,
     public dialog: MatDialog,
   ) {}
@@ -76,8 +76,8 @@ export class AlgPageNavbarComponent implements OnInit {
   }
 
   protected getTitle(): string {
-    const { name, algorithm } = this.algorithmService.currentAlgorithm;
-    const optimisedSide = this.algorithmService.getSide(true, false);
+    const { name, algorithm } = this.algRetriever.currentAlgorithm;
+    const optimisedSide = this.algRetriever.getSide(true, false);
     return `${name} / ${algorithm} / ${optimisedSide}-Oriented`;
   }
 

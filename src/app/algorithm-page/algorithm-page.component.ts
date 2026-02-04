@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   HostListener,
+  inject,
   OnInit,
   viewChild,
 } from '@angular/core';
@@ -56,23 +57,20 @@ export class AlgorithmPageComponent implements OnInit {
   protected SRstable: boolean = true;
   protected tutorialStep: number;
 
+  protected playback = inject(PlaybackService);
+  protected algRetriever = inject(AlgorithmRetrievalService);
+  protected drawService = inject(CanvasService);
+  protected utils = inject(UtilsService);
+  protected router = inject(Router);
+
   // --------------------------------------------------------------------------------- | INIT FUNCTIONS
-
-  constructor(
-    public playback: PlaybackService,
-    public algorithmService: AlgorithmRetrievalService,
-    public drawService: CanvasService,
-    public utils: UtilsService,
-    public router: Router,
-  ) {}
-
   ngOnInit(): void {
     this.drawService.setCanvas(this.canvas());
     this.drawService.initialise();
     this.playback.setAlgorithm(
-      this.algorithmService.currentAlgorithm.id,
-      this.algorithmService.numberOfGroup1Agents,
-      this.algorithmService.numberOfGroup2Agents,
+      this.algRetriever.currentAlgorithm.id,
+      this.algRetriever.numberOfGroup1Agents,
+      this.algRetriever.numberOfGroup2Agents,
     );
 
     // initialise all of the popovers for the tutorial
@@ -145,21 +143,19 @@ export class AlgorithmPageComponent implements OnInit {
     this.#fadeCanvas(true);
     await this.utils.delay(300);
 
-    if (
-      this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem'
-    ) {
+    if (this.algRetriever.currentAlgorithm.name == 'Stable Roommates Problem') {
       this.playback.setAlgorithm(
-        this.algorithmService.currentAlgorithm.id,
-        this.algorithmService.numberOfGroup1Agents,
-        this.algorithmService.numberOfGroup2Agents,
+        this.algRetriever.currentAlgorithm.id,
+        this.algRetriever.numberOfGroup1Agents,
+        this.algRetriever.numberOfGroup2Agents,
         null,
         this.SRstable,
       );
     } else {
       this.playback.setAlgorithm(
-        this.algorithmService.currentAlgorithm.id,
-        this.algorithmService.numberOfGroup1Agents,
-        this.algorithmService.numberOfGroup2Agents,
+        this.algRetriever.currentAlgorithm.id,
+        this.algRetriever.numberOfGroup1Agents,
+        this.algRetriever.numberOfGroup2Agents,
       );
     }
     this.#fadeCanvas(false);

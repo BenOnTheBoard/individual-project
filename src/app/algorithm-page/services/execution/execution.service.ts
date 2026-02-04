@@ -25,14 +25,14 @@ export class ExecutionService {
     SRstable: boolean = true,
   ): Object {
     this.initialise();
-    const algorithmService: MatchingAlgorithm =
+    const algRetriever: MatchingAlgorithm =
       this.algorithmRetrieval.mapOfAvailableAlgorithms.get(algorithm).service;
     this.commandMap =
       this.algorithmRetrieval.mapOfAvailableAlgorithms.get(
         algorithm,
       ).helpTextMap;
 
-    const commandList: AlgorithmData = algorithmService.run(
+    const commandList: AlgorithmData = algRetriever.run(
       numberOfAgents,
       numberOfGroup2Agents,
       preferences,

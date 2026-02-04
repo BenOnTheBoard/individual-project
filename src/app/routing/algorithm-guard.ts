@@ -14,7 +14,7 @@ import { AlgorithmRetrievalService } from '../algorithm-retrieval.service';
 })
 export class AlgorithmGuard implements CanActivate {
   constructor(
-    public algorithmService: AlgorithmRetrievalService,
+    public algRetriever: AlgorithmRetrievalService,
     private _router: Router,
   ) {}
 
@@ -26,7 +26,7 @@ export class AlgorithmGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (this.algorithmService.currentAlgorithm) {
+    if (this.algRetriever.currentAlgorithm) {
       return true;
     }
 
