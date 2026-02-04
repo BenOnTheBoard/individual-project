@@ -19,7 +19,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
 
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
-      let group1AgentName = this.group1Name + i;
+      const group1AgentName = this.group1Name + i;
 
       this.group1Agents.set(group1AgentName, {
         name: group1AgentName,
@@ -34,7 +34,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
     let currentLetter = 'A';
 
     for (let i = 1; i < this.numberOfGroup2Agents + 1; i++) {
-      let group2AgentName = this.group2Name + currentLetter;
+      const group2AgentName = this.group2Name + currentLetter;
 
       this.group2Agents.set(group2AgentName, {
         name: group2AgentName,
@@ -56,36 +56,32 @@ export class GsStableMarriageService extends MatchingAlgorithm {
       this.currentlySelectedAgents = [];
       this.relevantPreferences = [];
 
-      let man: Man = this.group1Agents.get(this.freeAgentsOfGroup1[0]);
-      this.relevantPreferences.push(man['name'].substring(3));
-      this.currentlySelectedAgents.push(man['name'].substring(3));
+      const man: Man = this.group1Agents.get(this.freeAgentsOfGroup1[0]);
+      this.relevantPreferences.push(man.name.substring(3));
+      this.currentlySelectedAgents.push(man.name.substring(3));
 
       this.update(2, { '%man%': man.name });
 
       // 3: w = most preferred woman on m’s list to which he has not yet proposed;
-      let woman: Agent = man.ranking[man.lastProposed];
+      const woman: Agent = man.ranking[man.lastProposed];
 
-      this.currentlySelectedAgents.push(woman['name'].substring(5));
-      this.relevantPreferences.push(woman['name'].substring(5));
+      this.currentlySelectedAgents.push(woman.name.substring(5));
+      this.relevantPreferences.push(woman.name.substring(5));
 
-      let redLine = [
-        man['name'].substring(3),
-        woman['name'].substring(5),
-        'red',
-      ];
+      const redLine = [man.name.substring(3), woman.name.substring(5), 'red'];
       this.currentLines.push(redLine);
 
       let greenLine = [];
 
       this.changePreferenceStyle(
         this.group2CurrentPreferences,
-        woman['name'].substring(5),
+        woman.name.substring(5),
         this.findPositionInMatches(woman, man),
         'red',
       );
       this.changePreferenceStyle(
         this.group1CurrentPreferences,
-        man['name'].substring(3),
+        man.name.substring(3),
         this.findPositionInMatches(man, woman),
         'red',
       );
@@ -104,23 +100,19 @@ export class GsStableMarriageService extends MatchingAlgorithm {
         // colour preferences (for when a partner is instantly selected)
         this.changePreferenceStyle(
           this.group2CurrentPreferences,
-          woman['name'].substring(5),
+          woman.name.substring(5),
           this.findPositionInMatches(woman, man),
           'green',
         );
         this.changePreferenceStyle(
           this.group1CurrentPreferences,
-          man['name'].substring(3),
+          man.name.substring(3),
           this.findPositionInMatches(man, woman),
           'green',
         );
 
         this.removeArrayFromArray(this.currentLines, redLine);
-        greenLine = [
-          man['name'].substring(3),
-          woman['name'].substring(5),
-          'green',
-        ];
+        greenLine = [man.name.substring(3), woman.name.substring(5), 'green'];
         this.currentLines.push(greenLine);
 
         this.update(5, { '%woman%': woman.name, '%man%': man.name });
@@ -131,10 +123,10 @@ export class GsStableMarriageService extends MatchingAlgorithm {
           '%man%': man.name,
           '%match%': woman.match[0].name,
         });
-        let manName = man.name;
+        const manName = man.name;
         this.changePreferenceStyle(
           this.group2CurrentPreferences,
-          woman['name'].substring(5),
+          woman.name.substring(5),
           this.findPositionInMatches(woman, man),
           'red',
         );
@@ -154,8 +146,8 @@ export class GsStableMarriageService extends MatchingAlgorithm {
         ) {
           this.changePreferenceStyle(
             this.group2CurrentPreferences,
-            woman['name'].substring(5),
-            this.findPositionInMatches(woman, woman['match'][0]),
+            woman.name.substring(5),
+            this.findPositionInMatches(woman, woman.match[0]),
             'grey',
           );
           this.changePreferenceStyle(
@@ -166,7 +158,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
           );
           this.changePreferenceStyle(
             this.group2CurrentPreferences,
-            woman['name'].substring(5),
+            woman.name.substring(5),
             this.findPositionInMatches(woman, man),
             'green',
           );
@@ -174,25 +166,21 @@ export class GsStableMarriageService extends MatchingAlgorithm {
           this.removeArrayFromArray(this.currentLines, redLine);
           this.removeArrayFromArray(this.currentLines, [
             woman.match[0].name.substring(3),
-            woman['name'].substring(5),
+            woman.name.substring(5),
             'green',
           ]);
 
-          let match: string = woman.match[0].name;
+          const match: string = woman.match[0].name;
 
           this.freeAgentsOfGroup1.push(match);
           woman.match[0] = man;
 
-          greenLine = [
-            man['name'].substring(3),
-            woman['name'].substring(5),
-            'green',
-          ];
+          greenLine = [man.name.substring(3), woman.name.substring(5), 'green'];
           this.currentLines.push(greenLine);
 
           this.changePreferenceStyle(
             this.group1CurrentPreferences,
-            man['name'].substring(3),
+            man.name.substring(3),
             this.findPositionInMatches(man, woman),
             'green',
           );
@@ -206,13 +194,13 @@ export class GsStableMarriageService extends MatchingAlgorithm {
         } else {
           this.changePreferenceStyle(
             this.group1CurrentPreferences,
-            man['name'].substring(3),
+            man.name.substring(3),
             this.findPositionInMatches(man, woman),
             'grey',
           );
           this.changePreferenceStyle(
             this.group2CurrentPreferences,
-            woman['name'].substring(5),
+            woman.name.substring(5),
             this.findPositionInMatches(woman, man),
             'grey',
           );
@@ -233,7 +221,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
 
     this.update(11);
 
-    for (let woman of Array.from(this.group2Agents.values())) {
+    for (const woman of Array.from(this.group2Agents.values())) {
       woman.match[0].match[0] = woman;
     }
 
