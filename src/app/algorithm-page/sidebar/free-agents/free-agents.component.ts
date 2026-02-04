@@ -18,7 +18,7 @@ export class FreeAgentsComponent implements OnInit {
   ngOnInit(): void {}
 
   getFreeAgentString(): string {
-    const freeAgents: string[] =
+    const freeAgents: Array<string> =
       this.playback.commandList[this.playback.stepCounter]['freeAgents'];
     return freeAgents.map((item) => item.slice(-1)).join(', ');
   }

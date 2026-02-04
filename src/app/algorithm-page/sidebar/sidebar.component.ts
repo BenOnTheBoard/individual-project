@@ -31,30 +31,30 @@ export class SidebarComponent implements OnInit {
 
   @ViewChild('sidebarContainer', { static: true })
   private sidebar: ElementRef;
-  private sidebarWidth: number;
+  #sidebarWidth: number;
 
-  private isInAnimation: boolean;
+  #isInAnimation: boolean;
 
   constructor() {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.updateSidebarWidth();
+    this.#updateSidebarWidth();
   }
 
   @HostListener('window:resize')
   onResize(): void {
-    this.updateSidebarWidth();
-    this.setCurrentPosition();
+    this.#updateSidebarWidth();
+    this.#setCurrentPosition();
   }
 
-  private updateSidebarWidth(): void {
-    this.sidebarWidth = this.sidebar.nativeElement.offsetWidth;
+  #updateSidebarWidth(): void {
+    this.#sidebarWidth = this.sidebar.nativeElement.offsetWidth;
   }
 
-  private setCurrentPosition(): void {
-    const targetX = this.isCodeShowing ? '0px' : `-${this.sidebarWidth}px`;
+  #setCurrentPosition(): void {
+    const targetX = this.isCodeShowing ? '0px' : `-${this.#sidebarWidth}px`;
     this.sidebar.nativeElement.style.transform = `translateX(${targetX})`;
   }
 
@@ -64,24 +64,24 @@ export class SidebarComponent implements OnInit {
       targets: this.sidebar.nativeElement,
       easing: 'easeInOutQuint',
       opacity: [0, 1],
-      direction: direction,
-      duration: duration,
+      direction,
+      duration,
     });
   }
 
   public async toggleSidebar(duration: number): Promise<void> {
-    if (this.isInAnimation) return;
-    this.isInAnimation = true;
+    if (this.#isInAnimation) return;
+    this.#isInAnimation = true;
 
     const direction = this.isCodeShowing ? 'reverse' : 'normal';
     anime({
       targets: this.sidebar.nativeElement,
       easing: 'easeInOutQuint',
-      translateX: [`-${this.sidebarWidth}px`, 0],
-      direction: direction,
-      duration: duration,
+      translateX: [`-${this.#sidebarWidth}px`, 0],
+      direction,
+      duration,
       complete: () => {
-        this.isInAnimation = false;
+        this.#isInAnimation = false;
       },
     });
   }

@@ -37,7 +37,7 @@ export class AlgPageNavbarComponent implements OnInit {
   @ViewChild('algPageNavbar', { static: true })
   private navbar: ElementRef;
   // unlike sidebar width, navbar height won't change
-  private isInAnimation = false;
+  #isInAnimation = false;
 
   constructor(
     public algorithmService: AlgorithmRetrievalService,
@@ -77,8 +77,7 @@ export class AlgPageNavbarComponent implements OnInit {
   }
 
   protected getTitle(): string {
-    const name = this.algorithmService.currentAlgorithm.name;
-    const algorithm = this.algorithmService.currentAlgorithm.algorithm;
+    const { name, algorithm } = this.algorithmService.currentAlgorithm;
     const optimisedSide = this.algorithmService.getSide(true, false);
     return `${name} / ${algorithm} / ${optimisedSide}-Oriented`;
   }
@@ -98,8 +97,8 @@ export class AlgPageNavbarComponent implements OnInit {
   }
 
   public async toggleNavbar(fadeOut: boolean, duration: number): Promise<void> {
-    if (this.isInAnimation) return;
-    this.isInAnimation = true;
+    if (this.#isInAnimation) return;
+    this.#isInAnimation = true;
 
     const direction = fadeOut ? 'reverse' : 'normal';
     const barHeight = this.navbar.nativeElement.offsetHeight;
@@ -107,10 +106,10 @@ export class AlgPageNavbarComponent implements OnInit {
       targets: this.navbar.nativeElement,
       easing: 'easeOutQuint',
       translateY: [`-${barHeight}px`, 0],
-      direction: direction,
-      duration: duration,
+      direction,
+      duration,
       complete: () => {
-        this.isInAnimation = false;
+        this.#isInAnimation = false;
       },
     });
   }
