@@ -25,7 +25,7 @@ describe('AgentCountForm', () => {
 
     fixture = TestBed.createComponent(AgentCountFormComponent);
     component = fixture.componentInstance;
-    component.algorithm = mockAlgorithm;
+    fixture.componentRef.setInput('algorithm', mockAlgorithm);
     fixture.detectChanges();
   });
 

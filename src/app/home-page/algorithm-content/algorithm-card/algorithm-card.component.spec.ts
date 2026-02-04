@@ -14,7 +14,7 @@ describe('AlgorithmCardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AlgorithmCardComponent);
     component = fixture.componentInstance;
-    component.algorithm = {
+    fixture.componentRef.setInput('algorithm', {
       id: '',
       name: '',
       orientation: ['', ''],
@@ -24,7 +24,7 @@ describe('AlgorithmCardComponent', () => {
       description: '',
       helpTextMap: {},
       code: [],
-    };
+    });
     fixture.detectChanges();
   });
 
