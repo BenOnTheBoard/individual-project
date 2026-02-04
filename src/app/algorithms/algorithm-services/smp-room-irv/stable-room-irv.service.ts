@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { StableRoomMates } from '../../abstract-classes/StableRoomMates';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { Person } from '../../interfaces/Person';
-import { UtilsService } from 'src/app/utils/utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +12,8 @@ export class StableRoomIrvService extends StableRoomMates {
 
   group1Agents: Map<String, Person> = new Map();
 
-  constructor(public utils: UtilsService) {
-    super(utils);
+  constructor() {
+    super();
   }
 
   generateAgents() {

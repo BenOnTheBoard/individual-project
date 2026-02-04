@@ -1,15 +1,10 @@
-import { UtilsService } from 'src/app/utils/utils.service';
 import { Agent } from '../interfaces/Agent';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
-import { ColourHexService } from 'src/app/utils/colour-hex.service';
 
 export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
-  constructor(
-    public utils: UtilsService,
-    public colourHexService: ColourHexService,
-  ) {
-    super(utils, colourHexService);
+  constructor() {
+    super();
   }
 
   match(): AlgorithmData {

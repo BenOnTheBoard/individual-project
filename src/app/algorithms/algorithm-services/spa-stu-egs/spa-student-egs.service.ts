@@ -3,9 +3,7 @@ import { StudentProjectAllocation } from '../../abstract-classes/StudentProjectA
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { Lecturer } from '../../interfaces/Lecturer';
 import { Project } from '../../interfaces/Project';
-
 import { Student } from '../../interfaces/Student';
-import { UtilsService } from 'src/app/utils/utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,8 +23,8 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   numberLectures: number;
   lecturerCapacity: number;
 
-  constructor(public utils: UtilsService) {
-    super(utils);
+  constructor() {
+    super();
   }
 
   generateAgents() {

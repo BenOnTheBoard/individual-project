@@ -3,6 +3,7 @@ import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { Step } from '../interfaces/Step';
 import { UtilsService } from 'src/app/utils/utils.service';
 import { ColourHexService } from '../../utils/colour-hex.service';
+import { inject } from '@angular/core';
 
 export abstract class MatchingAlgorithm {
   abstract group1Name: string;
@@ -39,10 +40,9 @@ export abstract class MatchingAlgorithm {
 
   stable: boolean = false;
 
-  constructor(
-    public utils: UtilsService,
-    public colourHexService: ColourHexService,
-  ) {}
+  protected utils = inject(UtilsService);
+  protected colourHexService = inject(ColourHexService);
+  constructor() {}
 
   initialise(
     numberOfAgents: number,

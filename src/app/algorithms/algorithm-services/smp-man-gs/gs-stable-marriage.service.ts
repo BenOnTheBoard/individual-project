@@ -3,7 +3,6 @@ import { MatchingAlgorithm } from '../../abstract-classes/MatchingAlgorithm';
 import { Agent } from '../../interfaces/Agent';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { Man } from '../../interfaces/Man';
-import { UtilsService } from 'src/app/utils/utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,8 +13,8 @@ export class GsStableMarriageService extends MatchingAlgorithm {
 
   group1Agents: Map<String, Man> = new Map();
 
-  constructor(public utils: UtilsService) {
-    super(utils);
+  constructor() {
+    super();
   }
 
   generateAgents() {
