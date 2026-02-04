@@ -83,13 +83,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  // USED FOR TESTING
-
-  // check if no unmatched pair like each other more than their current partners - redone for SPA
   checkStability(allMatches: Map<String, Array<String>>): boolean {
-    let stability = true;
-
-    // for all students
     for (const student of this.group1Agents.values()) {
       let studentMatchIndex = 0;
       studentMatchIndex =
@@ -104,57 +98,50 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         this.utils.getLastChar(student.name),
       );
 
+      // loop over more preferable projects
       for (let i = studentMatchIndex - 1; i >= 0; i--) {
-        // get project + lecturer that is more preferred than the current
         const betterProjectname = studentRanking[i];
         const betterProject = this.group2Agents.get(
           this.group2Name + betterProjectname,
         );
-
         const betterProjectLecturer = this.getProjectLecturer(betterProject);
 
         // get lecturers ranking list to compare positions
         const lastMatchIndex = this.getLastMatchLecturer(betterProjectLecturer);
-
         const currentStudentIndex = this.getCurrentStudentIndex(
           student,
           betterProjectLecturer,
         );
 
-        // IF bother under subbed (a)
-        if (
-          betterProject.match.length < betterProject.capacity &&
-          this.getLecturerCurrentCapacity(betterProjectLecturer) <
+        // pj undersubscribed,
+        if (betterProject.match.length < betterProject.capacity) {
+          // (a) lk undersubscribed
+          if (
+            this.getLecturerCurrentCapacity(betterProjectLecturer) <
             this.lecturerCapacity
-        ) {
-          stability = false;
+          ) {
+            return false;
+          } else if (
+            // (b) lk full, but si is in M(lk) better than the worst student in M(lk)
+            this.getLecturerCurrentCapacity(betterProjectLecturer) ==
+              this.lecturerCapacity &&
+            (betterProjectLecturer.projects.includes(student.match[0].name) ||
+              currentStudentIndex < lastMatchIndex)
+          ) {
+            return false;
+          }
         }
 
-        // project is under subbed + lecturer is full + ()
-        if (
-          betterProject.match.length < betterProject.capacity &&
-          this.getLecturerCurrentCapacity(betterProjectLecturer) ==
-            this.lecturerCapacity &&
-          (betterProjectLecturer.projects.includes(student.match[0].name) ||
-            currentStudentIndex < lastMatchIndex)
-        ) {
-          stability = false;
-        }
-
-        // project is full + student is preferred over worst ranked person on project
+        // (c) pj full, but si is better than the worst student in M(pj)
         if (
           betterProject.match.length == betterProject.capacity &&
           currentStudentIndex < this.getLastMatchProject(betterProject)
         ) {
-          stability = false;
-        }
-
-        if (currentStudentIndex < lastMatchIndex) {
-          stability = false;
+          return false;
         }
       }
     }
-    return stability;
+    return true;
   }
 
   // returns index of worst ranked studnet for a project according to the lecture within the lecturers preference list

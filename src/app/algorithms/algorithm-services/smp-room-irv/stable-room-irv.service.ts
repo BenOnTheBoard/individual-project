@@ -31,14 +31,22 @@ export class StableRoomIrvService extends StableRoomMates {
       this.freeAgentsOfGroup1.push(group1AgentName);
     }
 
+    // we need these to call getMatches
+    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
+      const currentLetter = String.fromCharCode(65 + i);
+      const group2AgentName = this.group2Name + currentLetter;
+
+      this.group2Agents.set(group2AgentName, {
+        name: group2AgentName,
+        match: new Array(),
+        ranking: new Array(),
+      });
+    }
+
     this.algorithmSpecificData['SR'] = true;
   }
 
-  // check if no unmatched pair like each other more than their current partners
   checkStability(allMatches: Map<String, Array<String>>): boolean {
-    let stability = true;
-
-    // for all women
     for (const person of this.group1Agents.values()) {
       // if agent has matches
       if (person.lastProposed) {
@@ -55,13 +63,11 @@ export class StableRoomIrvService extends StableRoomMates {
           const betterPerson = this.group1Agents.get(
             this.group1Name + String(betterPersonName),
           );
-
           // current person index within better persons ranking
           const currentPersonIndex = this.findPositionInOriginalMatches1Group(
             betterPerson,
             person,
           );
-
           // betterPerson matchPosition
           const matchPosition = this.findPositionInOriginalMatches1Group(
             betterPerson,
@@ -69,13 +75,12 @@ export class StableRoomIrvService extends StableRoomMates {
           );
 
           if (currentPersonIndex < matchPosition) {
-            stability = false;
+            return false;
           }
         }
       }
     }
-
-    return stability;
+    return true;
   }
 
   // checks is anyone is assigned to a person, returns assigned person if true, null otherwise

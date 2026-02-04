@@ -295,8 +295,6 @@ export abstract class MatchingAlgorithm {
   }
 
   checkStability(allMatches: Map<String, Array<String>>): boolean {
-    let stability = true;
-
     for (const agent of allMatches.keys()) {
       const agentMatches = allMatches.get(agent);
 
@@ -316,13 +314,13 @@ export abstract class MatchingAlgorithm {
               this.group2Agents.get(agent),
             );
             if (currentAgentPosition < matchPosition) {
-              stability = false;
+              return false;
             }
           }
         }
       }
     }
-    return stability;
+    return true;
   }
 
   getLastMatch(currentAgent: String, agentMatches: Array<String>): number {
