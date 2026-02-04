@@ -6,7 +6,7 @@ import { AgentRendererService } from '../agent-renderer/agent-renderer.service';
 import { ColourHexService } from '../colour-hex.service';
 import { LineRendererService } from '../line-renderer/line-renderer.service';
 import { PreferenceRendererService } from '../preference-renderer/preference-renderer.service';
-import { Step } from '../../algorithms/interfaces/Step';
+import { Step } from 'src/app/algorithms/interfaces/Step';
 
 @Injectable({
   providedIn: 'root',

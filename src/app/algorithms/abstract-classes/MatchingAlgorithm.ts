@@ -1,7 +1,7 @@
 import { Agent } from '../interfaces/Agent';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { Step } from '../interfaces/Step';
-import { UtilsService } from '../../../utils/utils.service';
+import { UtilsService } from 'src/app/utils/utils.service';
 
 export abstract class MatchingAlgorithm {
   abstract group1Name: string;

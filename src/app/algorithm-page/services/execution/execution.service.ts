@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
-import { MatchingAlgorithm } from '../../algorithms/abstract-classes/MatchingAlgorithm';
-import { AlgorithmData } from '../../algorithms/interfaces/AlgorithmData';
+import { MatchingAlgorithm } from 'src/app/algorithms/abstract-classes/MatchingAlgorithm';
+import { AlgorithmData } from 'src/app/algorithms/interfaces/AlgorithmData';
 
 @Injectable({
   providedIn: 'root',

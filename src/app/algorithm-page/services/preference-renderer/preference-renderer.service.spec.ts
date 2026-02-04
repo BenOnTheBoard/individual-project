@@ -5,7 +5,7 @@ import { TextRendererService } from '../text-renderer/text-renderer.service';
 import { ColourHexService } from '../colour-hex.service';
 import { AgentRendererService } from '../agent-renderer/agent-renderer.service';
 import { PreferenceRendererService } from './preference-renderer.service';
-import { Step } from '../../algorithms/interfaces/Step';
+import { Step } from 'src/app/algorithms/interfaces/Step';
 
 describe('PreferenceRendererService', () => {
   let service: PreferenceRendererService;
