@@ -89,7 +89,7 @@ describe('PreferenceRendererService', () => {
 
     service.drawBipartitePreferences();
 
-    for (let agent of ['circle1', 'circle2', 'circleA', 'circleB']) {
+    for (const agent of ['circle1', 'circle2', 'circleA', 'circleB']) {
       expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledWith(agent);
     }
     expect(mockTextRenderer.drawText).toHaveBeenCalledTimes(4);
@@ -100,7 +100,7 @@ describe('PreferenceRendererService', () => {
 
     service.drawSRPreferences();
 
-    for (let agent of ['circle1', 'circle2']) {
+    for (const agent of ['circle1', 'circle2']) {
       expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledWith(agent);
     }
     expect(mockTextRenderer.drawText).toHaveBeenCalledTimes(2);
@@ -110,7 +110,7 @@ describe('PreferenceRendererService', () => {
     service.setCurrentCommand(mockCommand);
     service.drawRelevantPreferences();
 
-    for (let agent of ['circle1', 'circleA']) {
+    for (const agent of ['circle1', 'circleA']) {
       expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledWith(agent);
     }
     expect(mockTextRenderer.drawText).toHaveBeenCalledTimes(2);
@@ -123,12 +123,11 @@ describe('PreferenceRendererService', () => {
         B: 2,
       },
     };
-    console.log(mockCommand.algorithmSpecificData['hospitalCapacity']);
     service.setCurrentCommand(mockCommand);
 
     service.drawCapacities();
 
-    for (let agent of ['circleA', 'circleB']) {
+    for (const agent of ['circleA', 'circleB']) {
       expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledWith(agent);
     }
     expect(mockTextRenderer.drawText).toHaveBeenCalledTimes(2);
@@ -140,7 +139,6 @@ describe('PreferenceRendererService', () => {
       lecturerCapacity: [2],
       lecturerRanking: [['1', '2']],
     };
-    console.log(mockCommand);
     service.setCurrentCommand(mockCommand);
 
     service.drawLecturers();

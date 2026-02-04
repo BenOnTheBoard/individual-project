@@ -33,13 +33,13 @@ describe('LayoutService', () => {
 
       const positions = service.getPositions();
       expect(Object.keys(positions).length).toBe(7);
-      expect(positions['middle']).toBeDefined();
+      expect(positions.middle).toBeDefined();
 
       ['circle1', 'circle2', 'circle3'].forEach((k) =>
-        expect(positions[k]).toBeDefined()
+        expect(positions[k]).toBeDefined(),
       );
       ['circleA', 'circleB', 'circleC'].forEach((k) =>
-        expect(positions[k]).toBeDefined()
+        expect(positions[k]).toBeDefined(),
       );
     });
 
@@ -47,7 +47,7 @@ describe('LayoutService', () => {
       const command = { algorithmSpecificData: { hospitalCapacity: true } };
       service.calculateBipartitePositions(mockCanvas, command);
 
-      const lhsPos = service.getPositions()['circle1'].x;
+      const lhsPos = service.getPositions().circle1.x;
       expect(lhsPos).toBeCloseTo(205, 1); // 800 * 0.3 - 35 = 205
     });
 
@@ -57,7 +57,7 @@ describe('LayoutService', () => {
       const command = { algorithmSpecificData: {} };
 
       expect(() =>
-        service.calculateBipartitePositions(mockCanvas, command)
+        service.calculateBipartitePositions(mockCanvas, command),
       ).not.toThrow();
     });
 
@@ -66,7 +66,7 @@ describe('LayoutService', () => {
       const command = { algorithmSpecificData: {} };
       service.calculateBipartitePositions(mockCanvas, command);
 
-      expect(service.getPositions()['circle1']).toBeDefined();
+      expect(service.getPositions().circle1).toBeDefined();
     });
   });
 
@@ -77,10 +77,10 @@ describe('LayoutService', () => {
 
       const positions = service.getPositions();
       expect(Object.keys(positions).length).toBe(5);
-      expect(positions['middle']).toBeDefined();
+      expect(positions.middle).toBeDefined();
 
       ['circle1', 'circle2', 'circle3', 'circle4'].forEach((k) =>
-        expect(positions[k]).toBeDefined()
+        expect(positions[k]).toBeDefined(),
       );
     });
 
@@ -92,9 +92,9 @@ describe('LayoutService', () => {
 
   describe('getPositionOfAgent', () => {
     beforeEach(() => {
-      service['positions'] = {
+      service.setPositions({
         testAgent: { x: 100, y: 200 },
-      };
+      });
     });
 
     it('should return correct coordinates for known agent', () => {
@@ -105,7 +105,7 @@ describe('LayoutService', () => {
 
     it('should throw an error for unknown agent', () => {
       expect(() => service.getPositionOfAgent('unknown')).toThrowError(
-        'Position not found for agent: unknown'
+        'Position not found for agent: unknown',
       );
     });
   });

@@ -25,14 +25,14 @@ export class ExecutionService {
     SRstable: boolean = true,
   ): Object {
     this.initialise();
-    let algorithmService: MatchingAlgorithm =
+    const algorithmService: MatchingAlgorithm =
       this.algorithmRetrieval.mapOfAvailableAlgorithms.get(algorithm).service;
     this.commandMap =
       this.algorithmRetrieval.mapOfAvailableAlgorithms.get(
         algorithm,
       ).helpTextMap;
 
-    let commandList: AlgorithmData = algorithmService.run(
+    const commandList: AlgorithmData = algorithmService.run(
       numberOfAgents,
       numberOfGroup2Agents,
       preferences,
@@ -46,12 +46,12 @@ export class ExecutionService {
 
   // --------------------------------------------------------- FUNCTIONS TO GENERATE LINE DESCRIPTIONS
 
-  generateDescriptions(commandList: AlgorithmData): String[] {
-    let descriptions = [];
+  generateDescriptions(commandList: AlgorithmData): Array<String> {
+    const descriptions = [];
 
-    for (let step of commandList['commands']) {
-      let lineNumber = step['lineNumber'];
-      let stepVariables = step['stepVariables'];
+    for (const step of commandList.commands) {
+      const lineNumber = step['lineNumber'];
+      const { stepVariables } = step;
 
       if (stepVariables) {
         descriptions.push(this.generateMessage(lineNumber, stepVariables));
@@ -64,13 +64,10 @@ export class ExecutionService {
   }
 
   generateMessage(commandNum: number, replacements: Object): string {
-    var str = this.commandMap[commandNum];
-
-    // FROM: https://stackoverflow.com/questions/7975005/format-a-javascript-string-using-placeholders-and-an-object-of-substitutions
-    str = str.replace(/%\w+%/g, function (all: string | number) {
-      return replacements[all] || all;
-    });
-
-    return str;
+    const str = this.commandMap[commandNum];
+    return str.replace(
+      /%\w+%/g,
+      (all: string | number) => replacements[all] || all,
+    );
   }
 }

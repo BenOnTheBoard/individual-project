@@ -9,55 +9,55 @@ import { Position } from 'src/app/utils/position';
   providedIn: 'root',
 })
 export class AgentRendererService {
-  private readonly radius = 30;
-  private readonly selectionBorderWidth = 4;
-  private readonly defaultBorderWidth = 1;
+  readonly #radius = 30;
+  readonly #selectionBorderWidth = 4;
+  readonly #defaultBorderWidth = 1;
 
-  private readonly groupOneColour = 'orange';
-  private readonly groupTwoColour = 'purple';
-  private readonly selectionColour = 'green';
+  readonly #groupOneColour = 'orange';
+  readonly #groupTwoColour = 'purple';
+  readonly #selectionColour = 'green';
 
-  private ctx: CanvasRenderingContext2D;
+  #ctx: CanvasRenderingContext2D;
 
   constructor(
     public algService: AlgorithmRetrievalService,
     public layoutService: LayoutService,
     public textRenderer: TextRendererService,
-    public colourHexService: ColourHexService
+    public colourHexService: ColourHexService,
   ) {}
 
   public setContext(ctx: CanvasRenderingContext2D): void {
-    this.ctx = ctx;
+    this.#ctx = ctx;
   }
 
   public getRadiusOfCircles(): number {
-    return this.radius;
+    return this.#radius;
   }
 
   public drawCircle(pos: Position, strokeOnly: boolean): void {
     if (!strokeOnly) {
-      this.ctx.strokeStyle = this.colourHexService.getHex('black');
-      this.ctx.lineWidth = this.defaultBorderWidth;
+      this.#ctx.strokeStyle = this.colourHexService.getHex('black');
+      this.#ctx.lineWidth = this.#defaultBorderWidth;
     }
 
-    this.ctx.beginPath();
-    this.ctx.arc(pos.x, pos.y, this.radius, 0, Math.PI * 2);
-    if (!strokeOnly) this.ctx.fill();
-    this.ctx.stroke();
+    this.#ctx.beginPath();
+    this.#ctx.arc(pos.x, pos.y, this.#radius, 0, Math.PI * 2);
+    if (!strokeOnly) this.#ctx.fill();
+    this.#ctx.stroke();
   }
 
   public drawGroup(
     agentCount: number,
     labelGenerator: (i: number) => string,
-    fillStyle: string
+    fillStyle: string,
   ): void {
-    this.ctx.fillStyle = fillStyle;
-    this.textRenderer.setFontSize(this.radius);
-    const offset = (this.radius * Math.sqrt(2)) / 4;
+    this.#ctx.fillStyle = fillStyle;
+    this.textRenderer.setFontSize(this.#radius);
+    const offset = (this.#radius * Math.sqrt(2)) / 4;
 
     for (let i = 0; i < agentCount; i++) {
       const label = labelGenerator(i);
-      const pos = this.layoutService.getPositionOfAgent('circle' + label);
+      const pos = this.layoutService.getPositionOfAgent(`circle${label}`);
       this.drawCircle(pos, false);
       const textPos = {
         x: pos.x - offset,
@@ -71,7 +71,7 @@ export class AgentRendererService {
     this.drawGroup(
       this.algService.numberOfGroup1Agents,
       (i: number) => String(i + 1),
-      this.colourHexService.getHex(this.groupOneColour)
+      this.colourHexService.getHex(this.#groupOneColour),
     );
   }
 
@@ -79,16 +79,16 @@ export class AgentRendererService {
     this.drawGroup(
       this.algService.numberOfGroup2Agents,
       (i: number) => String.fromCharCode(65 + i),
-      this.colourHexService.getHex(this.groupTwoColour)
+      this.colourHexService.getHex(this.#groupTwoColour),
     );
   }
 
-  public selectCircles(circles: string[]) {
-    this.ctx.lineWidth = this.selectionBorderWidth;
-    this.ctx.strokeStyle = this.colourHexService.getHex(this.selectionColour);
+  public selectCircles(circles: Array<string>) {
+    this.#ctx.lineWidth = this.#selectionBorderWidth;
+    this.#ctx.strokeStyle = this.colourHexService.getHex(this.#selectionColour);
 
-    for (let label of circles) {
-      const pos = this.layoutService.getPositionOfAgent('circle' + label);
+    for (const label of circles) {
+      const pos = this.layoutService.getPositionOfAgent(`circle${label}`);
       this.drawCircle(pos, true);
     }
   }

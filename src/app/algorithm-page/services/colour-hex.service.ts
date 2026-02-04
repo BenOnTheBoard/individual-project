@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ColourHexService {
-  private readonly colourMap = new Map<string, string>([
+  readonly #colourMap = new Map<string, string>([
     ['black', '#000000'],
     ['green', '#53D26F'],
     ['orange', '#FF6332'],
@@ -13,6 +13,6 @@ export class ColourHexService {
   ]);
 
   public getHex(colour: string): string {
-    return this.colourMap.get(colour);
+    return this.#colourMap.get(colour);
   }
 }

@@ -121,18 +121,13 @@ export class PlaybackService {
   }
 
   async toggle() {
-    if (this.firstRun) {
+    if (this.firstRun || this.pause) {
       this.firstRun = false;
       this.pause = false;
       this.play();
-    } else {
-      if (this.pause) {
-        this.pause = false;
-        this.play();
-      } else {
-        this.pause = true;
-      }
+      return;
     }
+    this.pause = true;
   }
 
   async play(): Promise<void> {
