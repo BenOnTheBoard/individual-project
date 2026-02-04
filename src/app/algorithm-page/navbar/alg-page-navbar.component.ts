@@ -3,7 +3,6 @@ import {
   ElementRef,
   inject,
   input,
-  OnInit,
   output,
   viewChild,
 } from '@angular/core';
@@ -22,7 +21,7 @@ declare var anime: any; // declaring the animejs animation library for use in th
   styleUrl: './alg-page-navbar.component.scss',
   imports: [MatIconModule, MatTooltip, CommonModule],
 })
-export class AlgPageNavbarComponent implements OnInit {
+export class AlgPageNavbarComponent {
   protected duringAnimation = input<boolean>();
   protected isCodeShowing = input<boolean>();
   protected isInfoShowing = input<boolean>();
@@ -42,8 +41,6 @@ export class AlgPageNavbarComponent implements OnInit {
   protected algRetriever = inject(AlgorithmRetrievalService);
   protected drawService = inject(CanvasService);
   protected dialog = inject(MatDialog);
-
-  ngOnInit(): void {}
 
   protected updateTutorialStep(step: number): void {
     this.step = step;

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnInit, input, output } from '@angular/core';
+import { Component, HostListener, input, output } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -16,7 +16,7 @@ import { UtilsService } from 'src/app/utils/utils.service';
   ],
   templateUrl: './agent-count-form.component.html',
 })
-export class AgentCountFormComponent implements OnInit {
+export class AgentCountFormComponent {
   readonly algorithm = input<Algorithm>(undefined);
   readonly enterEvent = output();
 
@@ -38,8 +38,6 @@ export class AgentCountFormComponent implements OnInit {
     Validators.max(8),
     UtilsService.validateEven(),
   ]);
-
-  ngOnInit(): void {}
 
   @HostListener('document:keydown.enter', ['$event'])
   onEnter(event: KeyboardEvent) {

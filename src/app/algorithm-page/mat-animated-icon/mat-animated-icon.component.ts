@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, OnInit, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
@@ -8,7 +8,7 @@ import { MatIcon } from '@angular/material/icon';
   styleUrls: ['./mat-animated-icon.component.scss'],
   imports: [MatIcon, NgClass],
 })
-export class MatAnimatedIconComponent implements OnInit {
+export class MatAnimatedIconComponent {
   readonly start = input<String>(undefined);
   readonly end = input<String>(undefined);
   readonly colorStart = input<String>(undefined);
@@ -17,8 +17,6 @@ export class MatAnimatedIconComponent implements OnInit {
   readonly animateFromParent = input<boolean>(false);
 
   #internalAnimate = false;
-
-  ngOnInit() {}
 
   toggle() {
     if (!this.animateFromParent()) {

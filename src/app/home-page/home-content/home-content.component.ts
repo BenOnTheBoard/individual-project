@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, viewChild } from '@angular/core';
+import { Component, ElementRef, viewChild } from '@angular/core';
 import { simpleFadeAnimation } from 'src/app/animations/fadeAnimation';
 
 @Component({
@@ -7,11 +7,9 @@ import { simpleFadeAnimation } from 'src/app/animations/fadeAnimation';
   styleUrls: ['./home-content.component.scss', '../home-page.component.scss'],
   animations: [simpleFadeAnimation],
 })
-export class HomeContentComponent implements OnInit {
+export class HomeContentComponent {
   private animationVid = viewChild<ElementRef>('animationVid');
   private descriptionVid = viewChild<ElementRef>('descriptionVid');
-
-  ngOnInit(): void {}
 
   async #playVideo(video: HTMLVideoElement): Promise<void> {
     try {

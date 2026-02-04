@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { PlaybackService } from '../../services/playback/playback.service';
 
 @Component({
@@ -6,8 +6,6 @@ import { PlaybackService } from '../../services/playback/playback.service';
   templateUrl: './execution-log.component.html',
   styleUrls: ['./execution-log.component.scss', '../sidebar.component.scss'],
 })
-export class ExecutionLogComponent implements OnInit {
+export class ExecutionLogComponent {
   protected playback = inject(PlaybackService);
-
-  ngOnInit(): void {}
 }

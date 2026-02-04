@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { UtilsService } from 'src/app/utils/utils.service';
@@ -11,7 +11,7 @@ declare var anime: any;
   styleUrls: ['./navbar.component.scss'],
   imports: [NgClass],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
   componentMap: Object = {
     '/': '.homeContent',
     '/about': '.aboutContent',
@@ -21,8 +21,6 @@ export class NavbarComponent implements OnInit {
 
   protected router = inject(Router);
   protected utils = inject(UtilsService);
-
-  ngOnInit(): void {}
 
   fadeCurrentPage(): void {
     anime({

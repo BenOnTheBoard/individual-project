@@ -1,4 +1,4 @@
-import { Component, OnInit, viewChild, input, inject } from '@angular/core';
+import { Component, viewChild, input, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
@@ -29,15 +29,13 @@ declare var anime: any;
     AgentCountFormComponent,
   ],
 })
-export class AlgorithmCardComponent implements OnInit {
+export class AlgorithmCardComponent {
   readonly algorithm = input<Algorithm>(undefined);
   protected readonly agentForm = viewChild(AgentCountFormComponent);
 
   protected algRetriever = inject(AlgorithmRetrievalService);
   protected router = inject(Router);
   protected utils = inject(UtilsService);
-
-  ngOnInit(): void {}
 
   async onGeneratePreferences(): Promise<void> {
     // change the global algorithm to the one passed into this dialog

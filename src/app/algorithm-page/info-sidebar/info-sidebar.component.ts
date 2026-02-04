@@ -2,7 +2,6 @@ import {
   Component,
   ElementRef,
   HostListener,
-  OnInit,
   viewChild,
   input,
   inject,
@@ -15,7 +14,7 @@ declare var anime: any; // declaring the animejs animation library for use in th
   templateUrl: './info-sidebar.component.html',
   styleUrls: ['./info-sidebar.component.scss'],
 })
-export class InfoSidebarComponent implements OnInit {
+export class InfoSidebarComponent {
   readonly isInfoShowing = input<boolean>(undefined);
   readonly tutorialStep = input<number>(undefined);
 
@@ -24,8 +23,6 @@ export class InfoSidebarComponent implements OnInit {
   #isInAnimation: boolean;
 
   protected algRetriever = inject(AlgorithmRetrievalService);
-
-  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.#updateSidebarWidth();

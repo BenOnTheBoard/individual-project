@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { PlaybackService } from '../services/playback/playback.service';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,11 +18,9 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
   ],
 })
-export class PlaybackControlsComponent implements OnInit {
+export class PlaybackControlsComponent {
   readonly algorithm = input<string>(undefined);
   protected playback = inject(PlaybackService);
-
-  ngOnInit(): void {}
 
   formatLabel(value: number): string {
     value = 3050 - value;

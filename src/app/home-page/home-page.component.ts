@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { IconBannerComponent } from './icon-banner/icon-banner.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -10,10 +10,8 @@ declare var anime: any;
   styleUrls: ['./home-page.component.scss'],
   imports: [NavbarComponent, IconBannerComponent, RouterOutlet],
 })
-export class HomePageComponent implements OnInit {
+export class HomePageComponent {
   protected router = inject(Router);
-
-  ngOnInit(): void {}
 
   async ngAfterViewInit(): Promise<void> {
     anime({

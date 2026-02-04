@@ -2,7 +2,6 @@ import {
   Component,
   ElementRef,
   HostListener,
-  OnInit,
   viewChild,
   input,
 } from '@angular/core';
@@ -25,15 +24,13 @@ declare var anime: any; // declaring the animejs animation library for use in th
     NgClass,
   ],
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent {
   readonly isCodeShowing = input<boolean>(undefined);
   readonly tutorialStep = input<number>(undefined);
 
   private sidebar = viewChild<ElementRef>('sidebarContainer');
   #sidebarWidth: number;
   #isInAnimation: boolean;
-
-  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.#updateSidebarWidth();
