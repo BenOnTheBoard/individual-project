@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { AlgorithmCardComponent } from './algorithm-card.component';
 
 describe('AlgorithmCardComponent', () => {

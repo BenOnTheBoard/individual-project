@@ -1,8 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { simpleFadeAnimation } from 'src/app/animations/fadeAnimation';
 
-declare var anime: any;
-
 @Component({
   selector: 'home-content',
   templateUrl: './home-content.component.html',
@@ -17,10 +15,10 @@ export class HomeContentComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  private async playVideo(video: HTMLVideoElement): Promise<void> {
+  async #playVideo(video: HTMLVideoElement): Promise<void> {
     try {
       video.muted = true;
-      let playPromise = video.play();
+      const playPromise = video.play();
       if (playPromise !== undefined) {
         await playPromise;
       }
@@ -34,7 +32,7 @@ export class HomeContentComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.playVideo(this.animationVid.nativeElement);
-    this.playVideo(this.descriptionVid.nativeElement);
+    this.#playVideo(this.animationVid.nativeElement);
+    this.#playVideo(this.descriptionVid.nativeElement);
   }
 }

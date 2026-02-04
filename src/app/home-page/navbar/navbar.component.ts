@@ -36,10 +36,10 @@ export class NavbarComponent implements OnInit {
   }
 
   async goToPage(page: string): Promise<void> {
-    if (!(this.router.url == page)) {
-      this.fadeCurrentPage();
-      await this.utils.delay(400);
-      this.router.navigateByUrl(page, { skipLocationChange: true });
-    }
+    if (this.router.url == page) return;
+
+    this.fadeCurrentPage();
+    await this.utils.delay(400);
+    this.router.navigateByUrl(page, { skipLocationChange: true });
   }
 }
