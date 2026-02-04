@@ -16,10 +16,6 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
 
   hospitalCapacity: Map<string, number> = new Map();
 
-  constructor() {
-    super();
-  }
-
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const group1AgentName = this.group1Name + i;

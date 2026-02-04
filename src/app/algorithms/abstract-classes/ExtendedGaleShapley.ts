@@ -3,10 +3,6 @@ import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
 
 export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
-  constructor() {
-    super();
-  }
-
   match(): AlgorithmData {
     // assign each resident to be free;
     this.update(1);

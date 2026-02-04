@@ -9,10 +9,6 @@ export class EgsStableMarriageService extends EgsOneToMany {
   group1Name = 'man';
   group2Name = 'woman';
 
-  constructor() {
-    super();
-  }
-
   getNextPotentialProposee(currentAgent: Agent): Agent {
     return currentAgent.ranking[0];
   }

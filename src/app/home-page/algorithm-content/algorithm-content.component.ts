@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { simpleFadeAnimation } from 'src/app/animations/fadeAnimation';
 import { AlgorithmCardComponent } from './algorithm-card/algorithm-card.component';
@@ -15,7 +15,7 @@ import { AlgorithmCardComponent } from './algorithm-card/algorithm-card.componen
   imports: [AlgorithmCardComponent],
 })
 export class AlgorithmContentComponent implements OnInit {
-  constructor(public algorithmRetrieval: AlgorithmRetrievalService) {}
+  protected algRetriever = inject(AlgorithmRetrievalService);
 
   ngOnInit(): void {}
 }

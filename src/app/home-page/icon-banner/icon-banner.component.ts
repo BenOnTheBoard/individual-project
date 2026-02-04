@@ -6,7 +6,5 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./icon-banner.component.scss'],
 })
 export class IconBannerComponent implements OnInit {
-  constructor() {}
-
   ngOnInit(): void {}
 }

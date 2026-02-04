@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { IconBannerComponent } from './icon-banner/icon-banner.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -11,7 +11,7 @@ declare var anime: any;
   imports: [NavbarComponent, IconBannerComponent, RouterOutlet],
 })
 export class HomePageComponent implements OnInit {
-  constructor(public router: Router) {}
+  protected router = inject(Router);
 
   ngOnInit(): void {}
 

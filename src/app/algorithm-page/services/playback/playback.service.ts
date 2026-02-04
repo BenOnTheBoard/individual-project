@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ExecutionService } from '../execution/execution.service';
 import { CanvasService } from '../canvas/canvas.service';
 import { Step } from 'src/app/algorithms/interfaces/Step';
@@ -23,10 +23,8 @@ export class PlaybackService {
 
   description: string = 'Click play to run the program below!';
 
-  constructor(
-    public exeService: ExecutionService,
-    public drawService: CanvasService,
-  ) {}
+  protected drawService = inject(CanvasService);
+  protected exeService = inject(ExecutionService);
 
   initialise(): void {
     this.algorithmData = {};

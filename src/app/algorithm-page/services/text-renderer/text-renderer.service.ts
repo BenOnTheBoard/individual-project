@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ColourHexService } from '../../../utils/colour-hex.service';
 import { Position } from 'src/app/utils/position';
 
@@ -22,7 +22,7 @@ export class TextRendererService {
 
   #ctx: CanvasRenderingContext2D;
 
-  constructor(public colourHexService: ColourHexService) {}
+  protected colourHexService = inject(ColourHexService);
 
   public setFontSize(fontSize: number): void {
     if (!this.#ctx) return;

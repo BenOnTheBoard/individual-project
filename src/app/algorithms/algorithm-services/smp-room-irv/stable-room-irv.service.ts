@@ -12,10 +12,6 @@ export class StableRoomIrvService extends StableRoomMates {
 
   group1Agents: Map<String, Person> = new Map();
 
-  constructor() {
-    super();
-  }
-
   generateAgents() {
     if (this.numberOfAgents % 2 == 1) {
       this.numberOfAgents = this.numberOfAgents + 1;

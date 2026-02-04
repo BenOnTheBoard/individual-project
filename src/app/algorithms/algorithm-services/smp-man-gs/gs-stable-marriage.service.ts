@@ -13,10 +13,6 @@ export class GsStableMarriageService extends MatchingAlgorithm {
 
   group1Agents: Map<String, Man> = new Map();
 
-  constructor() {
-    super();
-  }
-
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const group1AgentName = this.group1Name + i;

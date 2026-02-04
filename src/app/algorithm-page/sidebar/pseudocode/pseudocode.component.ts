@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { PlaybackService } from '../../services/playback/playback.service';
 
@@ -10,11 +10,8 @@ import { PlaybackService } from '../../services/playback/playback.service';
 export class PseudocodeComponent implements OnInit {
   algorithm: string;
   animate: boolean = true;
-
-  constructor(
-    public playback: PlaybackService,
-    public algRetriever: AlgorithmRetrievalService,
-  ) {}
+  protected algRetriever = inject(AlgorithmRetrievalService);
+  protected playback = inject(PlaybackService);
 
   ngOnInit(): void {
     this.algorithm = this.algRetriever.currentAlgorithm.id;

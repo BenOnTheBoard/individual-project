@@ -11,8 +11,6 @@ export class HomeContentComponent implements OnInit {
   private animationVid = viewChild<ElementRef>('animationVid');
   private descriptionVid = viewChild<ElementRef>('descriptionVid');
 
-  constructor() {}
-
   ngOnInit(): void {}
 
   async #playVideo(video: HTMLVideoElement): Promise<void> {

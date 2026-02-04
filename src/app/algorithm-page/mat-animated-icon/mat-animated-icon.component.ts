@@ -18,8 +18,6 @@ export class MatAnimatedIconComponent implements OnInit {
 
   #internalAnimate = false;
 
-  constructor() {}
-
   ngOnInit() {}
 
   toggle() {

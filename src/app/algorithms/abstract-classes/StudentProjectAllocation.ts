@@ -10,10 +10,6 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
   group2Agents: Map<String, Project> = new Map();
   group3Agents: Map<String, Lecturer> = new Map();
 
-  constructor() {
-    super();
-  }
-
   generatePreferences(): void {
     let numberLectures = 0;
     let projectLists = [];

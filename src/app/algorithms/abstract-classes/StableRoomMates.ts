@@ -81,10 +81,6 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
     this.#unstable8_3,
   ];
 
-  constructor() {
-    super();
-  }
-
   selectUnstableInstance(): Array<Array<string>> {
     let random = 0;
     switch (this.numberOfAgents) {

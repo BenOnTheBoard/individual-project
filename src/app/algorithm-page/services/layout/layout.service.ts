@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { Position } from 'src/app/utils/position';
 import { UtilsService } from 'src/app/utils/utils.service';
@@ -19,11 +19,8 @@ export class LayoutService {
   readonly #SRRadius = 200;
 
   #positions: Record<string, Position> = {};
-
-  constructor(
-    public algRetriever: AlgorithmRetrievalService,
-    public utils: UtilsService,
-  ) {}
+  protected algRetriever = inject(AlgorithmRetrievalService);
+  protected utils = inject(UtilsService);
 
   public setPositions(positions): void {
     this.#positions = positions;

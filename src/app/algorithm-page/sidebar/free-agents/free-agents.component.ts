@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { PlaybackService } from '../../services/playback/playback.service';
 import { UtilsService } from 'src/app/utils/utils.service';
@@ -9,11 +9,9 @@ import { UtilsService } from 'src/app/utils/utils.service';
   styleUrls: ['./free-agents.component.scss', '../sidebar.component.scss'],
 })
 export class FreeAgentsComponent implements OnInit {
-  constructor(
-    public playback: PlaybackService,
-    public algRetriever: AlgorithmRetrievalService,
-    public utils: UtilsService,
-  ) {}
+  protected algRetriever = inject(AlgorithmRetrievalService);
+  protected playback = inject(PlaybackService);
+  protected utils = inject(UtilsService);
 
   ngOnInit(): void {}
 

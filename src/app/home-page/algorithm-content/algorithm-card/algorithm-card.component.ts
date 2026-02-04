@@ -1,4 +1,4 @@
-import { Component, OnInit, viewChild, input } from '@angular/core';
+import { Component, OnInit, viewChild, input, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
@@ -9,7 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { UtilsService } from 'src/app/utils/utils.service';
 import { AgentCountFormComponent } from 'src/app/forms/agent-count-form/agent-count-form.component';
-
 declare var anime: any;
 
 @Component({
@@ -34,11 +33,9 @@ export class AlgorithmCardComponent implements OnInit {
   readonly algorithm = input<Algorithm>(undefined);
   protected readonly agentForm = viewChild(AgentCountFormComponent);
 
-  constructor(
-    public algRetriever: AlgorithmRetrievalService,
-    public utils: UtilsService,
-    public router: Router,
-  ) {}
+  protected algRetriever = inject(AlgorithmRetrievalService);
+  protected router = inject(Router);
+  protected utils = inject(UtilsService);
 
   ngOnInit(): void {}
 

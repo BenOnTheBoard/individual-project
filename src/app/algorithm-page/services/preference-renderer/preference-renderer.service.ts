@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AlgorithmRetrievalService } from '../../../algorithm-retrieval.service';
 import { LayoutService } from '../layout/layout.service';
 import { TextRendererService } from '../text-renderer/text-renderer.service';
@@ -31,14 +31,12 @@ export class PreferenceRendererService {
   readonly #bracketWidth = 15;
   readonly #lecturerOffsetFromBracket = 20;
 
-  constructor(
-    public algRetriever: AlgorithmRetrievalService,
-    public agentRenderer: AgentRendererService,
-    public layoutService: LayoutService,
-    public textRenderer: TextRendererService,
-    public colourHexService: ColourHexService,
-    public utils: UtilsService,
-  ) {}
+  protected algRetriever = inject(AlgorithmRetrievalService);
+  protected agentRenderer = inject(AgentRendererService);
+  protected colourHexService = inject(ColourHexService);
+  protected layoutService = inject(LayoutService);
+  protected textRenderer = inject(TextRendererService);
+  protected utils = inject(UtilsService);
 
   setContext(ctx: CanvasRenderingContext2D): void {
     this.#ctx = ctx;

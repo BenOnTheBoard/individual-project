@@ -9,7 +9,5 @@ import { MatDialogModule } from '@angular/material/dialog';
   imports: [MatDialogModule, MatButtonModule],
 })
 export class AnimationGuideDialogComponent implements OnInit {
-  constructor() {}
-
   ngOnInit(): void {}
 }

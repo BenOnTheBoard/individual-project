@@ -5,6 +5,7 @@ import {
   OnInit,
   viewChild,
   input,
+  inject,
 } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 declare var anime: any; // declaring the animejs animation library for use in this file
@@ -20,10 +21,9 @@ export class InfoSidebarComponent implements OnInit {
 
   private sidebar = viewChild<ElementRef>('sidebarContainer');
   #sidebarWidth: number;
-
   #isInAnimation: boolean;
 
-  constructor(public algRetriever: AlgorithmRetrievalService) {}
+  protected algRetriever = inject(AlgorithmRetrievalService);
 
   ngOnInit(): void {}
 

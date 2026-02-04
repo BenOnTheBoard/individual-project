@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  inject,
   input,
   OnInit,
   output,
@@ -38,11 +39,9 @@ export class AlgPageNavbarComponent implements OnInit {
   // unlike sidebar width, navbar height won't change
   #isInAnimation = false;
 
-  constructor(
-    public algRetriever: AlgorithmRetrievalService,
-    public drawService: CanvasService,
-    public dialog: MatDialog,
-  ) {}
+  protected algRetriever = inject(AlgorithmRetrievalService);
+  protected drawService = inject(CanvasService);
+  protected dialog = inject(MatDialog);
 
   ngOnInit(): void {}
 

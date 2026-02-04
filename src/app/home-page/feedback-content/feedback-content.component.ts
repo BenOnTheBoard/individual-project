@@ -12,7 +12,5 @@ import { simpleFadeAnimation } from 'src/app/animations/fadeAnimation';
   animations: [simpleFadeAnimation],
 })
 export class FeedbackContentComponent implements OnInit {
-  constructor() {}
-
   ngOnInit(): void {}
 }

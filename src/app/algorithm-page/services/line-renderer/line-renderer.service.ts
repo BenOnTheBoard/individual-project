@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { LayoutService } from '../layout/layout.service';
 import { ColourHexService } from '../../../utils/colour-hex.service';
 import { Position } from 'src/app/utils/position';
@@ -14,11 +14,9 @@ export class LineRendererService {
   readonly #arrowWingAngle = (3 * Math.PI) / 4; // from pointing direction
   #ctx: CanvasRenderingContext2D;
 
-  constructor(
-    public layoutService: LayoutService,
-    public colourHexService: ColourHexService,
-    public utils: UtilsService,
-  ) {}
+  protected utils = inject(UtilsService);
+  protected layoutService = inject(LayoutService);
+  protected colourHexService = inject(ColourHexService);
 
   public setContext(ctx: CanvasRenderingContext2D): void {
     this.#ctx = ctx;

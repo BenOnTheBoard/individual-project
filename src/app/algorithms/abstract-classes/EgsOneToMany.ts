@@ -4,10 +4,6 @@ import { ExtendedGaleShapley } from './ExtendedGaleShapley';
 // this file is the implementation for SM - EGS
 
 export abstract class EgsOneToMany extends ExtendedGaleShapley {
-  constructor() {
-    super();
-  }
-
   breakAssignment(currentAgent: Agent, potentialProposee: Agent) {
     // if w is currently assigned to someone {
     this.update(4, { '%woman%': potentialProposee.name });

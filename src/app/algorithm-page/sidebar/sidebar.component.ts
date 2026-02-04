@@ -4,7 +4,7 @@ import {
   HostListener,
   OnInit,
   viewChild,
-  input
+  input,
 } from '@angular/core';
 import { AlgDescriptionComponent } from './alg-description/alg-description.component';
 import { PseudocodeComponent } from './pseudocode/pseudocode.component';
@@ -31,10 +31,7 @@ export class SidebarComponent implements OnInit {
 
   private sidebar = viewChild<ElementRef>('sidebarContainer');
   #sidebarWidth: number;
-
   #isInAnimation: boolean;
-
-  constructor() {}
 
   ngOnInit(): void {}
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { UtilsService } from 'src/app/utils/utils.service';
@@ -19,10 +19,8 @@ export class NavbarComponent implements OnInit {
     '/feedback': '.feedbackContent',
   };
 
-  constructor(
-    public router: Router,
-    public utils: UtilsService,
-  ) {}
+  protected router = inject(Router);
+  protected utils = inject(UtilsService);
 
   ngOnInit(): void {}
 

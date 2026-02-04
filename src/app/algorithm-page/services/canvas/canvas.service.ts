@@ -1,4 +1,4 @@
-import { ElementRef, Injectable } from '@angular/core';
+import { ElementRef, inject, Injectable } from '@angular/core';
 import { AlgorithmRetrievalService } from '../../../algorithm-retrieval.service';
 import { LayoutService } from '../layout/layout.service';
 import { TextRendererService } from '../text-renderer/text-renderer.service';
@@ -18,15 +18,13 @@ export class CanvasService {
 
   public currentCommand: Step;
 
-  constructor(
-    public algRetriever: AlgorithmRetrievalService,
-    public agentRenderer: AgentRendererService,
-    public layoutService: LayoutService,
-    public lineRenderer: LineRendererService,
-    public prefRenderer: PreferenceRendererService,
-    public textRenderer: TextRendererService,
-    public colourHexService: ColourHexService,
-  ) {}
+  protected algRetriever = inject(AlgorithmRetrievalService);
+  protected agentRenderer = inject(AgentRendererService);
+  protected layoutService = inject(LayoutService);
+  protected lineRenderer = inject(LineRendererService);
+  protected prefRenderer = inject(PreferenceRendererService);
+  protected textRenderer = inject(TextRendererService);
+  protected colourHexService = inject(ColourHexService);
 
   public setCanvas(canvasRef: ElementRef<HTMLCanvasElement>): void {
     this.#canvasElement = canvasRef.nativeElement;

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
 import { MatchingAlgorithm } from 'src/app/algorithms/abstract-classes/MatchingAlgorithm';
 import { AlgorithmData } from 'src/app/algorithms/interfaces/AlgorithmData';
@@ -10,7 +10,7 @@ export class ExecutionService {
   commandMap = {};
   commandList = {};
 
-  constructor(public algorithmRetrieval: AlgorithmRetrievalService) {}
+  protected algRetriever = inject(AlgorithmRetrievalService);
 
   initialise(): void {
     this.commandMap = {};
@@ -26,11 +26,9 @@ export class ExecutionService {
   ): Object {
     this.initialise();
     const algRetriever: MatchingAlgorithm =
-      this.algorithmRetrieval.mapOfAvailableAlgorithms.get(algorithm).service;
+      this.algRetriever.mapOfAvailableAlgorithms.get(algorithm).service;
     this.commandMap =
-      this.algorithmRetrieval.mapOfAvailableAlgorithms.get(
-        algorithm,
-      ).helpTextMap;
+      this.algRetriever.mapOfAvailableAlgorithms.get(algorithm).helpTextMap;
 
     const commandList: AlgorithmData = algRetriever.run(
       numberOfAgents,

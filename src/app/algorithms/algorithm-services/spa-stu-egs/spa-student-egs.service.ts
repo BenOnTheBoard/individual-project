@@ -25,10 +25,6 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   numberLectures: number;
   lecturerCapacity: number;
 
-  constructor() {
-    super();
-  }
-
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const group1AgentName = this.group1Name + i;

@@ -42,7 +42,6 @@ export abstract class MatchingAlgorithm {
 
   protected utils = inject(UtilsService);
   protected colourHexService = inject(ColourHexService);
-  constructor() {}
 
   initialise(
     numberOfAgents: number,
