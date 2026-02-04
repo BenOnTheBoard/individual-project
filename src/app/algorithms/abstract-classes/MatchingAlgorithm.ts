@@ -1,7 +1,9 @@
 import { Agent } from '../interfaces/Agent';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { Step } from '../interfaces/Step';
-import { UtilsService } from '../../../utils/utils.service';
+import { UtilsService } from 'src/app/utils/utils.service';
+import { ColourHexService } from '../../utils/colour-hex.service';
+import { inject } from '@angular/core';
 
 export abstract class MatchingAlgorithm {
   abstract group1Name: string;
@@ -38,7 +40,9 @@ export abstract class MatchingAlgorithm {
 
   stable: boolean = false;
 
-  constructor(public utils: UtilsService) {}
+  protected utils = inject(UtilsService);
+  protected colourHexService = inject(ColourHexService);
+  constructor() {}
 
   initialise(
     numberOfAgents: number,
@@ -73,7 +77,7 @@ export abstract class MatchingAlgorithm {
 
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
-      let group1AgentName = this.group1Name + i;
+      const group1AgentName = this.group1Name + i;
 
       this.group1Agents.set(group1AgentName, {
         name: group1AgentName,
@@ -87,7 +91,7 @@ export abstract class MatchingAlgorithm {
     let currentLetter = 'A';
 
     for (let i = 1; i < this.numberOfGroup2Agents + 1; i++) {
-      let group2AgentName = this.group2Name + currentLetter;
+      const group2AgentName = this.group2Name + currentLetter;
 
       this.group2Agents.set(group2AgentName, {
         name: group2AgentName,
@@ -104,25 +108,25 @@ export abstract class MatchingAlgorithm {
   // generates rankings for all agents
   // changes agent.ranking
   generatePreferences(): void {
-    for (let agent of Array.from(this.group1Agents.values())) {
-      let agent1Rankings = Array.from(new Map(this.group2Agents).values());
+    for (const agent of Array.from(this.group1Agents.values())) {
+      const agent1Rankings = Array.from(new Map(this.group2Agents).values());
       this.utils.shuffle(agent1Rankings);
       this.group1Agents.get(agent.name).ranking = agent1Rankings;
     }
 
-    for (let agent of Array.from(this.group2Agents.values())) {
-      let agent2Rankings = Array.from(new Map(this.group1Agents).values());
+    for (const agent of Array.from(this.group2Agents.values())) {
+      const agent2Rankings = Array.from(new Map(this.group1Agents).values());
       this.utils.shuffle(agent2Rankings);
       this.group2Agents.get(agent.name).ranking = agent2Rankings;
     }
   }
 
   populatePreferences(preferences: Map<String, Array<String>>): void {
-    let tempCopyList: Agent[];
+    let tempCopyList: Array<Agent>;
 
-    for (let agent of Array.from(this.group1Agents.keys())) {
+    for (const agent of Array.from(this.group1Agents.keys())) {
       tempCopyList = [];
-      for (let preferenceAgent of preferences.get(
+      for (const preferenceAgent of preferences.get(
         this.utils.getLastChar(String(agent)),
       )) {
         tempCopyList.push(
@@ -132,9 +136,9 @@ export abstract class MatchingAlgorithm {
       this.group1Agents.get(agent).ranking = tempCopyList;
     }
 
-    for (let agent of Array.from(this.group2Agents.keys())) {
+    for (const agent of Array.from(this.group2Agents.keys())) {
       tempCopyList = [];
-      for (let preferenceAgent of preferences.get(
+      for (const preferenceAgent of preferences.get(
         this.utils.getLastChar(String(agent)),
       )) {
         tempCopyList.push(
@@ -146,15 +150,15 @@ export abstract class MatchingAlgorithm {
   }
 
   getGroupRankings(agents: Map<String, Agent>): Map<String, Array<String>> {
-    let matches: Map<String, Array<String>> = new Map();
+    const matches: Map<String, Array<String>> = new Map();
 
-    for (let agent of Array.from(agents.values())) {
-      let preferenceList = [];
-      for (let match of agent.ranking) {
+    for (const agent of Array.from(agents.values())) {
+      const preferenceList = [];
+      for (const match of agent.ranking) {
         preferenceList.push(match.name.slice(match.name.length - 1));
       }
 
-      let identifier: string = agent.name.slice(agent.name.length - 1);
+      const identifier: string = agent.name.slice(agent.name.length - 1);
 
       matches.set(identifier, preferenceList);
     }
@@ -163,11 +167,11 @@ export abstract class MatchingAlgorithm {
   }
 
   update(step: number, stepVariables?: Object): void {
-    let currentStep: Step = {
+    const currentStep: Step = {
       lineNumber: step,
       freeAgents: Object.assign([], this.freeAgentsOfGroup1),
       matches: new Map(),
-      stepVariables: stepVariables,
+      stepVariables,
       group1CurrentPreferences: this.utils.cloneMap(
         this.group1CurrentPreferences,
       ),
@@ -188,15 +192,15 @@ export abstract class MatchingAlgorithm {
   }
 
   getMatches(): Map<String, Array<String>> {
-    let matches: Map<String, Array<String>> = new Map();
+    const matches: Map<String, Array<String>> = new Map();
 
     for (let i = 1; i < this.numberOfGroup2Agents + 1; i++) {
-      let agentName: string = this.group2Name + String.fromCharCode(i + 64);
-      let agent: Agent = this.group2Agents.get(agentName);
+      const agentName: string = this.group2Name + String.fromCharCode(i + 64);
+      const agent: Agent = this.group2Agents.get(agentName);
 
-      let matchList: Array<String> = new Array();
+      const matchList: Array<String> = new Array();
 
-      for (let match of agent.match) {
+      for (const match of agent.match) {
         matchList.push(match.name);
       }
 
@@ -207,37 +211,37 @@ export abstract class MatchingAlgorithm {
   }
 
   findPositionInMatches(currentAgent: Agent, agentToFind: Agent): number {
-    let position: number = currentAgent.ranking.findIndex(
+    const position: number = currentAgent.ranking.findIndex(
       (agent: { name: string }) => agent.name == agentToFind.name,
     );
     return position;
   }
 
   findPositionInOriginalMatches(currentAgent: Agent, agentToFind: Agent) {
-    let originalPreferences = this.originalGroup1CurrentPreferences.get(
+    const originalPreferences = this.originalGroup1CurrentPreferences.get(
       currentAgent.name[currentAgent.name.length - 1],
     );
-    let position: number = originalPreferences.indexOf(
+    const position: number = originalPreferences.indexOf(
       agentToFind.name[agentToFind.name.length - 1],
     );
     return position;
   }
 
   findPositionInOriginalMatches1Group(currentAgent: Agent, agentToFind: Agent) {
-    let originalPreferences = this.originalGroup1CurrentPreferences.get(
+    const originalPreferences = this.originalGroup1CurrentPreferences.get(
       this.utils.getLastChar(currentAgent.name),
     );
-    let position: number = originalPreferences.indexOf(
+    const position: number = originalPreferences.indexOf(
       this.utils.getLastChar(agentToFind.name),
     );
     return position;
   }
 
   findPositionInOriginalMatchesGroup2(currentAgent: Agent, agentToFind: Agent) {
-    let originalPreferences = this.originalGroup2CurrentPreferences.get(
+    const originalPreferences = this.originalGroup2CurrentPreferences.get(
       currentAgent.name[currentAgent.name.length - 1],
     );
-    let position: number = originalPreferences.indexOf(
+    const position: number = originalPreferences.indexOf(
       agentToFind.name[agentToFind.name.length - 1],
     );
     return position;
@@ -246,7 +250,7 @@ export abstract class MatchingAlgorithm {
   // used to remove elements from currentLines
   removeArrayFromArray(a: Array<Array<string>>, b: Array<string>) {
     let arrayPositionCounter: number = 0;
-    for (let subArray of a) {
+    for (const subArray of a) {
       if (this.utils.checkArrayEquality(subArray, b)) {
         a.splice(arrayPositionCounter, 1);
       }
@@ -257,7 +261,7 @@ export abstract class MatchingAlgorithm {
   // remove all lines in array that start at person
   removePersonFromArray(a: Array<Array<string>>, person: String) {
     let arrayPositionCounter: number = 0;
-    for (let subArray of a) {
+    for (const subArray of a) {
       if (subArray[0] == person) {
         a.splice(arrayPositionCounter, 1);
       }
@@ -268,7 +272,7 @@ export abstract class MatchingAlgorithm {
   // remove all lines leeding to a person from the array
   removeTargetFromArray(a: Array<Array<string>>, person: String) {
     let arrayPositionCounter: number = 0;
-    for (let subArray of a) {
+    for (const subArray of a) {
       if (subArray[1] == person) {
         a.splice(arrayPositionCounter, 1);
       }
@@ -284,56 +288,36 @@ export abstract class MatchingAlgorithm {
   ) {
     let currentAgent: string = '';
 
-    if (preferenceList.get(person)[position].includes('#')) {
-      currentAgent = preferenceList
-        .get(person)
-        [position].charAt(preferenceList.get(person)[position].length - 2);
-    } else {
-      currentAgent = preferenceList
-        .get(person)
-        [position].charAt(preferenceList.get(person)[position].length - 1);
-    }
+    currentAgent = preferenceList.get(person)[position].includes('#')
+      ? preferenceList
+          .get(person)
+          [position].charAt(preferenceList.get(person)[position].length - 2)
+      : preferenceList
+          .get(person)
+          [position].charAt(preferenceList.get(person)[position].length - 1);
 
-    if (style == 'green') {
-      style = '#53D26F';
-    } else if (style == 'red') {
-      style = '#EB2A2A';
-    } else if (style == 'grey') {
-      style = '#C4C4C4';
-    } else if (style == 'black') {
-      style = '#000000';
-    }
-
-    preferenceList.get(person)[position] = '{' + style + currentAgent + '}';
+    const colour = this.colourHexService.getHex(style);
+    preferenceList.get(person)[position] = `{${colour}${currentAgent}}`;
   }
 
-  // check if no unmatched pair like each other more than their current partners
   checkStability(allMatches: Map<String, Array<String>>): boolean {
     let stability = true;
 
-    // for all women
-    for (let agent of allMatches.keys()) {
-      let agentMatches = allMatches.get(agent);
+    for (const agent of allMatches.keys()) {
+      const agentMatches = allMatches.get(agent);
 
-      // if agent has matches
       if (agentMatches.length > 0) {
-        // find the position of the last ranked match (for Stable Marriage this will be the only match)
-        let lastAgentPosition = this.getLastMatch(agent, agentMatches);
-        let agentPreferences: Array<Agent> =
+        const lastAgentPosition = this.getLastMatch(agent, agentMatches);
+        const agentPreferences: Array<Agent> =
           this.group2Agents.get(agent).ranking;
 
-        // for every agent, x, better than match, check:
-        //   - if x isn't one of the matches (for HR), then
-        //      - check if x likes currentAgent more than their match
-        //          - if yes, stability = false
-        //          - if no, stability = true
         for (let i = lastAgentPosition - 1; i >= 0; i--) {
           if (!agentMatches.includes(agentPreferences[i].name)) {
-            let matchPosition = this.findPositionInOriginalMatches(
+            const matchPosition = this.findPositionInOriginalMatches(
               agentPreferences[i],
               agentPreferences[i].match[0],
             );
-            let currentAgentPosition = this.findPositionInOriginalMatches(
+            const currentAgentPosition = this.findPositionInOriginalMatches(
               agentPreferences[i],
               this.group2Agents.get(agent),
             );
@@ -349,8 +333,8 @@ export abstract class MatchingAlgorithm {
 
   getLastMatch(currentAgent: String, agentMatches: Array<String>): number {
     let furthestIndex: number = 0;
-    for (let matchAgent of agentMatches) {
-      let matchPosition = this.findPositionInMatches(
+    for (const matchAgent of agentMatches) {
+      const matchPosition = this.findPositionInMatches(
         this.group2Agents.get(currentAgent),
         this.group1Agents.get(matchAgent),
       );
@@ -369,17 +353,13 @@ export abstract class MatchingAlgorithm {
     preferences: Map<String, Array<String>>,
     SRstable: boolean = true,
   ): AlgorithmData {
-    if (numberOfGroup2Agents != numberOfAgents) {
-      this.initialise(numberOfAgents, numberOfGroup2Agents);
-    } else {
+    if (numberOfGroup2Agents == numberOfAgents) {
       this.initialise(numberOfAgents);
+    } else {
+      this.initialise(numberOfAgents, numberOfGroup2Agents);
     }
 
-    if (SRstable) {
-      this.SRstable = true;
-    } else {
-      this.SRstable = false;
-    }
+    this.SRstable = SRstable;
 
     this.generateAgents();
 

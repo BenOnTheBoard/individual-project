@@ -3,9 +3,9 @@ import { StudentProjectAllocation } from '../../abstract-classes/StudentProjectA
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { Lecturer } from '../../interfaces/Lecturer';
 import { Project } from '../../interfaces/Project';
-
 import { Student } from '../../interfaces/Student';
-import { UtilsService } from 'src/app/utils/utils.service';
+
+const projectCapacity = 2;
 
 @Injectable({
   providedIn: 'root',
@@ -25,13 +25,13 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   numberLectures: number;
   lecturerCapacity: number;
 
-  constructor(public utils: UtilsService) {
-    super(utils);
+  constructor() {
+    super();
   }
 
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
-      let group1AgentName = this.group1Name + i;
+      const group1AgentName = this.group1Name + i;
 
       this.group1Agents.set(group1AgentName, {
         name: group1AgentName,
@@ -45,8 +45,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     let currentLetter = 'A';
 
     for (let i = 1; i < this.numberOfGroup2Agents + 1; i++) {
-      let group2AgentName = this.group2Name + currentLetter;
-      let projectCapacity = 2;
+      const group2AgentName = this.group2Name + currentLetter;
 
       this.group2Agents.set(group2AgentName, {
         name: group2AgentName,
@@ -72,7 +71,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     this.group3Agents = new Map();
 
     for (let i = 1; i < this.numberLectures + 1; i++) {
-      let group3AgentName = this.group3Name + i;
+      const group3AgentName = this.group3Name + i;
 
       this.group3Agents.set(group3AgentName, {
         name: group3AgentName,
@@ -100,34 +99,33 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     let stability = true;
 
     // for all students
-    for (let student of this.group1Agents.values()) {
+    for (const student of this.group1Agents.values()) {
       let studentMatchIndex = 0;
-      if (student.match.length == 0) {
-        studentMatchIndex = student.ranking.length;
-      } else {
-        studentMatchIndex = this.originalGroup1CurrentPreferences
-          .get(this.utils.getLastChar(student.name))
-          .indexOf(this.utils.getLastChar(student.match[0].name));
-      }
+      studentMatchIndex =
+        student.match.length == 0
+          ? student.ranking.length
+          : this.originalGroup1CurrentPreferences
+              .get(this.utils.getLastChar(student.name))
+              .indexOf(this.utils.getLastChar(student.match[0].name));
 
       // current student information
-      let studentRanking = this.originalGroup1CurrentPreferences.get(
+      const studentRanking = this.originalGroup1CurrentPreferences.get(
         this.utils.getLastChar(student.name),
       );
 
       for (let i = studentMatchIndex - 1; i >= 0; i--) {
         // get project + lecturer that is more preferred than the current
-        let betterProjectname = studentRanking[i];
-        let betterProject = this.group2Agents.get(
+        const betterProjectname = studentRanking[i];
+        const betterProject = this.group2Agents.get(
           this.group2Name + betterProjectname,
         );
 
-        let betterProjectLecturer = this.getProjectLecturer(betterProject);
+        const betterProjectLecturer = this.getProjectLecturer(betterProject);
 
         // get lecturers ranking list to compare positions
-        let lastMatchIndex = this.getLastMatchLecturer(betterProjectLecturer);
+        const lastMatchIndex = this.getLastMatchLecturer(betterProjectLecturer);
 
-        let currentStudentIndex = this.getCurrentStudentIndex(
+        const currentStudentIndex = this.getCurrentStudentIndex(
           student,
           betterProjectLecturer,
         );
@@ -145,15 +143,11 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         if (
           betterProject.match.length < betterProject.capacity &&
           this.getLecturerCurrentCapacity(betterProjectLecturer) ==
-            this.lecturerCapacity
+            this.lecturerCapacity &&
+          (betterProjectLecturer.projects.includes(student.match[0].name) ||
+            currentStudentIndex < lastMatchIndex)
         ) {
-          // if student is mathced to lecturer or student is preferred over worst matched student
-          if (
-            betterProjectLecturer.projects.includes(student.match[0].name) ||
-            currentStudentIndex < lastMatchIndex
-          ) {
-            stability = false;
-          }
+          stability = false;
         }
 
         // project is full + student is preferred over worst ranked person on project
@@ -174,11 +168,11 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
   // returns index of worst ranked studnet for a project according to the lecture within the lecturers preference list
   getLastMatchProject(project: Project) {
-    let projectLecturer = this.getProjectLecturer(project);
+    const projectLecturer = this.getProjectLecturer(project);
     let worstIndex = 0;
 
-    for (let student of project.match) {
-      let index = projectLecturer.ranking.indexOf(student);
+    for (const student of project.match) {
+      const index = projectLecturer.ranking.indexOf(student);
 
       if (index > worstIndex) {
         worstIndex = index;
@@ -194,10 +188,9 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     // for each student in ranking
     for (let i = 0; i < lecturer.ranking.length; i++) {
       // for each project that they host
-      let student = lecturer.ranking[i];
-      for (let p = 0; p < lecturer.projects.length; p++) {
-        let projectName = lecturer.projects[p];
-        let project = this.group2Agents.get(projectName);
+      const student = lecturer.ranking[i];
+      for (const projectName of lecturer.projects) {
+        const project = this.group2Agents.get(projectName);
 
         if (project.match.includes(student)) {
           index = i;
@@ -214,9 +207,9 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
   // list of students that need to be matched and are available
   availableStudents() {
-    let students = [];
+    const students = [];
     // for each student - if they are free and have people in their ranking - add to list and return
-    for (let student of this.group1Agents.values()) {
+    for (const student of this.group1Agents.values()) {
       if (student.ranking.length > 0 && student.match.length == 0) {
         students.push(student);
       }
@@ -226,18 +219,17 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
   // returns the lecturer that runs the passed in project
   getProjectLecturer(project: Project) {
-    for (let lecturer of this.group3Agents.values()) {
+    for (const lecturer of this.group3Agents.values()) {
       if (lecturer.projects.includes(project.name)) {
         return lecturer;
       }
     }
-    console.log("Can't find the lecturer that runs project -", project);
     return null;
   }
 
   // get the least prefered student assigned to a project according to the lecturer
   getWorstStudent(project: Project) {
-    let lecturer = this.getProjectLecturer(project);
+    const lecturer = this.getProjectLecturer(project);
 
     // loop through ranking in reverse - first assigned student to appear is the worst
     for (let i = lecturer.ranking.length - 1; i > -1; i--) {
@@ -251,14 +243,14 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
   // get the worst student given a lecture assigned to any of that lectures projects
   getWorstStudentOverall(lecturer: Lecturer) {
-    let assignedStudents = [];
+    const assignedStudents = [];
 
     // for each project the lecture runs
-    for (let project of lecturer.projects) {
-      let projectObject = this.group2Agents.get(project);
+    for (const project of lecturer.projects) {
+      const projectObject = this.group2Agents.get(project);
 
       // add the assigned students of the project to a list
-      for (let student of projectObject.match) {
+      for (const student of projectObject.match) {
         assignedStudents.push(student);
       }
     }
@@ -277,7 +269,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     student.match.splice(0, 1);
 
     //remove matching to student from project
-    let studentIndex = project.match.indexOf(student);
+    const studentIndex = project.match.indexOf(student);
     project.match.splice(studentIndex, 1);
 
     this.removeArrayFromArray(this.currentLines, [
@@ -291,11 +283,8 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
   getLecturerCurrentCapacity(lecturer: Lecturer) {
     let currentCapacity = 0;
-    // for each project the lecture runs
-    for (let project of lecturer.projects) {
-      let projectObject = this.group2Agents.get(project);
-
-      // sum number of people assigned to the project
+    for (const project of lecturer.projects) {
+      const projectObject = this.group2Agents.get(project);
       currentCapacity += projectObject.match.length;
     }
     return currentCapacity;
@@ -324,7 +313,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         '%project%': project.name,
       });
       if (lecturer.ranking[i].ranking.includes(project)) {
-        let projectIndex = lecturer.ranking[i].ranking.indexOf(project);
+        const projectIndex = lecturer.ranking[i].ranking.indexOf(project);
         lecturer.ranking[i].ranking.splice(projectIndex, 1);
 
         this.changePreferenceStyle(
@@ -358,12 +347,13 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
       // for each project offered by the lecture
       this.update(21, { '%lecturer%': lecturer.name });
-      for (let project of lecturer.projects) {
-        let projectObject = this.group2Agents.get(project);
+      for (const project of lecturer.projects) {
+        const projectObject = this.group2Agents.get(project);
 
         // if the successor finds this project accesptable - remove the project from the ranking
         if (lecturer.ranking[i].ranking.includes(projectObject)) {
-          let projectIndex = lecturer.ranking[i].ranking.indexOf(projectObject);
+          const projectIndex =
+            lecturer.ranking[i].ranking.indexOf(projectObject);
           lecturer.ranking[i].ranking.splice(projectIndex, 1);
 
           this.changePreferenceStyle(
@@ -385,56 +375,37 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     }
   }
 
-  updateCapacityVisualization() {
-    let cap = 0;
+  getHexForFullness(occupancy: number, capacity: number) {
+    return this.colourHexService.getHex(
+      occupancy == capacity ? 'green' : occupancy > capacity ? 'red' : 'black',
+    );
+  }
 
-    // lecturers
-    for (let lecturer of this.group3Agents.values()) {
-      cap = this.getLecturerCurrentCapacity(lecturer);
-      if (cap == lecturer.capacity) {
-        // turn green if at capacity
-        this.algorithmSpecificData['lecturerCapacity'][
-          Number(this.utils.getLastChar(lecturer.name))
-        ] = '{#53D26F' + lecturer.capacity + '}';
-      } else if (cap > lecturer.capacity) {
-        // turn red if over capacity
-        this.algorithmSpecificData['lecturerCapacity'][
-          Number(this.utils.getLastChar(lecturer.name))
-        ] = '{#EB2A2A' + lecturer.capacity + '}';
-      } else {
-        // turn black otherwise
-        this.algorithmSpecificData['lecturerCapacity'][
-          Number(this.utils.getLastChar(lecturer.name))
-        ] = '{#000000' + lecturer.capacity + '}';
-      }
+  updateCapacityVisualization() {
+    let occupancy: number;
+    let colour: string;
+
+    for (const lecturer of this.group3Agents.values()) {
+      occupancy = this.getLecturerCurrentCapacity(lecturer);
+      colour = this.getHexForFullness(occupancy, lecturer.capacity);
+      this.algorithmSpecificData['lecturerCapacity'][
+        Number(this.utils.getLastChar(lecturer.name))
+      ] = `{${colour}${lecturer.capacity}}`;
     }
 
-    //Projects
-    for (let project of this.group2Agents.values()) {
-      if (project.match.length == project.capacity) {
-        // turn green to show full
-        this.algorithmSpecificData['hospitalCapacity'][
-          this.utils.getLastChar(project.name)
-        ] = '{#53D26F' + project.capacity + '}';
-      } else if (project.match.length > project.capacity) {
-        // turn red to show over full
-        this.algorithmSpecificData['hospitalCapacity'][
-          this.utils.getLastChar(project.name)
-        ] = '{#EB2A2A' + project.capacity + '}';
-      } else {
-        // turn black otherwise
-        this.algorithmSpecificData['hospitalCapacity'][
-          this.utils.getLastChar(project.name)
-        ] = '{#000000' + project.capacity + '}';
-      }
+    for (const project of this.group2Agents.values()) {
+      colour = this.getHexForFullness(project.match.length, project.capacity);
+      this.algorithmSpecificData['hospitalCapacity'][
+        this.utils.getLastChar(project.name)
+      ] = `{${colour}${project.capacity}}`;
     }
   }
 
   // update all the free agents each iteration
   updateFreeList() {
-    let freeAgentsList = [];
-    for (let student of this.group1Agents.values()) {
-      if (!(student.match.length > 0)) {
+    const freeAgentsList = [];
+    for (const student of this.group1Agents.values()) {
+      if (student.match.length <= 0) {
         freeAgentsList.push(student.name);
       }
     }
@@ -444,38 +415,29 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
   updateLecturerPreferances() {
     // set all to black
-    for (
-      let i = 0;
-      i < this.algorithmSpecificData['lecturerRanking'].length;
-      i++
-    ) {
-      for (
-        let j = 0;
-        j < this.algorithmSpecificData['lecturerRanking'][i].length;
-        j++
-      ) {
-        this.algorithmSpecificData['lecturerRanking'][i][j] =
-          '{#000000' +
-          this.algorithmSpecificData['lecturerRanking'][i][j].slice(-2)[0] +
-          '}';
+    for (const lecturerRanking of this.algorithmSpecificData[
+      'lecturerRanking'
+    ]) {
+      for (let i = 0; i < lecturerRanking.length; i++) {
+        lecturerRanking[i] = `{#000000${lecturerRanking[i].slice(-2)[0]}}`;
       }
     }
 
     // set matched to green
-    for (let student of this.group1Agents.values()) {
+    for (const student of this.group1Agents.values()) {
       // if student has match
       if (student.match.length > 0) {
-        let project = student.match[0];
-        let lecturer = this.getProjectLecturer(project);
+        const project = student.match[0];
+        const lecturer = this.getProjectLecturer(project);
 
-        let lectureIndex = Number(this.utils.getLastChar(lecturer.name)) - 1;
-        let studentIndex = this.group3Agents
+        const lectureIndex = Number(this.utils.getLastChar(lecturer.name)) - 1;
+        const studentIndex = this.group3Agents
           .get(lecturer.name)
           .ranking.indexOf(student);
 
         this.algorithmSpecificData['lecturerRanking'][lectureIndex][
           studentIndex
-        ] = '{#53D26F' + this.utils.getLastChar(student.name) + '}';
+        ] = `{#53D26F${this.utils.getLastChar(student.name)}}`;
       }
     }
   }
@@ -492,13 +454,13 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     // main loop check
     while (availableStudents.length > 0) {
       // get first student on list
-      let student = availableStudents[0];
+      const student = availableStudents[0];
       // while some student s is free
       this.update(2, { '%student%': student.name });
 
       // get students most prefered project and its lecturer
-      let preferedProject = student.ranking[0];
-      let projectLecturer = this.getProjectLecturer(preferedProject);
+      const preferedProject = student.ranking[0];
+      const projectLecturer = this.getProjectLecturer(preferedProject);
 
       // p = next most prefered project on s's list | l = lecturer who offers p
       this.update(3, {
@@ -542,7 +504,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       // if project is over-subbed - remove worst student assigned to project
       if (preferedProject.match.length > preferedProject.capacity) {
         // worst student on this project, ranked by the projects lecturer
-        let worstStudent = this.getWorstStudent(preferedProject);
+        const worstStudent = this.getWorstStudent(preferedProject);
         this.update(7, {
           '%student%': worstStudent.name,
           '%project%': preferedProject.name,
@@ -560,9 +522,9 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
           projectLecturer.capacity
         ) {
           // worst student assigned to the lecture
-          let worstStudentOverall =
+          const worstStudentOverall =
             this.getWorstStudentOverall(projectLecturer);
-          let worstStudentProject = worstStudentOverall.match[0];
+          const worstStudentProject = worstStudentOverall.match[0];
 
           // Sw = worst student assigned to l | Pw = project that Sw is assigned to
           this.update(10, {
@@ -587,7 +549,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       this.update(13, { '%project%': preferedProject.name });
       if (preferedProject.match.length == preferedProject.capacity) {
         // worst student on this project, ranked by the projects lecturer
-        let worstStudent = this.getWorstStudent(preferedProject);
+        const worstStudent = this.getWorstStudent(preferedProject);
         this.update(14, {
           '%student%': worstStudent.name,
           '%project%': preferedProject.name,
@@ -607,7 +569,8 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         projectLecturer.capacity
       ) {
         // worst student ranked by the lecturer
-        let worstStudentOverall = this.getWorstStudentOverall(projectLecturer);
+        const worstStudentOverall =
+          this.getWorstStudentOverall(projectLecturer);
         this.update(19, {
           '%student%': worstStudentOverall.name,
           '%lecturer%': projectLecturer.name,
@@ -634,7 +597,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     }
 
     // updates confirms
-    for (let student of this.group1Agents.values()) {
+    for (const student of this.group1Agents.values()) {
       // if the student has a matching - should
       if (student.match.length == 1) {
         this.changePreferenceStyle(

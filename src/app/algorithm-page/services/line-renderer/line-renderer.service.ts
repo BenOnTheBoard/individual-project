@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LayoutService } from '../layout/layout.service';
-import { ColourHexService } from '../colour-hex.service';
+import { ColourHexService } from '../../../utils/colour-hex.service';
 import { Position } from 'src/app/utils/position';
 import { UtilsService } from 'src/app/utils/utils.service';
 

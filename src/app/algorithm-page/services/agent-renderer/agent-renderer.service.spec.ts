@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { AlgorithmRetrievalService } from '../../../algorithm-retrieval.service';
 import { LayoutService } from '../layout/layout.service';
 import { TextRendererService } from '../text-renderer/text-renderer.service';
-import { ColourHexService } from '../colour-hex.service';
+import { ColourHexService } from '../../../utils/colour-hex.service';
 import { AgentRendererService } from './agent-renderer.service';
 
 describe('AgentRendererService', () => {
@@ -68,10 +68,10 @@ describe('AgentRendererService', () => {
 
     expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledTimes(2);
     expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledWith(
-      'circle1'
+      'circle1',
     );
     expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledWith(
-      'circle2'
+      'circle2',
     );
     expect(mockCtx.stroke).toHaveBeenCalledTimes(2);
     expect(mockTextRenderer.drawText).toHaveBeenCalledTimes(2);
@@ -82,10 +82,10 @@ describe('AgentRendererService', () => {
 
     expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledTimes(2);
     expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledWith(
-      'circleA'
+      'circleA',
     );
     expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledWith(
-      'circleB'
+      'circleB',
     );
     expect(mockCtx.stroke).toHaveBeenCalledTimes(2);
     expect(mockTextRenderer.drawText).toHaveBeenCalledTimes(2);
@@ -99,10 +99,10 @@ describe('AgentRendererService', () => {
 
     expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledTimes(2);
     expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledWith(
-      'circle1'
+      'circle1',
     );
     expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledWith(
-      'circle2'
+      'circle2',
     );
     expect(mockCtx.stroke).toHaveBeenCalledTimes(2);
     expect(mockCtx.fill).not.toHaveBeenCalled();

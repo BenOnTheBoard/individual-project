@@ -3,7 +3,6 @@ import { ExtendedGaleShapley } from '../../abstract-classes/ExtendedGaleShapley'
 import { Agent } from '../../interfaces/Agent';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { Hospital } from '../../interfaces/Hospital';
-import { UtilsService } from 'src/app/utils/utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,13 +17,13 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
   freeAgentsOfGroup2: Array<String> = new Array();
 
-  constructor(public utils: UtilsService) {
-    super(utils);
+  constructor() {
+    super();
   }
 
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
-      let group1AgentName = this.group1Name + i;
+      const group1AgentName = this.group1Name + i;
 
       this.group1Agents.set(group1AgentName, {
         name: group1AgentName,
@@ -38,15 +37,15 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     let currentLetter = 'A';
 
     for (let i = 1; i < this.numberOfGroup2Agents + 1; i++) {
-      let group2AgentName = this.group2Name + currentLetter;
+      const group2AgentName = this.group2Name + currentLetter;
 
-      let availableSpaces = this.getRandomInt(1, this.numberOfAgents - 2);
+      const availableSpaces = this.getRandomInt(1, this.numberOfAgents - 2);
 
       this.group2Agents.set(group2AgentName, {
         name: group2AgentName,
         match: new Array(),
         ranking: new Array(),
-        availableSpaces: availableSpaces,
+        availableSpaces,
       });
 
       this.freeAgentsOfGroup2.push(group2AgentName);
@@ -66,26 +65,17 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  // returns next possible resident for a hospital - null if none
-  // one that is not assigned to the hospital and is on the hospitals preferance list
-  getNextPotentialProposee(hospital: Hospital) {
-    // for each resident in ranking
-    for (let i = 0; i < hospital.ranking.length; i++) {
-      let proposee = hospital.ranking[i];
-
-      // if resident is not assigned to hospital - return
-      if (proposee.match[0] != hospital) {
-        return proposee;
-      }
+  getNextPotentialProposee(hospital: Hospital): Agent | null {
+    for (const proposee of hospital.ranking) {
+      if (proposee.match[0] != hospital) return proposee;
     }
-    // return null there are no un assigned residents
     return null;
   }
 
   getWorstResident(hospital: Hospital): Agent {
-    let positionMap: Map<number, Agent> = new Map();
+    const positionMap: Map<number, Agent> = new Map();
 
-    for (let resident of hospital.match) {
+    for (const resident of hospital.match) {
       positionMap.set(this.findPositionInMatches(hospital, resident), resident);
     }
 
@@ -96,10 +86,16 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
   breakAssignment(resident: Agent, hospital): void {
     // get pos in each rankings lists to remove later
-    let matchPosition_resident = this.findPositionInMatches(hospital, resident);
-    let matchPosition_hospital = this.findPositionInMatches(resident, hospital);
+    const matchPosition_resident = this.findPositionInMatches(
+      hospital,
+      resident,
+    );
+    const matchPosition_hospital = this.findPositionInMatches(
+      resident,
+      hospital,
+    );
 
-    let matchPosition_resident_original =
+    const matchPosition_resident_original =
       this.findPositionInOriginalMatchesGroup2(hospital, resident);
 
     this.removeArrayFromArray(this.currentLines, [
@@ -123,9 +119,9 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       'red',
     );
 
-    let hospitalLastChar = this.utils.getLastChar(hospital.name);
+    const hospitalLastChar = this.utils.getLastChar(hospital.name);
     this.algorithmSpecificData['hospitalCapacity'][hospitalLastChar] =
-      '{#000000' + String(hospital.availableSpaces) + '}';
+      `{#000000${String(hospital.availableSpaces)}}`;
 
     // unassign r and h'
     this.update(5, {
@@ -159,8 +155,8 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
   provisionallyAssign(resident: Agent, hospital: Hospital) {
     // provisionally assign r to h;
-    let agentLastChar = this.utils.getLastChar(resident.name);
-    let proposeeLastChar = this.utils.getLastChar(hospital.name);
+    const agentLastChar = this.utils.getLastChar(resident.name);
+    const proposeeLastChar = this.utils.getLastChar(hospital.name);
 
     this.removeArrayFromArray(this.currentLines, [
       agentLastChar,
@@ -168,7 +164,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       'red',
     ]);
 
-    let greenLine = [agentLastChar, proposeeLastChar, 'green'];
+    const greenLine = [agentLastChar, proposeeLastChar, 'green'];
     this.currentLines.push(greenLine);
 
     this.changePreferenceStyle(
@@ -191,7 +187,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
     if (hospital.match.length >= hospital.availableSpaces - 1) {
       this.algorithmSpecificData['hospitalCapacity'][proposeeLastChar] =
-        '{#53D26F' + String(hospital.availableSpaces) + '}';
+        `{#53D26F${String(hospital.availableSpaces)}}`;
     }
 
     resident.match[0] = hospital;
@@ -200,7 +196,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
   removeRuledOutPreferences(resident: Agent, hospital: Hospital): void {
     // given h and r - remove h' of h on r's list
-    let hospitalPosition: number = this.findPositionInMatches(
+    const hospitalPosition: number = this.findPositionInMatches(
       resident,
       hospital,
     );
@@ -213,11 +209,8 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       });
 
       for (let i = hospitalPosition + 1; i < resident.ranking.length; i++) {
-        // current hospital being removed
-        let removedHospital = resident.ranking[i];
-
-        // resident index within hospital to be removed
-        let residentIndex: number = this.findPositionInMatches(
+        const removedHospital = resident.ranking[i];
+        const residentIndex = this.findPositionInMatches(
           removedHospital,
           resident,
         );
@@ -226,12 +219,10 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
         // remove hsopital from resident
         resident.ranking.splice(i, 1);
-
         // get index of resident in the removde hospitals og rankings
-        let pos = this.originalGroup2CurrentPreferences
+        const pos = this.originalGroup2CurrentPreferences
           .get(this.utils.getLastChar(removedHospital.name))
           .findIndex((h) => h == this.utils.getLastChar(resident.name));
-
         //  grey out hos from res
         this.changePreferenceStyle(
           this.group1CurrentPreferences,
@@ -246,7 +237,6 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
           pos,
           'grey',
         );
-
         // remove h' and r from each others preferance list
         this.update(8, {
           '%hospital%': removedHospital.name,
@@ -257,74 +247,65 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
   }
 
   removeRuledOutPreferencesOld(resident: Agent, hospital: Hospital): void {
-    if (hospital.match.length >= hospital.availableSpaces) {
-      let worstResident: Agent = this.getWorstResident(hospital);
-      let worstResidentPosition: number = this.findPositionInMatches(
+    if (hospital.match.length < hospital.availableSpaces) return;
+
+    const worstResident: Agent = this.getWorstResident(hospital);
+    const worstResidentPosition: number = this.findPositionInMatches(
+      hospital,
+      worstResident,
+    );
+    let hospitalRankingClearCounter: number = worstResidentPosition + 1;
+
+    // for each successor h' of h on r's list
+    this.update(7, {
+      '%resident%': resident.name,
+      '%hospital%': hospital.name,
+    });
+
+    for (let i = worstResidentPosition + 1; i < hospital.ranking.length; i++) {
+      const hospitalPosition: number = this.findPositionInMatches(
+        hospital.ranking[i],
         hospital,
-        worstResident,
+      );
+      this.relevantPreferences.push(
+        this.utils.getLastChar(hospital.ranking[i].name),
       );
 
-      let hospitalRankingClearCounter: number = worstResidentPosition + 1;
+      this.changePreferenceStyle(
+        this.group1CurrentPreferences,
+        this.utils.getLastChar(hospital.ranking[i].name),
+        this.originalGroup1CurrentPreferences
+          .get(this.utils.getLastChar(hospital.ranking[i].name))
+          .findIndex((h) => h == this.utils.getLastChar(hospital.name)),
+        'grey',
+      );
+      this.changePreferenceStyle(
+        this.group2CurrentPreferences,
+        this.utils.getLastChar(hospital.name),
+        hospitalRankingClearCounter,
+        'grey',
+      );
 
-      // for each successor h' of h on r's list
-      this.update(7, {
-        '%resident%': resident.name,
+      // remove r' and h from each others preferance list
+      this.update(8, {
         '%hospital%': hospital.name,
+        '%resident%': hospital.ranking[i].name,
       });
 
-      for (
-        let i = worstResidentPosition + 1;
-        i < hospital.ranking.length;
-        i++
-      ) {
-        let hospitalPosition: number = this.findPositionInMatches(
-          hospital.ranking[i],
-          hospital,
-        );
-        this.relevantPreferences.push(
-          this.utils.getLastChar(hospital.ranking[i].name),
-        );
+      hospital.ranking[i].ranking.splice(hospitalPosition, 1);
+      hospital.ranking.splice(i, 1);
+      i--;
+      hospitalRankingClearCounter++;
 
-        this.changePreferenceStyle(
-          this.group1CurrentPreferences,
-          this.utils.getLastChar(hospital.ranking[i].name),
-          this.originalGroup1CurrentPreferences
-            .get(this.utils.getLastChar(hospital.ranking[i].name))
-            .findIndex((h) => h == this.utils.getLastChar(hospital.name)),
-          'grey',
-        );
-        this.changePreferenceStyle(
-          this.group2CurrentPreferences,
-          this.utils.getLastChar(hospital.name),
-          hospitalRankingClearCounter,
-          'grey',
-        );
-
-        // remove r' and h from each others preferance list
-        this.update(8, {
-          '%hospital%': hospital.name,
-          '%resident%': hospital.ranking[i].name,
-        });
-
-        hospital.ranking[i].ranking.splice(hospitalPosition, 1);
-
-        hospital.ranking.splice(i, 1);
-        i -= 1;
-
-        hospitalRankingClearCounter++;
-
-        this.relevantPreferences.pop();
-      }
+      this.relevantPreferences.pop();
     }
   }
 
   // returns true if there is a resident on the list that is not matched with that hospital
   checkHospitalPreferanceList(hospital: Hospital) {
-    for (let resident of hospital.ranking) {
+    for (const resident of hospital.ranking) {
       // if they are not matched to the hospital
-      if (resident.match[0] != hospital) {
-        return true;
-      }
+      if (resident.match[0] != hospital) return true;
     }
     return false;
   }
@@ -332,9 +313,9 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
   // returns all the hospitals that should be looked at
   // they are undersubbed and there is someone not assigned to them that the hospital wants
   checkFreeHospitals() {
-    let freeHospitals = [];
-    for (let hospital of this.group2Agents.values()) {
-      let hospitalCap = hospital.availableSpaces;
+    const freeHospitals = [];
+    for (const hospital of this.group2Agents.values()) {
+      const hospitalCap = hospital.availableSpaces;
 
       // if hospital in undersubbed and there is someone on the list that is not assigned to them
       if (
@@ -356,7 +337,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     // h's list contains a a RESIDENT r not assigned to h
     while (this.freeAgentsOfGroup2.length > 0) {
       // get first hospital on list
-      let currentHospital = this.group2Agents.get(this.freeAgentsOfGroup2[0]);
+      const currentHospital = this.group2Agents.get(this.freeAgentsOfGroup2[0]);
 
       // "While some hospital h is - undersubscibed,
       // and has a resident r on h's preferance list that is no assigned to h",
@@ -368,7 +349,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       ) {
         this.freeAgentsOfGroup2.shift();
       } else {
-        let potentialProposee: Agent =
+        const potentialProposee: Agent =
           this.getNextPotentialProposee(currentHospital);
 
         // a RESIDENT r that is not assigned to h, but is on its pref list

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ExecutionService } from '../execution/execution.service';
 import { CanvasService } from '../canvas/canvas.service';
-import { Step } from '../../algorithms/interfaces/Step';
+import { Step } from 'src/app/algorithms/interfaces/Step';
 
 @Injectable({
   providedIn: 'root',
