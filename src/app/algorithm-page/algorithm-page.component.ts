@@ -125,18 +125,20 @@ export class AlgorithmPageComponent implements OnInit {
 
   protected handleNavbarCommand(command: string): void {
     switch (command) {
+      case 'generatePreferences':
+        this.generateNewPreferences();
+        break;
+      case 'goHome':
+        this.goHome();
+        break;
       case 'toggleLeftSidebar':
         this.toggleSidebar('left');
         break;
       case 'toggleRightSidebar':
         this.toggleSidebar('right');
         break;
-      case 'goHome':
-        this.goHome();
-        break;
-      case 'generatePreferences':
-        this.generateNewPreferences();
-        break;
+      case 'toggleSRStable':
+        this.SRstable != this.SRstable;
     }
   }
 
@@ -178,27 +180,19 @@ export class AlgorithmPageComponent implements OnInit {
     this.fadeMainContent(true);
 
     if (side == 'left') {
-      this.toggleLeftSidebar();
+      this.leftSidebar.toggleSidebar(this.sidebarSlideDuration);
+      this.isCodeShowing = !this.isCodeShowing;
     } else {
-      this.toggleRightSidebar();
+      this.rightSidebar.toggleSidebar(this.sidebarSlideDuration);
+      this.isInfoShowing = !this.isInfoShowing;
     }
 
     this.drawService.clearCanvas();
     this.fadeMainContent(false);
-    await this.utils.delay(200);
-
+    await this.utils.delay(this.canvasFadeDuration);
     this.drawService.redrawCanvas();
+    await this.utils.delay(this.sidebarSlideDuration - this.canvasFadeDuration);
     this.duringAnimation = false;
-  }
-
-  private toggleLeftSidebar(): void {
-    this.leftSidebar.toggleSidebar(this.sidebarSlideDuration);
-    this.isCodeShowing = !this.isCodeShowing;
-  }
-
-  private toggleRightSidebar(): void {
-    this.rightSidebar.toggleSidebar(this.sidebarSlideDuration);
-    this.isInfoShowing = !this.isInfoShowing;
   }
 
   // --------------------------------------------------------------------------------- | TUTORIAL FUNCTIONS

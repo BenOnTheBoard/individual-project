@@ -5,8 +5,9 @@
             title="Menu button"
             data-content="Click this to hide or expand the sidebar underneath when not in this tutorial!"
             data-trigger="manual" (click)="this.toggleLeftSidebar();"
-            matTooltip="{{this.isCodeShowing ? 'Close Panel' : 'Expand Panel'}}"
-            [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}">{{this.isCodeShowing ? "menu_open" :
+            matTooltip="{{this.isCodeShowing() ? 'Close Panel' : 'Expand Panel'}}"
+            [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}">{{this.isCodeShowing()
+            ? "menu_open" :
             "menu"}}</mat-icon>
         <a id="algmatch-logo" class="unselectable" [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}"
             (click)="this.emitGoHome()" matTooltip="Go Home"><span id="alg">alg</span><span id="match">match</span></a>
@@ -27,7 +28,7 @@
     <div class="col-3 text-right">
         @if (this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem') {
         <mat-icon class="navbarIconButton unselectable mr-4" matTooltip="Stable/Unstable" mat-button
-            (click)="this.toggleSRStable()" [ngClass]="{'disabled': this.step != 0}">{{this.SRStable
+            (click)="this.toggleSRStable()" [ngClass]="{'disabled': this.step != 0}">{{this.SRStable()
             ?"check_box":"check_box_outline_blank"}}</mat-icon>
         }
 
@@ -48,14 +49,13 @@
             data-content="In order from left to right, you can: stop this tutorial, generate new preferences, edit preferences, toggle all preferences or only relevant preferences, see an animation guide, or advance the tutorial."
             data-trigger="manual" matTooltip="{{this.step == 0 ? 'Tutorial' : 'Advance Tutorial'}}"
             (click)="this.updateToNextTutorialStep()" [ngClass]="{'disabled': this.duringAnimation()}">{{this.step == 0
-            ?
-            "help_outline" : "arrow_forward_ios"}}</mat-icon>
+            ? "help_outline" : "arrow_forward_ios"}}</mat-icon>
 
         <mat-icon class="navbarIconButton unselectable mr-4 navbarPopover" style="transform: rotate(180deg)"
             data-toggle="popover" data-placement="bottom"
-            matTooltip="{{this.isInfoShowing ? 'Close Panel' : 'Expand Panel'}}" data-trigger="manual"
+            matTooltip="{{this.isInfoShowing() ? 'Close Panel' : 'Expand Panel'}}" data-trigger="manual"
             (click)="this.toggleRightSidebar(); $event.stopImmediatePropagation()"
-            [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}">{{this.isInfoShowing ? "menu_open"
+            [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}">{{this.isInfoShowing() ? "menu_open"
             :"menu"}}</mat-icon>
     </div>
 </nav>
