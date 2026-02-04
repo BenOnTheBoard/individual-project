@@ -1,12 +1,16 @@
 import { UtilsService } from 'src/app/utils/utils.service';
 import { Agent } from '../interfaces/Agent';
 import { ExtendedGaleShapley } from './ExtendedGaleShapley';
+import { ColourHexService } from 'src/app/utils/colour-hex.service';
 
 // this file is the implementation for SM - EGS
 
 export abstract class EgsOneToMany extends ExtendedGaleShapley {
-  constructor(public utils: UtilsService) {
-    super(utils);
+  constructor(
+    public utils: UtilsService,
+    public colourHexService: ColourHexService,
+  ) {
+    super(utils, colourHexService);
   }
 
   breakAssignment(currentAgent: Agent, potentialProposee: Agent) {

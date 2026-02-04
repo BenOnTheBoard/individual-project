@@ -2,6 +2,7 @@ import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
 import { Agent } from '../interfaces/Agent';
 import { UtilsService } from 'src/app/utils/utils.service';
+import { ColourHexService } from 'src/app/utils/colour-hex.service';
 
 export abstract class StableRoomMates extends MatchingAlgorithm {
   readonly #unstable4 = [
@@ -82,8 +83,11 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
     this.#unstable8_3,
   ];
 
-  constructor(public utils: UtilsService) {
-    super(utils);
+  constructor(
+    public utils: UtilsService,
+    public colourHexService: ColourHexService,
+  ) {
+    super(utils, colourHexService);
   }
 
   selectUnstableInstance(): Array<Array<string>> {

@@ -5,14 +5,18 @@ import { Student } from '../interfaces/Student';
 import { Project } from '../interfaces/Project';
 import { Lecturer } from '../interfaces/Lecturer';
 import { UtilsService } from 'src/app/utils/utils.service';
+import { ColourHexService } from 'src/app/utils/colour-hex.service';
 
 export abstract class StudentProjectAllocation extends MatchingAlgorithm {
   group1Agents: Map<String, Student> = new Map();
   group2Agents: Map<String, Project> = new Map();
   group3Agents: Map<String, Lecturer> = new Map();
 
-  constructor(public utils: UtilsService) {
-    super(utils);
+  constructor(
+    public utils: UtilsService,
+    public colourHexService: ColourHexService,
+  ) {
+    super(utils, colourHexService);
   }
 
   generatePreferences(): void {

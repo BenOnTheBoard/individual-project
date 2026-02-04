@@ -2,6 +2,7 @@ import { Agent } from '../interfaces/Agent';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { Step } from '../interfaces/Step';
 import { UtilsService } from 'src/app/utils/utils.service';
+import { ColourHexService } from '../../utils/colour-hex.service';
 
 export abstract class MatchingAlgorithm {
   abstract group1Name: string;
@@ -38,7 +39,10 @@ export abstract class MatchingAlgorithm {
 
   stable: boolean = false;
 
-  constructor(public utils: UtilsService) {}
+  constructor(
+    public utils: UtilsService,
+    public colourHexService: ColourHexService,
+  ) {}
 
   initialise(
     numberOfAgents: number,
@@ -292,17 +296,8 @@ export abstract class MatchingAlgorithm {
           .get(person)
           [position].charAt(preferenceList.get(person)[position].length - 1);
 
-    if (style == 'green') {
-      style = '#53D26F';
-    } else if (style == 'red') {
-      style = '#EB2A2A';
-    } else if (style == 'grey') {
-      style = '#C4C4C4';
-    } else if (style == 'black') {
-      style = '#000000';
-    }
-
-    preferenceList.get(person)[position] = `{${style}${currentAgent}}`;
+    const colour = this.colourHexService.getHex(style);
+    preferenceList.get(person)[position] = `{${colour}${currentAgent}}`;
   }
 
   checkStability(allMatches: Map<String, Array<String>>): boolean {
