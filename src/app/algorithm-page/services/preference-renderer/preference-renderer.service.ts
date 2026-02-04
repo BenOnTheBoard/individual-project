@@ -32,7 +32,7 @@ export class PreferenceRendererService {
   readonly #lecturerOffsetFromBracket = 20;
 
   constructor(
-    public algService: AlgorithmRetrievalService,
+    public algRetriever: AlgorithmRetrievalService,
     public agentRenderer: AgentRendererService,
     public layoutService: LayoutService,
     public textRenderer: TextRendererService,
@@ -55,7 +55,7 @@ export class PreferenceRendererService {
     this.#firstRun = false;
     this.textRenderer.setFontSize(this.#prefFontSize);
     this.#lineSizes = new Map();
-    for (let i = 1; i < this.algService.numberOfGroup1Agents + 1; i++) {
+    for (let i = 1; i < this.algRetriever.numberOfGroup1Agents + 1; i++) {
       const lineSize = this.#ctx.measureText(
         this.#cmd.group1CurrentPreferences.get(String(i)).join(', '),
       ).width;
@@ -100,8 +100,8 @@ export class PreferenceRendererService {
 
   public drawBipartitePreferences(): void {
     this.textRenderer.setFontSize(this.#prefFontSize);
-    const lhsCount = this.algService.numberOfGroup1Agents;
-    const rhsCount = this.algService.numberOfGroup2Agents;
+    const lhsCount = this.algRetriever.numberOfGroup1Agents;
+    const rhsCount = this.algRetriever.numberOfGroup2Agents;
 
     this.#drawPreferenceList(lhsCount, (i) => String(i + 1), 'LHS');
     this.#drawPreferenceList(
@@ -116,7 +116,7 @@ export class PreferenceRendererService {
     // the first half should have their preferences on their left
     // and the second should have their preferences on their right
     this.textRenderer.setFontSize(this.#prefFontSize);
-    const numAgents = this.algService.numberOfGroup1Agents;
+    const numAgents = this.algRetriever.numberOfGroup1Agents;
     const lhsCount = Math.ceil(numAgents / 2);
     const rhsCount = numAgents - lhsCount;
 
@@ -142,7 +142,7 @@ export class PreferenceRendererService {
     this.textRenderer.setFontSize(this.#prefFontSize);
     const capacityMap = this.#cmd.algorithmSpecificData['hospitalCapacity'];
 
-    for (let i = 0; i < this.algService.numberOfGroup2Agents; i++) {
+    for (let i = 0; i < this.algRetriever.numberOfGroup2Agents; i++) {
       const letter = String.fromCharCode(65 + i);
       const capacity = capacityMap[letter];
       const pos = this.layoutService.getPositionOfAgent(`circle${letter}`);

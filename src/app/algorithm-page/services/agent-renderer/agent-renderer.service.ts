@@ -20,7 +20,7 @@ export class AgentRendererService {
   #ctx: CanvasRenderingContext2D;
 
   constructor(
-    public algService: AlgorithmRetrievalService,
+    public algRetriever: AlgorithmRetrievalService,
     public layoutService: LayoutService,
     public textRenderer: TextRendererService,
     public colourHexService: ColourHexService,
@@ -69,7 +69,7 @@ export class AgentRendererService {
 
   public drawGroupOneAgents(): void {
     this.drawGroup(
-      this.algService.numberOfGroup1Agents,
+      this.algRetriever.numberOfGroup1Agents,
       (i: number) => String(i + 1),
       this.colourHexService.getHex(this.#groupOneColour),
     );
@@ -77,7 +77,7 @@ export class AgentRendererService {
 
   public drawGroupTwoAgents(): void {
     this.drawGroup(
-      this.algService.numberOfGroup2Agents,
+      this.algRetriever.numberOfGroup2Agents,
       (i: number) => String.fromCharCode(65 + i),
       this.colourHexService.getHex(this.#groupTwoColour),
     );

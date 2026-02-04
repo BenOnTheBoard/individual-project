@@ -13,10 +13,10 @@ export class PseudocodeComponent implements OnInit {
 
   constructor(
     public playback: PlaybackService,
-    public algService: AlgorithmRetrievalService,
+    public algRetriever: AlgorithmRetrievalService,
   ) {}
 
   ngOnInit(): void {
-    this.algorithm = this.algService.currentAlgorithm.id;
+    this.algorithm = this.algRetriever.currentAlgorithm.id;
   }
 }

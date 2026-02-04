@@ -19,7 +19,7 @@ export class CanvasService {
   public currentCommand: Step;
 
   constructor(
-    public algService: AlgorithmRetrievalService,
+    public algRetriever: AlgorithmRetrievalService,
     public agentRenderer: AgentRendererService,
     public layoutService: LayoutService,
     public lineRenderer: LineRendererService,

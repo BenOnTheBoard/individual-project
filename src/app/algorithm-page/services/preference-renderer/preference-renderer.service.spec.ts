@@ -10,7 +10,7 @@ import { Step } from 'src/app/algorithms/interfaces/Step';
 describe('PreferenceRendererService', () => {
   let service: PreferenceRendererService;
   let mockCtx: jasmine.SpyObj<CanvasRenderingContext2D>;
-  let mockAlgService: Partial<AlgorithmRetrievalService>;
+  let mockalgRetriever: Partial<AlgorithmRetrievalService>;
   let mockAgentRenderer: jasmine.SpyObj<AgentRendererService>;
   let mockLayoutService: jasmine.SpyObj<LayoutService>;
   let mockTextRenderer: jasmine.SpyObj<TextRendererService>;
@@ -30,7 +30,7 @@ describe('PreferenceRendererService', () => {
       'moveTo',
       'lineTo',
     ]);
-    mockAlgService = {
+    mockalgRetriever = {
       numberOfGroup1Agents: 2,
       numberOfGroup2Agents: 2,
     } as AlgorithmRetrievalService;
@@ -72,7 +72,7 @@ describe('PreferenceRendererService', () => {
     TestBed.configureTestingModule({
       providers: [
         PreferenceRendererService,
-        { provide: AlgorithmRetrievalService, useValue: mockAlgService },
+        { provide: AlgorithmRetrievalService, useValue: mockalgRetriever },
         { provide: AgentRendererService, useValue: mockAgentRenderer },
         { provide: LayoutService, useValue: mockLayoutService },
         { provide: TextRendererService, useValue: mockTextRenderer },

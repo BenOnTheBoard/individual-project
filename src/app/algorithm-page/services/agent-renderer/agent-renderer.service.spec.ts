@@ -8,7 +8,7 @@ import { AgentRendererService } from './agent-renderer.service';
 describe('AgentRendererService', () => {
   let service: AgentRendererService;
   let mockCtx: jasmine.SpyObj<CanvasRenderingContext2D>;
-  let mockAlgService: Partial<AlgorithmRetrievalService>;
+  let mockalgRetriever: Partial<AlgorithmRetrievalService>;
   let mockLayoutService: jasmine.SpyObj<LayoutService>;
   let mockTextRenderer: jasmine.SpyObj<TextRendererService>;
   let mockColourHex: jasmine.SpyObj<ColourHexService>;
@@ -23,7 +23,7 @@ describe('AgentRendererService', () => {
       'lineWidth',
       'strokeStyle',
     ]);
-    mockAlgService = {
+    mockalgRetriever = {
       numberOfGroup1Agents: 2,
       numberOfGroup2Agents: 2,
     } as AlgorithmRetrievalService;
@@ -42,7 +42,7 @@ describe('AgentRendererService', () => {
     TestBed.configureTestingModule({
       providers: [
         AgentRendererService,
-        { provide: AlgorithmRetrievalService, useValue: mockAlgService },
+        { provide: AlgorithmRetrievalService, useValue: mockalgRetriever },
         { provide: LayoutService, useValue: mockLayoutService },
         { provide: TextRendererService, useValue: mockTextRenderer },
         { provide: ColourHexService, useValue: mockColourHex },

@@ -21,7 +21,7 @@ export class LayoutService {
   #positions: Record<string, Position> = {};
 
   constructor(
-    public algService: AlgorithmRetrievalService,
+    public algRetriever: AlgorithmRetrievalService,
     public utils: UtilsService,
   ) {}
 
@@ -83,31 +83,33 @@ export class LayoutService {
     currentCommand: Object,
   ): void {
     const LHSHeightOffset =
-      this.#heightOffsetMap.get(this.algService.numberOfGroup1Agents) || 0;
+      this.#heightOffsetMap.get(this.algRetriever.numberOfGroup1Agents) || 0;
     const RHSHeightOffset =
-      this.#heightOffsetMap.get(this.algService.numberOfGroup2Agents) || 0;
+      this.#heightOffsetMap.get(this.algRetriever.numberOfGroup2Agents) || 0;
 
     const { effectiveWidth, effectiveHeight, canvasMiddle, centre } =
       this.#getCanvasMetrics(canvas);
 
     const LHSCircleSpacing =
-      effectiveHeight / this.algService.numberOfGroup1Agents + LHSHeightOffset;
+      effectiveHeight / this.algRetriever.numberOfGroup1Agents +
+      LHSHeightOffset;
     const RHSCircleSpacing =
-      effectiveHeight / this.algService.numberOfGroup2Agents + RHSHeightOffset;
+      effectiveHeight / this.algRetriever.numberOfGroup2Agents +
+      RHSHeightOffset;
 
     const LHSPosX = currentCommand['algorithmSpecificData']['hospitalCapacity']
       ? canvas.width * this.#xMargin - this.#hospitalCapacityOffset
       : canvas.width * this.#xMargin;
 
-    const middleIdxLHS = (this.algService.numberOfGroup1Agents - 1) / 2;
-    const middleIdxRHS = (this.algService.numberOfGroup2Agents - 1) / 2;
+    const middleIdxLHS = (this.algRetriever.numberOfGroup1Agents - 1) / 2;
+    const middleIdxRHS = (this.algRetriever.numberOfGroup2Agents - 1) / 2;
 
     // reset
     this.#positions = {
       middle: { x: centre.x, y: centre.y },
     };
 
-    for (let i = 0; i < this.algService.numberOfGroup1Agents; i++) {
+    for (let i = 0; i < this.algRetriever.numberOfGroup1Agents; i++) {
       const offset = i - middleIdxLHS;
       const newPos = {
         x: LHSPosX,
@@ -116,7 +118,7 @@ export class LayoutService {
       this.#setCirclePosition('LHS', i + 1, newPos);
     }
 
-    for (let i = 0; i < this.algService.numberOfGroup2Agents; i++) {
+    for (let i = 0; i < this.algRetriever.numberOfGroup2Agents; i++) {
       const offset = i - middleIdxRHS;
       const newPos = {
         x: effectiveWidth,
@@ -129,14 +131,14 @@ export class LayoutService {
   public calculateSRPositions(canvas: HTMLCanvasElement): void {
     const { canvasMiddle, centre } = this.#getCanvasMetrics(canvas);
     const origin = { x: centre.x, y: canvasMiddle };
-    const spacingAngle = (Math.PI * 2) / this.algService.numberOfGroup1Agents;
+    const spacingAngle = (Math.PI * 2) / this.algRetriever.numberOfGroup1Agents;
 
     // reset
     this.#positions = {
       middle: { x: centre.x, y: centre.y },
     };
 
-    for (let i = 0; i < this.algService.numberOfGroup1Agents; i++) {
+    for (let i = 0; i < this.algRetriever.numberOfGroup1Agents; i++) {
       const pos = this.utils.polarToCartesian(
         this.#SRRadius,
         spacingAngle * (i + 2),
