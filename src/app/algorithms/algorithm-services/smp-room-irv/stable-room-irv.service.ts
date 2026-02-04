@@ -31,23 +31,6 @@ export class StableRoomIrvService extends StableRoomMates {
       this.freeAgentsOfGroup1.push(group1AgentName);
     }
 
-    // fill data structures for group2 - Other - might not be used
-    let currentLetter = 'A';
-
-    for (let i = 1; i < this.numberOfGroup2Agents + 1; i++) {
-      const group2AgentName = this.group2Name + currentLetter;
-
-      this.group2Agents.set(group2AgentName, {
-        name: group2AgentName,
-        match: new Array(),
-        ranking: new Array(),
-      });
-
-      currentLetter = String.fromCharCode(
-        ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65,
-      );
-    }
-
     this.algorithmSpecificData['SR'] = true;
   }
 

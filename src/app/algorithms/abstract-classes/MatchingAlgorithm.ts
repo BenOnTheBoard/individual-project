@@ -87,9 +87,8 @@ export abstract class MatchingAlgorithm {
       this.freeAgentsOfGroup1.push(group1AgentName);
     }
 
-    let currentLetter = 'A';
-
-    for (let i = 1; i < this.numberOfGroup2Agents + 1; i++) {
+    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
+      const currentLetter = String.fromCharCode(65 + i);
       const group2AgentName = this.group2Name + currentLetter;
 
       this.group2Agents.set(group2AgentName, {
@@ -97,10 +96,6 @@ export abstract class MatchingAlgorithm {
         match: new Array(),
         ranking: new Array(),
       });
-
-      currentLetter = String.fromCharCode(
-        ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65,
-      );
     }
   }
 

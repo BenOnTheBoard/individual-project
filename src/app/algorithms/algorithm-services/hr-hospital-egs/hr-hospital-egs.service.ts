@@ -30,9 +30,8 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       this.freeAgentsOfGroup1.push(group1AgentName);
     }
 
-    let currentLetter = 'A';
-
-    for (let i = 1; i < this.numberOfGroup2Agents + 1; i++) {
+    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
+      const currentLetter = String.fromCharCode(65 + i);
       const group2AgentName = this.group2Name + currentLetter;
 
       const availableSpaces = this.getRandomInt(1, this.numberOfAgents - 2);
@@ -45,12 +44,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       });
 
       this.freeAgentsOfGroup2.push(group2AgentName);
-
       this.hospitalCapacity[currentLetter] = availableSpaces;
-
-      currentLetter = String.fromCharCode(
-        ((currentLetter.charCodeAt(0) + 1 - 65) % 26) + 65,
-      );
     }
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
   }
