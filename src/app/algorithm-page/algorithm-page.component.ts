@@ -3,7 +3,7 @@ import {
   ElementRef,
   HostListener,
   OnInit,
-  ViewChild,
+  viewChild,
 } from '@angular/core';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { CommonModule, NgClass } from '@angular/common';
@@ -38,17 +38,10 @@ declare var anime: any; // declaring the animejs animation library for use in th
   ],
 })
 export class AlgorithmPageComponent implements OnInit {
-  @ViewChild('canvas', { static: true })
-  private canvas: ElementRef<HTMLCanvasElement>;
-
-  @ViewChild('leftSidebar', { static: true })
-  private leftSidebar: SidebarComponent;
-
-  @ViewChild('rightSidebar', { static: true })
-  private rightSidebar: InfoSidebarComponent;
-
-  @ViewChild('topNavbar', { static: true })
-  private navbar: AlgPageNavbarComponent;
+  private canvas = viewChild<ElementRef<HTMLCanvasElement>>('canvas');
+  private leftSidebar = viewChild<SidebarComponent>('leftSidebar');
+  private rightSidebar = viewChild<InfoSidebarComponent>('rightSidebar');
+  private navbar = viewChild<AlgPageNavbarComponent>('topNavbar');
 
   readonly #barsFadeDuration = 600; // side and navbar fade in and out duration
   readonly #sidebarSlideDuration = 700;
@@ -74,7 +67,7 @@ export class AlgorithmPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.drawService.setCanvas(this.canvas);
+    this.drawService.setCanvas(this.canvas());
     this.drawService.initialise();
     this.playback.setAlgorithm(
       this.algorithmService.currentAlgorithm.id,
@@ -180,10 +173,10 @@ export class AlgorithmPageComponent implements OnInit {
     this.#fadeMainContent(true);
 
     if (side == 'left') {
-      this.leftSidebar.toggleSidebar(this.#sidebarSlideDuration);
+      this.leftSidebar().toggleSidebar(this.#sidebarSlideDuration);
       this.isCodeShowing = !this.isCodeShowing;
     } else {
-      this.rightSidebar.toggleSidebar(this.#sidebarSlideDuration);
+      this.rightSidebar().toggleSidebar(this.#sidebarSlideDuration);
       this.isInfoShowing = !this.isInfoShowing;
     }
 
@@ -262,9 +255,9 @@ export class AlgorithmPageComponent implements OnInit {
   }
 
   #fadeAllBars(fadeOut: boolean): void {
-    this.navbar.toggleNavbar(fadeOut, this.#barsFadeDuration);
-    this.leftSidebar.fadeSidebar(fadeOut, this.#barsFadeDuration);
-    this.rightSidebar.fadeSidebar(fadeOut, this.#barsFadeDuration);
+    this.navbar().toggleNavbar(fadeOut, this.#barsFadeDuration);
+    this.leftSidebar().fadeSidebar(fadeOut, this.#barsFadeDuration);
+    this.rightSidebar().fadeSidebar(fadeOut, this.#barsFadeDuration);
   }
 
   #initShowPage(): void {

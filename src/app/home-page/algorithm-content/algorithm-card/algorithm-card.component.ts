@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, viewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
@@ -32,8 +32,7 @@ declare var anime: any;
 })
 export class AlgorithmCardComponent implements OnInit {
   @Input() algorithm: Algorithm;
-  @ViewChild(AgentCountFormComponent, { static: true })
-  protected agentForm: AgentCountFormComponent;
+  protected readonly agentForm = viewChild(AgentCountFormComponent);
 
   constructor(
     public algRetriever: AlgorithmRetrievalService,
@@ -49,13 +48,13 @@ export class AlgorithmCardComponent implements OnInit {
 
     const isRoommates = this.algRetriever.currentAlgorithm.id == 'smp-room-irv';
     this.algRetriever.numberOfGroup1Agents = isRoommates
-      ? this.agentForm.getSRAgentCount()
-      : this.agentForm.getGroup1AgentCount();
+      ? this.agentForm().getSRAgentCount()
+      : this.agentForm().getGroup1AgentCount();
 
-    const specifiesGroup2Count = !this.agentForm.getGroup2AgentCount();
+    const specifiesGroup2Count = !this.agentForm().getGroup2AgentCount();
     this.algRetriever.numberOfGroup2Agents = specifiesGroup2Count
-      ? this.agentForm.getGroup1AgentCount()
-      : this.agentForm.getGroup2AgentCount();
+      ? this.agentForm().getGroup1AgentCount()
+      : this.agentForm().getGroup2AgentCount();
 
     anime({
       targets: '.main-page',

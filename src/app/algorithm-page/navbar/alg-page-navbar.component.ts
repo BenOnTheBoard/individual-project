@@ -4,7 +4,7 @@ import {
   input,
   OnInit,
   output,
-  ViewChild,
+  viewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
@@ -34,8 +34,7 @@ export class AlgPageNavbarComponent implements OnInit {
   protected dialogOpenEmitter = output<boolean>();
   protected tutorialStepEmitter = output<number>();
 
-  @ViewChild('algPageNavbar', { static: true })
-  private navbar: ElementRef;
+  private navbar = viewChild<ElementRef>('algPageNavbar');
   // unlike sidebar width, navbar height won't change
   #isInAnimation = false;
 
@@ -101,9 +100,9 @@ export class AlgPageNavbarComponent implements OnInit {
     this.#isInAnimation = true;
 
     const direction = fadeOut ? 'reverse' : 'normal';
-    const barHeight = this.navbar.nativeElement.offsetHeight;
+    const barHeight = this.navbar().nativeElement.offsetHeight;
     anime({
-      targets: this.navbar.nativeElement,
+      targets: this.navbar().nativeElement,
       easing: 'easeOutQuint',
       translateY: [`-${barHeight}px`, 0],
       direction,

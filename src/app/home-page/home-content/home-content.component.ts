@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, viewChild } from '@angular/core';
 import { simpleFadeAnimation } from 'src/app/animations/fadeAnimation';
 
 @Component({
@@ -8,8 +8,8 @@ import { simpleFadeAnimation } from 'src/app/animations/fadeAnimation';
   animations: [simpleFadeAnimation],
 })
 export class HomeContentComponent implements OnInit {
-  @ViewChild('animationVid') animationVid: ElementRef;
-  @ViewChild('descriptionVid') descriptionVid: ElementRef;
+  private animationVid = viewChild<ElementRef>('animationVid');
+  private descriptionVid = viewChild<ElementRef>('descriptionVid');
 
   constructor() {}
 
@@ -32,7 +32,7 @@ export class HomeContentComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.#playVideo(this.animationVid.nativeElement);
-    this.#playVideo(this.descriptionVid.nativeElement);
+    this.#playVideo(this.animationVid().nativeElement);
+    this.#playVideo(this.descriptionVid().nativeElement);
   }
 }

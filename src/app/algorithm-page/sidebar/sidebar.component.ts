@@ -4,7 +4,7 @@ import {
   HostListener,
   Input,
   OnInit,
-  ViewChild,
+  viewChild,
 } from '@angular/core';
 import { AlgDescriptionComponent } from './alg-description/alg-description.component';
 import { PseudocodeComponent } from './pseudocode/pseudocode.component';
@@ -29,8 +29,7 @@ export class SidebarComponent implements OnInit {
   @Input() isCodeShowing: boolean;
   @Input() tutorialStep: number;
 
-  @ViewChild('sidebarContainer', { static: true })
-  private sidebar: ElementRef;
+  private sidebar = viewChild<ElementRef>('sidebarContainer');
   #sidebarWidth: number;
 
   #isInAnimation: boolean;
@@ -50,18 +49,18 @@ export class SidebarComponent implements OnInit {
   }
 
   #updateSidebarWidth(): void {
-    this.#sidebarWidth = this.sidebar.nativeElement.offsetWidth;
+    this.#sidebarWidth = this.sidebar().nativeElement.offsetWidth;
   }
 
   #setCurrentPosition(): void {
     const targetX = this.isCodeShowing ? '0px' : `-${this.#sidebarWidth}px`;
-    this.sidebar.nativeElement.style.transform = `translateX(${targetX})`;
+    this.sidebar().nativeElement.style.transform = `translateX(${targetX})`;
   }
 
   async fadeSidebar(fadeOut: boolean, duration: number): Promise<void> {
     const direction = fadeOut ? 'reverse' : 'normal';
     anime({
-      targets: this.sidebar.nativeElement,
+      targets: this.sidebar().nativeElement,
       easing: 'easeInOutQuint',
       opacity: [0, 1],
       direction,
@@ -75,7 +74,7 @@ export class SidebarComponent implements OnInit {
 
     const direction = this.isCodeShowing ? 'reverse' : 'normal';
     anime({
-      targets: this.sidebar.nativeElement,
+      targets: this.sidebar().nativeElement,
       easing: 'easeInOutQuint',
       translateX: [`-${this.#sidebarWidth}px`, 0],
       direction,
