@@ -47,28 +47,12 @@ export class AlgPageNavbarComponent {
     this.tutorialStepEmitter.emit(this.step);
   }
 
+  protected emitToPage(command: string) {
+    this.commandEmitter.emit(command);
+  }
+
   protected updateToNextTutorialStep() {
     this.updateTutorialStep((this.step + 1) % 4);
-  }
-
-  protected toggleLeftSidebar(): void {
-    this.commandEmitter.emit('toggleLeftSidebar');
-  }
-
-  protected toggleRightSidebar(): void {
-    this.commandEmitter.emit('toggleRightSidebar');
-  }
-
-  protected toggleSRStable(): void {
-    this.commandEmitter.emit('toggleSRStable');
-  }
-
-  protected emitGoHome(): void {
-    this.commandEmitter.emit('goHome');
-  }
-
-  protected emitGeneratePreferences(): void {
-    this.commandEmitter.emit('generatePreferences');
   }
 
   protected getTitle(): string {
