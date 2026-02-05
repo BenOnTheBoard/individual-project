@@ -67,23 +67,38 @@ export class AlgorithmPageComponent implements OnInit {
   ngOnInit(): void {
     this.drawService.setCanvas(this.canvas());
     this.drawService.initialise();
-    this.playback.setAlgorithm(
-      this.algRetriever.currentAlgorithm.id,
-      this.algRetriever.numberOfGroup1Agents,
-      this.algRetriever.numberOfGroup2Agents,
-    );
+    this.#setupPlaybackService();
 
     // initialise all of the popovers for the tutorial
+    this.tutorialStep = 0;
     $(() => {
       $('[data-toggle="popover"]').popover();
     });
-
-    this.tutorialStep = 0;
   }
 
   ngAfterViewInit(): void {
     this.#initShowPage();
     this.drawService.redrawCanvas();
+  }
+
+  #setupPlaybackService(): void {
+    const { currentAlgorithm, numberOfGroup1Agents, numberOfGroup2Agents } =
+      this.algRetriever;
+    if (currentAlgorithm.name == 'Stable Roommates Problem') {
+      this.playback.setAlgorithm(
+        currentAlgorithm.id,
+        numberOfGroup1Agents,
+        numberOfGroup2Agents,
+        null,
+        this.SRstable,
+      );
+    } else {
+      this.playback.setAlgorithm(
+        currentAlgorithm.id,
+        numberOfGroup1Agents,
+        numberOfGroup2Agents,
+      );
+    }
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -142,22 +157,7 @@ export class AlgorithmPageComponent implements OnInit {
   protected async generateNewPreferences(): Promise<void> {
     this.#fadeCanvas(true);
     await this.utils.delay(300);
-
-    if (this.algRetriever.currentAlgorithm.name == 'Stable Roommates Problem') {
-      this.playback.setAlgorithm(
-        this.algRetriever.currentAlgorithm.id,
-        this.algRetriever.numberOfGroup1Agents,
-        this.algRetriever.numberOfGroup2Agents,
-        null,
-        this.SRstable,
-      );
-    } else {
-      this.playback.setAlgorithm(
-        this.algRetriever.currentAlgorithm.id,
-        this.algRetriever.numberOfGroup1Agents,
-        this.algRetriever.numberOfGroup2Agents,
-      );
-    }
+    this.#setupPlaybackService();
     this.#fadeCanvas(false);
     this.drawService.redrawCanvas();
   }
