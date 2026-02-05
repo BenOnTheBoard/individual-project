@@ -103,27 +103,33 @@ export class AlgorithmPageComponent implements OnInit {
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
-    if (!this.dialogOpen && this.tutorialStep == 0) {
-      if (event.key == 'ArrowRight' || event.key == 'd') {
+    if (this.dialogOpen || this.tutorialStep != 0) return;
+
+    switch (event.key) {
+      case 'ArrowRight':
+      case 'd':
         if (
-          !(
-            !this.playback.pause ||
-            this.playback.stepCounter >= this.playback.numCommands
-          )
+          this.playback.pause &&
+          this.playback.stepCounter < this.playback.numCommands
         ) {
           this.playback.forwardStep();
         }
-      } else if (event.key == 'ArrowLeft' || event.key == 'a') {
-        if (!(!this.playback.pause || this.playback.stepCounter == 0)) {
+        return;
+      case 'ArrowLeft':
+      case 'a':
+        if (this.playback.pause && this.playback.stepCounter != 0) {
           this.playback.backStep();
         }
-      } else if (event.key == ' ') {
+        return;
+      case ' ':
         if (this.playback.stepCounter < this.playback.numCommands) {
           this.playback.toggle();
         }
-      } else if (event.key == 'r' || event.key == '#') {
+        return;
+      case 'r':
+      case '#':
         this.generateNewPreferences();
-      }
+        return;
     }
   }
 
@@ -133,18 +139,19 @@ export class AlgorithmPageComponent implements OnInit {
     switch (command) {
       case 'generatePreferences':
         this.generateNewPreferences();
-        break;
+        return;
       case 'goHome':
         this.goHome();
-        break;
+        return;
       case 'toggleLeftSidebar':
         this.toggleSidebar('left');
-        break;
+        return;
       case 'toggleRightSidebar':
         this.toggleSidebar('right');
-        break;
+        return;
       case 'toggleSRStable':
         this.SRstable = !this.SRstable;
+        return;
     }
   }
 
@@ -192,19 +199,19 @@ export class AlgorithmPageComponent implements OnInit {
     switch (newStep) {
       case 0:
         this.stopTutorial();
-        break;
+        return;
       case 1:
         if (!this.isCodeShowing) {
           this.toggleSidebar('left');
         }
         this.startTutorial();
-        break;
+        return;
       case 2:
         this.sidebarTutorial();
-        break;
+        return;
       case 3:
         this.mainContentTutorial();
-        break;
+        return;
     }
   }
 
