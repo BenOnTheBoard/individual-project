@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { LayoutService } from '../layout/layout.service';
-import { ColourHexService } from '../../../utils/colour-hex.service';
+import { ColourHexService } from '../../../../utils/colour-hex.service';
 import { LineRendererService } from './line-renderer.service';
 
 describe('LineRendererService', () => {

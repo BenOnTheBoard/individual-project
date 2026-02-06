@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { AlgorithmRetrievalService } from '../../../algorithm-retrieval.service';
+import { AlgorithmRetrievalService } from '../../../../algorithm-retrieval.service';
 import { LayoutService } from '../layout/layout.service';
 import { TextRendererService } from '../text-renderer/text-renderer.service';
-import { ColourHexService } from '../../../utils/colour-hex.service';
+import { ColourHexService } from '../../../../utils/colour-hex.service';
 import { AgentRendererService } from '../agent-renderer/agent-renderer.service';
 import { PreferenceRendererService } from './preference-renderer.service';
 import { Step } from 'src/app/algorithms/interfaces/Step';
