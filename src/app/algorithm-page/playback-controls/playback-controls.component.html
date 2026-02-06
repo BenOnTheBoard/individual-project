@@ -38,7 +38,7 @@
                             <mat-animated-icon id="playButton" class="playbackButton unselectable" start="play_arrow"
                                 end="pause" colorStart="none" colorEnd="none" [animate]="!playback.pause"
                                 (click)="playback.toggle()"
-                                [ngClass]="{'disabled': playback.stepCounter >= playback.numCommands}"></mat-animated-icon>
+                                [ngClass]="{'disabled': playback.stepCounter >= playback.numCommands}" />
 
                             <!-- FORWARD ONE STEP -->
                             <mat-icon id="forwardButton" style="cursor: pointer;"
