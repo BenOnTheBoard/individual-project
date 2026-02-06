@@ -13,7 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { AnimationGuideDialogComponent } from '../animation-guide-dialog/animation-guide-dialog.component';
-declare var anime: any; // declaring the animejs animation library for use in this file
+import anime from 'animejs/lib/anime.es.js';
 
 @Component({
   selector: 'alg-page-navbar',

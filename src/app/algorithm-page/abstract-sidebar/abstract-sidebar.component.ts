@@ -5,7 +5,7 @@ import {
   input,
   Signal,
 } from '@angular/core';
-declare var anime: any; // declaring the animejs animation library for use in this file
+import anime from 'animejs/lib/anime.es.js';
 
 @Component({
   selector: 'app-abstract-sidebar',

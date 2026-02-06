@@ -20,7 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AlgPageNavbarComponent } from './navbar/alg-page-navbar.component';
 declare var $: any; // declaring jquery for use in this file
-declare var anime: any; // declaring the animejs animation library for use in this file
+import anime from 'animejs/lib/anime.es.js';
 
 @Component({
   selector: 'algorithm-page',

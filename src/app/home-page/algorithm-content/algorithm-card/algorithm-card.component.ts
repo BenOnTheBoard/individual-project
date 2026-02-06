@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { UtilsService } from 'src/app/utils/utils.service';
 import { AgentCountFormComponent } from 'src/app/forms/agent-count-form/agent-count-form.component';
-declare var anime: any;
+import anime from 'animejs/lib/anime.es.js';
 
 @Component({
   selector: 'algorithm-card',

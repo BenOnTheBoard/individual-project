@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { IconBannerComponent } from './icon-banner/icon-banner.component';
 import { NavbarComponent } from './navbar/navbar.component';
-declare var anime: any;
+import anime from 'animejs/lib/anime.es.js';
 
 @Component({
   selector: 'app-home-page',

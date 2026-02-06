@@ -2,8 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { UtilsService } from 'src/app/utils/utils.service';
-
-declare var anime: any;
+import anime from 'animejs/lib/anime.es.js';
 
 @Component({
   selector: 'navbar',
