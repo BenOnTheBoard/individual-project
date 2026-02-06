@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ExecutionService } from '../execution/execution.service';
 import { CanvasService } from '../canvas/canvas.service';
-import { Step } from '../../algorithms/interfaces/Step';
+import { Step } from 'src/app/algorithms/interfaces/Step';
 
 @Injectable({
   providedIn: 'root',
@@ -23,10 +23,8 @@ export class PlaybackService {
 
   description: string = 'Click play to run the program below!';
 
-  constructor(
-    public exeService: ExecutionService,
-    public drawService: CanvasService,
-  ) {}
+  protected drawService = inject(CanvasService);
+  protected exeService = inject(ExecutionService);
 
   initialise(): void {
     this.algorithmData = {};
@@ -121,18 +119,13 @@ export class PlaybackService {
   }
 
   async toggle() {
-    if (this.firstRun) {
+    if (this.firstRun || this.pause) {
       this.firstRun = false;
       this.pause = false;
       this.play();
-    } else {
-      if (this.pause) {
-        this.pause = false;
-        this.play();
-      } else {
-        this.pause = true;
-      }
+      return;
     }
+    this.pause = true;
   }
 
   async play(): Promise<void> {

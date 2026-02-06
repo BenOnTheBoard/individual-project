@@ -1,11 +1,11 @@
 <nav #sidebarContainer class="infosidebar col-md-3 d-md-block">
   <div class="infosidebar-sticky shadow-lg">
-    @if (this.algorithmService.currentAlgorithm.name) {
+    @if (algRetriever.currentAlgorithm.name) {
     <div class="grid-container-algorithm infotext" id="infosidebarContent">
-      <h1 id="title_main" class="title center">{{ this.algorithmService.currentAlgorithm.name }}</h1>
+      <h1 id="title_main" class="title center">{{ algRetriever.currentAlgorithm.name }}</h1>
 
       <!-- STABLE MARRIAGE  -->
-      @if (this.algorithmService.currentAlgorithm.id == 'smp-man-gs') {
+      @if (algRetriever.currentAlgorithm.id == 'smp-man-gs') {
       <div>
         <div>
           <h2 id="title">Set Up</h2>
@@ -55,7 +55,7 @@
       }
 
       <!-- STABLE MARRIAGE  -->
-      @if (this.algorithmService.currentAlgorithm.id == 'smp-man-egs') {
+      @if (algRetriever.currentAlgorithm.id == 'smp-man-egs') {
       <div>
         <div>
           <h2 id="title">Set Up</h2>
@@ -121,7 +121,7 @@
       }
 
       <!-- HR/R -->
-      @if (this.algorithmService.currentAlgorithm.id == 'hr-resident-egs') {
+      @if (algRetriever.currentAlgorithm.id == 'hr-resident-egs') {
       <div>
         <div>
           <h2 id="title">Set Up</h2>
@@ -191,7 +191,7 @@
       }
 
       <!-- HR/H -->
-      @if (this.algorithmService.currentAlgorithm.id == 'hr-hospital-egs') {
+      @if (algRetriever.currentAlgorithm.id == 'hr-hospital-egs') {
       <div>
         <div>
           <h2 id="title">Set Up</h2>
@@ -265,7 +265,7 @@
       }
 
       <!-- STABLE ROOMMATES -->
-      @if (this.algorithmService.currentAlgorithm.id == 'smp-room-irv') {
+      @if (algRetriever.currentAlgorithm.id == 'smp-room-irv') {
       <div>
         <div>
           <h2 id="title">Set Up</h2>
@@ -354,7 +354,7 @@
       }
 
       <!-- SPA -->
-      @if (this.algorithmService.currentAlgorithm.id == 'spa-stu-egs') {
+      @if (algRetriever.currentAlgorithm.id == 'spa-stu-egs') {
       <div>
         <div>
           <h2 id="title">Set Up</h2>

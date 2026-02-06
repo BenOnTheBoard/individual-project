@@ -4,58 +4,65 @@
         <mat-icon class="navbarIconButton unselectable mr-4 navbarPopover" data-toggle="popover" data-placement="bottom"
             title="Menu button"
             data-content="Click this to hide or expand the sidebar underneath when not in this tutorial!"
-            data-trigger="manual" (click)="this.toggleLeftSidebar();"
-            matTooltip="{{this.isCodeShowing() ? 'Close Panel' : 'Expand Panel'}}"
-            [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}">{{this.isCodeShowing()
-            ? "menu_open" :
+            data-trigger="manual" (click)="emitToPage('toggleLeftSidebar');"
+            matTooltip="{{isCodeShowing() ? 'Close Panel' : 'Expand Panel'}}"
+            [ngClass]="{'disabled': step != 0 || duringAnimation()}">{{isCodeShowing() ? "menu_open" :
             "menu"}}</mat-icon>
-        <a id="algmatch-logo" class="unselectable" [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}"
-            (click)="this.emitGoHome()" matTooltip="Go Home"><span id="alg">alg</span><span id="match">match</span></a>
+        <a id="algmatch-logo" class="unselectable" [ngClass]="{'disabled': step != 0 || duringAnimation()}"
+            (click)="emitToPage('goHome')" matTooltip="Go Home">
+            <span id="alg">alg</span><span id="match">match</span>
+        </a>
     </div>
 
     <div class="col-4 text-center navbarPopover" data-toggle="popover" data-placement="bottom" title="Tutorial"
         data-content="This short tutorial will walk you through the sections of this page. Click the arrow in the top right to move to the next step of the tutorial! Or you can click the x, also in the top right of the screen, to stop the tutorial."
         data-trigger="manual">
-        <span style="color: white; font-size: 0.98rem; font-weight: 350;">{{this.getTitle()}}</span>
+        <span class="headerSpans">{{getTitle()}}</span>
     </div>
 
-    @if (this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem') {
+    @if (algRetriever.currentAlgorithm.name == 'Stable Roommates Problem') {
     <div class="col-2 text-right">
-        <span style="color: white; font-size: 0.98rem; font-weight: 350;">Generate Stable Matchings</span>
+        <span class="headerSpans">Generating {{SRStable() ? "S" : "Uns"}}table Matchings</span>
     </div>
     }
 
     <div class="col-3 text-right">
-        @if (this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem') {
+        @if (algRetriever.currentAlgorithm.name == 'Stable Roommates Problem') {
         <mat-icon class="navbarIconButton unselectable mr-4" matTooltip="Stable/Unstable" mat-button
-            (click)="this.toggleSRStable()" [ngClass]="{'disabled': this.step != 0}">{{this.SRStable()
-            ?"check_box":"check_box_outline_blank"}}</mat-icon>
+            (click)="emitToPage('toggleSRStable');" [ngClass]="{'disabled': step != 0}">{{SRStable() ?
+            "check_box":"check_box_outline_blank"}}</mat-icon>
         }
 
-        @if(this.step != 0) {
+        @if(step != 0) {
         <mat-icon class="navbarIconButton unselectable mr-4" matTooltip="Stop Tutorial"
-            (click)="this.updateTutorialStep(0)">cancel</mat-icon>
+            (click)="updateTutorialStep(0)">cancel</mat-icon>
         }
         <mat-icon class="navbarIconButton unselectable mr-4" matTooltip="Generate New Random Preferences"
-            (click)="this.emitGeneratePreferences()" [ngClass]="{'disabled': this.step != 0}">refresh</mat-icon>
-        <mat-icon class="navbarIconButton unselectable mr-4" (click)="this.refreshCanvas()"
-            matTooltip="{{this.drawService.alwaysShowPreferences ? 'Show All Preferences' : 'Only Show Relevant Preferences'}}"
-            [ngClass]="{'disabled': this.step != 0}">{{this.drawService.alwaysShowPreferences
-            ?"visibility_off":"visibility"}}</mat-icon>
+            (click)="emitToPage('generatePreferences')" [ngClass]="{'disabled': step != 0}">
+            refresh
+        </mat-icon>
+        <mat-icon class="navbarIconButton unselectable mr-4" (click)="refreshCanvas()"
+            matTooltip="{{drawService.alwaysShowPreferences ? 'Show All Preferences' : 'Only Show Relevant Preferences'}}"
+            [ngClass]="{'disabled': step != 0}">
+            {{drawService.alwaysShowPreferences ? "visibility_off" : "visibility"}}
+        </mat-icon>
         <mat-icon class="navbarIconButton unselectable mr-4" matTooltip="Animation Guide"
-            (click)="this.openAnimationGuideDialog()" [ngClass]="{'disabled': this.step != 0}">info</mat-icon>
+            (click)="openAnimationGuideDialog()" [ngClass]="{'disabled': step != 0}">
+            info
+        </mat-icon>
         <mat-icon class="navbarIconButton unselectable mr-4 navbarPopover" data-toggle="popover" data-placement="bottom"
             title="Actions"
             data-content="In order from left to right, you can: stop this tutorial, generate new preferences, edit preferences, toggle all preferences or only relevant preferences, see an animation guide, or advance the tutorial."
-            data-trigger="manual" matTooltip="{{this.step == 0 ? 'Tutorial' : 'Advance Tutorial'}}"
-            (click)="this.updateToNextTutorialStep()" [ngClass]="{'disabled': this.duringAnimation()}">{{this.step == 0
-            ? "help_outline" : "arrow_forward_ios"}}</mat-icon>
-
+            data-trigger="manual" matTooltip="{{step == 0 ? 'Tutorial' : 'Advance Tutorial'}}"
+            (click)="updateToNextTutorialStep()" [ngClass]="{'disabled': duringAnimation()}">
+            {{step == 0 ? "help_outline" : "arrow_forward_ios"}}
+        </mat-icon>
         <mat-icon class="navbarIconButton unselectable mr-4 navbarPopover" style="transform: rotate(180deg)"
             data-toggle="popover" data-placement="bottom"
-            matTooltip="{{this.isInfoShowing() ? 'Close Panel' : 'Expand Panel'}}" data-trigger="manual"
-            (click)="this.toggleRightSidebar(); $event.stopImmediatePropagation()"
-            [ngClass]="{'disabled': this.step != 0 || this.duringAnimation()}">{{this.isInfoShowing() ? "menu_open"
-            :"menu"}}</mat-icon>
+            matTooltip="{{isInfoShowing() ? 'Close Panel' : 'Expand Panel'}}" data-trigger="manual"
+            (click)="emitToPage('toggleRightSidebar'); $event.stopImmediatePropagation()"
+            [ngClass]="{'disabled': step != 0 || duringAnimation()}">
+            {{isInfoShowing() ? "menu_open" : "menu"}}
+        </mat-icon>
     </div>
 </nav>

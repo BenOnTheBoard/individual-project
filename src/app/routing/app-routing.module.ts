@@ -1,41 +1,53 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AlgorithmGuard } from './algorithm-guard';
-import { AlgorithmPageComponent } from '../algorithm-page/algorithm-page.component';
-import { AboutContentComponent } from '../home-page/about-content/about-content.component';
-import { AlgorithmContentComponent } from '../home-page/algorithm-content/algorithm-content.component';
-import { FeedbackContentComponent } from '../home-page/feedback-content/feedback-content.component';
-import { HomeContentComponent } from '../home-page/home-content/home-content.component';
-import { HomePageComponent } from '../home-page/home-page.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomePageComponent,
+    loadComponent: () =>
+      import('../home-page/home-page.component').then(
+        (m) => m.HomePageComponent,
+      ),
     children: [
       {
         path: '',
-        component: HomeContentComponent,
+        loadComponent: () =>
+          import('../home-page/home-content/home-content.component').then(
+            (m) => m.HomeContentComponent,
+          ),
         data: { animation: 'HomePage' },
       },
       {
         path: 'about',
-        component: AboutContentComponent,
+        loadComponent: () =>
+          import('../home-page/about-content/about-content.component').then(
+            (m) => m.AboutContentComponent,
+          ),
         data: { animation: 'AboutPage' },
       },
       {
         path: 'algorithms',
-        component: AlgorithmContentComponent,
+        loadComponent: () =>
+          import('../home-page/algorithm-content/algorithm-content.component').then(
+            (m) => m.AlgorithmContentComponent,
+          ),
       },
       {
         path: 'feedback',
-        component: FeedbackContentComponent,
+        loadComponent: () =>
+          import('../home-page/feedback-content/feedback-content.component').then(
+            (m) => m.FeedbackContentComponent,
+          ),
       },
     ],
   },
   {
     path: 'animation',
-    component: AlgorithmPageComponent,
+    loadComponent: () =>
+      import('../algorithm-page/algorithm-page.component').then(
+        (m) => m.AlgorithmPageComponent,
+      ),
     canActivate: [AlgorithmGuard],
   },
   { path: '**', redirectTo: '' },

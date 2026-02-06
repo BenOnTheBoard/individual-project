@@ -2,8 +2,9 @@ import {
   Component,
   ElementRef,
   HostListener,
+  inject,
   OnInit,
-  ViewChild,
+  viewChild,
 } from '@angular/core';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { CommonModule, NgClass } from '@angular/common';
@@ -19,7 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AlgPageNavbarComponent } from './navbar/alg-page-navbar.component';
 declare var $: any; // declaring jquery for use in this file
-declare var anime: any; // declaring the animejs animation library for use in this file
+import anime from 'animejs/lib/anime.es.js';
 
 @Component({
   selector: 'algorithm-page',
@@ -38,23 +39,16 @@ declare var anime: any; // declaring the animejs animation library for use in th
   ],
 })
 export class AlgorithmPageComponent implements OnInit {
-  @ViewChild('canvas', { static: true })
-  private canvas: ElementRef<HTMLCanvasElement>;
+  private canvas = viewChild<ElementRef<HTMLCanvasElement>>('canvas');
+  private leftSidebar = viewChild<SidebarComponent>('leftSidebar');
+  private rightSidebar = viewChild<InfoSidebarComponent>('rightSidebar');
+  private navbar = viewChild<AlgPageNavbarComponent>('topNavbar');
 
-  @ViewChild('leftSidebar', { static: true })
-  private leftSidebar: SidebarComponent;
-
-  @ViewChild('rightSidebar', { static: true })
-  private rightSidebar: InfoSidebarComponent;
-
-  @ViewChild('topNavbar', { static: true })
-  private navbar: AlgPageNavbarComponent;
-
-  private readonly barsFadeDuration = 600; // side and navbar fade in and out duration
-  private readonly sidebarSlideDuration = 700;
-  private readonly canvasFadeDuration = 300;
-  private readonly mainContentFadeDuration = 500;
-  private readonly mainContentInitFadeDuration = 1200;
+  readonly #barsFadeDuration = 600; // side and navbar fade in and out duration
+  readonly #sidebarSlideDuration = 700;
+  readonly #canvasFadeDuration = 300;
+  readonly #mainContentFadeDuration = 500;
+  readonly #mainContentInitFadeDuration = 1200;
 
   protected dialogOpen: boolean = false;
   protected duringAnimation: boolean = false;
@@ -63,61 +57,79 @@ export class AlgorithmPageComponent implements OnInit {
   protected SRstable: boolean = true;
   protected tutorialStep: number;
 
+  protected playback = inject(PlaybackService);
+  protected algRetriever = inject(AlgorithmRetrievalService);
+  protected drawService = inject(CanvasService);
+  protected utils = inject(UtilsService);
+  protected router = inject(Router);
+
   // --------------------------------------------------------------------------------- | INIT FUNCTIONS
-
-  constructor(
-    public playback: PlaybackService,
-    public algorithmService: AlgorithmRetrievalService,
-    public drawService: CanvasService,
-    public utils: UtilsService,
-    public router: Router,
-  ) {}
-
   ngOnInit(): void {
-    this.drawService.setCanvas(this.canvas);
+    this.drawService.setCanvas(this.canvas());
     this.drawService.initialise();
-    this.playback.setAlgorithm(
-      this.algorithmService.currentAlgorithm.id,
-      this.algorithmService.numberOfGroup1Agents,
-      this.algorithmService.numberOfGroup2Agents,
-    );
+    this.#setupPlaybackService();
 
     // initialise all of the popovers for the tutorial
-    $(function () {
+    this.tutorialStep = 0;
+    $(() => {
       $('[data-toggle="popover"]').popover();
     });
-
-    this.tutorialStep = 0;
   }
 
   ngAfterViewInit(): void {
-    this.initShowPage();
+    this.#initShowPage();
     this.drawService.redrawCanvas();
+  }
+
+  #setupPlaybackService(): void {
+    const { currentAlgorithm, numberOfGroup1Agents, numberOfGroup2Agents } =
+      this.algRetriever;
+    if (currentAlgorithm.name == 'Stable Roommates Problem') {
+      this.playback.setAlgorithm(
+        currentAlgorithm.id,
+        numberOfGroup1Agents,
+        numberOfGroup2Agents,
+        null,
+        this.SRstable,
+      );
+    } else {
+      this.playback.setAlgorithm(
+        currentAlgorithm.id,
+        numberOfGroup1Agents,
+        numberOfGroup2Agents,
+      );
+    }
   }
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
-    if (!this.dialogOpen && this.tutorialStep == 0) {
-      if (event.key == 'ArrowRight' || event.key == 'd') {
+    if (this.dialogOpen || this.tutorialStep != 0) return;
+
+    switch (event.key) {
+      case 'ArrowRight':
+      case 'd':
         if (
-          !(
-            !this.playback.pause ||
-            this.playback.stepCounter >= this.playback.numCommands
-          )
+          this.playback.pause &&
+          this.playback.stepCounter < this.playback.numCommands
         ) {
           this.playback.forwardStep();
         }
-      } else if (event.key == 'ArrowLeft' || event.key == 'a') {
-        if (!(!this.playback.pause || this.playback.stepCounter == 0)) {
+        return;
+      case 'ArrowLeft':
+      case 'a':
+        if (this.playback.pause && this.playback.stepCounter != 0) {
           this.playback.backStep();
         }
-      } else if (event.key == ' ') {
-        if (!(this.playback.stepCounter >= this.playback.numCommands)) {
+        return;
+      case ' ':
+        if (this.playback.stepCounter < this.playback.numCommands) {
           this.playback.toggle();
         }
-      } else if (event.key == 'r' || event.key == '#') {
+        return;
+      case 'r':
+      case '#':
         this.generateNewPreferences();
-      }
+        return;
     }
   }
 
@@ -127,49 +139,33 @@ export class AlgorithmPageComponent implements OnInit {
     switch (command) {
       case 'generatePreferences':
         this.generateNewPreferences();
-        break;
+        return;
       case 'goHome':
         this.goHome();
-        break;
+        return;
       case 'toggleLeftSidebar':
         this.toggleSidebar('left');
-        break;
+        return;
       case 'toggleRightSidebar':
         this.toggleSidebar('right');
-        break;
+        return;
       case 'toggleSRStable':
-        this.SRstable != this.SRstable;
+        this.SRstable = !this.SRstable;
+        return;
     }
   }
 
   protected async goHome(): Promise<void> {
-    this.fadeToHome();
+    this.#fadeToHome();
     await this.utils.delay(1000);
     this.router.navigateByUrl('/');
   }
 
   protected async generateNewPreferences(): Promise<void> {
-    this.fadeCanvas(true);
+    this.#fadeCanvas(true);
     await this.utils.delay(300);
-
-    if (
-      this.algorithmService.currentAlgorithm.name == 'Stable Roommates Problem'
-    ) {
-      this.playback.setAlgorithm(
-        this.algorithmService.currentAlgorithm.id,
-        this.algorithmService.numberOfGroup1Agents,
-        this.algorithmService.numberOfGroup2Agents,
-        null,
-        this.SRstable,
-      );
-    } else {
-      this.playback.setAlgorithm(
-        this.algorithmService.currentAlgorithm.id,
-        this.algorithmService.numberOfGroup1Agents,
-        this.algorithmService.numberOfGroup2Agents,
-      );
-    }
-    this.fadeCanvas(false);
+    this.#setupPlaybackService();
+    this.#fadeCanvas(false);
     this.drawService.redrawCanvas();
   }
 
@@ -177,21 +173,23 @@ export class AlgorithmPageComponent implements OnInit {
     if (this.duringAnimation) return;
     this.duringAnimation = true;
 
-    this.fadeMainContent(true);
+    this.#fadeMainContent(true);
 
     if (side == 'left') {
-      this.leftSidebar.toggleSidebar(this.sidebarSlideDuration);
+      this.leftSidebar().toggleSidebar(this.#sidebarSlideDuration);
       this.isCodeShowing = !this.isCodeShowing;
     } else {
-      this.rightSidebar.toggleSidebar(this.sidebarSlideDuration);
+      this.rightSidebar().toggleSidebar(this.#sidebarSlideDuration);
       this.isInfoShowing = !this.isInfoShowing;
     }
 
     this.drawService.clearCanvas();
-    this.fadeMainContent(false);
-    await this.utils.delay(this.canvasFadeDuration);
+    this.#fadeMainContent(false);
+    await this.utils.delay(this.#canvasFadeDuration);
     this.drawService.redrawCanvas();
-    await this.utils.delay(this.sidebarSlideDuration - this.canvasFadeDuration);
+    await this.utils.delay(
+      this.#sidebarSlideDuration - this.#canvasFadeDuration,
+    );
     this.duringAnimation = false;
   }
 
@@ -201,19 +199,19 @@ export class AlgorithmPageComponent implements OnInit {
     switch (newStep) {
       case 0:
         this.stopTutorial();
-        break;
+        return;
       case 1:
         if (!this.isCodeShowing) {
           this.toggleSidebar('left');
         }
         this.startTutorial();
-        break;
+        return;
       case 2:
         this.sidebarTutorial();
-        break;
+        return;
       case 3:
         this.mainContentTutorial();
-        break;
+        return;
     }
   }
 
@@ -238,44 +236,40 @@ export class AlgorithmPageComponent implements OnInit {
   }
 
   // --------------------------------------------------------------------------------- | ANIMATIONS
-  private fadeAnimation(
-    target: string,
-    fadeOut: boolean,
-    duration: number,
-  ): void {
+  #fadeAnimation(target: string, fadeOut: boolean, duration: number): void {
     const direction = fadeOut ? 'reverse' : 'normal';
     anime({
       targets: target,
       easing: 'easeInOutQuint',
       opacity: [0, 1],
-      direction: direction,
-      duration: duration,
+      direction,
+      duration,
     });
   }
 
-  private fadeCanvas(fadeOut: boolean, setDuration?: number): void {
-    const duration = setDuration ?? this.canvasFadeDuration;
-    this.fadeAnimation('#myCanvas', fadeOut, duration);
+  #fadeCanvas(fadeOut: boolean, setDuration?: number): void {
+    const duration = setDuration ?? this.#canvasFadeDuration;
+    this.#fadeAnimation('#myCanvas', fadeOut, duration);
   }
 
-  private fadeMainContent(fadeOut: boolean, setDuration?: number): void {
-    const duration = setDuration ?? this.mainContentFadeDuration;
-    this.fadeAnimation('#mainContent', fadeOut, duration);
+  #fadeMainContent(fadeOut: boolean, setDuration?: number): void {
+    const duration = setDuration ?? this.#mainContentFadeDuration;
+    this.#fadeAnimation('#mainContent', fadeOut, duration);
   }
 
-  private fadeAllBars(fadeOut: boolean): void {
-    this.navbar.toggleNavbar(fadeOut, this.barsFadeDuration);
-    this.leftSidebar.fadeSidebar(fadeOut, this.barsFadeDuration);
-    this.rightSidebar.fadeSidebar(fadeOut, this.barsFadeDuration);
+  #fadeAllBars(fadeOut: boolean): void {
+    this.navbar().toggleNavbar(fadeOut, this.#barsFadeDuration);
+    this.leftSidebar().fadeSidebar(fadeOut, this.#barsFadeDuration);
+    this.rightSidebar().fadeSidebar(fadeOut, this.#barsFadeDuration);
   }
 
-  private initShowPage(): void {
-    this.fadeAllBars(false);
-    this.fadeMainContent(false, this.mainContentInitFadeDuration);
+  #initShowPage(): void {
+    this.#fadeAllBars(false);
+    this.#fadeMainContent(false, this.#mainContentInitFadeDuration);
   }
 
-  private fadeToHome(): void {
-    this.fadeAllBars(true);
-    this.fadeMainContent(true, this.barsFadeDuration);
+  #fadeToHome(): void {
+    this.#fadeAllBars(true);
+    this.#fadeMainContent(true, this.#barsFadeDuration);
   }
 }

@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { AboutContentComponent } from './about-content.component';
 
 describe('AboutContentComponent', () => {

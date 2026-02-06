@@ -1,7 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, viewChild } from '@angular/core';
 import { simpleFadeAnimation } from 'src/app/animations/fadeAnimation';
-
-declare var anime: any;
 
 @Component({
   selector: 'home-content',
@@ -9,18 +7,14 @@ declare var anime: any;
   styleUrls: ['./home-content.component.scss', '../home-page.component.scss'],
   animations: [simpleFadeAnimation],
 })
-export class HomeContentComponent implements OnInit {
-  @ViewChild('animationVid') animationVid: ElementRef;
-  @ViewChild('descriptionVid') descriptionVid: ElementRef;
+export class HomeContentComponent {
+  private animationVid = viewChild<ElementRef>('animationVid');
+  private descriptionVid = viewChild<ElementRef>('descriptionVid');
 
-  constructor() {}
-
-  ngOnInit(): void {}
-
-  private async playVideo(video: HTMLVideoElement): Promise<void> {
+  async #playVideo(video: HTMLVideoElement): Promise<void> {
     try {
       video.muted = true;
-      let playPromise = video.play();
+      const playPromise = video.play();
       if (playPromise !== undefined) {
         await playPromise;
       }
@@ -34,7 +28,7 @@ export class HomeContentComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.playVideo(this.animationVid.nativeElement);
-    this.playVideo(this.descriptionVid.nativeElement);
+    this.#playVideo(this.animationVid().nativeElement);
+    this.#playVideo(this.descriptionVid().nativeElement);
   }
 }

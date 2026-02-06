@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { simpleFadeAnimation } from 'src/app/animations/fadeAnimation';
 
 @Component({
@@ -11,8 +11,4 @@ import { simpleFadeAnimation } from 'src/app/animations/fadeAnimation';
   ],
   animations: [simpleFadeAnimation],
 })
-export class FeedbackContentComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
-}
+export class FeedbackContentComponent {}

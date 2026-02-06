@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Algorithm } from './Algorithm';
-import { HrResidentEgsService } from './algorithm-page/algorithms/algorithm-services/hr-resident-egs/hr-resident-egs.service';
-import { EgsStableMarriageService } from './algorithm-page/algorithms/algorithm-services/smp-man-egs/egs-stable-marriage.service';
-import { GsStableMarriageService } from './algorithm-page/algorithms/algorithm-services/smp-man-gs/gs-stable-marriage.service';
-import { StableRoomIrvService } from './algorithm-page/algorithms/algorithm-services/smp-room-irv/stable-room-irv.service';
-import { HrHospitalEgsService } from './algorithm-page/algorithms/algorithm-services/hr-hospital-egs/hr-hospital-egs.service';
-import { SpaStudentEgsService } from './algorithm-page/algorithms/algorithm-services/spa-stu-egs/spa-student-egs.service';
+import { HrResidentEgsService } from './algorithms/algorithm-services/hr-resident-egs/hr-resident-egs.service';
+import { EgsStableMarriageService } from './algorithms/algorithm-services/smp-man-egs/egs-stable-marriage.service';
+import { GsStableMarriageService } from './algorithms/algorithm-services/smp-man-gs/gs-stable-marriage.service';
+import { StableRoomIrvService } from './algorithms/algorithm-services/smp-room-irv/stable-room-irv.service';
+import { HrHospitalEgsService } from './algorithms/algorithm-services/hr-hospital-egs/hr-hospital-egs.service';
+import { SpaStudentEgsService } from './algorithms/algorithm-services/spa-stu-egs/spa-student-egs.service';
 
 // ------------------------------------------------------- ALGORITHM TEMPLATE
 // [
@@ -26,12 +26,19 @@ import { SpaStudentEgsService } from './algorithm-page/algorithms/algorithm-serv
   providedIn: 'root',
 })
 export class AlgorithmRetrievalService {
-  currentAlgorithm: Algorithm;
+  public currentAlgorithm: Algorithm;
+  public numberOfGroup1Agents: number = 5;
+  public numberOfGroup2Agents: number = 5;
 
-  numberOfGroup1Agents: number = 5;
-  numberOfGroup2Agents: number = 5;
+  // Algorithm Injections
+  protected gsStableMarriageService = inject(GsStableMarriageService);
+  protected egsStableMarriageService = inject(EgsStableMarriageService);
+  protected HrResidentEgsService = inject(HrResidentEgsService);
+  protected StableRoomIrvService = inject(StableRoomIrvService);
+  protected HrHospitalEgsService = inject(HrHospitalEgsService);
+  protected SpaStudentEgsService = inject(SpaStudentEgsService);
 
-  mapOfAvailableAlgorithms: Map<String, Algorithm> = new Map([
+  #mapOfAvailableAlgorithms: Map<String, Algorithm> = new Map([
     [
       'smp-man-gs',
       {
@@ -313,7 +320,7 @@ export class AlgorithmRetrievalService {
     ],
   ]);
 
-  pluralMap: Map<string, string> = new Map([
+  #pluralMap: Map<string, string> = new Map([
     ['Man', 'Men'],
     ['Woman', 'Women'],
     ['Resident', 'Residents'],
@@ -324,24 +331,19 @@ export class AlgorithmRetrievalService {
     ['Lecturer', 'Lecturers'],
   ]);
 
-  constructor(
-    public gsStableMarriageService: GsStableMarriageService,
-    public egsStableMarriageService: EgsStableMarriageService,
-    public HrResidentEgsService: HrResidentEgsService,
-    public StableRoomIrvService: StableRoomIrvService,
-    public HrHospitalEgsService: HrHospitalEgsService,
-    public SpaStudentEgsService: SpaStudentEgsService,
-  ) {}
-
   getListOfAlgorithms(): Array<Algorithm> {
-    return Array.from(this.mapOfAvailableAlgorithms.values());
+    return Array.from(this.#mapOfAvailableAlgorithms.values());
+  }
+
+  getAlgorithm(name: string) {
+    return this.#mapOfAvailableAlgorithms.get(name);
   }
 
   getSide(proposing: boolean, plural: boolean): string {
     const sideDigit = proposing ? 0 : 1;
     const side = this.currentAlgorithm.orientation[sideDigit];
     if (plural) {
-      return this.pluralMap.get(side);
+      return this.#pluralMap.get(side);
     }
     return side;
   }

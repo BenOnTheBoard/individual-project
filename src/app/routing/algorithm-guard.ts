@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   CanActivate,
   ActivatedRouteSnapshot,
@@ -13,10 +13,8 @@ import { AlgorithmRetrievalService } from '../algorithm-retrieval.service';
   providedIn: 'root',
 })
 export class AlgorithmGuard implements CanActivate {
-  constructor(
-    public algorithmService: AlgorithmRetrievalService,
-    private _router: Router,
-  ) {}
+  protected algRetriever = inject(AlgorithmRetrievalService);
+  protected _router = inject(Router);
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -26,7 +24,7 @@ export class AlgorithmGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (this.algorithmService.currentAlgorithm) {
+    if (this.algRetriever.currentAlgorithm) {
       return true;
     }
 

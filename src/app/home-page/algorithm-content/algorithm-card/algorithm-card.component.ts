@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, viewChild, input, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
@@ -9,8 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { UtilsService } from 'src/app/utils/utils.service';
 import { AgentCountFormComponent } from 'src/app/forms/agent-count-form/agent-count-form.component';
-
-declare var anime: any;
+import anime from 'animejs/lib/anime.es.js';
 
 @Component({
   selector: 'algorithm-card',
@@ -30,32 +29,27 @@ declare var anime: any;
     AgentCountFormComponent,
   ],
 })
-export class AlgorithmCardComponent implements OnInit {
-  @Input() algorithm: Algorithm;
-  @ViewChild(AgentCountFormComponent, { static: true })
-  protected agentForm: AgentCountFormComponent;
+export class AlgorithmCardComponent {
+  readonly algorithm = input<Algorithm>(undefined);
+  protected readonly agentForm = viewChild(AgentCountFormComponent);
 
-  constructor(
-    public algRetriever: AlgorithmRetrievalService,
-    public utils: UtilsService,
-    public router: Router,
-  ) {}
-
-  ngOnInit(): void {}
+  protected algRetriever = inject(AlgorithmRetrievalService);
+  protected router = inject(Router);
+  protected utils = inject(UtilsService);
 
   async onGeneratePreferences(): Promise<void> {
     // change the global algorithm to the one passed into this dialog
-    this.algRetriever.currentAlgorithm = this.algorithm;
+    this.algRetriever.currentAlgorithm = this.algorithm();
 
     const isRoommates = this.algRetriever.currentAlgorithm.id == 'smp-room-irv';
     this.algRetriever.numberOfGroup1Agents = isRoommates
-      ? this.agentForm.getSRAgentCount()
-      : this.agentForm.getGroup1AgentCount();
+      ? this.agentForm().getSRAgentCount()
+      : this.agentForm().getGroup1AgentCount();
 
-    const specifiesGroup2Count = !this.agentForm.getGroup2AgentCount();
+    const specifiesGroup2Count = !this.agentForm().getGroup2AgentCount();
     this.algRetriever.numberOfGroup2Agents = specifiesGroup2Count
-      ? this.agentForm.getGroup1AgentCount()
-      : this.agentForm.getGroup2AgentCount();
+      ? this.agentForm().getGroup1AgentCount()
+      : this.agentForm().getGroup2AgentCount();
 
     anime({
       targets: '.main-page',

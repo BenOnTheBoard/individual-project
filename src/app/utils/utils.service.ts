@@ -6,8 +6,6 @@ import { Position } from './position';
   providedIn: 'root',
 })
 export class UtilsService {
-  constructor() {}
-
   delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
@@ -24,13 +22,13 @@ export class UtilsService {
   // FROM: https://javascript.info/task/shuffle
   shuffle(array: Array<Object>) {
     for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
+      const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
     }
   }
 
-  cloneMap<K, V>(mapIn: Map<K, V[]>): Map<K, V[]> {
-    const mapCloned = new Map<K, V[]>();
+  cloneMap<K, V>(mapIn: Map<K, Array<V>>): Map<K, Array<V>> {
+    const mapCloned = new Map<K, Array<V>>();
 
     mapIn.forEach((value, key) => {
       mapCloned.set(key, [...value]);
@@ -39,7 +37,7 @@ export class UtilsService {
     return mapCloned;
   }
 
-  cloneList<T>(list: T[]): T[] {
+  cloneList<T>(list: Array<T>): Array<T> {
     return [...list];
   }
 
@@ -60,8 +58,8 @@ export class UtilsService {
 
   static validateEven(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      const value = control.value;
-      if (value === null || value === undefined || value % 2 === 0) {
+      const { value } = control;
+      if (value == null || value % 2 === 0) {
         return null;
       }
       return { even: { value: control.value, requiredEven: true } };

@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { UtilsService } from 'src/app/utils/utils.service';
-
-declare var anime: any;
+import anime from 'animejs/lib/anime.es.js';
 
 @Component({
   selector: 'navbar',
@@ -11,7 +10,7 @@ declare var anime: any;
   styleUrls: ['./navbar.component.scss'],
   imports: [NgClass],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
   componentMap: Object = {
     '/': '.homeContent',
     '/about': '.aboutContent',
@@ -19,12 +18,8 @@ export class NavbarComponent implements OnInit {
     '/feedback': '.feedbackContent',
   };
 
-  constructor(
-    public router: Router,
-    public utils: UtilsService,
-  ) {}
-
-  ngOnInit(): void {}
+  protected router = inject(Router);
+  protected utils = inject(UtilsService);
 
   fadeCurrentPage(): void {
     anime({
@@ -36,10 +31,10 @@ export class NavbarComponent implements OnInit {
   }
 
   async goToPage(page: string): Promise<void> {
-    if (!(this.router.url == page)) {
-      this.fadeCurrentPage();
-      await this.utils.delay(400);
-      this.router.navigateByUrl(page, { skipLocationChange: true });
-    }
+    if (this.router.url == page) return;
+
+    this.fadeCurrentPage();
+    await this.utils.delay(400);
+    this.router.navigateByUrl(page, { skipLocationChange: true });
   }
 }

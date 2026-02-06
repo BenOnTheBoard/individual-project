@@ -1,48 +1,46 @@
-import { ElementRef, Injectable } from '@angular/core';
+import { ElementRef, inject, Injectable } from '@angular/core';
 import { AlgorithmRetrievalService } from '../../../algorithm-retrieval.service';
-import { LayoutService } from '../layout/layout.service';
-import { TextRendererService } from '../text-renderer/text-renderer.service';
-import { AgentRendererService } from '../agent-renderer/agent-renderer.service';
-import { ColourHexService } from '../colour-hex.service';
-import { LineRendererService } from '../line-renderer/line-renderer.service';
-import { PreferenceRendererService } from '../preference-renderer/preference-renderer.service';
-import { Step } from '../../algorithms/interfaces/Step';
+import { LayoutService } from './layout/layout.service';
+import { TextRendererService } from './text-renderer/text-renderer.service';
+import { AgentRendererService } from './agent-renderer/agent-renderer.service';
+import { ColourHexService } from '../../../utils/colour-hex.service';
+import { LineRendererService } from './line-renderer/line-renderer.service';
+import { PreferenceRendererService } from './preference-renderer/preference-renderer.service';
+import { Step } from 'src/app/algorithms/interfaces/Step';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CanvasService {
-  private canvasElement!: HTMLCanvasElement;
+  #canvasElement: HTMLCanvasElement;
   public alwaysShowPreferences: boolean = false;
-  private ctx: CanvasRenderingContext2D;
+  #ctx: CanvasRenderingContext2D;
 
   public currentCommand: Step;
 
-  constructor(
-    public algService: AlgorithmRetrievalService,
-    public agentRenderer: AgentRendererService,
-    public layoutService: LayoutService,
-    public lineRenderer: LineRendererService,
-    public prefRenderer: PreferenceRendererService,
-    public textRenderer: TextRendererService,
-    public colourHexService: ColourHexService,
-  ) {}
+  protected algRetriever = inject(AlgorithmRetrievalService);
+  protected agentRenderer = inject(AgentRendererService);
+  protected layoutService = inject(LayoutService);
+  protected lineRenderer = inject(LineRendererService);
+  protected prefRenderer = inject(PreferenceRendererService);
+  protected textRenderer = inject(TextRendererService);
+  protected colourHexService = inject(ColourHexService);
 
   public setCanvas(canvasRef: ElementRef<HTMLCanvasElement>): void {
-    this.canvasElement = canvasRef.nativeElement;
-    const ctx = this.canvasElement.getContext('2d');
+    this.#canvasElement = canvasRef.nativeElement;
+    const ctx = this.#canvasElement.getContext('2d');
     if (!ctx) {
       throw new Error('CanvasRenderingContext2D not available');
     }
-    this.ctx = ctx;
-    this.updateServiceContexts();
+    this.#ctx = ctx;
+    this.#updateServiceContexts();
   }
 
-  private updateServiceContexts(): void {
-    this.agentRenderer.setContext(this.ctx);
-    this.lineRenderer.setContext(this.ctx);
-    this.prefRenderer.setContext(this.ctx);
-    this.textRenderer.setContext(this.ctx);
+  #updateServiceContexts(): void {
+    this.agentRenderer.setContext(this.#ctx);
+    this.lineRenderer.setContext(this.#ctx);
+    this.prefRenderer.setContext(this.#ctx);
+    this.textRenderer.setContext(this.#ctx);
   }
 
   public setCommand(command: Step): void {
@@ -54,38 +52,38 @@ export class CanvasService {
     this.prefRenderer.resetFirstRun();
   }
 
-  private arrangeSRAgents(): void {
-    this.layoutService.calculateSRPositions(this.canvasElement);
-    for (let line of this.currentCommand['currentLines']) {
+  #arrangeSRAgents(): void {
+    this.layoutService.calculateSRPositions(this.#canvasElement);
+    for (const line of this.currentCommand['currentLines']) {
       this.lineRenderer.drawLine(line, true);
     }
     this.agentRenderer.drawGroupOneAgents();
   }
 
-  private arrangeBipartiteAgents(): void {
+  #arrangeBipartiteAgents(): void {
     this.layoutService.calculateBipartitePositions(
-      this.canvasElement,
+      this.#canvasElement,
       this.currentCommand,
     );
-    for (let line of this.currentCommand['currentLines']) {
+    for (const line of this.currentCommand['currentLines']) {
       this.lineRenderer.drawLine(line);
     }
     this.agentRenderer.drawGroupOneAgents();
     this.agentRenderer.drawGroupTwoAgents();
   }
 
-  private arrangeAgents(isSR: boolean): void {
+  #arrangeAgents(isSR: boolean): void {
     if (isSR) {
-      this.arrangeSRAgents();
+      this.#arrangeSRAgents();
     } else {
-      this.arrangeBipartiteAgents();
+      this.#arrangeBipartiteAgents();
     }
     this.agentRenderer.selectCircles(
       this.currentCommand.currentlySelectedAgents,
     );
   }
 
-  private arrangePreferences(isSR: boolean): void {
+  #arrangePreferences(isSR: boolean): void {
     // ensure that the preference renderer has the correct command
     // /w .setCurrentCommand before calling this function
     const hasRelevantPrefs =
@@ -94,18 +92,16 @@ export class CanvasService {
 
     if (hasRelevantPrefs) {
       this.prefRenderer.drawRelevantPreferences();
+    } else if (isSR) {
+      this.prefRenderer.drawSRPreferences();
     } else {
-      if (isSR) {
-        this.prefRenderer.drawSRPreferences();
-      } else {
-        this.prefRenderer.drawBipartitePreferences();
-      }
+      this.prefRenderer.drawBipartitePreferences();
     }
   }
 
   public clearCanvas(): void {
-    const elt = this.canvasElement;
-    this.ctx.clearRect(0, 0, elt.width, elt.height);
+    const elt = this.#canvasElement;
+    this.#ctx.clearRect(0, 0, elt.width, elt.height);
   }
 
   redrawCanvas(command?: Step): void {
@@ -113,14 +109,14 @@ export class CanvasService {
       this.currentCommand = command;
     }
 
-    if (!this.canvasElement || !this.ctx || !this.currentCommand) {
+    if (!this.#canvasElement || !this.#ctx || !this.currentCommand) {
       return;
     }
 
     const parent = document.getElementById('parent');
     if (parent) {
-      this.canvasElement.width = parent.offsetWidth - 20;
-      this.canvasElement.height = parent.offsetHeight - 20;
+      this.#canvasElement.width = parent.offsetWidth - 20;
+      this.#canvasElement.height = parent.offsetHeight - 20;
     }
 
     this.clearCanvas();
@@ -132,8 +128,8 @@ export class CanvasService {
     const hasLecturers = !!algData['lecturerCapacity'];
     const hasProjectsOrHospitals = !!algData['hospitalCapacity'];
 
-    this.arrangeAgents(isSR);
-    this.arrangePreferences(isSR);
+    this.#arrangeAgents(isSR);
+    this.#arrangePreferences(isSR);
 
     if (hasProjectsOrHospitals) {
       this.prefRenderer.drawCapacities();

@@ -61,13 +61,16 @@ describe('AlgorithmPageComponent', () => {
   }));
 
   beforeEach(() => {
+    (window as any).anime = jasmine.createSpy('anime').and.callFake(() => ({}));
+    (window as any).$ = (selector: any) => ({
+      popover: jasmine.createSpy('popover').and.returnValue({
+        show: jasmine.createSpy('show'),
+        hide: jasmine.createSpy('hide'),
+      }),
+    });
+
     fixture = TestBed.createComponent(AlgorithmPageComponent);
     component = fixture.componentInstance;
-
-    ['fadeAnimation', 'fadeAllBars'].forEach((func) =>
-      spyOn<AlgorithmPageComponent, any>(component, func).and.stub(),
-    );
-
     fixture.detectChanges();
   });
 

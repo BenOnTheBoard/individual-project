@@ -1,10 +1,10 @@
 import {
   Component,
   ElementRef,
+  inject,
   input,
-  OnInit,
   output,
-  ViewChild,
+  viewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
@@ -13,7 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { AnimationGuideDialogComponent } from '../animation-guide-dialog/animation-guide-dialog.component';
-declare var anime: any; // declaring the animejs animation library for use in this file
+import anime from 'animejs/lib/anime.es.js';
 
 @Component({
   selector: 'alg-page-navbar',
@@ -21,7 +21,7 @@ declare var anime: any; // declaring the animejs animation library for use in th
   styleUrl: './alg-page-navbar.component.scss',
   imports: [MatIconModule, MatTooltip, CommonModule],
 })
-export class AlgPageNavbarComponent implements OnInit {
+export class AlgPageNavbarComponent {
   protected duringAnimation = input<boolean>();
   protected isCodeShowing = input<boolean>();
   protected isInfoShowing = input<boolean>();
@@ -34,52 +34,30 @@ export class AlgPageNavbarComponent implements OnInit {
   protected dialogOpenEmitter = output<boolean>();
   protected tutorialStepEmitter = output<number>();
 
-  @ViewChild('algPageNavbar', { static: true })
-  private navbar: ElementRef;
+  private navbar = viewChild<ElementRef>('algPageNavbar');
   // unlike sidebar width, navbar height won't change
-  private isInAnimation = false;
+  #isInAnimation = false;
 
-  constructor(
-    public algorithmService: AlgorithmRetrievalService,
-    public drawService: CanvasService,
-    public dialog: MatDialog,
-  ) {}
-
-  ngOnInit(): void {}
+  protected algRetriever = inject(AlgorithmRetrievalService);
+  protected drawService = inject(CanvasService);
+  protected dialog = inject(MatDialog);
 
   protected updateTutorialStep(step: number): void {
     this.step = step;
     this.tutorialStepEmitter.emit(this.step);
   }
 
+  protected emitToPage(command: string) {
+    this.commandEmitter.emit(command);
+  }
+
   protected updateToNextTutorialStep() {
     this.updateTutorialStep((this.step + 1) % 4);
   }
 
-  protected toggleLeftSidebar(): void {
-    this.commandEmitter.emit('toggleLeftSidebar');
-  }
-
-  protected toggleRightSidebar(): void {
-    this.commandEmitter.emit('toggleRightSidebar');
-  }
-
-  protected toggleSRStable(): void {
-    this.commandEmitter.emit('toggleSRStable');
-  }
-
-  protected emitGoHome(): void {
-    this.commandEmitter.emit('goHome');
-  }
-
-  protected emitGeneratePreferences(): void {
-    this.commandEmitter.emit('generatePreferences');
-  }
-
   protected getTitle(): string {
-    const name = this.algorithmService.currentAlgorithm.name;
-    const algorithm = this.algorithmService.currentAlgorithm.algorithm;
-    const optimisedSide = this.algorithmService.getSide(true, false);
+    const { name, algorithm } = this.algRetriever.currentAlgorithm;
+    const optimisedSide = this.algRetriever.getSide(true, false);
     return `${name} / ${algorithm} / ${optimisedSide}-Oriented`;
   }
 
@@ -98,19 +76,19 @@ export class AlgPageNavbarComponent implements OnInit {
   }
 
   public async toggleNavbar(fadeOut: boolean, duration: number): Promise<void> {
-    if (this.isInAnimation) return;
-    this.isInAnimation = true;
+    if (this.#isInAnimation) return;
+    this.#isInAnimation = true;
 
     const direction = fadeOut ? 'reverse' : 'normal';
-    const barHeight = this.navbar.nativeElement.offsetHeight;
+    const barHeight = this.navbar().nativeElement.offsetHeight;
     anime({
-      targets: this.navbar.nativeElement,
+      targets: this.navbar().nativeElement,
       easing: 'easeOutQuint',
       translateY: [`-${barHeight}px`, 0],
-      direction: direction,
-      duration: duration,
+      direction,
+      duration,
       complete: () => {
-        this.isInAnimation = false;
+        this.#isInAnimation = false;
       },
     });
   }

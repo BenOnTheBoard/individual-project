@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { AlgorithmCardComponent } from './algorithm-card.component';
 
 describe('AlgorithmCardComponent', () => {
@@ -15,7 +14,7 @@ describe('AlgorithmCardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AlgorithmCardComponent);
     component = fixture.componentInstance;
-    component.algorithm = {
+    fixture.componentRef.setInput('algorithm', {
       id: '',
       name: '',
       orientation: ['', ''],
@@ -25,7 +24,7 @@ describe('AlgorithmCardComponent', () => {
       description: '',
       helpTextMap: {},
       code: [],
-    };
+    });
     fixture.detectChanges();
   });
 

@@ -1,9 +1,9 @@
 <form class="example-form pl-3">
-  @if (algorithm.name == 'Stable Marriage Problem') {
+  @if (algorithm().name == 'Stable Marriage Problem') {
   <div class="row justify-content-start">
     <mat-form-field>
       <mat-label>Number of Men/Women</mat-label>
-      <input id={{algorithm.id}} [formControl]="numberOfGroup1Agents" type="number" matInput placeholder="5" value="5"
+      <input id={{algorithm().id}} [formControl]="numberOfGroup1Agents" type="number" matInput placeholder="5" value="5"
         min="1" max="9" onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false"
         onDrop="return false" onPaste="return false">
       @if (numberOfGroup1Agents.hasError('required')) {
@@ -16,7 +16,7 @@
   </div>
   }
 
-  @if (algorithm.name == 'Hospitals/Residents Problem') {
+  @if (algorithm().name == 'Hospitals/Residents Problem') {
   <div class="row justify-content-start">
     <mat-form-field class="mr-1">
       <mat-label>Number of Residents</mat-label>
@@ -47,11 +47,11 @@
   }
 
   <!-- Roommates -->
-  @if (algorithm.name == 'Stable Roommates Problem') {
+  @if (algorithm().name == 'Stable Roommates Problem') {
   <div class="row justify-content-start">
     <mat-form-field>
       <mat-label>Number of People</mat-label>
-      <input id={{algorithm.id}} [formControl]="numberOfSRAgents" type="number" matInput placeholder="4" value="4"
+      <input id={{algorithm().id}} [formControl]="numberOfSRAgents" type="number" matInput placeholder="4" value="4"
         min="1" max="8" onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false"
         onDrop="return false" onPaste="return false">
       @if (numberOfSRAgents.hasError('required')) {
@@ -67,7 +67,7 @@
   </div>
   }
 
-  @if (algorithm.name == 'Student-Project Allocation') {
+  @if (algorithm().name == 'Student-Project Allocation') {
   <div class="row justify-content-start">
     <mat-form-field class="mr-1">
       <mat-label>Number of Students</mat-label>
