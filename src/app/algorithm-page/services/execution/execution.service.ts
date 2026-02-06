@@ -1,21 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
-import { MatchingAlgorithm } from 'src/app/algorithms/abstract-classes/MatchingAlgorithm';
 import { AlgorithmData } from 'src/app/algorithms/interfaces/AlgorithmData';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ExecutionService {
-  commandMap = {};
-  commandList = {};
+  #helpTextMap: Object;
+  #commandList: AlgorithmData;
 
   protected algRetriever = inject(AlgorithmRetrievalService);
-
-  initialise(): void {
-    this.commandMap = {};
-    this.commandList = {};
-  }
 
   getExecutionFlow(
     algorithm: string,
@@ -24,45 +18,39 @@ export class ExecutionService {
     preferences: Map<String, Array<String>>,
     SRstable: boolean = true,
   ): Object {
-    this.initialise();
-    const algRetriever: MatchingAlgorithm =
-      this.algRetriever.mapOfAvailableAlgorithms.get(algorithm).service;
-    this.commandMap =
-      this.algRetriever.mapOfAvailableAlgorithms.get(algorithm).helpTextMap;
-
-    const commandList: AlgorithmData = algRetriever.run(
+    const { service, helpTextMap } =
+      this.algRetriever.mapOfAvailableAlgorithms.get(algorithm);
+    this.#helpTextMap = helpTextMap;
+    this.#commandList = service.run(
       numberOfAgents,
       numberOfGroup2Agents,
       preferences,
       SRstable,
     );
 
-    commandList.descriptions = this.generateDescriptions(commandList);
-
-    return commandList;
+    this.#commandList.descriptions = this.#generateDescriptions();
+    return this.#commandList;
   }
 
-  // --------------------------------------------------------- FUNCTIONS TO GENERATE LINE DESCRIPTIONS
-
-  generateDescriptions(commandList: AlgorithmData): Array<String> {
+  #generateDescriptions(): Array<String> {
     const descriptions = [];
 
-    for (const step of commandList.commands) {
+    for (const step of this.#commandList.commands) {
       const lineNumber = step['lineNumber'];
       const { stepVariables } = step;
 
       if (stepVariables) {
-        descriptions.push(this.generateMessage(lineNumber, stepVariables));
+        descriptions.push(this.#generateMessage(lineNumber, stepVariables));
       } else {
-        descriptions.push(this.commandMap[lineNumber]);
+        descriptions.push(this.#helpTextMap[lineNumber]);
       }
     }
 
     return descriptions;
   }
 
-  generateMessage(commandNum: number, replacements: Object): string {
-    const str = this.commandMap[commandNum];
+  #generateMessage(commandNum: number, replacements: Object): string {
+    const str = this.#helpTextMap[commandNum];
     return str.replace(
       /%\w+%/g,
       (all: string | number) => replacements[all] || all,
