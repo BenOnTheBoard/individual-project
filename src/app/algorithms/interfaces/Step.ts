@@ -14,6 +14,10 @@ export interface Step {
 export class StepBuilder {
   #step: Partial<Step> = {};
 
+  constructor() {
+    this.#step.algorithmSpecificData = new Object();
+  }
+
   lineNumber(n: number): this {
     this.#step.lineNumber = n;
     return this;
@@ -54,7 +58,7 @@ export class StepBuilder {
     return this;
   }
 
-  algorithmData(data: Record<string, any>): this {
+  algorithmData(data: Object): this {
     this.#step.algorithmSpecificData = data;
     return this;
   }
