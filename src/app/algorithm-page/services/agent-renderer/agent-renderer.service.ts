@@ -51,16 +51,15 @@ export class AgentRendererService {
   ): void {
     this.#ctx.fillStyle = fillStyle;
     this.textRenderer.setFontSize(this.#radius);
-    const offset = (this.#radius * Math.sqrt(2)) / 4;
 
     for (let i = 0; i < agentCount; i++) {
       const label = labelGenerator(i);
-      const pos = this.layoutService.getPositionOfAgent(`circle${label}`);
-      this.drawCircle(pos, false);
+      const centrePos = this.layoutService.getPositionOfAgent(`circle${label}`);
       const textPos = {
-        x: pos.x - offset,
-        y: pos.y + offset,
+        x: centrePos.x - 0.5 * this.#ctx.measureText(label).width,
+        y: centrePos.y + (this.#radius * Math.sqrt(2)) / 4,
       };
+      this.drawCircle(centrePos, false);
       this.textRenderer.drawText(label, textPos);
     }
   }

@@ -14,15 +14,24 @@ describe('AgentRendererService', () => {
   let mockColourHex: jasmine.SpyObj<ColourHexService>;
 
   beforeEach(() => {
-    mockCtx = jasmine.createSpyObj('CanvasRenderingContext2D', [
-      'beginPath',
-      'arc',
-      'fill',
-      'stroke',
-      'fillStyle',
-      'lineWidth',
-      'strokeStyle',
-    ]);
+    mockCtx = jasmine.createSpyObj(
+      'CanvasRenderingContext2D',
+      [
+        'beginPath',
+        'arc',
+        'fill',
+        'stroke',
+        'fillStyle',
+        'lineWidth',
+        'measureText',
+        'strokeStyle',
+      ],
+      {
+        measureText: jasmine
+          .createSpy('measureText')
+          .and.returnValue({ width: 0 }),
+      },
+    );
     mockalgRetriever = {
       numberOfGroup1Agents: 2,
       numberOfGroup2Agents: 2,
