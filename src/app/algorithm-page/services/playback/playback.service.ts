@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ExecutionService } from '../execution/execution.service';
 import { CanvasService } from '../canvas/canvas.service';
-import { Step } from 'src/app/algorithms/interfaces/Step';
+import { Step, StepBuilder } from 'src/app/algorithms/interfaces/Step';
 
 @Injectable({
   providedIn: 'root',
@@ -29,18 +29,7 @@ export class PlaybackService {
   initialise(): void {
     this.algorithmData = {};
     this.commandList = [];
-    this.currentCommand = {
-      lineNumber: 0,
-      freeAgents: [],
-      matches: new Map<string, string>(),
-      stepVariables: {},
-      group1CurrentPreferences: new Map<string, Array<string>>(),
-      group2CurrentPreferences: new Map<string, Array<string>>(),
-      currentlySelectedAgents: [],
-      currentLines: [],
-      algorithmSpecificData: new Map<string, Object>(),
-      relevantPreferences: [],
-    };
+    this.currentCommand = new StepBuilder().build();
   }
 
   resetPlaybackData(): void {

@@ -335,7 +335,7 @@ export class AlgorithmRetrievalService {
     return Array.from(this.#mapOfAvailableAlgorithms.values());
   }
 
-  getAlgorithm(name: string) {
+  getAlgorithm(name: string): Algorithm {
     return this.#mapOfAvailableAlgorithms.get(name);
   }
 

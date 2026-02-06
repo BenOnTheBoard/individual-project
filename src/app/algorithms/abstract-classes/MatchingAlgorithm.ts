@@ -1,6 +1,6 @@
 import { Agent } from '../interfaces/Agent';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
-import { Step } from '../interfaces/Step';
+import { StepBuilder } from '../interfaces/Step';
 import { UtilsService } from 'src/app/utils/utils.service';
 import { ColourHexService } from '../../utils/colour-hex.service';
 import { inject } from '@angular/core';
@@ -161,27 +161,18 @@ export abstract class MatchingAlgorithm {
   }
 
   update(step: number, stepVariables?: Object): void {
-    const currentStep: Step = {
-      lineNumber: step,
-      freeAgents: Object.assign([], this.freeAgentsOfGroup1),
-      matches: new Map(),
-      stepVariables,
-      group1CurrentPreferences: this.utils.cloneMap(
-        this.group1CurrentPreferences,
-      ),
-      group2CurrentPreferences: this.utils.cloneMap(
-        this.group2CurrentPreferences,
-      ),
-      currentlySelectedAgents: JSON.parse(
-        JSON.stringify(this.currentlySelectedAgents),
-      ),
-      currentLines: JSON.parse(JSON.stringify(this.currentLines)),
-      algorithmSpecificData: JSON.parse(
-        JSON.stringify(this.algorithmSpecificData),
-      ),
-      relevantPreferences: JSON.parse(JSON.stringify(this.relevantPreferences)),
-    };
-
+    const currentStep = new StepBuilder()
+      .lineNumber(step)
+      .freeAgents(Object.assign([], this.freeAgentsOfGroup1))
+      .matches(new Map())
+      .stepVariables(stepVariables)
+      .group1Prefs(this.utils.cloneMap(this.group1CurrentPreferences))
+      .group2Prefs(this.utils.cloneMap(this.group2CurrentPreferences))
+      .selectedAgents(JSON.parse(JSON.stringify(this.currentlySelectedAgents)))
+      .currentLines(JSON.parse(JSON.stringify(this.currentLines)))
+      .algorithmData(JSON.parse(JSON.stringify(this.algorithmSpecificData)))
+      .relevantPrefs(JSON.parse(JSON.stringify(this.relevantPreferences)))
+      .build();
     this.algorithmData.commands.push(currentStep);
   }
 
