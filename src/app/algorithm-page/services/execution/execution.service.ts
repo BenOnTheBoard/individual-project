@@ -18,8 +18,7 @@ export class ExecutionService {
     preferences: Map<String, Array<String>>,
     SRstable: boolean = true,
   ): Object {
-    const { service, helpTextMap } =
-      this.algRetriever.mapOfAvailableAlgorithms.get(algorithm);
+    const { service, helpTextMap } = this.algRetriever.getAlgorithm(algorithm);
     this.#helpTextMap = helpTextMap;
     this.#commandList = service.run(
       numberOfAgents,

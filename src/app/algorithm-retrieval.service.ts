@@ -26,10 +26,9 @@ import { SpaStudentEgsService } from './algorithms/algorithm-services/spa-stu-eg
   providedIn: 'root',
 })
 export class AlgorithmRetrievalService {
-  currentAlgorithm: Algorithm;
-
-  numberOfGroup1Agents: number = 5;
-  numberOfGroup2Agents: number = 5;
+  public currentAlgorithm: Algorithm;
+  public numberOfGroup1Agents: number = 5;
+  public numberOfGroup2Agents: number = 5;
 
   // Algorithm Injections
   protected gsStableMarriageService = inject(GsStableMarriageService);
@@ -39,7 +38,7 @@ export class AlgorithmRetrievalService {
   protected HrHospitalEgsService = inject(HrHospitalEgsService);
   protected SpaStudentEgsService = inject(SpaStudentEgsService);
 
-  mapOfAvailableAlgorithms: Map<String, Algorithm> = new Map([
+  #mapOfAvailableAlgorithms: Map<String, Algorithm> = new Map([
     [
       'smp-man-gs',
       {
@@ -321,7 +320,7 @@ export class AlgorithmRetrievalService {
     ],
   ]);
 
-  pluralMap: Map<string, string> = new Map([
+  #pluralMap: Map<string, string> = new Map([
     ['Man', 'Men'],
     ['Woman', 'Women'],
     ['Resident', 'Residents'],
@@ -333,14 +332,18 @@ export class AlgorithmRetrievalService {
   ]);
 
   getListOfAlgorithms(): Array<Algorithm> {
-    return Array.from(this.mapOfAvailableAlgorithms.values());
+    return Array.from(this.#mapOfAvailableAlgorithms.values());
+  }
+
+  getAlgorithm(name: string) {
+    return this.#mapOfAvailableAlgorithms.get(name);
   }
 
   getSide(proposing: boolean, plural: boolean): string {
     const sideDigit = proposing ? 0 : 1;
     const side = this.currentAlgorithm.orientation[sideDigit];
     if (plural) {
-      return this.pluralMap.get(side);
+      return this.#pluralMap.get(side);
     }
     return side;
   }
