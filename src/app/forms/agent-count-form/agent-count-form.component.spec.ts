@@ -1,22 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AgentCountFormComponent } from './agent-count-form.component';
-import { Algorithm } from 'src/app/algorithm-retrieval/Algorithm';
+import {
+  Algorithm,
+  AlgorithmBuilder,
+} from 'src/app/algorithm-retrieval/Algorithm';
 
 describe('AgentCountForm', () => {
   let component: AgentCountFormComponent;
   let fixture: ComponentFixture<AgentCountFormComponent>;
 
-  const mockAlgorithm: Algorithm = {
-    id: '1',
-    name: '',
-    orientation: [],
-    equalGroups: true,
-    algorithm: '',
-    service: {} as any,
-    description: '',
-    helpTextMap: {},
-    code: [],
-  };
+  const mockAlgorithm: Algorithm = new AlgorithmBuilder().build();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
