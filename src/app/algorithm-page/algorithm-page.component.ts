@@ -11,7 +11,7 @@ import { CommonModule, NgClass } from '@angular/common';
 import { AgentTitlesComponent } from './agent-titles/agent-titles.component';
 import { PlaybackControlsComponent } from './playback-controls/playback-controls.component';
 import { Router } from '@angular/router';
-import { AlgorithmRetrievalService } from '../algorithm-retrieval.service';
+import { AlgorithmRetrievalService } from '../algorithm-retrieval/algorithm-retrieval.service';
 import { UtilsService } from '../utils/utils.service';
 import { CanvasService } from './services/canvas/canvas.service';
 import { PlaybackService } from './services/playback/playback.service';

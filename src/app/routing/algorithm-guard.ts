@@ -7,7 +7,7 @@ import {
   Router,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AlgorithmRetrievalService } from '../algorithm-retrieval.service';
+import { AlgorithmRetrievalService } from '../algorithm-retrieval/algorithm-retrieval.service';
 
 @Injectable({
   providedIn: 'root',

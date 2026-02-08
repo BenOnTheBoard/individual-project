@@ -1,4 +1,4 @@
-import { MatchingAlgorithm } from './algorithms/abstract-classes/MatchingAlgorithm';
+import { MatchingAlgorithm } from '../algorithms/abstract-classes/MatchingAlgorithm';
 
 export interface Algorithm {
   id: string;

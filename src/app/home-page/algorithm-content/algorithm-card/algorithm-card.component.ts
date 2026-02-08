@@ -1,8 +1,8 @@
 import { Component, viewChild, input, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
-import { Algorithm } from '../../../Algorithm';
+import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
+import { Algorithm } from '../../../algorithm-retrieval/Algorithm';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';

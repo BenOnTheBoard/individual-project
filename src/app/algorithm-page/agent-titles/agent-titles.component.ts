@@ -1,5 +1,5 @@
 import { Component, inject, input } from '@angular/core';
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
+import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 import { PlaybackService } from '../services/playback/playback.service';
 
 @Component({

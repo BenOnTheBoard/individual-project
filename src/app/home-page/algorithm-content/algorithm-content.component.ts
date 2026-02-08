@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
+import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 import { simpleFadeAnimation } from 'src/app/animations/fadeAnimation';
 import { AlgorithmCardComponent } from './algorithm-card/algorithm-card.component';
 

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { LayoutService } from './layout.service';
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
+import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 
 describe('LayoutService', () => {
   let service: LayoutService;

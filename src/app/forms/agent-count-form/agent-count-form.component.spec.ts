@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AgentCountFormComponent } from './agent-count-form.component';
-import { Algorithm } from 'src/app/Algorithm';
+import { Algorithm } from 'src/app/algorithm-retrieval/Algorithm';
 
 describe('AgentCountForm', () => {
   let component: AgentCountFormComponent;

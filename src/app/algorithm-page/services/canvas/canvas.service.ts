@@ -1,5 +1,5 @@
 import { ElementRef, inject, Injectable } from '@angular/core';
-import { AlgorithmRetrievalService } from '../../../algorithm-retrieval.service';
+import { AlgorithmRetrievalService } from '../../../algorithm-retrieval/algorithm-retrieval.service';
 import { LayoutService } from './layout/layout.service';
 import { TextRendererService } from './text-renderer/text-renderer.service';
 import { AgentRendererService } from './agent-renderer/agent-renderer.service';
