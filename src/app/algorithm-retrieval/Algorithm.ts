@@ -16,8 +16,6 @@ export class AlgorithmBuilder {
   #algorithm: Partial<Algorithm> = {};
 
   constructor() {
-    // handy testing defaults
-    this.#algorithm.service = {} as any;
     this.#algorithm.helpTextMap = new Object();
   }
 

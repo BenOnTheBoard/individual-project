@@ -41,7 +41,7 @@ describe('ExecutionLogComponent', () => {
                 orientation: ['Man', 'Woman'],
                 equalGroups: true,
               },
-              pluralMap: new Map([
+              irregularPluralMap: new Map([
                 ['Man', 'Men'],
                 ['Woman', 'Women'],
               ]),

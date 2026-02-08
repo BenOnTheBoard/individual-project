@@ -6,6 +6,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AlgorithmPageComponent } from './algorithm-page.component';
 import { AlgorithmRetrievalService } from '../algorithm-retrieval/algorithm-retrieval.service';
 import { CanvasService } from './services/canvas/canvas.service';
+import { GsStableMarriageService } from '../algorithms/algorithm-services/smp-man-gs/gs-stable-marriage.service';
+import { AlgorithmBuilder } from '../algorithm-retrieval/Algorithm';
 
 describe('AlgorithmPageComponent', () => {
   let component: AlgorithmPageComponent;
@@ -28,24 +30,13 @@ describe('AlgorithmPageComponent', () => {
               id: 'smp-man-gs',
               orientation: ['Man', 'Woman'],
             },
-            pluralMap: new Map([
+            irregularPluralMap: new Map([
               ['Man', 'Men'],
               ['Woman', 'Women'],
             ]),
-            mapOfAvailableAlgorithms: new Map([
-              [
-                'smp-man-gs',
-                {
-                  service: {
-                    run: jasmine.createSpy('run').and.returnValue({
-                      commands: [{ freeAgents: [] }],
-                    }),
-                  },
-                  helpTextMap: {},
-                },
-              ],
-            ]),
+            mapOfAvailableAlgorithms: new Map(),
             getSide: jasmine.createSpy('getSide'),
+            getAlgorithm: jasmine.createSpy('getAlgorithm'),
           },
         },
         {
@@ -56,11 +47,24 @@ describe('AlgorithmPageComponent', () => {
             setCanvas: jasmine.createSpy('setCanvas'),
           },
         },
+        GsStableMarriageService,
       ],
     }).compileComponents();
   }));
 
   beforeEach(() => {
+    const algorithmRetriever = TestBed.inject(AlgorithmRetrievalService) as any;
+    const matchingService = TestBed.inject(GsStableMarriageService);
+    const mockAlgorithm = new AlgorithmBuilder()
+      .service(matchingService)
+      .build();
+
+    algorithmRetriever.mapOfAvailableAlgorithms.set(
+      'smp-man-gs',
+      mockAlgorithm,
+    );
+    algorithmRetriever.getAlgorithm.and.returnValue(mockAlgorithm);
+
     (window as any).anime = jasmine.createSpy('anime').and.callFake(() => ({}));
     (window as any).$ = (selector: any) => ({
       popover: jasmine.createSpy('popover').and.returnValue({
