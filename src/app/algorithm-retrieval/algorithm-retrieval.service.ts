@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { Algorithm } from './Algorithm';
-import { HrResidentEgsService } from './algorithms/algorithm-services/hr-resident-egs/hr-resident-egs.service';
-import { EgsStableMarriageService } from './algorithms/algorithm-services/smp-man-egs/egs-stable-marriage.service';
-import { GsStableMarriageService } from './algorithms/algorithm-services/smp-man-gs/gs-stable-marriage.service';
-import { StableRoomIrvService } from './algorithms/algorithm-services/smp-room-irv/stable-room-irv.service';
-import { HrHospitalEgsService } from './algorithms/algorithm-services/hr-hospital-egs/hr-hospital-egs.service';
-import { SpaStudentEgsService } from './algorithms/algorithm-services/spa-stu-egs/spa-student-egs.service';
+import { HrResidentEgsService } from '../algorithms/algorithm-services/hr-resident-egs/hr-resident-egs.service';
+import { EgsStableMarriageService } from '../algorithms/algorithm-services/smp-man-egs/egs-stable-marriage.service';
+import { GsStableMarriageService } from '../algorithms/algorithm-services/smp-man-gs/gs-stable-marriage.service';
+import { StableRoomIrvService } from '../algorithms/algorithm-services/smp-room-irv/stable-room-irv.service';
+import { HrHospitalEgsService } from '../algorithms/algorithm-services/hr-hospital-egs/hr-hospital-egs.service';
+import { SpaStudentEgsService } from '../algorithms/algorithm-services/spa-stu-egs/spa-student-egs.service';
 
 // ------------------------------------------------------- ALGORITHM TEMPLATE
 // [
@@ -335,7 +335,7 @@ export class AlgorithmRetrievalService {
     return Array.from(this.#mapOfAvailableAlgorithms.values());
   }
 
-  getAlgorithm(name: string) {
+  getAlgorithm(name: string): Algorithm {
     return this.#mapOfAvailableAlgorithms.get(name);
   }
 

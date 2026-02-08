@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PlaybackService } from '../../services/playback/playback.service';
-
 import { ExecutionLogComponent } from './execution-log.component';
+import { StepBuilder } from 'src/app/algorithms/interfaces/Step';
 
 describe('ExecutionLogComponent', () => {
   let component: ExecutionLogComponent;
@@ -15,26 +15,22 @@ describe('ExecutionLogComponent', () => {
           provide: PlaybackService,
           useValue: {
             commandList: [
-              {
-                lineNumber: 0,
-                freeAgents: [],
-                matches: new Map(),
-                stepVariables: {},
-                group1CurrentPreferences: new Map<string, string[]>([
-                  ['1', ['A', 'B', 'C']],
-                  ['2', ['B', 'A', 'C']],
-                  ['3', ['C', 'A', 'B']],
-                ]),
-                group2CurrentPreferences: new Map<string, string[]>([
-                  ['A', ['1', '2', '3']],
-                  ['B', ['2', '1', '3']],
-                  ['C', ['3', '1', '2']],
-                ]),
-                currentlySelectedAgents: [],
-                currentLines: [],
-                algorithmSpecificData: {},
-                relevantPreferences: [],
-              },
+              new StepBuilder()
+                .group1Prefs(
+                  new Map([
+                    ['1', ['A', 'B', 'C']],
+                    ['2', ['B', 'A', 'C']],
+                    ['3', ['C', 'A', 'B']],
+                  ]),
+                )
+                .group2Prefs(
+                  new Map([
+                    ['A', ['1', '2', '3']],
+                    ['B', ['2', '1', '3']],
+                    ['C', ['3', '1', '2']],
+                  ]),
+                )
+                .build(),
             ],
             algorithmData: {
               numberOfGroup1Agents: 3,

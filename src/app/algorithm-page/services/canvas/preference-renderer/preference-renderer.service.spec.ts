@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { AlgorithmRetrievalService } from '../../../../algorithm-retrieval.service';
+import { AlgorithmRetrievalService } from '../../../../algorithm-retrieval/algorithm-retrieval.service';
 import { LayoutService } from '../layout/layout.service';
 import { TextRendererService } from '../text-renderer/text-renderer.service';
 import { ColourHexService } from '../../../../utils/colour-hex.service';
 import { AgentRendererService } from '../agent-renderer/agent-renderer.service';
 import { PreferenceRendererService } from './preference-renderer.service';
-import { Step } from 'src/app/algorithms/interfaces/Step';
+import { Step, StepBuilder } from 'src/app/algorithms/interfaces/Step';
 
 describe('PreferenceRendererService', () => {
   let service: PreferenceRendererService;
@@ -50,24 +50,22 @@ describe('PreferenceRendererService', () => {
     mockAgentRenderer.getRadiusOfCircles.and.returnValue(30);
     mockLayoutService.getPositionOfAgent.and.returnValue({ x: 100, y: 200 });
     mockTextRenderer.setFontSize.and.callFake((size: number) => {});
-    mockCommand = {
-      lineNumber: 1,
-      freeAgents: [],
-      matches: new Map<string, string>(),
-      stepVariables: {},
-      group1CurrentPreferences: new Map([
-        ['1', ['A']],
-        ['2', ['B']],
-      ]),
-      group2CurrentPreferences: new Map([
-        ['A', ['1']],
-        ['B', ['2']],
-      ]),
-      currentlySelectedAgents: [],
-      currentLines: [],
-      algorithmSpecificData: new Object(),
-      relevantPreferences: ['1', 'A'],
-    } as Step;
+    mockCommand = new StepBuilder()
+      .lineNumber(1)
+      .group1Prefs(
+        new Map([
+          ['1', ['A']],
+          ['2', ['B']],
+        ]),
+      )
+      .group2Prefs(
+        new Map([
+          ['A', ['1']],
+          ['B', ['2']],
+        ]),
+      )
+      .relevantPrefs(['1', 'A'])
+      .build();
 
     TestBed.configureTestingModule({
       providers: [
@@ -118,10 +116,7 @@ describe('PreferenceRendererService', () => {
 
   it('should draw capacities when algorithmSpecificData has hospitalCapacity', () => {
     mockCommand.algorithmSpecificData = {
-      hospitalCapacity: {
-        A: 3,
-        B: 2,
-      },
+      hospitalCapacity: { A: 3, B: 2 },
     };
     service.setCurrentCommand(mockCommand);
 

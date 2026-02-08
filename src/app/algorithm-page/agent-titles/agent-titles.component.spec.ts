@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AgentTitlesComponent } from './agent-titles.component';
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
+import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 
 describe('AgentTitlesComponent', () => {
   let component: AgentTitlesComponent;

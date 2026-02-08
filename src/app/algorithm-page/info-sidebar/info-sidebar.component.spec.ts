@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { InfoSidebarComponent } from './info-sidebar.component';
 
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
+import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 
 describe('InfoSidebarComponent', () => {
   let component: InfoSidebarComponent;

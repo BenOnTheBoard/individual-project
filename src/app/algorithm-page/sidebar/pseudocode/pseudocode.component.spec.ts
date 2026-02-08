@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PseudocodeComponent } from './pseudocode.component';
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
+import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 
 describe('PseudocodeComponent', () => {
   let component: PseudocodeComponent;

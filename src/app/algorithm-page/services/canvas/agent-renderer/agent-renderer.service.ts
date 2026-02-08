@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
+import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 import { LayoutService } from '../layout/layout.service';
 import { TextRendererService } from '../text-renderer/text-renderer.service';
 import { ColourHexService } from 'src/app/utils/colour-hex.service';

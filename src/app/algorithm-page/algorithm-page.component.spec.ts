@@ -4,7 +4,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AlgorithmPageComponent } from './algorithm-page.component';
-import { AlgorithmRetrievalService } from '../algorithm-retrieval.service';
+import { AlgorithmRetrievalService } from '../algorithm-retrieval/algorithm-retrieval.service';
 import { CanvasService } from './services/canvas/canvas.service';
 
 describe('AlgorithmPageComponent', () => {

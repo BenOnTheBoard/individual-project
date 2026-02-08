@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
+import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 import { AlgorithmData } from 'src/app/algorithms/interfaces/AlgorithmData';
 
 @Injectable({

@@ -3,7 +3,7 @@ import { Component, HostListener, input, output } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Algorithm } from 'src/app/Algorithm';
+import { Algorithm } from 'src/app/algorithm-retrieval/Algorithm';
 import { UtilsService } from 'src/app/utils/utils.service';
 
 @Component({

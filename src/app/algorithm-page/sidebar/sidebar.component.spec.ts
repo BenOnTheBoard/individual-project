@@ -7,7 +7,7 @@ import { AlgDescriptionComponent } from './alg-description/alg-description.compo
 import { FreeAgentsComponent } from './free-agents/free-agents.component';
 import { PseudocodeComponent } from './pseudocode/pseudocode.component';
 import { ExecutionLogComponent } from './execution-log/execution-log.component';
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval.service';
+import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 import { PlaybackService } from '../services/playback/playback.service';
 
 describe('SidebarComponent', () => {

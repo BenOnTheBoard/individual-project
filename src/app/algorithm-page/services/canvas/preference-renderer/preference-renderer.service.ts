@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { AlgorithmRetrievalService } from '../../../../algorithm-retrieval.service';
+import { AlgorithmRetrievalService } from '../../../../algorithm-retrieval/algorithm-retrieval.service';
 import { LayoutService } from '../layout/layout.service';
 import { TextRendererService } from '../text-renderer/text-renderer.service';
 import { Step } from 'src/app/algorithms/interfaces/Step';
