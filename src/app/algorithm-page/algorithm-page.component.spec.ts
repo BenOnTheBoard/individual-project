@@ -30,7 +30,7 @@ describe('AlgorithmPageComponent', () => {
               id: 'smp-man-gs',
               orientation: ['Man', 'Woman'],
             },
-            pluralMap: new Map([
+            irregularPluralMap: new Map([
               ['Man', 'Men'],
               ['Woman', 'Women'],
             ]),

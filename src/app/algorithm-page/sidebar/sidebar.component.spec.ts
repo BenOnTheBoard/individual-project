@@ -43,7 +43,7 @@ describe('SidebarComponent', () => {
             currentAlgorithm: {
               orientation: ['Man', 'Woman'],
             },
-            pluralMap: new Map([
+            irregularPluralMap: new Map([
               ['Man', 'Men'],
               ['Woman', 'Women'],
             ]),
