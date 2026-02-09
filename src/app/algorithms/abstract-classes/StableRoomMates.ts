@@ -98,7 +98,7 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
     }
   }
 
-  generatePreferences(): void {
+  generatePrefs(): void {
     let count = 0;
     let instance = [];
 

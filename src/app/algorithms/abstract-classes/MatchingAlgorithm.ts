@@ -89,7 +89,7 @@ export abstract class MatchingAlgorithm {
     }
   }
 
-  shuffleGroupRankings(
+  shuffleRankings(
     rankers: Map<String, Agent>,
     targets: Map<String, Agent>,
   ): void {
@@ -100,14 +100,14 @@ export abstract class MatchingAlgorithm {
     }
   }
 
-  generatePreferences(): void {
-    this.shuffleGroupRankings(this.group1Agents, this.group2Agents);
-    this.shuffleGroupRankings(this.group2Agents, this.group1Agents);
+  generatePrefs(): void {
+    this.shuffleRankings(this.group1Agents, this.group2Agents);
+    this.shuffleRankings(this.group2Agents, this.group1Agents);
   }
 
-  getGroupRankings(agents: Map<String, Agent>): Map<String, Array<String>> {
+  getRankings(agentMap: Map<String, Agent>): Map<String, Array<String>> {
     return new Map(
-      Array.from(agents.values()).map((agent) => [
+      Array.from(agentMap.values()).map((agent) => [
         this.utils.getLastChar(agent.name),
         agent.ranking.map((m) => this.utils.getLastChar(m.name)),
       ]),
@@ -139,13 +139,13 @@ export abstract class MatchingAlgorithm {
     );
   }
 
-  findPositionInRanking(currentAgent: Agent, agentToFind: Agent): number {
+  getRank(currentAgent: Agent, agentToFind: Agent): number {
     return currentAgent.ranking.findIndex(
       (agent) => agent.name == agentToFind.name,
     );
   }
 
-  findPositionInOriginalMatches(
+  getOriginalRank(
     currentAgent: Agent,
     agentToFind: Agent,
     group: 'group1' | 'group2',
@@ -158,28 +158,22 @@ export abstract class MatchingAlgorithm {
     return originalPrefs.indexOf(targetChar);
   }
 
-  removeArrayFromArray(
+  removeSubArray(
     a: Array<Array<string>>,
     b: Array<string>,
   ): Array<Array<string>> {
     return a.filter((subArray) => !this.utils.checkArrayEquality(subArray, b));
   }
 
-  removePersonFromArray(
-    a: Array<Array<string>>,
-    person: string,
-  ): Array<Array<string>> {
+  removePerson(a: Array<Array<string>>, person: string): Array<Array<string>> {
     return a.filter((subArray) => subArray[0] != person);
   }
 
-  removeTargetFromArray(
-    a: Array<Array<string>>,
-    target: string,
-  ): Array<Array<string>> {
+  removeTarget(a: Array<Array<string>>, target: string): Array<Array<string>> {
     return a.filter((subArray) => subArray[1] != target);
   }
 
-  changePreferenceStyle(
+  changePrefsStyle(
     preferenceList: Map<String, Array<String>>,
     person: string,
     position: number,
@@ -198,16 +192,9 @@ export abstract class MatchingAlgorithm {
   }
 
   isBlockingPair(currentAgent: Agent, targetAgent: Agent): boolean {
-    const matchRank = this.findPositionInOriginalMatches(
-      targetAgent,
-      targetAgent.match[0],
-      'group1',
-    );
-    const curRank = this.findPositionInOriginalMatches(
-      targetAgent,
-      currentAgent,
-      'group1',
-    );
+    const match = targetAgent.match[0];
+    const matchRank = this.getOriginalRank(targetAgent, match, 'group1');
+    const curRank = this.getOriginalRank(targetAgent, currentAgent, 'group1');
     return curRank < matchRank;
   }
 
@@ -230,7 +217,7 @@ export abstract class MatchingAlgorithm {
   getLastMatch(currentAgent: String, agentMatches: Array<String>): number {
     let furthestIndex = 0;
     for (const matchAgent of agentMatches) {
-      const matchPosition = this.findPositionInRanking(
+      const matchPosition = this.getRank(
         this.group2Agents.get(currentAgent),
         this.group1Agents.get(matchAgent),
       );
@@ -250,15 +237,15 @@ export abstract class MatchingAlgorithm {
   ): AlgorithmData {
     this.initialise(numberOfAgents, numberOfGroup2Agents);
     this.generateAgents();
-    this.generatePreferences();
+    this.generatePrefs();
     this.SRstable = SRstable;
 
-    this.group1CurrentPreferences = this.getGroupRankings(this.group1Agents);
+    this.group1CurrentPreferences = this.getRankings(this.group1Agents);
     this.originalPrefsGroup1 = this.utils.cloneMap(
       this.group1CurrentPreferences,
     );
 
-    this.group2CurrentPreferences = this.getGroupRankings(this.group2Agents);
+    this.group2CurrentPreferences = this.getRankings(this.group2Agents);
     this.originalPrefsGroup2 = this.utils.cloneMap(
       this.group2CurrentPreferences,
     );

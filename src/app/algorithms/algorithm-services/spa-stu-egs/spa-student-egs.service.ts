@@ -250,7 +250,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     const studentIndex = project.match.indexOf(student);
     project.match.splice(studentIndex, 1);
 
-    this.currentLines = this.removeArrayFromArray(this.currentLines, [
+    this.currentLines = this.removeSubArray(this.currentLines, [
       this.utils.getLastChar(student.name),
       this.utils.getLastChar(project.name),
       'red',
@@ -294,7 +294,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         const projectIndex = lecturer.ranking[i].ranking.indexOf(project);
         lecturer.ranking[i].ranking.splice(projectIndex, 1);
 
-        this.changePreferenceStyle(
+        this.changePrefsStyle(
           this.group1CurrentPreferences,
           this.utils.getLastChar(lecturer.ranking[i].name),
           this.originalPrefsGroup1
@@ -334,7 +334,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
             lecturer.ranking[i].ranking.indexOf(projectObject);
           lecturer.ranking[i].ranking.splice(projectIndex, 1);
 
-          this.changePreferenceStyle(
+          this.changePrefsStyle(
             this.group1CurrentPreferences,
             this.utils.getLastChar(lecturer.ranking[i].name),
             this.originalPrefsGroup1
@@ -449,7 +449,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       this.saveStep(4, { '%lecturer%': projectLecturer.name });
 
       // highlight assinged
-      this.changePreferenceStyle(
+      this.changePrefsStyle(
         this.group1CurrentPreferences,
         this.utils.getLastChar(student.name),
         this.originalPrefsGroup1
@@ -562,7 +562,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       availableStudents = this.availableStudents();
 
       // unhighlight assinged
-      this.changePreferenceStyle(
+      this.changePrefsStyle(
         this.group1CurrentPreferences,
         this.utils.getLastChar(student.name),
         this.originalPrefsGroup1
@@ -579,7 +579,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     for (const student of this.group1Agents.values()) {
       // if the student has a matching - should
       if (student.match.length == 1) {
-        this.changePreferenceStyle(
+        this.changePrefsStyle(
           this.group1CurrentPreferences,
           this.utils.getLastChar(student.name),
           this.originalPrefsGroup1
@@ -594,7 +594,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
           'green',
         ];
         this.currentLines.push(greenLine);
-        this.currentLines = this.removeArrayFromArray(this.currentLines, [
+        this.currentLines = this.removeSubArray(this.currentLines, [
           this.utils.getLastChar(student.name),
           this.utils.getLastChar(student.match[0].name),
           'red',
