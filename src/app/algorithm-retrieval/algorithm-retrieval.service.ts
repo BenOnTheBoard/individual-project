@@ -12,6 +12,7 @@ import { hrHospitalConfig } from './algorithm-configs/hr-hospital.config';
 import { hrResidentConfig } from './algorithm-configs/hr-resident.config';
 import { smManEGSConfig } from './algorithm-configs/sm-man-egs.config';
 import { smManGSConfig } from './algorithm-configs/sm-man-gs.config';
+import { smtSuperManConfig } from './algorithm-configs/smt-super-man.config';
 
 @Injectable({
   providedIn: 'root',
@@ -62,7 +63,8 @@ export class AlgorithmRetrievalService {
       .set(
         'spa-stu-egs',
         spasStudentConfig.service(this.spaStudentEgsService).build(),
-      );
+      )
+      .set('smt-super-man', smtSuperManConfig.build());
   }
 
   getListOfAlgorithms(): Array<Algorithm> {
