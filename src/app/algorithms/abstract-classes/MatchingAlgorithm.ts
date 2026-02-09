@@ -26,8 +26,8 @@ export abstract class MatchingAlgorithm {
 
   currentLine: Array<string> = [];
 
-  originalGroup1CurrentPreferences: Map<String, Array<String>> = new Map();
-  originalGroup2CurrentPreferences: Map<String, Array<String>> = new Map();
+  originalPrefsGroup1: Map<String, Array<String>> = new Map();
+  originalPrefsGroup2: Map<String, Array<String>> = new Map();
 
   group1CurrentPreferences: Map<String, Array<String>> = new Map();
   group2CurrentPreferences: Map<String, Array<String>> = new Map();
@@ -201,7 +201,7 @@ export abstract class MatchingAlgorithm {
   }
 
   findPositionInOriginalMatches(currentAgent: Agent, agentToFind: Agent) {
-    const originalPreferences = this.originalGroup1CurrentPreferences.get(
+    const originalPreferences = this.originalPrefsGroup1.get(
       this.utils.getLastChar(currentAgent.name),
     );
     const position: number = originalPreferences.indexOf(
@@ -211,7 +211,7 @@ export abstract class MatchingAlgorithm {
   }
 
   findPositionInOriginalMatches1Group(currentAgent: Agent, agentToFind: Agent) {
-    const originalPreferences = this.originalGroup1CurrentPreferences.get(
+    const originalPreferences = this.originalPrefsGroup1.get(
       this.utils.getLastChar(currentAgent.name),
     );
     const position: number = originalPreferences.indexOf(
@@ -221,7 +221,7 @@ export abstract class MatchingAlgorithm {
   }
 
   findPositionInOriginalMatchesGroup2(currentAgent: Agent, agentToFind: Agent) {
-    const originalPreferences = this.originalGroup2CurrentPreferences.get(
+    const originalPreferences = this.originalPrefsGroup2.get(
       this.utils.getLastChar(currentAgent.name),
     );
     const position: number = originalPreferences.indexOf(
@@ -351,14 +351,10 @@ export abstract class MatchingAlgorithm {
     }
 
     this.group1CurrentPreferences = this.getGroupRankings(this.group1Agents);
-    this.originalGroup1CurrentPreferences = this.getGroupRankings(
-      this.group1Agents,
-    );
+    this.originalPrefsGroup1 = this.getGroupRankings(this.group1Agents);
 
     this.group2CurrentPreferences = this.getGroupRankings(this.group2Agents);
-    this.originalGroup2CurrentPreferences = this.getGroupRankings(
-      this.group2Agents,
-    );
+    this.originalPrefsGroup2 = this.getGroupRankings(this.group2Agents);
 
     this.match();
 

@@ -97,7 +97,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     this.changePreferenceStyle(
       this.group1CurrentPreferences,
       this.utils.getLastChar(resident.name),
-      this.originalGroup1CurrentPreferences
+      this.originalPrefsGroup1
         .get(this.utils.getLastChar(resident.name))
         .findIndex((h) => h == this.utils.getLastChar(hospital.name)),
       'grey',
@@ -161,7 +161,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     this.changePreferenceStyle(
       this.group1CurrentPreferences,
       agentLastChar,
-      this.originalGroup1CurrentPreferences
+      this.originalPrefsGroup1
         .get(agentLastChar)
         .findIndex((h) => h == this.utils.getLastChar(hospital.name)),
       'green',
@@ -170,7 +170,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     this.changePreferenceStyle(
       this.group2CurrentPreferences,
       proposeeLastChar,
-      this.originalGroup2CurrentPreferences
+      this.originalPrefsGroup2
         .get(proposeeLastChar)
         .findIndex((h) => h == this.utils.getLastChar(resident.name)),
       'green',
@@ -212,7 +212,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
         // remove hsopital from resident
         resident.ranking.splice(i, 1);
         // get index of resident in the removde hospitals og rankings
-        const pos = this.originalGroup2CurrentPreferences
+        const pos = this.originalPrefsGroup2
           .get(this.utils.getLastChar(removedHospital.name))
           .findIndex((h) => h == this.utils.getLastChar(resident.name));
         //  grey out hos from res
@@ -266,7 +266,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       this.changePreferenceStyle(
         this.group1CurrentPreferences,
         this.utils.getLastChar(hospital.ranking[i].name),
-        this.originalGroup1CurrentPreferences
+        this.originalPrefsGroup1
           .get(this.utils.getLastChar(hospital.ranking[i].name))
           .findIndex((h) => h == this.utils.getLastChar(hospital.name)),
         'grey',

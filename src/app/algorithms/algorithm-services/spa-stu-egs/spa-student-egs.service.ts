@@ -89,12 +89,12 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       studentMatchIndex =
         student.match.length == 0
           ? student.ranking.length
-          : this.originalGroup1CurrentPreferences
+          : this.originalPrefsGroup1
               .get(this.utils.getLastChar(student.name))
               .indexOf(this.utils.getLastChar(student.match[0].name));
 
       // current student information
-      const studentRanking = this.originalGroup1CurrentPreferences.get(
+      const studentRanking = this.originalPrefsGroup1.get(
         this.utils.getLastChar(student.name),
       );
 
@@ -297,7 +297,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         this.changePreferenceStyle(
           this.group1CurrentPreferences,
           this.utils.getLastChar(lecturer.ranking[i].name),
-          this.originalGroup1CurrentPreferences
+          this.originalPrefsGroup1
             .get(this.utils.getLastChar(lecturer.ranking[i].name))
             .indexOf(this.utils.getLastChar(project.name)),
           'grey',
@@ -337,7 +337,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
           this.changePreferenceStyle(
             this.group1CurrentPreferences,
             this.utils.getLastChar(lecturer.ranking[i].name),
-            this.originalGroup1CurrentPreferences
+            this.originalPrefsGroup1
               .get(this.utils.getLastChar(lecturer.ranking[i].name))
               .indexOf(this.utils.getLastChar(projectObject.name)),
             'grey',
@@ -452,7 +452,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       this.changePreferenceStyle(
         this.group1CurrentPreferences,
         this.utils.getLastChar(student.name),
-        this.originalGroup1CurrentPreferences
+        this.originalPrefsGroup1
           .get(this.utils.getLastChar(student.name))
           .indexOf(this.utils.getLastChar(preferedProject.name)),
         'red',
@@ -565,7 +565,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       this.changePreferenceStyle(
         this.group1CurrentPreferences,
         this.utils.getLastChar(student.name),
-        this.originalGroup1CurrentPreferences
+        this.originalPrefsGroup1
           .get(this.utils.getLastChar(student.name))
           .indexOf(this.utils.getLastChar(preferedProject.name)),
         'black',
@@ -582,7 +582,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         this.changePreferenceStyle(
           this.group1CurrentPreferences,
           this.utils.getLastChar(student.name),
-          this.originalGroup1CurrentPreferences
+          this.originalPrefsGroup1
             .get(this.utils.getLastChar(student.name))
             .indexOf(this.utils.getLastChar(student.match[0].name)),
           'green',

@@ -93,7 +93,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     this.changePreferenceStyle(
       this.group1CurrentPreferences,
       this.utils.getLastChar(worstResident.name),
-      this.originalGroup1CurrentPreferences
+      this.originalPrefsGroup1
         .get(this.utils.getLastChar(worstResident.name))
         .findIndex((h) => h == this.utils.getLastChar(hospital.name)),
       'grey',
@@ -152,7 +152,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     this.changePreferenceStyle(
       this.group1CurrentPreferences,
       agentLastChar,
-      this.originalGroup1CurrentPreferences
+      this.originalPrefsGroup1
         .get(agentLastChar)
         .findIndex((h) => h == this.utils.getLastChar(hospital.name)),
       'green',
@@ -217,7 +217,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
       this.changePreferenceStyle(
         this.group1CurrentPreferences,
         this.utils.getLastChar(hospital.ranking[i].name),
-        this.originalGroup1CurrentPreferences
+        this.originalPrefsGroup1
           .get(this.utils.getLastChar(hospital.ranking[i].name))
           .findIndex((h) => h == this.utils.getLastChar(hospital.name)),
         'grey',

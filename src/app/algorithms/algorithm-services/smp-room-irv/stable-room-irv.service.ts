@@ -50,10 +50,10 @@ export class StableRoomIrvService extends StableRoomMates {
     for (const person of this.group1Agents.values()) {
       // if agent has matches
       if (person.lastProposed) {
-        const personMatchIndex = this.originalGroup1CurrentPreferences
+        const personMatchIndex = this.originalPrefsGroup1
           .get(this.utils.getLastChar(person.name))
           .indexOf(this.utils.getLastChar(person.lastProposed.name));
-        const personRanking = this.originalGroup1CurrentPreferences.get(
+        const personRanking = this.originalPrefsGroup1.get(
           this.utils.getLastChar(person.name),
         );
 
@@ -135,7 +135,7 @@ export class StableRoomIrvService extends StableRoomMates {
     this.changePreferenceStyle(
       this.group1CurrentPreferences,
       this.utils.getLastChar(agent1.name),
-      this.originalGroup1CurrentPreferences
+      this.originalPrefsGroup1
         .get(this.utils.getLastChar(agent1.name))
         .indexOf(this.utils.getLastChar(agent2.name)),
       'grey',
@@ -144,7 +144,7 @@ export class StableRoomIrvService extends StableRoomMates {
     this.changePreferenceStyle(
       this.group1CurrentPreferences,
       this.utils.getLastChar(agent2.name),
-      this.originalGroup1CurrentPreferences
+      this.originalPrefsGroup1
         .get(this.utils.getLastChar(agent2.name))
         .indexOf(this.utils.getLastChar(agent1.name)),
       'grey',
@@ -256,14 +256,14 @@ export class StableRoomIrvService extends StableRoomMates {
 
         // store prevouis person
         last_person = person;
-        ((last_pref = this.originalGroup1CurrentPreferences
+        ((last_pref = this.originalPrefsGroup1
           .get(this.utils.getLastChar(person.name))
           .indexOf(this.utils.getLastChar(person.ranking[0].name))),
           //highlight pref in persons list
           this.changePreferenceStyle(
             this.group1CurrentPreferences,
             this.utils.getLastChar(person.name),
-            this.originalGroup1CurrentPreferences
+            this.originalPrefsGroup1
               .get(this.utils.getLastChar(person.name))
               .indexOf(this.utils.getLastChar(person.ranking[0].name)),
             'red',
@@ -437,7 +437,7 @@ export class StableRoomIrvService extends StableRoomMates {
                 this.changePreferenceStyle(
                   this.group1CurrentPreferences,
                   this.utils.getLastChar(person_inner.name),
-                  this.originalGroup1CurrentPreferences
+                  this.originalPrefsGroup1
                     .get(this.utils.getLastChar(person_inner.name))
                     .indexOf(
                       this.utils.getLastChar(person_inner.ranking[0].name),
@@ -516,7 +516,7 @@ export class StableRoomIrvService extends StableRoomMates {
           this.changePreferenceStyle(
             this.group1CurrentPreferences,
             this.utils.getLastChar(person_inner.name),
-            this.originalGroup1CurrentPreferences
+            this.originalPrefsGroup1
               .get(this.utils.getLastChar(person_inner.name))
               .indexOf(this.utils.getLastChar(person_inner.ranking[0].name)),
             'green',

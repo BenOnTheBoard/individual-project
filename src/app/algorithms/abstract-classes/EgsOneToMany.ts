@@ -36,7 +36,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     this.changePreferenceStyle(
       this.group1CurrentPreferences,
       this.utils.getLastChar(potentialProposee.match[0].name),
-      this.originalGroup1CurrentPreferences
+      this.originalPrefsGroup1
         .get(this.utils.getLastChar(potentialProposee.match[0].name))
         .findIndex(
           (woman) => woman == this.utils.getLastChar(potentialProposee.name),
@@ -79,7 +79,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     this.changePreferenceStyle(
       this.group1CurrentPreferences,
       agentLastChar,
-      this.originalGroup1CurrentPreferences
+      this.originalPrefsGroup1
         .get(agentLastChar)
         .findIndex(
           (woman) => woman == this.utils.getLastChar(potentialProposee.name),
@@ -134,7 +134,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       this.changePreferenceStyle(
         this.group1CurrentPreferences,
         this.utils.getLastChar(potentialProposee.ranking[i].name),
-        this.originalGroup1CurrentPreferences
+        this.originalPrefsGroup1
           .get(this.utils.getLastChar(potentialProposee.ranking[i].name))
           .findIndex(
             (woman) => woman == this.utils.getLastChar(potentialProposee.name),
