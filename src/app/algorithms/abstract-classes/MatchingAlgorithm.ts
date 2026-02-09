@@ -72,8 +72,8 @@ export abstract class MatchingAlgorithm {
   }
 
   generateAgents() {
-    for (let i = 1; i < this.numberOfAgents + 1; i++) {
-      const group1AgentName = this.group1Name + i;
+    for (let i = 0; i < this.numberOfAgents; i++) {
+      const group1AgentName = this.group1Name + (i + 1);
 
       this.group1Agents.set(group1AgentName, {
         name: group1AgentName,
@@ -172,16 +172,14 @@ export abstract class MatchingAlgorithm {
   getMatches(): Map<String, Array<String>> {
     const matches: Map<String, Array<String>> = new Map();
 
-    for (let i = 1; i < this.numberOfGroup2Agents + 1; i++) {
-      const agentName: string = this.group2Name + String.fromCharCode(i + 64);
-      const agent: Agent = this.group2Agents.get(agentName);
-
+    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
+      const agentName = this.group2Name + String.fromCharCode(65 + i);
+      const agent = this.group2Agents.get(agentName);
       const matchList: Array<String> = new Array();
 
       for (const match of agent.match) {
         matchList.push(match.name);
       }
-
       matches.set(agent.name, matchList);
     }
 
@@ -252,8 +250,7 @@ export abstract class MatchingAlgorithm {
 
       if (agentMatches.length > 0) {
         const lastAgentPosition = this.getLastMatch(agent, agentMatches);
-        const agentPreferences: Array<Agent> =
-          this.group2Agents.get(agent).ranking;
+        const agentPreferences = this.group2Agents.get(agent).ranking;
 
         for (let i = lastAgentPosition - 1; i >= 0; i--) {
           if (!agentMatches.includes(agentPreferences[i].name)) {
@@ -278,7 +275,7 @@ export abstract class MatchingAlgorithm {
   }
 
   getLastMatch(currentAgent: String, agentMatches: Array<String>): number {
-    let furthestIndex: number = 0;
+    let furthestIndex = 0;
     for (const matchAgent of agentMatches) {
       const matchPosition = this.findPositionInRanking(
         this.group2Agents.get(currentAgent),
@@ -325,10 +322,7 @@ export abstract class MatchingAlgorithm {
 
     this.stable = this.checkStability(this.getMatches());
 
-    if (!this.stable) {
-      return undefined;
-    }
-
+    if (!this.stable) return undefined;
     return this.algorithmData;
   }
 }
