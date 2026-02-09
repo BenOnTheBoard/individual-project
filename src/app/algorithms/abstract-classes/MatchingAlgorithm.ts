@@ -161,15 +161,15 @@ export abstract class MatchingAlgorithm {
   update(step: number, stepVariables?: Object): void {
     const currentStep = new StepBuilder()
       .lineNumber(step)
-      .freeAgents(Object.assign([], this.freeAgentsOfGroup1))
+      .freeAgents([...this.freeAgentsOfGroup1])
       .matches(new Map())
       .stepVariables(stepVariables)
       .group1Prefs(this.utils.cloneMap(this.group1CurrentPreferences))
       .group2Prefs(this.utils.cloneMap(this.group2CurrentPreferences))
-      .selectedAgents(JSON.parse(JSON.stringify(this.currentlySelectedAgents)))
-      .currentLines(JSON.parse(JSON.stringify(this.currentLines)))
-      .algorithmData(JSON.parse(JSON.stringify(this.algorithmSpecificData)))
-      .relevantPrefs(JSON.parse(JSON.stringify(this.relevantPreferences)))
+      .selectedAgents(structuredClone(this.currentlySelectedAgents))
+      .currentLines(structuredClone(this.currentLines))
+      .algorithmData(structuredClone(this.algorithmSpecificData))
+      .relevantPrefs(structuredClone(this.relevantPreferences))
       .build();
     this.algorithmData.commands.push(currentStep);
   }
