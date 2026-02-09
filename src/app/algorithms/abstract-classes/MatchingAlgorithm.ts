@@ -103,23 +103,21 @@ export abstract class MatchingAlgorithm {
   // changes agent.ranking
   generatePreferences(): void {
     for (const agent of Array.from(this.group1Agents.values())) {
-      const agent1Rankings = Array.from(new Map(this.group2Agents).values());
+      const agent1Rankings = Array.from(this.group2Agents.values());
       this.utils.shuffle(agent1Rankings);
       this.group1Agents.get(agent.name).ranking = agent1Rankings;
     }
 
     for (const agent of Array.from(this.group2Agents.values())) {
-      const agent2Rankings = Array.from(new Map(this.group1Agents).values());
+      const agent2Rankings = Array.from(this.group1Agents.values());
       this.utils.shuffle(agent2Rankings);
       this.group2Agents.get(agent.name).ranking = agent2Rankings;
     }
   }
 
   populatePreferences(preferences: Map<String, Array<String>>): void {
-    let tempCopyList: Array<Agent>;
-
     for (const agent of Array.from(this.group1Agents.keys())) {
-      tempCopyList = [];
+      const tempCopyList: Array<Agent> = [];
       for (const preferenceAgent of preferences.get(
         this.utils.getLastChar(String(agent)),
       )) {
@@ -131,7 +129,7 @@ export abstract class MatchingAlgorithm {
     }
 
     for (const agent of Array.from(this.group2Agents.keys())) {
-      tempCopyList = [];
+      const tempCopyList: Array<Agent> = [];
       for (const preferenceAgent of preferences.get(
         this.utils.getLastChar(String(agent)),
       )) {
@@ -251,9 +249,7 @@ export abstract class MatchingAlgorithm {
     position: number,
     style: string,
   ) {
-    let currentAgent: string = '';
-
-    currentAgent = preferenceList.get(person)[position].includes('#')
+    const currentAgent = preferenceList.get(person)[position].includes('#')
       ? preferenceList
           .get(person)
           [position].charAt(preferenceList.get(person)[position].length - 2)
