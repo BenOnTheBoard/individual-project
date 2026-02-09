@@ -276,7 +276,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   ) {
     // loop though the lectures rakning in revese - remove the project from the ranking if each one
     // stop once we get to the student passed in - worstStudent
-    this.update(15, {
+    this.saveStep(15, {
       '%student%': worstStudent.name,
       '%lecturer%': lecturer.name,
     });
@@ -286,7 +286,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       }
 
       // if S_i finds project p acceptable:
-      this.update(16, {
+      this.saveStep(16, {
         '%student%': lecturer.ranking[i].name,
         '%project%': project.name,
       });
@@ -304,7 +304,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         );
 
         // remove p from S_i's preference list
-        this.update(17, {
+        this.saveStep(17, {
           '%student%': lecturer.ranking[i].name,
           '%project%': project.name,
         });
@@ -314,7 +314,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
   deleteFullPairsLecturer(worstStudent: Student, lecturer: Lecturer) {
     // loop through lecturer rankings backwards - stop when we reach worst student
-    this.update(20, {
+    this.saveStep(20, {
       '%student%': worstStudent.name,
       '%lecturer%': lecturer.name,
     });
@@ -324,7 +324,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       }
 
       // for each project offered by the lecture
-      this.update(21, { '%lecturer%': lecturer.name });
+      this.saveStep(21, { '%lecturer%': lecturer.name });
       for (const project of lecturer.projects) {
         const projectObject = this.group2Agents.get(project);
 
@@ -344,7 +344,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
           );
 
           // remove p from S_i's preference list
-          this.update(22, {
+          this.saveStep(22, {
             '%student%': lecturer.ranking[i].name,
             '%project%': projectObject.name,
           });
@@ -425,7 +425,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     let redLine = [];
     let greenLine = [];
 
-    this.update(1);
+    this.saveStep(1);
 
     let availableStudents = this.availableStudents();
     // let stopPoint = 0
@@ -435,18 +435,18 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       // get first student on list
       const student = availableStudents[0];
       // while some student s is free
-      this.update(2, { '%student%': student.name });
+      this.saveStep(2, { '%student%': student.name });
 
       // get students most prefered project and its lecturer
       const preferedProject = student.ranking[0];
       const projectLecturer = this.getProjectLecturer(preferedProject);
 
       // p = next most prefered project on s's list | l = lecturer who offers p
-      this.update(3, {
+      this.saveStep(3, {
         '%student%': student.name,
         '%project%': preferedProject.name,
       });
-      this.update(4, { '%lecturer%': projectLecturer.name });
+      this.saveStep(4, { '%lecturer%': projectLecturer.name });
 
       // highlight assinged
       this.changePreferenceStyle(
@@ -472,30 +472,30 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       this.currentLines.push(redLine);
       // provisionally assign s to p
       this.updateCapacityVisualization();
-      this.update(5, {
+      this.saveStep(5, {
         '%student%': student.name,
         '%project%': preferedProject.name,
       });
 
       // if p is over-subscribed
-      this.update(6, { '%project%': preferedProject.name });
+      this.saveStep(6, { '%project%': preferedProject.name });
 
       // if project is over-subbed - remove worst student assigned to project
       if (preferedProject.match.length > preferedProject.capacity) {
         // worst student on this project, ranked by the projects lecturer
         const worstStudent = this.getWorstStudent(preferedProject);
-        this.update(7, {
+        this.saveStep(7, {
           '%student%': worstStudent.name,
           '%project%': preferedProject.name,
         });
         this.breakMatch(worstStudent, preferedProject);
-        this.update(8, {
+        this.saveStep(8, {
           '%student%': worstStudent.name,
           '%project%': preferedProject.name,
         });
       } else {
         // else if the lecturer is over-subbed - remove overall worst student
-        this.update(9, { '%lecturer%': projectLecturer.name });
+        this.saveStep(9, { '%lecturer%': projectLecturer.name });
         if (
           this.getLecturerCurrentCapacity(projectLecturer) >
           projectLecturer.capacity
@@ -506,18 +506,18 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
           const worstStudentProject = worstStudentOverall.match[0];
 
           // Sw = worst student assigned to l | Pw = project that Sw is assigned to
-          this.update(10, {
+          this.saveStep(10, {
             '%student%': worstStudentOverall.name,
             '%lecturer%': projectLecturer.name,
           });
-          this.update(11, {
+          this.saveStep(11, {
             '%student%': student.name,
             '%project%': worstStudentProject.name,
           });
 
           this.breakMatch(worstStudentOverall, worstStudentProject);
           // break provisional assignment between Sw and Pw
-          this.update(12, {
+          this.saveStep(12, {
             '%student%': worstStudentOverall.name,
             '%project%': worstStudentProject.name,
           });
@@ -525,11 +525,11 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       }
 
       // if the project is full - then delete successors
-      this.update(13, { '%project%': preferedProject.name });
+      this.saveStep(13, { '%project%': preferedProject.name });
       if (preferedProject.match.length == preferedProject.capacity) {
         // worst student on this project, ranked by the projects lecturer
         const worstStudent = this.getWorstStudent(preferedProject);
-        this.update(14, {
+        this.saveStep(14, {
           '%student%': worstStudent.name,
           '%project%': preferedProject.name,
         });
@@ -542,7 +542,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       }
 
       // If the lecturer is at capacity
-      this.update(18, { '%lecturer%': projectLecturer.name });
+      this.saveStep(18, { '%lecturer%': projectLecturer.name });
       if (
         this.getLecturerCurrentCapacity(projectLecturer) ==
         projectLecturer.capacity
@@ -550,7 +550,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         // worst student ranked by the lecturer
         const worstStudentOverall =
           this.getWorstStudentOverall(projectLecturer);
-        this.update(19, {
+        this.saveStep(19, {
           '%student%': worstStudentOverall.name,
           '%lecturer%': projectLecturer.name,
         });
@@ -603,7 +603,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     }
 
     // END - Stable matching found
-    this.update(23);
+    this.saveStep(23);
     return;
   }
 }

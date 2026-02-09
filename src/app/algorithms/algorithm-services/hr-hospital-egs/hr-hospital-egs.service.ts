@@ -118,7 +118,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       `{${colourHex}${String(hospital.availableSpaces)}}`;
 
     // unassign r and h'
-    this.update(5, {
+    this.saveStep(5, {
       '%oldHospital%': resident.match[0].name,
       '%resident%': resident.name,
     });
@@ -130,7 +130,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       'grey',
     );
 
-    this.update(1);
+    this.saveStep(1);
 
     // remove hospital from resident match
     resident.match.splice(0, 1);
@@ -198,7 +198,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
     if (hospitalPosition + 1 < resident.ranking.length) {
       // for each successor h' of h on r's list
-      this.update(7, {
+      this.saveStep(7, {
         '%resident%': resident.name,
         '%hospital%': hospital.name,
       });
@@ -233,7 +233,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
           'grey',
         );
         // remove h' and r from each others preferance list
-        this.update(8, {
+        this.saveStep(8, {
           '%hospital%': removedHospital.name,
           '%resident%': resident.name,
         });
@@ -252,7 +252,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     let hospitalRankingClearCounter: number = worstResidentPosition + 1;
 
     // for each successor h' of h on r's list
-    this.update(7, {
+    this.saveStep(7, {
       '%resident%': resident.name,
       '%hospital%': hospital.name,
     });
@@ -282,7 +282,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       );
 
       // remove r' and h from each others preferance list
-      this.update(8, {
+      this.saveStep(8, {
         '%hospital%': hospital.name,
         '%resident%': hospital.ranking[i].name,
       });
@@ -326,7 +326,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
   match(): AlgorithmData {
     // "Set each hospital and resident to be completely free",
-    this.update(1);
+    this.saveStep(1);
 
     // while a HOSPITAL h is under-subscribed and
     // h's list contains a a RESIDENT r not assigned to h
@@ -336,7 +336,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
       // "While some hospital h is - undersubscibed,
       // and has a resident r on h's preferance list that is no assigned to h",
-      this.update(2, { '%hospital%': currentHospital.name });
+      this.saveStep(2, { '%hospital%': currentHospital.name });
 
       if (
         currentHospital.ranking.length <= 0 ||
@@ -349,11 +349,11 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
         // a RESIDENT r that is not assigned to h, but is on its pref list
         // "r := first resident on h's prefernace list not assigned to h",
-        this.update(3, { '%resident%': potentialProposee.name });
+        this.saveStep(3, { '%resident%': potentialProposee.name });
 
         // if proposee is assigned to a different hospital then un assign
         // if r is assigned to another hospital h
-        this.update(4, { '%resident%': potentialProposee.name });
+        this.saveStep(4, { '%resident%': potentialProposee.name });
 
         if (potentialProposee.match[0] != null) {
           this.breakAssignment(potentialProposee, potentialProposee.match[0]);
@@ -361,7 +361,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
         // provisionally assign r to h
         this.provisionallyAssign(potentialProposee, currentHospital);
-        this.update(6, {
+        this.saveStep(6, {
           '%resident%': potentialProposee.name,
           '%hospital%': currentHospital.name,
         });
@@ -378,7 +378,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     }
 
     // stable matching found
-    this.update(9);
+    this.saveStep(9);
     return;
   }
 }

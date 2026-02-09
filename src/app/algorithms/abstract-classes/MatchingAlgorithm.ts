@@ -153,7 +153,7 @@ export abstract class MatchingAlgorithm {
     return matches;
   }
 
-  update(step: number, stepVariables?: Object): void {
+  saveStep(step: number, stepVariables?: Object): void {
     const currentStep = new StepBuilder()
       .lineNumber(step)
       .freeAgents([...this.freeAgentsOfGroup1])

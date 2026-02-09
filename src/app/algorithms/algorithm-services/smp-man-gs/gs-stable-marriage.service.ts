@@ -40,7 +40,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
   }
 
   match(): AlgorithmData {
-    this.update(1);
+    this.saveStep(1);
 
     // 2: while some man m is free do
     while (this.freeAgentsOfGroup1.length > 0) {
@@ -51,7 +51,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
       this.relevantPreferences.push(man.name.substring(3));
       this.currentlySelectedAgents.push(man.name.substring(3));
 
-      this.update(2, { '%man%': man.name });
+      this.saveStep(2, { '%man%': man.name });
 
       // 3: w = most preferred woman on m’s list to which he has not yet proposed;
       const woman: Agent = man.ranking[man.lastProposed];
@@ -77,10 +77,10 @@ export class GsStableMarriageService extends MatchingAlgorithm {
         'red',
       );
 
-      this.update(3, { '%woman%': woman.name, '%man%': man.name });
+      this.saveStep(3, { '%woman%': woman.name, '%man%': man.name });
 
       man.lastProposed += 1;
-      this.update(4, { '%woman%': woman.name });
+      this.saveStep(4, { '%woman%': woman.name });
 
       if (woman.match.length <= 0) {
         woman.match.splice(0, 1);
@@ -109,10 +109,10 @@ export class GsStableMarriageService extends MatchingAlgorithm {
         greenLine = [man.name.substring(3), woman.name.substring(5), 'green'];
         this.currentLines.push(greenLine);
 
-        this.update(5, { '%woman%': woman.name, '%man%': man.name });
+        this.saveStep(5, { '%woman%': woman.name, '%man%': man.name });
       } else {
         this.relevantPreferences.push(woman.match[0].name.substring(3));
-        this.update(6, {
+        this.saveStep(6, {
           '%woman%': woman.name,
           '%man%': man.name,
           '%match%': woman.match[0].name,
@@ -124,7 +124,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
           this.findPositionInRanking(woman, man),
           'red',
         );
-        this.update(7, {
+        this.saveStep(7, {
           '%woman%': woman.name,
           '%man%': man.name,
           '%match%': woman.match[0].name,
@@ -183,7 +183,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
           );
 
           this.freeAgentsOfGroup1.shift();
-          this.update(8, {
+          this.saveStep(8, {
             '%woman%': woman.name,
             '%man%': man.name,
             '%match%': match,
@@ -205,13 +205,13 @@ export class GsStableMarriageService extends MatchingAlgorithm {
             this.currentLines,
             redLine,
           );
-          this.update(9, {
+          this.saveStep(9, {
             '%woman%': woman.name,
             '%man%': man.name,
             '%match%': woman.match[0].name,
           });
 
-          this.update(10);
+          this.saveStep(10);
         }
       }
     }
@@ -219,7 +219,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
     this.currentlySelectedAgents = [];
     this.relevantPreferences = [];
 
-    this.update(11);
+    this.saveStep(11);
 
     for (const woman of Array.from(this.group2Agents.values())) {
       woman.match[0].match[0] = woman;

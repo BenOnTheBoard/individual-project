@@ -69,7 +69,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
   }
 
   breakAssignment(resident: Agent, hospital: Hospital): void {
-    this.update(4, {
+    this.saveStep(4, {
       '%hospital%': hospital.name,
       '%capacity%': hospital.availableSpaces,
       '%resident%': resident.name,
@@ -77,7 +77,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     if (hospital.match.length < hospital.availableSpaces) return;
 
     const worstResident = this.getWorstResident(hospital);
-    this.update(5, {
+    this.saveStep(5, {
       '%hospital%': hospital.name,
       '%worstResident%': worstResident.name,
     });
@@ -129,7 +129,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
       currentHospitalCapacity,
     ).charAt(currentHospitalCapacity.length - 2);
 
-    this.update(6, {
+    this.saveStep(6, {
       '%hospital%': hospital.name,
       '%worstResident%': worstResident.name,
     });
@@ -170,7 +170,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
         `{${colourHex}${this.algorithmSpecificData['hospitalCapacity'][proposeeLastChar]}}`;
     }
 
-    this.update(7, {
+    this.saveStep(7, {
       '%resident%': resident.name,
       '%hospital%': hospital.name,
     });
@@ -179,7 +179,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
   }
 
   removeRuledOutPreferences(resident: Agent, hospital: Hospital): void {
-    this.update(8, {
+    this.saveStep(8, {
       '%resident%': resident.name,
       '%hospital%': hospital.name,
     });
@@ -192,7 +192,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
       worstResident,
     );
 
-    this.update(9, {
+    this.saveStep(9, {
       '%hospital%': hospital.name,
       '%worstResident%': worstResident.name,
     });
@@ -209,7 +209,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
         this.utils.getLastChar(hospital.ranking[i].name),
       );
 
-      this.update(10, {
+      this.saveStep(10, {
         '%hospital%': hospital.name,
         '%nextResident%': hospital.ranking[i].name,
       });
@@ -232,7 +232,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
       hospital.ranking[i].ranking.splice(hospitalPosition, 1);
 
       // remove h' and r from each other's lists
-      this.update(11, {
+      this.saveStep(11, {
         '%hospital%': hospital.name,
         '%nextResident%': hospital.ranking[i].name,
       });

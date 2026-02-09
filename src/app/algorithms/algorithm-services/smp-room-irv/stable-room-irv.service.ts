@@ -106,7 +106,7 @@ export class StableRoomIrvService extends StableRoomMates {
         person.lastProposed.name == person_free
       ) {
         //free a
-        this.update(8, {
+        this.saveStep(8, {
           '%old_person%': person.name,
           '%selected%': person_free,
         });
@@ -209,7 +209,7 @@ export class StableRoomIrvService extends StableRoomMates {
     free_agents = this.check_free_agents();
 
     // Set each person to be free
-    this.update(1);
+    this.saveStep(1);
 
     let last_person = null;
     let last_pref = null;
@@ -223,15 +223,15 @@ export class StableRoomIrvService extends StableRoomMates {
       //loop through each agent in the list
       for (const person of free_agents.values()) {
         //While some person p is free (not assigned to someone)
-        this.update(2, { '%person%': person.name });
+        this.saveStep(2, { '%person%': person.name });
 
         //if person p has a empty preferance list
-        this.update(3, { '%person%': person.name });
+        this.saveStep(3, { '%person%': person.name });
 
         // if there is no more preferances for a agent - no stable matchong exists
         if (person.ranking.length < 1) {
           //end - no stable mathcing
-          this.update(4);
+          this.saveStep(4);
 
           // if stable == true then regenerate
           if (this.SRstable) {
@@ -272,7 +272,7 @@ export class StableRoomIrvService extends StableRoomMates {
           ));
 
         //person b := first preferance on p's list
-        this.update(5, {
+        this.saveStep(5, {
           '%person%': person.name,
           '%selected%': person.ranking[0].name,
         });
@@ -290,13 +290,13 @@ export class StableRoomIrvService extends StableRoomMates {
         this.freeAgentsOfGroup1.shift();
 
         //assign p to b
-        this.update(6, { '%person%': person.name, '%selected%': pref.name });
+        this.saveStep(6, { '%person%': person.name, '%selected%': pref.name });
 
         //if someone is assigned to their most prefered person, then unassign them and assign current agent to them
         const check = this.assign_check(pref.name);
 
         // if any person a is assigned to person b
-        this.update(7, { '%person%': person.name, '%selected%': pref.name });
+        this.saveStep(7, { '%person%': person.name, '%selected%': pref.name });
 
         if (check != null) {
           this.free(pref.name);
@@ -304,7 +304,7 @@ export class StableRoomIrvService extends StableRoomMates {
 
         person.lastProposed = pref;
 
-        this.update(9, {
+        this.saveStep(9, {
           '%person%': person.name,
           '%selected%': pref.name,
           '%list%': this.objs_toString(pref.ranking),
@@ -324,7 +324,7 @@ export class StableRoomIrvService extends StableRoomMates {
           this.delete_pair(pref, remove);
 
           // for each person c less preferded than p on b's, preferance list
-          this.update(10, {
+          this.saveStep(10, {
             '%person%': person.name,
             '%removee%': remove.name,
           });
@@ -353,13 +353,13 @@ export class StableRoomIrvService extends StableRoomMates {
       //loop through those^ agents
       for (const person of agents_multiple_prefs.values()) {
         // While some person p has more than 1 preferance left
-        this.update(11, {
+        this.saveStep(11, {
           '%person%': person.name,
           '%list%': this.objs_toString(person.ranking),
         });
 
         // look for rotations in perosn p's preferance list
-        this.update(12, { '%person%': person.name });
+        this.saveStep(12, { '%person%': person.name });
 
         const rotation_pairs = [];
 
@@ -391,7 +391,7 @@ export class StableRoomIrvService extends StableRoomMates {
         }
 
         // if rotation r is found
-        this.update(13, { '%rotation%': this.objs_toString(rotation_pairs) }); // temp remove %rotation%
+        this.saveStep(13, { '%rotation%': this.objs_toString(rotation_pairs) }); // temp remove %rotation%
 
         const deleted_pairs = [];
         for (const pair of rotation_pairs) {
@@ -404,7 +404,7 @@ export class StableRoomIrvService extends StableRoomMates {
             deleted_pairs.push(pair);
 
             // delete pairs in rotation r
-            this.update(14, {
+            this.saveStep(14, {
               '%person%': pair[1].name,
               '%removee%': pair[0].name,
             });
@@ -470,7 +470,7 @@ export class StableRoomIrvService extends StableRoomMates {
         }
 
         // if a person b has 1 perferance left
-        this.update(15);
+        this.saveStep(15);
 
         // update preferancees
         for (const person_inner of this.group1Agents.values()) {
@@ -478,7 +478,7 @@ export class StableRoomIrvService extends StableRoomMates {
             person_inner.lastProposed = person_inner.ranking.slice(0)[0];
 
             // person b := last preferance
-            this.update(16, {
+            this.saveStep(16, {
               '%person%': person_inner.name,
               '%preference%': person_inner.lastProposed.name,
             });
@@ -486,11 +486,11 @@ export class StableRoomIrvService extends StableRoomMates {
         }
 
         // if any people have empty preferance lists - no mathcong
-        this.update(17, { '%person%': person.name });
+        this.saveStep(17, { '%person%': person.name });
 
         if (this.check_pref_list_empty() == true) {
           // end - no stable matching
-          this.update(18);
+          this.saveStep(18);
           // if stable == true then regenerate
           if (this.SRstable) {
             // console.log("ReRun")
@@ -545,7 +545,7 @@ export class StableRoomIrvService extends StableRoomMates {
       }
     }
 
-    this.update(19);
+    this.saveStep(19);
     return;
   }
 }

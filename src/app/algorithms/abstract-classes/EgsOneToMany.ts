@@ -6,9 +6,9 @@ import { ExtendedGaleShapley } from './ExtendedGaleShapley';
 export abstract class EgsOneToMany extends ExtendedGaleShapley {
   breakAssignment(currentAgent: Agent, potentialProposee: Agent) {
     // if w is currently assigned to someone {
-    this.update(4, { '%woman%': potentialProposee.name });
+    this.saveStep(4, { '%woman%': potentialProposee.name });
     if (potentialProposee.match.length < 1) {
-      this.update(6, { '%woman%': potentialProposee.name });
+      this.saveStep(6, { '%woman%': potentialProposee.name });
       return;
     }
     // break the provisional assignment of r to h'
@@ -50,7 +50,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       'grey',
     );
 
-    this.update(5, {
+    this.saveStep(5, {
       '%woman%': potentialProposee.name,
       '%currentPartner%': potentialProposee.match[0].name,
     });
@@ -93,7 +93,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       'green',
     );
 
-    this.update(7, {
+    this.saveStep(7, {
       '%man%': currentAgent.name,
       '%woman%': potentialProposee.name,
     });
@@ -109,7 +109,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     let proposeeRankingClearCounter: number = currentAgentPosition + 1;
 
     // for each successor h' of h on r's list {
-    this.update(8, {
+    this.saveStep(8, {
       '%man%': currentAgent.name,
       '%woman%': potentialProposee.name,
     });
@@ -126,7 +126,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
         this.utils.getLastChar(potentialProposee.ranking[i].name),
       );
       // remove h' and r from each other's lists
-      this.update(9, {
+      this.saveStep(9, {
         '%nextWorstMan%': potentialProposee.ranking[i].name,
         '%woman%': potentialProposee.name,
       });
@@ -149,7 +149,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
         'grey',
       );
 
-      this.update(10, {
+      this.saveStep(10, {
         '%nextWorstMan%': potentialProposee.ranking[i].name,
         '%woman%': potentialProposee.name,
       });
@@ -162,7 +162,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
 
       this.relevantPreferences.pop();
     }
-    this.update(11, {
+    this.saveStep(11, {
       '%man%': currentAgent.name,
       '%woman%': potentialProposee.name,
     });
