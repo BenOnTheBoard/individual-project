@@ -63,14 +63,11 @@ export abstract class MatchingAlgorithm {
     this.group2CurrentPreferences = new Map();
     this.currentlySelectedAgents = [];
     this.currentLines = [];
-
     this.algorithmSpecificData = {};
-
     this.relevantPreferences = [];
 
     this.numberOfAgents = numberOfAgents;
     this.numberOfGroup2Agents = numberOfGroup2Agents;
-
     this.stable = false;
   }
 
@@ -210,37 +207,25 @@ export abstract class MatchingAlgorithm {
     return originalPrefs.indexOf(targetChar);
   }
 
-  // used to remove elements from currentLines
-  removeArrayFromArray(a: Array<Array<string>>, b: Array<string>) {
-    let arrayPositionCounter: number = 0;
-    for (const subArray of a) {
-      if (this.utils.checkArrayEquality(subArray, b)) {
-        a.splice(arrayPositionCounter, 1);
-      }
-      arrayPositionCounter++;
-    }
+  removeArrayFromArray(
+    a: Array<Array<string>>,
+    b: Array<string>,
+  ): Array<Array<string>> {
+    return a.filter((subArray) => !this.utils.checkArrayEquality(subArray, b));
   }
 
-  // remove all lines in array that start at person
-  removePersonFromArray(a: Array<Array<string>>, person: String) {
-    let arrayPositionCounter: number = 0;
-    for (const subArray of a) {
-      if (subArray[0] == person) {
-        a.splice(arrayPositionCounter, 1);
-      }
-      arrayPositionCounter++;
-    }
+  removePersonFromArray(
+    a: Array<Array<string>>,
+    person: string,
+  ): Array<Array<string>> {
+    return a.filter((subArray) => subArray[0] != person);
   }
 
-  // remove all lines leeding to a person from the array
-  removeTargetFromArray(a: Array<Array<string>>, person: String) {
-    let arrayPositionCounter: number = 0;
-    for (const subArray of a) {
-      if (subArray[1] == person) {
-        a.splice(arrayPositionCounter, 1);
-      }
-      arrayPositionCounter++;
-    }
+  removeTargetFromArray(
+    a: Array<Array<string>>,
+    target: string,
+  ): Array<Array<string>> {
+    return a.filter((subArray) => subArray[1] != target);
   }
 
   changePreferenceStyle(

@@ -102,7 +102,10 @@ export class GsStableMarriageService extends MatchingAlgorithm {
           'green',
         );
 
-        this.removeArrayFromArray(this.currentLines, redLine);
+        this.currentLines = this.removeArrayFromArray(
+          this.currentLines,
+          redLine,
+        );
         greenLine = [man.name.substring(3), woman.name.substring(5), 'green'];
         this.currentLines.push(greenLine);
 
@@ -154,8 +157,11 @@ export class GsStableMarriageService extends MatchingAlgorithm {
             'green',
           );
 
-          this.removeArrayFromArray(this.currentLines, redLine);
-          this.removeArrayFromArray(this.currentLines, [
+          this.currentLines = this.removeArrayFromArray(
+            this.currentLines,
+            redLine,
+          );
+          this.currentLines = this.removeArrayFromArray(this.currentLines, [
             woman.match[0].name.substring(3),
             woman.name.substring(5),
             'green',
@@ -195,7 +201,10 @@ export class GsStableMarriageService extends MatchingAlgorithm {
             this.findPositionInRanking(woman, man),
             'grey',
           );
-          this.removeArrayFromArray(this.currentLines, redLine);
+          this.currentLines = this.removeArrayFromArray(
+            this.currentLines,
+            redLine,
+          );
           this.update(9, {
             '%woman%': woman.name,
             '%man%': man.name,

@@ -84,7 +84,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
 
     const matchPosition = this.findPositionInRanking(hospital, worstResident);
 
-    this.removeArrayFromArray(this.currentLines, [
+    this.currentLines = this.removeArrayFromArray(this.currentLines, [
       this.utils.getLastChar(worstResident.name),
       this.utils.getLastChar(hospital.name),
       'green',
@@ -140,7 +140,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     const agentLastChar = this.utils.getLastChar(resident.name);
     const proposeeLastChar = this.utils.getLastChar(hospital.name);
 
-    this.removeArrayFromArray(this.currentLines, [
+    this.currentLines = this.removeArrayFromArray(this.currentLines, [
       agentLastChar,
       proposeeLastChar,
       'red',

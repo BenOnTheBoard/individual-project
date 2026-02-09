@@ -111,7 +111,7 @@ export class StableRoomIrvService extends StableRoomMates {
           '%selected%': person_free,
         });
 
-        this.removePersonFromArray(
+        this.currentLines = this.removePersonFromArray(
           this.currentLines,
           this.utils.getLastChar(person.name),
         );
@@ -416,7 +416,7 @@ export class StableRoomIrvService extends StableRoomMates {
                 !finished_people.includes(person_inner.name)
               ) {
                 // remove lines starting from person_inner
-                this.removePersonFromArray(
+                this.currentLines = this.removePersonFromArray(
                   this.currentLines,
                   this.utils.getLastChar(person_inner.name),
                 );
@@ -425,12 +425,12 @@ export class StableRoomIrvService extends StableRoomMates {
                 person_inner.lastProposed = person_inner.ranking.slice(0)[0];
 
                 // remove lines going to their new proposal
-                this.removeTargetFromArray(
+                this.currentLines = this.removeTargetFromArray(
                   this.currentLines,
                   this.utils.getLastChar(person_inner.lastProposed.name),
                 );
                 // with lines are green early, without overlapping reds
-                this.removePersonFromArray(
+                this.currentLines = this.removePersonFromArray(
                   this.currentLines,
                   this.utils.getLastChar(person_inner.lastProposed.name),
                 );
@@ -524,12 +524,12 @@ export class StableRoomIrvService extends StableRoomMates {
             'green',
           );
 
-          this.removePersonFromArray(
+          this.currentLines = this.removePersonFromArray(
             this.currentLines,
             this.utils.getLastChar(person_inner.name),
           );
 
-          this.removeTargetFromArray(
+          this.currentLines = this.removeTargetFromArray(
             this.currentLines,
             this.utils.getLastChar(person_inner.lastProposed.name),
           );

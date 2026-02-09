@@ -27,7 +27,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       this.freeAgentsOfGroup1.push(potentialProposee.match[0].name);
     }
 
-    this.removeArrayFromArray(this.currentLines, [
+    this.currentLines = this.removeArrayFromArray(this.currentLines, [
       this.utils.getLastChar(potentialProposee.match[0].name),
       this.utils.getLastChar(potentialProposee.name),
       'green',
@@ -67,7 +67,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
 
     const agentLastChar = this.utils.getLastChar(currentAgent.name);
     const proposeeLastChar = this.utils.getLastChar(potentialProposee.name);
-    this.removeArrayFromArray(this.currentLines, [
+    this.currentLines = this.removeArrayFromArray(this.currentLines, [
       agentLastChar,
       proposeeLastChar,
       'red',

@@ -91,7 +91,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       'group2',
     );
 
-    this.removeArrayFromArray(this.currentLines, [
+    this.currentLines = this.removeArrayFromArray(this.currentLines, [
       this.utils.getLastChar(resident.name),
       this.utils.getLastChar(hospital.name),
       'green',
@@ -152,7 +152,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     const agentLastChar = this.utils.getLastChar(resident.name);
     const proposeeLastChar = this.utils.getLastChar(hospital.name);
 
-    this.removeArrayFromArray(this.currentLines, [
+    this.currentLines = this.removeArrayFromArray(this.currentLines, [
       agentLastChar,
       proposeeLastChar,
       'red',

@@ -250,7 +250,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     const studentIndex = project.match.indexOf(student);
     project.match.splice(studentIndex, 1);
 
-    this.removeArrayFromArray(this.currentLines, [
+    this.currentLines = this.removeArrayFromArray(this.currentLines, [
       this.utils.getLastChar(student.name),
       this.utils.getLastChar(project.name),
       'red',
@@ -594,7 +594,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
           'green',
         ];
         this.currentLines.push(greenLine);
-        this.removeArrayFromArray(this.currentLines, [
+        this.currentLines = this.removeArrayFromArray(this.currentLines, [
           this.utils.getLastChar(student.name),
           this.utils.getLastChar(student.match[0].name),
           'red',
