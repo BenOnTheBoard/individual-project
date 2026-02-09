@@ -12,7 +12,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       return;
     }
     // break the provisional assignment of r to h'
-    const matchPosition: number = this.findPositionInMatches(
+    const matchPosition: number = this.findPositionInRanking(
       potentialProposee,
       potentialProposee.match[0],
     );
@@ -57,7 +57,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
 
     potentialProposee.ranking.splice(matchPosition, 1);
     potentialProposee.match[0].ranking.splice(
-      this.findPositionInMatches(potentialProposee.match[0], potentialProposee),
+      this.findPositionInRanking(potentialProposee.match[0], potentialProposee),
       1,
     );
   }
@@ -89,7 +89,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     this.changePreferenceStyle(
       this.group2CurrentPreferences,
       proposeeLastChar,
-      this.findPositionInMatches(potentialProposee, currentAgent),
+      this.findPositionInRanking(potentialProposee, currentAgent),
       'green',
     );
 
@@ -118,7 +118,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       i < potentialProposee.ranking.length;
       i++
     ) {
-      const proposeePosition: number = this.findPositionInMatches(
+      const proposeePosition: number = this.findPositionInRanking(
         potentialProposee.ranking[i],
         potentialProposee,
       );

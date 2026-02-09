@@ -55,7 +55,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     const positionMap: Map<number, Agent> = new Map();
 
     for (const resident of hospital.match) {
-      positionMap.set(this.findPositionInMatches(hospital, resident), resident);
+      positionMap.set(this.findPositionInRanking(hospital, resident), resident);
     }
 
     // use destructuring assingment to extract data from array into distinct variables
@@ -82,7 +82,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
       '%worstResident%': worstResident.name,
     });
 
-    const matchPosition = this.findPositionInMatches(hospital, worstResident);
+    const matchPosition = this.findPositionInRanking(hospital, worstResident);
 
     this.removeArrayFromArray(this.currentLines, [
       this.utils.getLastChar(worstResident.name),
@@ -117,7 +117,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
 
     worstResident.match.splice(0, 1);
     worstResident.ranking.splice(
-      this.findPositionInMatches(worstResident, hospital),
+      this.findPositionInRanking(worstResident, hospital),
       1,
     );
 
@@ -160,7 +160,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     this.changePreferenceStyle(
       this.group2CurrentPreferences,
       proposeeLastChar,
-      this.findPositionInMatches(hospital, resident),
+      this.findPositionInRanking(hospital, resident),
       'green',
     );
 
@@ -187,7 +187,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     if (hospital.match.length < hospital.availableSpaces) return;
 
     const worstResident: Agent = this.getWorstResident(hospital);
-    const worstResidentPosition: number = this.findPositionInMatches(
+    const worstResidentPosition: number = this.findPositionInRanking(
       hospital,
       worstResident,
     );
@@ -201,7 +201,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
 
     // for each successor h' of h on r's list {
     for (let i = worstResidentPosition + 1; i < hospital.ranking.length; i++) {
-      const hospitalPosition: number = this.findPositionInMatches(
+      const hospitalPosition: number = this.findPositionInRanking(
         hospital.ranking[i],
         hospital,
       );

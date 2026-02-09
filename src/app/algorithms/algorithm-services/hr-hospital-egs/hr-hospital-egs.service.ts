@@ -66,7 +66,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     const positionMap: Map<number, Agent> = new Map();
 
     for (const resident of hospital.match) {
-      positionMap.set(this.findPositionInMatches(hospital, resident), resident);
+      positionMap.set(this.findPositionInRanking(hospital, resident), resident);
     }
 
     // use destructuring assingment to extract data from array into distinct variables
@@ -76,17 +76,20 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
   breakAssignment(resident: Agent, hospital): void {
     // get pos in each rankings lists to remove later
-    const matchPosition_resident = this.findPositionInMatches(
+    const matchPosition_resident = this.findPositionInRanking(
       hospital,
       resident,
     );
-    const matchPosition_hospital = this.findPositionInMatches(
+    const matchPosition_hospital = this.findPositionInRanking(
       resident,
       hospital,
     );
 
-    const matchPosition_resident_original =
-      this.findPositionInOriginalMatchesGroup2(hospital, resident);
+    const matchPosition_resident_original = this.findPositionInOriginalMatches(
+      hospital,
+      resident,
+      'group2',
+    );
 
     this.removeArrayFromArray(this.currentLines, [
       this.utils.getLastChar(resident.name),
@@ -188,7 +191,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
   removeRuledOutPreferences(resident: Agent, hospital: Hospital): void {
     // given h and r - remove h' of h on r's list
-    const hospitalPosition: number = this.findPositionInMatches(
+    const hospitalPosition: number = this.findPositionInRanking(
       resident,
       hospital,
     );
@@ -202,7 +205,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
       for (let i = hospitalPosition + 1; i < resident.ranking.length; i++) {
         const removedHospital = resident.ranking[i];
-        const residentIndex = this.findPositionInMatches(
+        const residentIndex = this.findPositionInRanking(
           removedHospital,
           resident,
         );
@@ -242,7 +245,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     if (hospital.match.length < hospital.availableSpaces) return;
 
     const worstResident: Agent = this.getWorstResident(hospital);
-    const worstResidentPosition: number = this.findPositionInMatches(
+    const worstResidentPosition: number = this.findPositionInRanking(
       hospital,
       worstResident,
     );
@@ -255,7 +258,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     });
 
     for (let i = worstResidentPosition + 1; i < hospital.ranking.length; i++) {
-      const hospitalPosition: number = this.findPositionInMatches(
+      const hospitalPosition: number = this.findPositionInRanking(
         hospital.ranking[i],
         hospital,
       );

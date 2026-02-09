@@ -193,41 +193,23 @@ export abstract class MatchingAlgorithm {
     return matches;
   }
 
-  findPositionInMatches(currentAgent: Agent, agentToFind: Agent): number {
-    const position: number = currentAgent.ranking.findIndex(
+  findPositionInRanking(currentAgent: Agent, agentToFind: Agent): number {
+    return currentAgent.ranking.findIndex(
       (agent: { name: string }) => agent.name == agentToFind.name,
     );
-    return position;
   }
 
-  findPositionInOriginalMatches(currentAgent: Agent, agentToFind: Agent) {
-    const originalPreferences = this.originalPrefsGroup1.get(
-      this.utils.getLastChar(currentAgent.name),
-    );
-    const position: number = originalPreferences.indexOf(
-      this.utils.getLastChar(agentToFind.name),
-    );
-    return position;
-  }
-
-  findPositionInOriginalMatches1Group(currentAgent: Agent, agentToFind: Agent) {
-    const originalPreferences = this.originalPrefsGroup1.get(
-      this.utils.getLastChar(currentAgent.name),
-    );
-    const position: number = originalPreferences.indexOf(
-      this.utils.getLastChar(agentToFind.name),
-    );
-    return position;
-  }
-
-  findPositionInOriginalMatchesGroup2(currentAgent: Agent, agentToFind: Agent) {
-    const originalPreferences = this.originalPrefsGroup2.get(
-      this.utils.getLastChar(currentAgent.name),
-    );
-    const position: number = originalPreferences.indexOf(
-      this.utils.getLastChar(agentToFind.name),
-    );
-    return position;
+  findPositionInOriginalMatches(
+    currentAgent: Agent,
+    agentToFind: Agent,
+    group: 'group1' | 'group2',
+  ) {
+    const prefs =
+      group == 'group1' ? this.originalPrefsGroup1 : this.originalPrefsGroup2;
+    const currentChar = this.utils.getLastChar(currentAgent.name);
+    const targetChar = this.utils.getLastChar(agentToFind.name);
+    const originalPrefs = prefs.get(currentChar);
+    return originalPrefs.indexOf(targetChar);
   }
 
   // used to remove elements from currentLines
@@ -297,10 +279,12 @@ export abstract class MatchingAlgorithm {
             const matchPosition = this.findPositionInOriginalMatches(
               agentPreferences[i],
               agentPreferences[i].match[0],
+              'group1',
             );
             const currentAgentPosition = this.findPositionInOriginalMatches(
               agentPreferences[i],
               this.group2Agents.get(agent),
+              'group1',
             );
             if (currentAgentPosition < matchPosition) {
               return false;
@@ -315,7 +299,7 @@ export abstract class MatchingAlgorithm {
   getLastMatch(currentAgent: String, agentMatches: Array<String>): number {
     let furthestIndex: number = 0;
     for (const matchAgent of agentMatches) {
-      const matchPosition = this.findPositionInMatches(
+      const matchPosition = this.findPositionInRanking(
         this.group2Agents.get(currentAgent),
         this.group1Agents.get(matchAgent),
       );

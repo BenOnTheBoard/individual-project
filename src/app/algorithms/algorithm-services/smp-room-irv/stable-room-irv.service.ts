@@ -64,14 +64,16 @@ export class StableRoomIrvService extends StableRoomMates {
             this.group1Name + String(betterPersonName),
           );
           // current person index within better persons ranking
-          const currentPersonIndex = this.findPositionInOriginalMatches1Group(
+          const currentPersonIndex = this.findPositionInOriginalMatches(
             betterPerson,
             person,
+            'group1',
           );
           // betterPerson matchPosition
-          const matchPosition = this.findPositionInOriginalMatches1Group(
+          const matchPosition = this.findPositionInOriginalMatches(
             betterPerson,
             betterPerson.lastProposed,
+            'group1',
           );
 
           if (currentPersonIndex < matchPosition) {
