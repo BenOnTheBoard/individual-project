@@ -71,28 +71,21 @@ export abstract class MatchingAlgorithm {
     this.stable = false;
   }
 
+  createAgent(name: string, agentsMap: Map<String, Agent>): void {
+    agentsMap.set(name, { name, match: new Array(), ranking: new Array() });
+  }
+
   generateAgents() {
     for (let i = 0; i < this.numberOfAgents; i++) {
-      const group1AgentName = this.group1Name + (i + 1);
-
-      this.group1Agents.set(group1AgentName, {
-        name: group1AgentName,
-        match: new Array(),
-        ranking: new Array(),
-      });
-
-      this.freeAgentsOfGroup1.push(group1AgentName);
+      const name = this.group1Name + (i + 1);
+      this.createAgent(name, this.group1Agents);
+      this.freeAgentsOfGroup1.push(name);
     }
 
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
       const currentLetter = String.fromCharCode(65 + i);
-      const group2AgentName = this.group2Name + currentLetter;
-
-      this.group2Agents.set(group2AgentName, {
-        name: group2AgentName,
-        match: new Array(),
-        ranking: new Array(),
-      });
+      const name = this.group2Name + currentLetter;
+      this.createAgent(name, this.group2Agents);
     }
   }
 
