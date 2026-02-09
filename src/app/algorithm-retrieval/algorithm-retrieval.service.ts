@@ -6,11 +6,11 @@ import { GsStableMarriageService } from '../algorithms/algorithm-services/smp-ma
 import { StableRoomIrvService } from '../algorithms/algorithm-services/smp-room-irv/stable-room-irv.service';
 import { HrHospitalEgsService } from '../algorithms/algorithm-services/hr-hospital-egs/hr-hospital-egs.service';
 import { SpaStudentEgsService } from '../algorithms/algorithm-services/spa-stu-egs/spa-student-egs.service';
-import { spasStudentConfig } from './algorithm-configs/spas-student';
+import { spasStudentConfig } from './algorithm-configs/spas-student.config';
 import { srPersonConfig } from './algorithm-configs/sr-person.config';
 import { hrHospitalConfig } from './algorithm-configs/hr-hospital.config';
 import { hrResidentConfig } from './algorithm-configs/hr-resident.config';
-import { smManEGSConfig } from './algorithm-configs/sm-man-egs';
+import { smManEGSConfig } from './algorithm-configs/sm-man-egs.config';
 import { smManGSConfig } from './algorithm-configs/sm-man-gs.config';
 
 @Injectable({
