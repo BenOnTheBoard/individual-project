@@ -7,7 +7,7 @@ export const smtSuperManConfig = new AlgorithmBuilder()
   .equalGroups(true)
   .algorithm('Algorithm SUPER Irving 1994')
   .description(
-    "We extend SM to include the notion of indifference and pursue a super-stable matching between two equally sized sets of agents: <b>men</b> and <b>women</b>.<br>Here we demonstrate the algorithm presented in Irving's 1994 paper: Stable Marriage and Indifference.",
+    "We extend SM to include the notion of indifference and pursue a super-stable matching between two equally sized sets of agents: <b>men</b> and <b>women</b>.<br>Here we demonstrate the algorithm presented in Irving's 1994 paper. For the case with incomplete lists, see Manlove's 1999 Stable Marriage with Ties and Unacceptable Partners",
   )
   .code([
     'Set each person to be free',
