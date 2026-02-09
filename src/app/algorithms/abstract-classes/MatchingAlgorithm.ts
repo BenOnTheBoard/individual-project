@@ -149,11 +149,9 @@ export abstract class MatchingAlgorithm {
     for (const agent of Array.from(agents.values())) {
       const preferenceList = [];
       for (const match of agent.ranking) {
-        preferenceList.push(match.name.slice(match.name.length - 1));
+        preferenceList.push(this.utils.getLastChar(match.name));
       }
-
-      const identifier: string = agent.name.slice(agent.name.length - 1);
-
+      const identifier = this.utils.getLastChar(agent.name);
       matches.set(identifier, preferenceList);
     }
 
@@ -204,10 +202,10 @@ export abstract class MatchingAlgorithm {
 
   findPositionInOriginalMatches(currentAgent: Agent, agentToFind: Agent) {
     const originalPreferences = this.originalGroup1CurrentPreferences.get(
-      currentAgent.name[currentAgent.name.length - 1],
+      this.utils.getLastChar(currentAgent.name),
     );
     const position: number = originalPreferences.indexOf(
-      agentToFind.name[agentToFind.name.length - 1],
+      this.utils.getLastChar(agentToFind.name),
     );
     return position;
   }
@@ -224,10 +222,10 @@ export abstract class MatchingAlgorithm {
 
   findPositionInOriginalMatchesGroup2(currentAgent: Agent, agentToFind: Agent) {
     const originalPreferences = this.originalGroup2CurrentPreferences.get(
-      currentAgent.name[currentAgent.name.length - 1],
+      this.utils.getLastChar(currentAgent.name),
     );
     const position: number = originalPreferences.indexOf(
-      agentToFind.name[agentToFind.name.length - 1],
+      this.utils.getLastChar(agentToFind.name),
     );
     return position;
   }
