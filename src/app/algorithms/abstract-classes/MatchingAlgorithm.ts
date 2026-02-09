@@ -197,31 +197,31 @@ export abstract class MatchingAlgorithm {
     preferenceList.get(person)[position] = `{${colour}${currentAgent}}`;
   }
 
+  isBlockingPair(currentAgent: Agent, targetAgent: Agent): boolean {
+    const matchRank = this.findPositionInOriginalMatches(
+      targetAgent,
+      targetAgent.match[0],
+      'group1',
+    );
+    const curRank = this.findPositionInOriginalMatches(
+      targetAgent,
+      currentAgent,
+      'group1',
+    );
+    return curRank < matchRank;
+  }
+
   checkStability(allMatches: Map<String, Array<String>>): boolean {
-    for (const agent of allMatches.keys()) {
-      const agentMatches = allMatches.get(agent);
+    for (const g2Name of allMatches.keys()) {
+      const agentMatches = allMatches.get(g2Name);
+      if (agentMatches.length == 0) continue;
 
-      if (agentMatches.length > 0) {
-        const lastAgentPosition = this.getLastMatch(agent, agentMatches);
-        const agentPreferences = this.group2Agents.get(agent).ranking;
+      const lastAgentPosition = this.getLastMatch(g2Name, agentMatches);
+      const g2Agent = this.group2Agents.get(g2Name);
 
-        for (let i = lastAgentPosition - 1; i >= 0; i--) {
-          if (!agentMatches.includes(agentPreferences[i].name)) {
-            const matchPosition = this.findPositionInOriginalMatches(
-              agentPreferences[i],
-              agentPreferences[i].match[0],
-              'group1',
-            );
-            const currentAgentPosition = this.findPositionInOriginalMatches(
-              agentPreferences[i],
-              this.group2Agents.get(agent),
-              'group1',
-            );
-            if (currentAgentPosition < matchPosition) {
-              return false;
-            }
-          }
-        }
+      for (const g1Agent of g2Agent.ranking.slice(0, lastAgentPosition)) {
+        if (agentMatches.includes(g1Agent.name)) continue;
+        if (this.isBlockingPair(g1Agent, g2Agent)) return false;
       }
     }
     return true;
