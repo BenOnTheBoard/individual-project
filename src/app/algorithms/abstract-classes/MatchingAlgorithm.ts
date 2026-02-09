@@ -106,15 +106,12 @@ export abstract class MatchingAlgorithm {
   }
 
   getGroupRankings(agents: Map<String, Agent>): Map<String, Array<String>> {
-    const matches: Map<String, Array<String>> = new Map();
-
-    for (const agent of Array.from(agents.values())) {
-      matches.set(
+    return new Map(
+      Array.from(agents.values()).map((agent) => [
         this.utils.getLastChar(agent.name),
-        agent.ranking.map((match) => this.utils.getLastChar(match.name)),
-      );
-    }
-    return matches;
+        agent.ranking.map((m) => this.utils.getLastChar(m.name)),
+      ]),
+    );
   }
 
   saveStep(step: number, stepVariables?: Object): void {
@@ -134,25 +131,17 @@ export abstract class MatchingAlgorithm {
   }
 
   getMatches(): Map<String, Array<String>> {
-    const matches: Map<String, Array<String>> = new Map();
-
-    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
-      const agentName = this.group2Name + String.fromCharCode(65 + i);
-      const agent = this.group2Agents.get(agentName);
-      const matchList: Array<String> = new Array();
-
-      for (const match of agent.match) {
-        matchList.push(match.name);
-      }
-      matches.set(agent.name, matchList);
-    }
-
-    return matches;
+    return new Map(
+      Array.from(this.group2Agents.values()).map((agent) => [
+        agent.name,
+        agent.match.map((m) => m.name),
+      ]),
+    );
   }
 
   findPositionInRanking(currentAgent: Agent, agentToFind: Agent): number {
     return currentAgent.ranking.findIndex(
-      (agent: { name: string }) => agent.name == agentToFind.name,
+      (agent) => agent.name == agentToFind.name,
     );
   }
 
