@@ -89,20 +89,20 @@ export abstract class MatchingAlgorithm {
     }
   }
 
-  // generates rankings for all agents
-  // changes agent.ranking
-  generatePreferences(): void {
-    for (const agent of Array.from(this.group1Agents.values())) {
-      const agent1Rankings = Array.from(this.group2Agents.values());
-      this.utils.shuffle(agent1Rankings);
-      this.group1Agents.get(agent.name).ranking = agent1Rankings;
+  shuffleGroupRankings(
+    rankers: Map<String, Agent>,
+    targets: Map<String, Agent>,
+  ): void {
+    for (const agent of Array.from(rankers.values())) {
+      const shuffledTargets = Array.from(targets.values());
+      this.utils.shuffle(shuffledTargets);
+      agent.ranking = shuffledTargets;
     }
+  }
 
-    for (const agent of Array.from(this.group2Agents.values())) {
-      const agent2Rankings = Array.from(this.group1Agents.values());
-      this.utils.shuffle(agent2Rankings);
-      this.group2Agents.get(agent.name).ranking = agent2Rankings;
-    }
+  generatePreferences(): void {
+    this.shuffleGroupRankings(this.group1Agents, this.group2Agents);
+    this.shuffleGroupRankings(this.group2Agents, this.group1Agents);
   }
 
   populatePreferences(preferences: Map<String, Array<String>>): void {
