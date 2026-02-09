@@ -15,7 +15,6 @@ export class ExecutionService {
     algorithm: string,
     numberOfAgents: number,
     numberOfGroup2Agents: number = numberOfAgents,
-    preferences: Map<String, Array<String>>,
     SRstable: boolean = true,
   ): Object {
     const { service, helpTextMap } = this.algRetriever.getAlgorithm(algorithm);
@@ -23,7 +22,6 @@ export class ExecutionService {
     this.#commandList = service.run(
       numberOfAgents,
       numberOfGroup2Agents,
-      preferences,
       SRstable,
     );
 

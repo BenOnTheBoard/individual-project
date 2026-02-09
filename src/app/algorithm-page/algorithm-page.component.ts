@@ -89,7 +89,6 @@ export class AlgorithmPageComponent implements OnInit {
         currentAlgorithm.id,
         numberOfGroup1Agents,
         numberOfGroup2Agents,
-        null,
         this.SRstable,
       );
     } else {

@@ -105,32 +105,6 @@ export abstract class MatchingAlgorithm {
     this.shuffleGroupRankings(this.group2Agents, this.group1Agents);
   }
 
-  populatePreferences(preferences: Map<String, Array<String>>): void {
-    for (const agent of Array.from(this.group1Agents.keys())) {
-      const tempCopyList: Array<Agent> = [];
-      for (const preferenceAgent of preferences.get(
-        this.utils.getLastChar(String(agent)),
-      )) {
-        tempCopyList.push(
-          this.group2Agents.get(this.group2Name + preferenceAgent),
-        );
-      }
-      this.group1Agents.get(agent).ranking = tempCopyList;
-    }
-
-    for (const agent of Array.from(this.group2Agents.keys())) {
-      const tempCopyList: Array<Agent> = [];
-      for (const preferenceAgent of preferences.get(
-        this.utils.getLastChar(String(agent)),
-      )) {
-        tempCopyList.push(
-          this.group1Agents.get(this.group1Name + preferenceAgent),
-        );
-      }
-      this.group2Agents.get(agent).ranking = tempCopyList;
-    }
-  }
-
   getGroupRankings(agents: Map<String, Agent>): Map<String, Array<String>> {
     const matches: Map<String, Array<String>> = new Map();
 
@@ -286,7 +260,6 @@ export abstract class MatchingAlgorithm {
   run(
     numberOfAgents: number,
     numberOfGroup2Agents: number = numberOfAgents,
-    preferences: Map<String, Array<String>>,
     SRstable: boolean = true,
   ): AlgorithmData {
     if (numberOfGroup2Agents == numberOfAgents) {
@@ -298,12 +271,7 @@ export abstract class MatchingAlgorithm {
     this.SRstable = SRstable;
 
     this.generateAgents();
-
-    if (preferences) {
-      this.populatePreferences(preferences);
-    } else {
-      this.generatePreferences();
-    }
+    this.generatePreferences();
 
     this.group1CurrentPreferences = this.getGroupRankings(this.group1Agents);
     this.originalPrefsGroup1 = this.getGroupRankings(this.group1Agents);

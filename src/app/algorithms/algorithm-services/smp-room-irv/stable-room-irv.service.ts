@@ -238,7 +238,6 @@ export class StableRoomIrvService extends StableRoomMates {
             this.run(
               this.numberOfAgents,
               this.numberOfGroup2Agents,
-              null,
               this.SRstable,
             );
           }
@@ -497,7 +496,6 @@ export class StableRoomIrvService extends StableRoomMates {
             this.run(
               this.numberOfAgents,
               this.numberOfGroup2Agents,
-              null,
               this.SRstable,
             );
           }

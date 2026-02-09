@@ -46,7 +46,6 @@ export class PlaybackService {
     algorithm: string,
     numberOfAgents: number,
     numberOfGroup2Agents: number = numberOfAgents,
-    preferences: Map<String, Array<String>> = null,
     SRstable: boolean = true,
   ): void {
     this.initialise();
@@ -54,7 +53,6 @@ export class PlaybackService {
       algorithm,
       numberOfAgents,
       numberOfGroup2Agents,
-      preferences,
       SRstable,
     );
     this.commandList = this.algorithmData['commands'];

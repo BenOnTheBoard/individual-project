@@ -1,6 +1,5 @@
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
-import { Agent } from '../interfaces/Agent';
 import { Student } from '../interfaces/Student';
 import { Project } from '../interfaces/Project';
 import { Lecturer } from '../interfaces/Lecturer';
@@ -56,35 +55,6 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
       count++;
     }
     this.algorithmSpecificData['lecturerProjects'] = projectLists;
-  }
-
-  populatePreferences(preferences: Map<String, Array<String>>): void {
-    this.generatePreferences();
-
-    let tempCopyList: Array<Agent>;
-
-    for (const agent of Array.from(this.group1Agents.keys())) {
-      tempCopyList = [];
-      for (const preferenceAgent of preferences.get(
-        this.utils.getLastChar(String(agent)),
-      )) {
-        tempCopyList.push(
-          this.group2Agents.get(this.group2Name + preferenceAgent),
-        );
-      }
-      this.group1Agents.get(agent).ranking = tempCopyList;
-    }
-  }
-
-  printRanking(group) {
-    for (const agent of group.values()) {
-      const names = [];
-      if (agent.ranking) {
-        for (const agentInner of agent.ranking) {
-          names.push(agentInner.name);
-        }
-      }
-    }
   }
 
   abstract match(): AlgorithmData;
