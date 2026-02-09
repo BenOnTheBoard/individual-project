@@ -109,14 +109,11 @@ export abstract class MatchingAlgorithm {
     const matches: Map<String, Array<String>> = new Map();
 
     for (const agent of Array.from(agents.values())) {
-      const preferenceList = [];
-      for (const match of agent.ranking) {
-        preferenceList.push(this.utils.getLastChar(match.name));
-      }
-      const identifier = this.utils.getLastChar(agent.name);
-      matches.set(identifier, preferenceList);
+      matches.set(
+        this.utils.getLastChar(agent.name),
+        agent.ranking.map((match) => this.utils.getLastChar(match.name)),
+      );
     }
-
     return matches;
   }
 
@@ -262,22 +259,20 @@ export abstract class MatchingAlgorithm {
     numberOfGroup2Agents: number = numberOfAgents,
     SRstable: boolean = true,
   ): AlgorithmData {
-    if (numberOfGroup2Agents == numberOfAgents) {
-      this.initialise(numberOfAgents);
-    } else {
-      this.initialise(numberOfAgents, numberOfGroup2Agents);
-    }
-
-    this.SRstable = SRstable;
-
+    this.initialise(numberOfAgents, numberOfGroup2Agents);
     this.generateAgents();
     this.generatePreferences();
+    this.SRstable = SRstable;
 
     this.group1CurrentPreferences = this.getGroupRankings(this.group1Agents);
-    this.originalPrefsGroup1 = this.getGroupRankings(this.group1Agents);
+    this.originalPrefsGroup1 = this.utils.cloneMap(
+      this.group1CurrentPreferences,
+    );
 
     this.group2CurrentPreferences = this.getGroupRankings(this.group2Agents);
-    this.originalPrefsGroup2 = this.getGroupRankings(this.group2Agents);
+    this.originalPrefsGroup2 = this.utils.cloneMap(
+      this.group2CurrentPreferences,
+    );
 
     this.match();
 
