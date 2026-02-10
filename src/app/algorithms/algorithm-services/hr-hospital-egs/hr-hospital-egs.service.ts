@@ -15,7 +15,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
   hospitalCapacity: Map<string, number> = new Map();
 
-  freeAgentsOfGroup2: Array<String> = new Array();
+  freeAgentsOfGroup2: Array<Agent> = new Array();
 
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
@@ -34,15 +34,15 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       const group2AgentName = this.group2Name + currentLetter;
 
       const availableSpaces = this.getRandomInt(1, this.numberOfAgents - 2);
-
-      this.group2Agents.set(group2AgentName, {
+      const agent = {
         name: group2AgentName,
         match: new Array(),
         ranking: new Array(),
         availableSpaces,
-      });
+      };
 
-      this.freeAgentsOfGroup2.push(group2AgentName);
+      this.group2Agents.set(group2AgentName, agent);
+      this.freeAgentsOfGroup2.push(agent);
       this.hospitalCapacity[currentLetter] = availableSpaces;
     }
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
@@ -316,7 +316,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     // h's list contains a a RESIDENT r not assigned to h
     while (this.freeAgentsOfGroup2.length > 0) {
       // get first hospital on list
-      const currentHospital = this.group2Agents.get(this.freeAgentsOfGroup2[0]);
+      const currentHospital = this.freeAgentsOfGroup2[0] as Hospital;
 
       // "While some hospital h is - undersubscibed,
       // and has a resident r on h's preferance list that is no assigned to h",
