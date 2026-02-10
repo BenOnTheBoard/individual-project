@@ -19,14 +19,13 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const group1AgentName = this.group1Name + i;
-
-      this.group1Agents.set(group1AgentName, {
+      const agent = {
         name: group1AgentName,
         match: new Array(),
         ranking: new Array(),
-      });
-
-      this.freeAgents.push(group1AgentName);
+      };
+      this.group1Agents.set(group1AgentName, agent);
+      this.freeAgents.push(agent);
     }
 
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
@@ -105,7 +104,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
       'grey',
     );
 
-    this.freeAgents.push(worstResident.name);
+    this.freeAgents.push(worstResident);
 
     hospital.match.splice(
       hospital.match.findIndex(

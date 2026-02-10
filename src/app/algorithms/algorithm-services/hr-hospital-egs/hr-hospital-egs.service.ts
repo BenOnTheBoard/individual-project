@@ -20,14 +20,13 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const group1AgentName = this.group1Name + i;
-
-      this.group1Agents.set(group1AgentName, {
+      const agent: Agent = {
         name: group1AgentName,
         match: new Array(),
         ranking: new Array(),
-      });
-
-      this.freeAgents.push(group1AgentName);
+      };
+      this.group1Agents.set(group1AgentName, agent);
+      this.freeAgents.push(agent);
     }
 
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {

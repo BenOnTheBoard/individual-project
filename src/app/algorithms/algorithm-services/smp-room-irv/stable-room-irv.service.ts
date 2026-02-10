@@ -21,15 +21,14 @@ export class StableRoomIrvService extends StableRoomMates {
     // make each person
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const group1AgentName = this.group1Name + i;
-
-      this.group1Agents.set(group1AgentName, {
+      const agent = {
         name: group1AgentName,
         match: new Array(),
         ranking: new Array(),
         lastProposed: null,
-      });
-
-      this.freeAgents.push(group1AgentName);
+      };
+      this.group1Agents.set(group1AgentName, agent);
+      this.freeAgents.push(agent);
     }
 
     // we need these to call getMatches
@@ -117,7 +116,7 @@ export class StableRoomIrvService extends StableRoomMates {
           this.utils.getLastChar(person.name),
         );
         // add new free person to list
-        this.freeAgents.push(this.utils.getLastChar(person.name));
+        this.freeAgents.push(person);
         person.lastProposed = null;
       }
     }

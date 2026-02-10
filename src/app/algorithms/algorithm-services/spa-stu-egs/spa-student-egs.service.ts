@@ -29,14 +29,13 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const group1AgentName = this.group1Name + i;
-
-      this.group1Agents.set(group1AgentName, {
+      const agent = {
         name: group1AgentName,
         match: new Array(),
         ranking: new Array(),
-      });
-
-      this.freeAgents.push(group1AgentName);
+      };
+      this.group1Agents.set(group1AgentName, agent);
+      this.freeAgents.push(agent);
     }
 
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
@@ -382,10 +381,10 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
   // update all the free agents each iteration
   updateFreeList() {
-    const freeAgentsList = [];
+    const freeAgentsList: Array<Agent> = [];
     for (const student of this.group1Agents.values()) {
       if (student.match.length <= 0) {
-        freeAgentsList.push(student.name);
+        freeAgentsList.push(student);
       }
     }
     this.freeAgents = freeAgentsList;

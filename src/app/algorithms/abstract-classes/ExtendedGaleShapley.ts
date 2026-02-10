@@ -8,7 +8,8 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
     this.saveStep(1);
 
     while (this.freeAgents.length > 0) {
-      const currentAgent = this.group1Agents.get(this.freeAgents[0]);
+      const currentAgent = this.freeAgents[0];
+      this.freeAgents.shift();
 
       if (
         currentAgent.ranking.length > 0 &&
@@ -27,8 +28,6 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
         this.provisionallyAssign(currentAgent, proposee);
         this.removeRuledOutPreferences(currentAgent, proposee);
       }
-
-      this.freeAgents.shift();
     }
 
     this.currentlySelectedAgents = [];

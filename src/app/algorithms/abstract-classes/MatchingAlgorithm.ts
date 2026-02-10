@@ -12,7 +12,7 @@ export abstract class MatchingAlgorithm {
   numberOfAgents: number;
   numberOfGroup2Agents: number;
 
-  freeAgents: Array<String>;
+  freeAgents: Array<Agent>;
 
   group1Agents: Map<String, Agent> = new Map();
   group2Agents: Map<String, Agent> = new Map();
@@ -71,21 +71,23 @@ export abstract class MatchingAlgorithm {
     this.stable = false;
   }
 
-  createAgent(name: string, agentsMap: Map<String, Agent>): void {
-    agentsMap.set(name, { name, match: new Array(), ranking: new Array() });
+  createAgent(name: string): Agent {
+    return { name, match: new Array(), ranking: new Array() };
   }
 
   generateAgents() {
     for (let i = 0; i < this.numberOfAgents; i++) {
       const name = this.group1Name + (i + 1);
-      this.createAgent(name, this.group1Agents);
-      this.freeAgents.push(name);
+      const agent = this.createAgent(name);
+      this.group1Agents.set(name, agent);
+      this.freeAgents.push(agent);
     }
 
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
       const currentLetter = String.fromCharCode(65 + i);
       const name = this.group2Name + currentLetter;
-      this.createAgent(name, this.group2Agents);
+      const agent = this.createAgent(name);
+      this.group2Agents.set(name, agent);
     }
   }
 
@@ -117,7 +119,7 @@ export abstract class MatchingAlgorithm {
   saveStep(step: number, stepVariables?: Object): void {
     const currentStep = new StepBuilder()
       .lineNumber(step)
-      .freeAgents([...this.freeAgents])
+      .freeAgents(structuredClone(this.freeAgents))
       .matches(new Map())
       .stepVariables(stepVariables)
       .group1Prefs(structuredClone(this.currentPrefsGroup1))

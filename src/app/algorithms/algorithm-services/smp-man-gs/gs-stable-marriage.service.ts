@@ -16,15 +16,14 @@ export class GsStableMarriageService extends MatchingAlgorithm {
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const group1AgentName = this.group1Name + i;
-
-      this.group1Agents.set(group1AgentName, {
+      const agent = {
         name: group1AgentName,
         match: new Array(),
         ranking: new Array(),
         lastProposed: 0,
-      });
-
-      this.freeAgents.push(group1AgentName);
+      };
+      this.group1Agents.set(group1AgentName, agent);
+      this.freeAgents.push(agent);
     }
 
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
@@ -47,7 +46,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
       this.currentlySelectedAgents = [];
       this.relevantPreferences = [];
 
-      const man: Man = this.group1Agents.get(this.freeAgents[0]);
+      const man: Man = this.freeAgents[0] as Man;
       this.relevantPreferences.push(man.name.substring(3));
       this.currentlySelectedAgents.push(man.name.substring(3));
 
@@ -163,7 +162,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
 
           const match: string = woman.match[0].name;
 
-          this.freeAgents.push(match);
+          this.freeAgents.push(woman.match[0]);
           woman.match[0] = man;
 
           greenLine = [man.name.substring(3), woman.name.substring(5), 'green'];
