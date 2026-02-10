@@ -65,13 +65,13 @@ export class GsStableMarriageService extends MatchingAlgorithm {
       let greenLine = [];
 
       this.changePrefsStyle(
-        this.group2CurrentPreferences,
+        this.currentPrefsGroup2,
         woman.name.substring(5),
         this.getRank(woman, man),
         'red',
       );
       this.changePrefsStyle(
-        this.group1CurrentPreferences,
+        this.currentPrefsGroup1,
         man.name.substring(3),
         this.getRank(man, woman),
         'red',
@@ -90,13 +90,13 @@ export class GsStableMarriageService extends MatchingAlgorithm {
 
         // colour preferences (for when a partner is instantly selected)
         this.changePrefsStyle(
-          this.group2CurrentPreferences,
+          this.currentPrefsGroup2,
           woman.name.substring(5),
           this.getRank(woman, man),
           'green',
         );
         this.changePrefsStyle(
-          this.group1CurrentPreferences,
+          this.currentPrefsGroup1,
           man.name.substring(3),
           this.getRank(man, woman),
           'green',
@@ -116,7 +116,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
         });
         const manName = man.name;
         this.changePrefsStyle(
-          this.group2CurrentPreferences,
+          this.currentPrefsGroup2,
           woman.name.substring(5),
           this.getRank(woman, man),
           'red',
@@ -136,19 +136,19 @@ export class GsStableMarriageService extends MatchingAlgorithm {
           )
         ) {
           this.changePrefsStyle(
-            this.group2CurrentPreferences,
+            this.currentPrefsGroup2,
             woman.name.substring(5),
             this.getRank(woman, woman.match[0]),
             'grey',
           );
           this.changePrefsStyle(
-            this.group1CurrentPreferences,
+            this.currentPrefsGroup1,
             woman.match[0].name.substring(3),
             this.getRank(woman.match[0], woman),
             'grey',
           );
           this.changePrefsStyle(
-            this.group2CurrentPreferences,
+            this.currentPrefsGroup2,
             woman.name.substring(5),
             this.getRank(woman, man),
             'green',
@@ -170,7 +170,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
           this.currentLines.push(greenLine);
 
           this.changePrefsStyle(
-            this.group1CurrentPreferences,
+            this.currentPrefsGroup1,
             man.name.substring(3),
             this.getRank(man, woman),
             'green',
@@ -184,13 +184,13 @@ export class GsStableMarriageService extends MatchingAlgorithm {
           });
         } else {
           this.changePrefsStyle(
-            this.group1CurrentPreferences,
+            this.currentPrefsGroup1,
             man.name.substring(3),
             this.getRank(man, woman),
             'grey',
           );
           this.changePrefsStyle(
-            this.group2CurrentPreferences,
+            this.currentPrefsGroup2,
             woman.name.substring(5),
             this.getRank(woman, man),
             'grey',

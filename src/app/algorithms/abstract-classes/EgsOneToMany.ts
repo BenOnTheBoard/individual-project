@@ -34,7 +34,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     ]);
 
     this.changePrefsStyle(
-      this.group1CurrentPreferences,
+      this.currentPrefsGroup1,
       this.utils.getLastChar(potentialProposee.match[0].name),
       this.originalPrefsGroup1
         .get(this.utils.getLastChar(potentialProposee.match[0].name))
@@ -44,7 +44,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       'grey',
     );
     this.changePrefsStyle(
-      this.group2CurrentPreferences,
+      this.currentPrefsGroup2,
       this.utils.getLastChar(potentialProposee.name),
       matchPosition,
       'grey',
@@ -77,7 +77,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     this.currentLines.push(greenLine);
 
     this.changePrefsStyle(
-      this.group1CurrentPreferences,
+      this.currentPrefsGroup1,
       agentLastChar,
       this.originalPrefsGroup1
         .get(agentLastChar)
@@ -87,7 +87,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       'green',
     );
     this.changePrefsStyle(
-      this.group2CurrentPreferences,
+      this.currentPrefsGroup2,
       proposeeLastChar,
       this.getRank(potentialProposee, currentAgent),
       'green',
@@ -132,7 +132,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       });
 
       this.changePrefsStyle(
-        this.group1CurrentPreferences,
+        this.currentPrefsGroup1,
         this.utils.getLastChar(potentialProposee.ranking[i].name),
         this.originalPrefsGroup1
           .get(this.utils.getLastChar(potentialProposee.ranking[i].name))
@@ -143,7 +143,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       );
 
       this.changePrefsStyle(
-        this.group2CurrentPreferences,
+        this.currentPrefsGroup2,
         this.utils.getLastChar(potentialProposee.name),
         proposeeRankingClearCounter,
         'grey',

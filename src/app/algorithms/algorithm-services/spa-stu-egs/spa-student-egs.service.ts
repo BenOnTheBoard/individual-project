@@ -295,7 +295,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         lecturer.ranking[i].ranking.splice(projectIndex, 1);
 
         this.changePrefsStyle(
-          this.group1CurrentPreferences,
+          this.currentPrefsGroup1,
           this.utils.getLastChar(lecturer.ranking[i].name),
           this.originalPrefsGroup1
             .get(this.utils.getLastChar(lecturer.ranking[i].name))
@@ -335,7 +335,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
           lecturer.ranking[i].ranking.splice(projectIndex, 1);
 
           this.changePrefsStyle(
-            this.group1CurrentPreferences,
+            this.currentPrefsGroup1,
             this.utils.getLastChar(lecturer.ranking[i].name),
             this.originalPrefsGroup1
               .get(this.utils.getLastChar(lecturer.ranking[i].name))
@@ -450,7 +450,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
       // highlight assinged
       this.changePrefsStyle(
-        this.group1CurrentPreferences,
+        this.currentPrefsGroup1,
         this.utils.getLastChar(student.name),
         this.originalPrefsGroup1
           .get(this.utils.getLastChar(student.name))
@@ -563,7 +563,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
       // unhighlight assinged
       this.changePrefsStyle(
-        this.group1CurrentPreferences,
+        this.currentPrefsGroup1,
         this.utils.getLastChar(student.name),
         this.originalPrefsGroup1
           .get(this.utils.getLastChar(student.name))
@@ -580,7 +580,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       // if the student has a matching - should
       if (student.match.length == 1) {
         this.changePrefsStyle(
-          this.group1CurrentPreferences,
+          this.currentPrefsGroup1,
           this.utils.getLastChar(student.name),
           this.originalPrefsGroup1
             .get(this.utils.getLastChar(student.name))

@@ -135,7 +135,7 @@ export class StableRoomIrvService extends StableRoomMates {
 
     // grey out elms from visual lists
     this.changePrefsStyle(
-      this.group1CurrentPreferences,
+      this.currentPrefsGroup1,
       this.utils.getLastChar(agent1.name),
       this.originalPrefsGroup1
         .get(this.utils.getLastChar(agent1.name))
@@ -144,7 +144,7 @@ export class StableRoomIrvService extends StableRoomMates {
     );
 
     this.changePrefsStyle(
-      this.group1CurrentPreferences,
+      this.currentPrefsGroup1,
       this.utils.getLastChar(agent2.name),
       this.originalPrefsGroup1
         .get(this.utils.getLastChar(agent2.name))
@@ -248,7 +248,7 @@ export class StableRoomIrvService extends StableRoomMates {
         // change prevouis highlights back to black
         if (last_person != null) {
           this.changePrefsStyle(
-            this.group1CurrentPreferences,
+            this.currentPrefsGroup1,
             this.utils.getLastChar(last_person.name),
             last_pref,
             'black',
@@ -262,7 +262,7 @@ export class StableRoomIrvService extends StableRoomMates {
           .indexOf(this.utils.getLastChar(person.ranking[0].name))),
           //highlight pref in persons list
           this.changePrefsStyle(
-            this.group1CurrentPreferences,
+            this.currentPrefsGroup1,
             this.utils.getLastChar(person.name),
             this.originalPrefsGroup1
               .get(this.utils.getLastChar(person.name))
@@ -335,7 +335,7 @@ export class StableRoomIrvService extends StableRoomMates {
 
     // fix last highlights number
     this.changePrefsStyle(
-      this.group1CurrentPreferences,
+      this.currentPrefsGroup1,
       this.utils.getLastChar(last_person.name),
       last_pref,
       'black',
@@ -436,7 +436,7 @@ export class StableRoomIrvService extends StableRoomMates {
 
                 // update value in list
                 this.changePrefsStyle(
-                  this.group1CurrentPreferences,
+                  this.currentPrefsGroup1,
                   this.utils.getLastChar(person_inner.name),
                   this.originalPrefsGroup1
                     .get(this.utils.getLastChar(person_inner.name))
@@ -514,7 +514,7 @@ export class StableRoomIrvService extends StableRoomMates {
         if (person_inner.ranking.length == 1) {
           // update value in list
           this.changePrefsStyle(
-            this.group1CurrentPreferences,
+            this.currentPrefsGroup1,
             this.utils.getLastChar(person_inner.name),
             this.originalPrefsGroup1
               .get(this.utils.getLastChar(person_inner.name))

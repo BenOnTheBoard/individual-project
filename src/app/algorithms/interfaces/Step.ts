@@ -3,8 +3,8 @@ export interface Step {
   freeAgents: Array<String>;
   matches: Map<String, String>;
   stepVariables: Object;
-  group1CurrentPreferences: Map<String, Array<String>>;
-  group2CurrentPreferences: Map<String, Array<String>>;
+  currentPrefsGroup1: Map<String, Array<String>>;
+  currentPrefsGroup2: Map<String, Array<String>>;
   currentlySelectedAgents: Array<string>;
   currentLines: Array<Array<string>>;
   algorithmSpecificData: Object;
@@ -39,12 +39,12 @@ export class StepBuilder {
   }
 
   group1Prefs(prefs: Map<String, Array<String>>): this {
-    this.#step.group1CurrentPreferences = prefs;
+    this.#step.currentPrefsGroup1 = prefs;
     return this;
   }
 
   group2Prefs(prefs: Map<String, Array<String>>): this {
-    this.#step.group2CurrentPreferences = prefs;
+    this.#step.currentPrefsGroup2 = prefs;
     return this;
   }
 

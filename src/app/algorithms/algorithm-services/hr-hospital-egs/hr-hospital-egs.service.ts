@@ -92,7 +92,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     ]);
 
     this.changePrefsStyle(
-      this.group1CurrentPreferences,
+      this.currentPrefsGroup1,
       this.utils.getLastChar(resident.name),
       this.originalPrefsGroup1
         .get(this.utils.getLastChar(resident.name))
@@ -100,7 +100,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       'grey',
     );
     this.changePrefsStyle(
-      this.group2CurrentPreferences,
+      this.currentPrefsGroup2,
       this.utils.getLastChar(hospital.name),
       matchPosition_resident_original,
       'red',
@@ -118,7 +118,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     });
 
     this.changePrefsStyle(
-      this.group2CurrentPreferences,
+      this.currentPrefsGroup2,
       this.utils.getLastChar(hospital.name),
       matchPosition_resident_original,
       'grey',
@@ -156,7 +156,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     this.currentLines.push(greenLine);
 
     this.changePrefsStyle(
-      this.group1CurrentPreferences,
+      this.currentPrefsGroup1,
       agentLastChar,
       this.originalPrefsGroup1
         .get(agentLastChar)
@@ -165,7 +165,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     );
 
     this.changePrefsStyle(
-      this.group2CurrentPreferences,
+      this.currentPrefsGroup2,
       proposeeLastChar,
       this.originalPrefsGroup2
         .get(proposeeLastChar)
@@ -208,14 +208,14 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
           .findIndex((h) => h == this.utils.getLastChar(resident.name));
         //  grey out hos from res
         this.changePrefsStyle(
-          this.group1CurrentPreferences,
+          this.currentPrefsGroup1,
           this.utils.getLastChar(resident.name),
           i,
           'grey',
         );
         // grey out res from hos
         this.changePrefsStyle(
-          this.group2CurrentPreferences,
+          this.currentPrefsGroup2,
           this.utils.getLastChar(removedHospital.name),
           pos,
           'grey',
@@ -252,7 +252,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       );
 
       this.changePrefsStyle(
-        this.group1CurrentPreferences,
+        this.currentPrefsGroup1,
         this.utils.getLastChar(hospital.ranking[i].name),
         this.originalPrefsGroup1
           .get(this.utils.getLastChar(hospital.ranking[i].name))
@@ -260,7 +260,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
         'grey',
       );
       this.changePrefsStyle(
-        this.group2CurrentPreferences,
+        this.currentPrefsGroup2,
         this.utils.getLastChar(hospital.name),
         hospitalRankingClearCounter,
         'grey',

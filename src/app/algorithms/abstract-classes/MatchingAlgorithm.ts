@@ -29,8 +29,8 @@ export abstract class MatchingAlgorithm {
   originalPrefsGroup1: Map<String, Array<String>> = new Map();
   originalPrefsGroup2: Map<String, Array<String>> = new Map();
 
-  group1CurrentPreferences: Map<String, Array<String>> = new Map();
-  group2CurrentPreferences: Map<String, Array<String>> = new Map();
+  currentPrefsGroup1: Map<String, Array<String>> = new Map();
+  currentPrefsGroup2: Map<String, Array<String>> = new Map();
   currentlySelectedAgents: Array<string> = [];
   currentLines: Array<Array<string>> = [];
 
@@ -59,8 +59,8 @@ export abstract class MatchingAlgorithm {
 
     this.currentLine = [];
 
-    this.group1CurrentPreferences = new Map();
-    this.group2CurrentPreferences = new Map();
+    this.currentPrefsGroup1 = new Map();
+    this.currentPrefsGroup2 = new Map();
     this.currentlySelectedAgents = [];
     this.currentLines = [];
     this.algorithmSpecificData = {};
@@ -120,8 +120,8 @@ export abstract class MatchingAlgorithm {
       .freeAgents([...this.freeAgentsOfGroup1])
       .matches(new Map())
       .stepVariables(stepVariables)
-      .group1Prefs(structuredClone(this.group1CurrentPreferences))
-      .group2Prefs(structuredClone(this.group2CurrentPreferences))
+      .group1Prefs(structuredClone(this.currentPrefsGroup1))
+      .group2Prefs(structuredClone(this.currentPrefsGroup2))
       .selectedAgents(structuredClone(this.currentlySelectedAgents))
       .currentLines(structuredClone(this.currentLines))
       .algorithmData(structuredClone(this.algorithmSpecificData))
@@ -240,11 +240,11 @@ export abstract class MatchingAlgorithm {
     this.generatePrefs();
     this.SRstable = SRstable;
 
-    this.group1CurrentPreferences = this.getRankings(this.group1Agents);
-    this.originalPrefsGroup1 = structuredClone(this.group1CurrentPreferences);
+    this.currentPrefsGroup1 = this.getRankings(this.group1Agents);
+    this.originalPrefsGroup1 = structuredClone(this.currentPrefsGroup1);
 
-    this.group2CurrentPreferences = this.getRankings(this.group2Agents);
-    this.originalPrefsGroup2 = structuredClone(this.group2CurrentPreferences);
+    this.currentPrefsGroup2 = this.getRankings(this.group2Agents);
+    this.originalPrefsGroup2 = structuredClone(this.currentPrefsGroup2);
 
     this.match();
 
