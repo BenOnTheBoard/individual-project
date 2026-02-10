@@ -130,10 +130,10 @@ export abstract class MatchingAlgorithm {
     this.algorithmData.commands.push(currentStep);
   }
 
-  getMatches(): Map<String, Array<String>> {
+  getMatches(): Map<Agent, Array<String>> {
     return new Map(
       Array.from(this.group2Agents.values()).map((agent) => [
-        agent.name,
+        agent,
         agent.match.map((m) => m.name),
       ]),
     );
@@ -198,13 +198,12 @@ export abstract class MatchingAlgorithm {
     return curRank < matchRank;
   }
 
-  checkStability(allMatches: Map<String, Array<String>>): boolean {
-    for (const g2Name of allMatches.keys()) {
-      const agentMatches = allMatches.get(g2Name);
+  checkStability(allMatches: Map<Agent, Array<String>>): boolean {
+    for (const g2Agent of allMatches.keys()) {
+      const agentMatches = allMatches.get(g2Agent);
       if (agentMatches.length == 0) continue;
 
-      const lastAgentPosition = this.getLastMatch(g2Name, agentMatches);
-      const g2Agent = this.group2Agents.get(g2Name);
+      const lastAgentPosition = this.getLastMatch(g2Agent, agentMatches);
 
       for (const g1Agent of g2Agent.ranking.slice(0, lastAgentPosition)) {
         if (agentMatches.includes(g1Agent.name)) continue;
@@ -214,13 +213,11 @@ export abstract class MatchingAlgorithm {
     return true;
   }
 
-  getLastMatch(currentAgent: String, agentMatches: Array<String>): number {
+  getLastMatch(currentAgent: Agent, agentMatches: Array<String>): number {
     let furthestIndex = 0;
-    for (const matchAgent of agentMatches) {
-      const matchPosition = this.getRank(
-        this.group2Agents.get(currentAgent),
-        this.group1Agents.get(matchAgent),
-      );
+    for (const matchName of agentMatches) {
+      const matchAgent = this.group1Agents.get(matchName);
+      const matchPosition = this.getRank(currentAgent, matchAgent);
       if (matchPosition > furthestIndex) {
         furthestIndex = matchPosition;
       }

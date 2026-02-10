@@ -4,6 +4,7 @@ import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { Lecturer } from '../../interfaces/Lecturer';
 import { Project } from '../../interfaces/Project';
 import { Student } from '../../interfaces/Student';
+import { Agent } from '../../interfaces/Agent';
 
 const projectCapacity = 2;
 
@@ -83,7 +84,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  checkStability(allMatches: Map<String, Array<String>>): boolean {
+  checkStability(allMatches: Map<Agent, Array<String>>): boolean {
     for (const student of this.group1Agents.values()) {
       let studentMatchIndex = 0;
       studentMatchIndex =

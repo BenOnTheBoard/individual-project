@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { StableRoomMates } from '../../abstract-classes/StableRoomMates';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { Person } from '../../interfaces/Person';
+import { Agent } from '../../interfaces/Agent';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +47,7 @@ export class StableRoomIrvService extends StableRoomMates {
     this.algorithmSpecificData['SR'] = true;
   }
 
-  checkStability(allMatches: Map<String, Array<String>>): boolean {
+  checkStability(allMatches: Map<Agent, Array<String>>): boolean {
     for (const person of this.group1Agents.values()) {
       // if agent has matches
       if (person.lastProposed) {
