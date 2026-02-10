@@ -16,21 +16,16 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
       ) {
         this.saveStep(2, { '%currentAgent%': currentAgent.name });
 
-        // r := first such resident on h's list;
-        const potentialProposee: Agent =
-          this.getNextPotentialProposee(currentAgent);
+        const proposee = this.getNextPotentialProposee(currentAgent);
 
         this.saveStep(3, {
           '%currentAgent%': currentAgent.name,
-          '%potentialProposee%': potentialProposee.name,
+          '%potentialProposee%': proposee.name,
         });
 
-        // if h is fully subscribed, then break the assignment of the worst resident of that hospital
-        this.breakAssignment(currentAgent, potentialProposee);
-
-        this.provisionallyAssign(currentAgent, potentialProposee);
-
-        this.removeRuledOutPreferences(currentAgent, potentialProposee);
+        this.breakAssignment(currentAgent, proposee);
+        this.provisionallyAssign(currentAgent, proposee);
+        this.removeRuledOutPreferences(currentAgent, proposee);
       }
 
       this.freeAgents.shift();
@@ -38,9 +33,7 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
 
     this.currentlySelectedAgents = [];
     this.relevantPreferences = [];
-    // a stable matching has been found
     this.saveStep(12);
-
     return;
   }
 
