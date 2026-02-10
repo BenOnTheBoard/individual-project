@@ -152,12 +152,11 @@ export abstract class MatchingAlgorithm {
     agentToFind: Agent,
     group: 'group1' | 'group2',
   ) {
-    const prefs =
+    const originalPrefs =
       group == 'group1' ? this.originalPrefsGroup1 : this.originalPrefsGroup2;
     const currentChar = this.utils.getLastChar(currentAgent.name);
     const targetChar = this.utils.getLastChar(agentToFind.name);
-    const originalPrefs = prefs.get(currentChar);
-    return originalPrefs.indexOf(targetChar);
+    return originalPrefs.get(currentChar).indexOf(targetChar);
   }
 
   removeSubArray(
@@ -193,8 +192,8 @@ export abstract class MatchingAlgorithm {
 
   isBlockingPair(currentAgent: Agent, targetAgent: Agent): boolean {
     const match = targetAgent.match[0];
-    const matchRank = this.getOriginalRank(targetAgent, match, 'group1');
-    const curRank = this.getOriginalRank(targetAgent, currentAgent, 'group1');
+    const matchRank = this.getOriginalRank(targetAgent, match, 'group2');
+    const curRank = this.getOriginalRank(targetAgent, currentAgent, 'group2');
     return curRank < matchRank;
   }
 
