@@ -120,8 +120,8 @@ export abstract class MatchingAlgorithm {
       .freeAgents([...this.freeAgentsOfGroup1])
       .matches(new Map())
       .stepVariables(stepVariables)
-      .group1Prefs(this.utils.cloneMap(this.group1CurrentPreferences))
-      .group2Prefs(this.utils.cloneMap(this.group2CurrentPreferences))
+      .group1Prefs(structuredClone(this.group1CurrentPreferences))
+      .group2Prefs(structuredClone(this.group2CurrentPreferences))
       .selectedAgents(structuredClone(this.currentlySelectedAgents))
       .currentLines(structuredClone(this.currentLines))
       .algorithmData(structuredClone(this.algorithmSpecificData))
@@ -241,14 +241,10 @@ export abstract class MatchingAlgorithm {
     this.SRstable = SRstable;
 
     this.group1CurrentPreferences = this.getRankings(this.group1Agents);
-    this.originalPrefsGroup1 = this.utils.cloneMap(
-      this.group1CurrentPreferences,
-    );
+    this.originalPrefsGroup1 = structuredClone(this.group1CurrentPreferences);
 
     this.group2CurrentPreferences = this.getRankings(this.group2Agents);
-    this.originalPrefsGroup2 = this.utils.cloneMap(
-      this.group2CurrentPreferences,
-    );
+    this.originalPrefsGroup2 = structuredClone(this.group2CurrentPreferences);
 
     this.match();
 

@@ -27,16 +27,6 @@ export class UtilsService {
     }
   }
 
-  cloneMap<K, V>(mapIn: Map<K, Array<V>>): Map<K, Array<V>> {
-    const mapCloned = new Map<K, Array<V>>();
-
-    mapIn.forEach((value, key) => {
-      mapCloned.set(key, [...value]);
-    });
-
-    return mapCloned;
-  }
-
   cloneList<T>(list: Array<T>): Array<T> {
     return [...list];
   }
