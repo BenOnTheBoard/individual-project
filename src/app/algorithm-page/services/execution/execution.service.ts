@@ -16,7 +16,7 @@ export class ExecutionService {
     numberOfAgents: number,
     numberOfGroup2Agents: number = numberOfAgents,
     SRstable: boolean = true,
-  ): Object {
+  ): AlgorithmData {
     const { service, helpTextMap } = this.algRetriever.getAlgorithm(algorithm);
     this.#helpTextMap = helpTextMap;
     this.#commandList = service.run(

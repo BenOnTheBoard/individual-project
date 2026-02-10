@@ -2,14 +2,15 @@ import { inject, Injectable } from '@angular/core';
 import { ExecutionService } from '../execution/execution.service';
 import { CanvasService } from '../canvas/canvas.service';
 import { Step, StepBuilder } from 'src/app/algorithms/interfaces/Step';
+import { AlgorithmData } from 'src/app/algorithms/interfaces/AlgorithmData';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlaybackService {
   // algorithm data variables
-  public algorithmData: Object;
-  commandList: Array<Object>;
+  public algorithmData: AlgorithmData;
+  commandList: Array<Step>;
   currentCommand: Step;
 
   // playback variables
@@ -21,13 +22,13 @@ export class PlaybackService {
   pause: boolean = true;
   speed: number = 500;
 
-  description: string = 'Click play to run the program below!';
+  description: String = 'Click play to run the program below!';
 
   protected drawService = inject(CanvasService);
   protected exeService = inject(ExecutionService);
 
   initialise(): void {
-    this.algorithmData = {};
+    this.algorithmData = { commands: [], descriptions: [] };
     this.commandList = [];
     this.currentCommand = new StepBuilder().build();
   }
@@ -55,7 +56,7 @@ export class PlaybackService {
       numberOfGroup2Agents,
       SRstable,
     );
-    this.commandList = this.algorithmData['commands'];
+    this.commandList = this.algorithmData.commands;
     this.resetPlaybackData();
     this.numCommands = this.commandList.length - 1;
 
@@ -71,9 +72,9 @@ export class PlaybackService {
       this.previousStepCounter = this.stepCounter;
     }
 
-    this.currentCommand = this.algorithmData['commands'][this.stepCounter];
-    this.description = this.algorithmData['descriptions'][this.stepCounter];
-    this.currentLine = this.currentCommand['lineNumber'];
+    this.currentCommand = this.algorithmData.commands[this.stepCounter];
+    this.description = this.algorithmData.descriptions[this.stepCounter];
+    this.currentLine = this.currentCommand.lineNumber;
     this.drawService.redrawCanvas(this.currentCommand);
   }
 
