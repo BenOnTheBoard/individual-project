@@ -28,7 +28,7 @@ export class StableRoomIrvService extends StableRoomMates {
         lastProposed: null,
       });
 
-      this.freeAgentsOfGroup1.push(group1AgentName);
+      this.freeAgents.push(group1AgentName);
     }
 
     // we need these to call getMatches
@@ -116,7 +116,7 @@ export class StableRoomIrvService extends StableRoomMates {
           this.utils.getLastChar(person.name),
         );
         // add new free person to list
-        this.freeAgentsOfGroup1.push(this.utils.getLastChar(person.name));
+        this.freeAgents.push(this.utils.getLastChar(person.name));
         person.lastProposed = null;
       }
     }
@@ -286,7 +286,7 @@ export class StableRoomIrvService extends StableRoomMates {
         this.currentLines.push(redLine);
 
         // update free agents - remove first elm
-        this.freeAgentsOfGroup1.shift();
+        this.freeAgents.shift();
 
         //assign p to b
         this.saveStep(6, { '%person%': person.name, '%selected%': pref.name });

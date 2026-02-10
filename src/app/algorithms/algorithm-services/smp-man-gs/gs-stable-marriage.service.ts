@@ -24,7 +24,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
         lastProposed: 0,
       });
 
-      this.freeAgentsOfGroup1.push(group1AgentName);
+      this.freeAgents.push(group1AgentName);
     }
 
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
@@ -43,11 +43,11 @@ export class GsStableMarriageService extends MatchingAlgorithm {
     this.saveStep(1);
 
     // 2: while some man m is free do
-    while (this.freeAgentsOfGroup1.length > 0) {
+    while (this.freeAgents.length > 0) {
       this.currentlySelectedAgents = [];
       this.relevantPreferences = [];
 
-      const man: Man = this.group1Agents.get(this.freeAgentsOfGroup1[0]);
+      const man: Man = this.group1Agents.get(this.freeAgents[0]);
       this.relevantPreferences.push(man.name.substring(3));
       this.currentlySelectedAgents.push(man.name.substring(3));
 
@@ -86,7 +86,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
         woman.match.splice(0, 1);
         woman.match.push(man);
         man.match[0] = woman;
-        this.freeAgentsOfGroup1.shift();
+        this.freeAgents.shift();
 
         // colour preferences (for when a partner is instantly selected)
         this.changePrefsStyle(
@@ -163,7 +163,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
 
           const match: string = woman.match[0].name;
 
-          this.freeAgentsOfGroup1.push(match);
+          this.freeAgents.push(match);
           woman.match[0] = man;
 
           greenLine = [man.name.substring(3), woman.name.substring(5), 'green'];
@@ -176,7 +176,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
             'green',
           );
 
-          this.freeAgentsOfGroup1.shift();
+          this.freeAgents.shift();
           this.saveStep(8, {
             '%woman%': woman.name,
             '%man%': man.name,

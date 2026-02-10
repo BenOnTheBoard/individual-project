@@ -27,7 +27,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
         ranking: new Array(),
       });
 
-      this.freeAgentsOfGroup1.push(group1AgentName);
+      this.freeAgents.push(group1AgentName);
     }
 
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
@@ -358,7 +358,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
         // continous loop as guessed + not clear way to define/get free hospitals
         // rankings should be deleted until convergence?
 
-        this.freeAgentsOfGroup1.shift();
+        this.freeAgents.shift();
       }
     }
 

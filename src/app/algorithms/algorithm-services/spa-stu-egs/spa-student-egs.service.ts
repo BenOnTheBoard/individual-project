@@ -35,7 +35,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         ranking: new Array(),
       });
 
-      this.freeAgentsOfGroup1.push(group1AgentName);
+      this.freeAgents.push(group1AgentName);
     }
 
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
@@ -387,7 +387,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         freeAgentsList.push(student.name);
       }
     }
-    this.freeAgentsOfGroup1 = freeAgentsList;
+    this.freeAgents = freeAgentsList;
     this.updateLecturerPreferances();
   }
 

@@ -21,10 +21,10 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       potentialProposee.match[0].ranking.filter(
         (agent) => agent.match[0] != currentAgent,
       ).length > 0 &&
-      !this.freeAgentsOfGroup1.includes(potentialProposee.match[0].name) &&
+      !this.freeAgents.includes(potentialProposee.match[0].name) &&
       potentialProposee.match[0].ranking.length > 0
     ) {
-      this.freeAgentsOfGroup1.push(potentialProposee.match[0].name);
+      this.freeAgents.push(potentialProposee.match[0].name);
     }
 
     this.currentLines = this.removeSubArray(this.currentLines, [
