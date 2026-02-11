@@ -182,8 +182,8 @@ export abstract class MatchingAlgorithm {
 
   isBlockingPair(currentAgent: Agent, targetAgent: Agent): boolean {
     const match = targetAgent.match[0];
-    const matchRank = this.getOriginalRank(targetAgent, match, 'group2');
-    const curRank = this.getOriginalRank(targetAgent, currentAgent, 'group2');
+    const matchRank = this.getOriginalRank(targetAgent, match, 'group1');
+    const curRank = this.getOriginalRank(targetAgent, currentAgent, 'group1');
     return curRank < matchRank;
   }
 
@@ -196,7 +196,7 @@ export abstract class MatchingAlgorithm {
 
       for (const g1Agent of g2Agent.ranking.slice(0, lastAgentPosition)) {
         if (agentMatches.includes(g1Agent.name)) continue;
-        if (this.isBlockingPair(g1Agent, g2Agent)) return false;
+        if (this.isBlockingPair(g2Agent, g1Agent)) return false;
       }
     }
     return true;
