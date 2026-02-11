@@ -295,8 +295,8 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         lecturer.ranking[i].ranking.splice(projectIndex, 1);
 
         this.changePrefsStyle(
-          this.currentPrefsGroup1,
-          this.utils.getLastChar(lecturer.ranking[i].name),
+          'group1',
+          lecturer.ranking[i],
           this.originalPrefsGroup1
             .get(this.utils.getLastChar(lecturer.ranking[i].name))
             .indexOf(this.utils.getLastChar(project.name)),
@@ -335,8 +335,8 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
           lecturer.ranking[i].ranking.splice(projectIndex, 1);
 
           this.changePrefsStyle(
-            this.currentPrefsGroup1,
-            this.utils.getLastChar(lecturer.ranking[i].name),
+            'group1',
+            lecturer.ranking[i],
             this.originalPrefsGroup1
               .get(this.utils.getLastChar(lecturer.ranking[i].name))
               .indexOf(this.utils.getLastChar(projectObject.name)),
@@ -450,8 +450,8 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
       // highlight assinged
       this.changePrefsStyle(
-        this.currentPrefsGroup1,
-        this.utils.getLastChar(student.name),
+        'group1',
+        student,
         this.originalPrefsGroup1
           .get(this.utils.getLastChar(student.name))
           .indexOf(this.utils.getLastChar(preferedProject.name)),
@@ -563,8 +563,8 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
       // unhighlight assinged
       this.changePrefsStyle(
-        this.currentPrefsGroup1,
-        this.utils.getLastChar(student.name),
+        'group1',
+        student,
         this.originalPrefsGroup1
           .get(this.utils.getLastChar(student.name))
           .indexOf(this.utils.getLastChar(preferedProject.name)),
@@ -580,8 +580,8 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       // if the student has a matching - should
       if (student.match.length == 1) {
         this.changePrefsStyle(
-          this.currentPrefsGroup1,
-          this.utils.getLastChar(student.name),
+          'group1',
+          student,
           this.originalPrefsGroup1
             .get(this.utils.getLastChar(student.name))
             .indexOf(this.utils.getLastChar(student.match[0].name)),

@@ -165,19 +165,22 @@ export abstract class MatchingAlgorithm {
   }
 
   changePrefsStyle(
-    preferenceList: Map<String, Array<String>>,
-    person: string,
+    group: 'group1' | 'group2',
+    agent: Agent,
     position: number,
-    newColour: string,
+    colour: string,
   ) {
-    const prefs = preferenceList.get(person);
+    const prefLists =
+      group == 'group1' ? this.currentPrefsGroup1 : this.currentPrefsGroup2;
+    const agentChar = this.utils.getLastChar(agent.name);
+    const prefs = prefLists.get(agentChar);
     const currentToken = prefs[position];
     const nameIdx = currentToken.includes('#')
       ? currentToken.length - 2 // there's an extra closing bracket
       : currentToken.length - 1;
     const currentAgent = currentToken.charAt(nameIdx);
-    const colour = this.colourHexService.getHex(newColour);
-    prefs[position] = `{${colour}${currentAgent}}`;
+    const colourHex = this.colourHexService.getHex(colour);
+    prefs[position] = `{${colourHex}${currentAgent}}`;
   }
 
   isBlockingPair(currentAgent: Agent, targetAgent: Agent): boolean {

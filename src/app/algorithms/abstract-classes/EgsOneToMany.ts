@@ -31,19 +31,14 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     ]);
 
     this.changePrefsStyle(
-      this.currentPrefsGroup1,
-      this.utils.getLastChar(proposee.match[0].name),
+      'group1',
+      proposee.match[0],
       this.originalPrefsGroup1
         .get(this.utils.getLastChar(proposee.match[0].name))
         .findIndex((woman) => woman == this.utils.getLastChar(proposee.name)),
       'grey',
     );
-    this.changePrefsStyle(
-      this.currentPrefsGroup2,
-      this.utils.getLastChar(proposee.name),
-      matchPosition,
-      'grey',
-    );
+    this.changePrefsStyle('group2', proposee, matchPosition, 'grey');
 
     this.saveStep(5, {
       '%woman%': proposee.name,
@@ -72,16 +67,16 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     this.currentLines.push(greenLine);
 
     this.changePrefsStyle(
-      this.currentPrefsGroup1,
-      agentLastChar,
+      'group1',
+      currentAgent,
       this.originalPrefsGroup1
         .get(agentLastChar)
         .findIndex((woman) => woman == this.utils.getLastChar(proposee.name)),
       'green',
     );
     this.changePrefsStyle(
-      this.currentPrefsGroup2,
-      proposeeLastChar,
+      'group2',
+      proposee,
       this.getRank(proposee, currentAgent),
       'green',
     );
@@ -119,8 +114,8 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       });
 
       this.changePrefsStyle(
-        this.currentPrefsGroup1,
-        this.utils.getLastChar(proposee.ranking[i].name),
+        'group1',
+        proposee.ranking[i],
         this.originalPrefsGroup1
           .get(this.utils.getLastChar(proposee.ranking[i].name))
           .findIndex((woman) => woman == this.utils.getLastChar(proposee.name)),
@@ -128,8 +123,8 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       );
 
       this.changePrefsStyle(
-        this.currentPrefsGroup2,
-        this.utils.getLastChar(proposee.name),
+        'group2',
+        proposee,
         proposeeRankingClearCounter,
         'grey',
       );
