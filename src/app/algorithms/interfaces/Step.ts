@@ -7,7 +7,7 @@ export interface Step {
   stepVariables: Object;
   currentPrefsGroup1: Map<String, Array<String>>;
   currentPrefsGroup2: Map<String, Array<String>>;
-  currentlySelectedAgents: Array<string>;
+  selectedAgents: Array<string>;
   currentLines: Array<Array<string>>;
   algorithmSpecificData: Object;
   relevantPrefs: Array<string>;
@@ -51,7 +51,7 @@ export class StepBuilder {
   }
 
   selectedAgents(agents: Array<string>): this {
-    this.#step.currentlySelectedAgents = agents;
+    this.#step.selectedAgents = agents;
     return this;
   }
 

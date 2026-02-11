@@ -215,7 +215,7 @@ export class StableRoomIrvService extends StableRoomMates {
     let last_pref = null;
 
     while (free_agents.size > 0) {
-      this.currentlySelectedAgents = [];
+      this.selectedAgents = [];
       this.relevantPrefs = [];
 
       let redLine = ['1', 'B', 'red'];

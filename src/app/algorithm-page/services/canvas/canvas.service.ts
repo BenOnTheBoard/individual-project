@@ -78,9 +78,7 @@ export class CanvasService {
     } else {
       this.#arrangeBipartiteAgents();
     }
-    this.agentRenderer.selectCircles(
-      this.currentCommand.currentlySelectedAgents,
-    );
+    this.agentRenderer.selectCircles(this.currentCommand.selectedAgents);
   }
 
   #arrangePrefs(isSR: boolean): void {

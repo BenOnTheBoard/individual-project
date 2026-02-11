@@ -29,7 +29,7 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
       }
     }
 
-    this.currentlySelectedAgents = [];
+    this.selectedAgents = [];
     this.relevantPrefs = [];
     this.saveStep(12);
     return;

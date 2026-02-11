@@ -19,7 +19,7 @@ export abstract class MatchingAlgorithm {
   protected currentPrefsGroup1: Map<String, Array<String>> = new Map();
   protected currentPrefsGroup2: Map<String, Array<String>> = new Map();
 
-  protected currentlySelectedAgents: Array<string> = [];
+  protected selectedAgents: Array<string> = [];
   protected currentLines: Array<Array<string>> = [];
   protected algorithmSpecificData: Object = {};
   protected relevantPrefs: Array<string> = [];
@@ -48,7 +48,7 @@ export abstract class MatchingAlgorithm {
     this.currentPrefsGroup1 = new Map();
     this.currentPrefsGroup2 = new Map();
 
-    this.currentlySelectedAgents = [];
+    this.selectedAgents = [];
     this.currentLines = [];
     this.algorithmSpecificData = {};
     this.relevantPrefs = [];
@@ -114,7 +114,7 @@ export abstract class MatchingAlgorithm {
       .stepVariables(stepVariables)
       .group1Prefs(structuredClone(this.currentPrefsGroup1))
       .group2Prefs(structuredClone(this.currentPrefsGroup2))
-      .selectedAgents(structuredClone(this.currentlySelectedAgents))
+      .selectedAgents(structuredClone(this.selectedAgents))
       .currentLines(structuredClone(this.currentLines))
       .algorithmData(structuredClone(this.algorithmSpecificData))
       .relevantPrefs(structuredClone(this.relevantPrefs))
