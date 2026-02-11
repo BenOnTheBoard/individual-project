@@ -174,7 +174,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     hospital.match.push(resident);
   }
 
-  removeRuledOutPreferences(resident: Agent, hospital: Hospital): void {
+  removeRuledOutPrefs(resident: Agent, hospital: Hospital): void {
     this.saveStep(8, {
       '%resident%': resident.name,
       '%hospital%': hospital.name,
@@ -198,9 +198,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
         hospital.ranking[i],
         hospital,
       );
-      this.relevantPreferences.push(
-        this.utils.getLastChar(hospital.ranking[i].name),
-      );
+      this.relevantPrefs.push(this.utils.getLastChar(hospital.ranking[i].name));
 
       this.saveStep(10, {
         '%hospital%': hospital.name,
@@ -235,7 +233,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
 
       hospitalRankingClearCounter++;
 
-      this.relevantPreferences.pop();
+      this.relevantPrefs.pop();
     }
   }
 }

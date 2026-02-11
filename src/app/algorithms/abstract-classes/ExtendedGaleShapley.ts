@@ -25,12 +25,12 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
 
         this.breakAssignment(currentAgent, proposee);
         this.provisionallyAssign(currentAgent, proposee);
-        this.removeRuledOutPreferences(currentAgent, proposee);
+        this.removeRuledOutPrefs(currentAgent, proposee);
       }
     }
 
     this.currentlySelectedAgents = [];
-    this.relevantPreferences = [];
+    this.relevantPrefs = [];
     this.saveStep(12);
     return;
   }
@@ -39,10 +39,7 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
 
   abstract provisionallyAssign(currentAgent: Agent, proposee: Agent): void;
 
-  abstract removeRuledOutPreferences(
-    currentAgent: Agent,
-    proposee: Agent,
-  ): void;
+  abstract removeRuledOutPrefs(currentAgent: Agent, proposee: Agent): void;
 
   abstract breakAssignment(currentAgent: Agent, proposee: Agent): void;
 }

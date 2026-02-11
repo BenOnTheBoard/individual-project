@@ -96,7 +96,7 @@ export class PreferenceRendererService {
     }
   }
 
-  public drawBipartitePreferences(): void {
+  public drawBipartitePrefs(): void {
     this.textRenderer.setFontSize(this.#prefFontSize);
     const lhsCount = this.algRetriever.numberOfGroup1Agents;
     const rhsCount = this.algRetriever.numberOfGroup2Agents;
@@ -109,7 +109,7 @@ export class PreferenceRendererService {
     );
   }
 
-  public drawSRPreferences(): void {
+  public drawSRPrefs(): void {
     // Given agents arranged clockwise from 6 o'clock
     // the first half should have their preferences on their left
     // and the second should have their preferences on their right
@@ -126,9 +126,9 @@ export class PreferenceRendererService {
     );
   }
 
-  public drawRelevantPreferences(): void {
+  public drawRelevantPrefs(): void {
     this.textRenderer.setFontSize(this.#prefFontSize);
-    const relevantPrefs = this.#cmd.relevantPreferences;
+    const relevantPrefs = this.#cmd.relevantPrefs;
     const lhsAgents = relevantPrefs.filter((a) => !/[A-Z]/i.test(a));
     const rhsAgents = relevantPrefs.filter((a) => /[A-Z]/i.test(a));
 

@@ -10,7 +10,7 @@ export interface Step {
   currentlySelectedAgents: Array<string>;
   currentLines: Array<Array<string>>;
   algorithmSpecificData: Object;
-  relevantPreferences: Array<string>;
+  relevantPrefs: Array<string>;
 }
 
 export class StepBuilder {
@@ -66,7 +66,7 @@ export class StepBuilder {
   }
 
   relevantPrefs(prefs: Array<string>): this {
-    this.#step.relevantPreferences = prefs;
+    this.#step.relevantPrefs = prefs;
     return this;
   }
 

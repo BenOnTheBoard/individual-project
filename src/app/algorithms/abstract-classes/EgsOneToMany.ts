@@ -94,7 +94,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     currentAgent.match.push(proposee);
   }
 
-  removeRuledOutPreferences(currentAgent: Agent, proposee: Agent) {
+  removeRuledOutPrefs(currentAgent: Agent, proposee: Agent) {
     const currentAgentPosition: number = proposee.ranking.findIndex(
       (agent: { name: string }) => agent.name == currentAgent.name,
     );
@@ -111,9 +111,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
         proposee.ranking[i],
         proposee,
       );
-      this.relevantPreferences.push(
-        this.utils.getLastChar(proposee.ranking[i].name),
-      );
+      this.relevantPrefs.push(this.utils.getLastChar(proposee.ranking[i].name));
       // remove h' and r from each other's lists
       this.saveStep(9, {
         '%nextWorstMan%': proposee.ranking[i].name,
@@ -147,7 +145,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
 
       proposeeRankingClearCounter++;
 
-      this.relevantPreferences.pop();
+      this.relevantPrefs.pop();
     }
     this.saveStep(11, {
       '%man%': currentAgent.name,

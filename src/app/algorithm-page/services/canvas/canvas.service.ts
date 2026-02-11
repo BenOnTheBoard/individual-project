@@ -13,7 +13,7 @@ import { Step } from 'src/app/algorithms/interfaces/Step';
 })
 export class CanvasService {
   #canvasElement: HTMLCanvasElement;
-  public alwaysShowPreferences: boolean = false;
+  public alwaysShowPrefs: boolean = false;
   #ctx: CanvasRenderingContext2D;
 
   public currentCommand: Step;
@@ -83,19 +83,18 @@ export class CanvasService {
     );
   }
 
-  #arrangePreferences(isSR: boolean): void {
+  #arrangePrefs(isSR: boolean): void {
     // ensure that the preference renderer has the correct command
     // /w .setCurrentCommand before calling this function
     const hasRelevantPrefs =
-      this.currentCommand.relevantPreferences.length >= 1 &&
-      this.alwaysShowPreferences;
+      this.currentCommand.relevantPrefs.length >= 1 && this.alwaysShowPrefs;
 
     if (hasRelevantPrefs) {
-      this.prefRenderer.drawRelevantPreferences();
+      this.prefRenderer.drawRelevantPrefs();
     } else if (isSR) {
-      this.prefRenderer.drawSRPreferences();
+      this.prefRenderer.drawSRPrefs();
     } else {
-      this.prefRenderer.drawBipartitePreferences();
+      this.prefRenderer.drawBipartitePrefs();
     }
   }
 
@@ -129,7 +128,7 @@ export class CanvasService {
     const hasProjectsOrHospitals = !!algData['hospitalCapacity'];
 
     this.#arrangeAgents(isSR);
-    this.#arrangePreferences(isSR);
+    this.#arrangePrefs(isSR);
 
     if (hasProjectsOrHospitals) {
       this.prefRenderer.drawCapacities();

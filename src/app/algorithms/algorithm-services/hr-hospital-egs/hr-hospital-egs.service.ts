@@ -182,7 +182,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     hospital.match.push(resident);
   }
 
-  removeRuledOutPreferences(resident: Agent, hospital: Hospital): void {
+  removeRuledOutPrefs(resident: Agent, hospital: Hospital): void {
     // given h and r - remove h' of h on r's list
     const hospitalPosition: number = this.getRank(resident, hospital);
 
@@ -228,7 +228,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     }
   }
 
-  removeRuledOutPreferencesOld(resident: Agent, hospital: Hospital): void {
+  removeRuledOutPrefsOld(resident: Agent, hospital: Hospital): void {
     if (hospital.match.length < hospital.availableSpaces) return;
 
     const worstResident: Agent = this.getWorstResident(hospital);
@@ -246,9 +246,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
         hospital.ranking[i],
         hospital,
       );
-      this.relevantPreferences.push(
-        this.utils.getLastChar(hospital.ranking[i].name),
-      );
+      this.relevantPrefs.push(this.utils.getLastChar(hospital.ranking[i].name));
 
       this.changePrefsStyle(
         this.currentPrefsGroup1,
@@ -276,12 +274,12 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       i--;
       hospitalRankingClearCounter++;
 
-      this.relevantPreferences.pop();
+      this.relevantPrefs.pop();
     }
   }
 
   // returns true if there is a resident on the list that is not matched with that hospital
-  checkHospitalPreferanceList(hospital: Hospital) {
+  checkHospitalPrefList(hospital: Hospital) {
     for (const resident of hospital.ranking) {
       // if they are not matched to the hospital
       if (resident.match[0] != hospital) return true;
@@ -299,7 +297,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       // if hospital in undersubbed and there is someone on the list that is not assigned to them
       if (
         hospital.match.length < hospitalCap &&
-        this.checkHospitalPreferanceList(hospital)
+        this.checkHospitalPrefList(hospital)
       ) {
         freeHospitals.push(hospital.name);
       }
@@ -349,7 +347,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
           '%hospital%': currentHospital.name,
         });
 
-        this.removeRuledOutPreferences(proposee, currentHospital);
+        this.removeRuledOutPrefs(proposee, currentHospital);
 
         this.freeAgentsOfGroup2 = this.checkFreeHospitals();
 

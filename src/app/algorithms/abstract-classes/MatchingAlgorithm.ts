@@ -22,7 +22,7 @@ export abstract class MatchingAlgorithm {
   protected currentlySelectedAgents: Array<string> = [];
   protected currentLines: Array<Array<string>> = [];
   protected algorithmSpecificData: Object = {};
-  protected relevantPreferences: Array<string> = [];
+  protected relevantPrefs: Array<string> = [];
 
   protected SRstable: boolean = true;
   #stable: boolean = false;
@@ -51,7 +51,7 @@ export abstract class MatchingAlgorithm {
     this.currentlySelectedAgents = [];
     this.currentLines = [];
     this.algorithmSpecificData = {};
-    this.relevantPreferences = [];
+    this.relevantPrefs = [];
 
     this.#stable = false;
 
@@ -117,7 +117,7 @@ export abstract class MatchingAlgorithm {
       .selectedAgents(structuredClone(this.currentlySelectedAgents))
       .currentLines(structuredClone(this.currentLines))
       .algorithmData(structuredClone(this.algorithmSpecificData))
-      .relevantPrefs(structuredClone(this.relevantPreferences))
+      .relevantPrefs(structuredClone(this.relevantPrefs))
       .build();
     this.#algorithmRunData.commands.push(currentStep);
   }

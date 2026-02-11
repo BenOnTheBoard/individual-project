@@ -85,7 +85,7 @@ describe('PreferenceRendererService', () => {
   it('should draw bipartite preferences for both groups', () => {
     service.setCurrentCommand(mockCommand);
 
-    service.drawBipartitePreferences();
+    service.drawBipartitePrefs();
 
     for (const agent of ['circle1', 'circle2', 'circleA', 'circleB']) {
       expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledWith(agent);
@@ -96,7 +96,7 @@ describe('PreferenceRendererService', () => {
   it('should draw SR preferences with first half LHS and second half RHS', () => {
     service.setCurrentCommand(mockCommand);
 
-    service.drawSRPreferences();
+    service.drawSRPrefs();
 
     for (const agent of ['circle1', 'circle2']) {
       expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledWith(agent);
@@ -106,7 +106,7 @@ describe('PreferenceRendererService', () => {
 
   it('should draw relevant preferences', () => {
     service.setCurrentCommand(mockCommand);
-    service.drawRelevantPreferences();
+    service.drawRelevantPrefs();
 
     for (const agent of ['circle1', 'circleA']) {
       expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledWith(agent);

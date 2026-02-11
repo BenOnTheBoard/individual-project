@@ -388,10 +388,10 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       }
     }
     this.freeAgents = freeAgentsList;
-    this.updateLecturerPreferances();
+    this.updateLecturerPrefs();
   }
 
-  updateLecturerPreferances() {
+  updateLecturerPrefs() {
     let colourHex = this.colourHexService.getHex('black');
 
     for (const lecturerRanking of this.algorithmSpecificData[
