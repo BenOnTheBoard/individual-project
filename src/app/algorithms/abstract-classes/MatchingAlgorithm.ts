@@ -167,6 +167,20 @@ export abstract class MatchingAlgorithm {
   changePrefsStyle(
     group: 'group1' | 'group2',
     agent: Agent,
+    target: Agent,
+    colour: string,
+  ): void {
+    this.changePrefsStyleByIndex(
+      group,
+      agent,
+      this.getOriginalRank(agent, target, group),
+      colour,
+    );
+  }
+
+  changePrefsStyleByIndex(
+    group: 'group1' | 'group2',
+    agent: Agent,
     position: number,
     colour: string,
   ) {

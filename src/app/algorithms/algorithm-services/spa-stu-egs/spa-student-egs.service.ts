@@ -294,12 +294,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         const projectIndex = lecturer.ranking[i].ranking.indexOf(project);
         lecturer.ranking[i].ranking.splice(projectIndex, 1);
 
-        this.changePrefsStyle(
-          'group1',
-          lecturer.ranking[i],
-          this.getOriginalRank(lecturer.ranking[i], project, 'group1'),
-          'grey',
-        );
+        this.changePrefsStyle('group1', lecturer.ranking[i], project, 'grey');
 
         // remove p from S_i's preference list
         this.saveStep(17, {
@@ -335,7 +330,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
           this.changePrefsStyle(
             'group1',
             lecturer.ranking[i],
-            this.getOriginalRank(lecturer.ranking[i], projectObject, 'group1'),
+            projectObject,
             'grey',
           );
 
@@ -445,12 +440,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       this.saveStep(4, { '%lecturer%': projectLecturer.name });
 
       // highlight assinged
-      this.changePrefsStyle(
-        'group1',
-        student,
-        this.getOriginalRank(student, preferedProject, 'group1'),
-        'red',
-      );
+      this.changePrefsStyle('group1', student, preferedProject, 'red');
 
       // provisionally assign student to project
       student.match.push(preferedProject);
@@ -556,12 +546,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       availableStudents = this.availableStudents();
 
       // unhighlight assinged
-      this.changePrefsStyle(
-        'group1',
-        student,
-        this.getOriginalRank(student, preferedProject, 'group1'),
-        'black',
-      );
+      this.changePrefsStyle('group1', student, preferedProject, 'black');
 
       // update viz
       this.updateCapacityVisualization();
@@ -571,12 +556,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     for (const student of this.group1Agents.values()) {
       // if the student has a matching - should
       if (student.match.length == 1) {
-        this.changePrefsStyle(
-          'group1',
-          student,
-          this.getOriginalRank(student, student.match[0], 'group1'),
-          'green',
-        );
+        this.changePrefsStyle('group1', student, student.match[0], 'green');
 
         greenLine = [
           this.utils.getLastChar(student.name),

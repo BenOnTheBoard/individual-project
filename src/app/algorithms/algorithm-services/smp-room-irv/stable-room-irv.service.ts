@@ -134,19 +134,8 @@ export class StableRoomIrvService extends StableRoomMates {
     }
 
     // grey out elms from visual lists
-    this.changePrefsStyle(
-      'group1',
-      agent1,
-      this.getOriginalRank(agent1, agent2, 'group1'),
-      'grey',
-    );
-
-    this.changePrefsStyle(
-      'group1',
-      agent2,
-      this.getOriginalRank(agent2, agent1, 'group1'),
-      'grey',
-    );
+    this.changePrefsStyle('group1', agent1, agent2, 'grey');
+    this.changePrefsStyle('group1', agent2, agent1, 'grey');
   }
 
   // returns a map of agents that are free - not assigned to anyone
@@ -254,12 +243,7 @@ export class StableRoomIrvService extends StableRoomMates {
           'group1',
         )),
           //highlight pref in persons list
-          this.changePrefsStyle(
-            'group1',
-            person,
-            this.getOriginalRank(person, person.ranking[0], 'group1'),
-            'red',
-          ));
+          this.changePrefsStyle('group1', person, person.ranking[0], 'red'));
 
         //person b := first preferance on p's list
         this.saveStep(5, {
@@ -424,11 +408,7 @@ export class StableRoomIrvService extends StableRoomMates {
                 this.changePrefsStyle(
                   'group1',
                   person_inner,
-                  this.getOriginalRank(
-                    person_inner,
-                    person_inner.ranking[0],
-                    'group1',
-                  ),
+                  person_inner.ranking[0],
                   'green',
                 );
 
@@ -502,11 +482,7 @@ export class StableRoomIrvService extends StableRoomMates {
           this.changePrefsStyle(
             'group1',
             person_inner,
-            this.getOriginalRank(
-              person_inner,
-              person_inner.ranking[0],
-              'group1',
-            ),
+            person_inner.ranking[0],
             'green',
           );
 
