@@ -5,114 +5,97 @@ import { ExtendedGaleShapley } from './ExtendedGaleShapley';
 
 export abstract class EgsOneToMany extends ExtendedGaleShapley {
   breakAssignment(currentAgent: Agent, proposee: Agent) {
-    // if w is currently assigned to someone {
     this.saveStep(4, { '%woman%': proposee.name });
     if (proposee.match.length < 1) {
       this.saveStep(6, { '%woman%': proposee.name });
       return;
     }
-    // break the provisional assignment of r to h'
-    const matchPosition: number = this.getRank(proposee, proposee.match[0]);
+
+    const match = proposee.match[0];
+    const matchPosition = this.getRank(proposee, match);
 
     if (
-      proposee.match[0].ranking.filter(
-        (agent) => agent.match[0] != currentAgent,
-      ).length > 0 &&
-      !this.freeAgents.includes(proposee.match[0]) &&
-      proposee.match[0].ranking.length > 0
+      match.ranking.filter((agent) => agent.match[0] != currentAgent).length >
+        0 &&
+      !this.freeAgents.includes(match) &&
+      match.ranking.length > 0
     ) {
-      this.freeAgents.push(proposee.match[0]);
+      this.freeAgents.push(match);
     }
 
-    this.currentLines = this.removeSubArray(this.currentLines, [
-      this.utils.getLastChar(proposee.match[0].name),
-      this.utils.getLastChar(proposee.name),
-      'green',
-    ]);
+    const greenLine = this.createLine(match, proposee, 'green');
+    this.currentLines = this.removeSubArray(this.currentLines, greenLine);
 
-    this.changePrefsStyle('group1', proposee.match[0], proposee, 'grey');
+    this.changePrefsStyle('group1', match, proposee, 'grey');
     this.changePrefsStyleByIndex('group2', proposee, matchPosition, 'grey');
 
     this.saveStep(5, {
       '%woman%': proposee.name,
-      '%currentPartner%': proposee.match[0].name,
+      '%currentPartner%': match.name,
     });
 
     proposee.ranking.splice(matchPosition, 1);
-    proposee.match[0].ranking.splice(
-      this.getRank(proposee.match[0], proposee),
-      1,
-    );
+    match.ranking.splice(this.getRank(match, proposee), 1);
   }
 
-  provisionallyAssign(currentAgent: Agent, proposee: Agent) {
-    // provisionally assign r to h;
+  provisionallyAssign(agent: Agent, proposee: Agent) {
+    const redLine = this.createLine(agent, proposee, 'red');
+    const greenLine = this.createLine(agent, proposee, 'green');
 
-    const agentLastChar = this.utils.getLastChar(currentAgent.name);
-    const proposeeLastChar = this.utils.getLastChar(proposee.name);
-    this.currentLines = this.removeSubArray(this.currentLines, [
-      agentLastChar,
-      proposeeLastChar,
-      'red',
-    ]);
-
-    const greenLine = [agentLastChar, proposeeLastChar, 'green'];
+    this.currentLines = this.removeSubArray(this.currentLines, redLine);
     this.currentLines.push(greenLine);
 
-    this.changePrefsStyle('group1', currentAgent, proposee, 'green');
+    this.changePrefsStyle('group1', agent, proposee, 'green');
     this.changePrefsStyleByIndex(
       'group2',
       proposee,
-      this.getRank(proposee, currentAgent),
+      this.getRank(proposee, agent),
       'green',
     );
 
     this.saveStep(7, {
-      '%man%': currentAgent.name,
+      '%man%': agent.name,
       '%woman%': proposee.name,
     });
-    proposee.match[0] = currentAgent;
-    currentAgent.match.push(proposee);
+
+    proposee.match[0] = agent;
+    agent.match.push(proposee);
   }
 
-  removeRuledOutPrefs(currentAgent: Agent, proposee: Agent) {
-    const currentAgentPosition: number = proposee.ranking.findIndex(
-      (agent: { name: string }) => agent.name == currentAgent.name,
-    );
-
-    // for each successor h' of h on r's list {
+  removeRuledOutPrefs(agent: Agent, proposee: Agent) {
     this.saveStep(8, {
-      '%man%': currentAgent.name,
+      '%man%': agent.name,
       '%woman%': proposee.name,
     });
-    for (let i = currentAgentPosition + 1; i < proposee.ranking.length; i++) {
-      const proposeePosition: number = this.getRank(
-        proposee.ranking[i],
-        proposee,
-      );
-      this.relevantPrefs.push(this.utils.getLastChar(proposee.ranking[i].name));
-      // remove h' and r from each other's lists
+
+    const agentRank = this.getRank(proposee, agent);
+    for (let i = agentRank + 1; i < proposee.ranking.length; i++) {
+      const reject = proposee.ranking[i];
+      const proposeePosition = this.getRank(reject, proposee);
+      this.relevantPrefs.push(this.utils.getLastChar(reject.name));
+
       this.saveStep(9, {
-        '%nextWorstMan%': proposee.ranking[i].name,
+        '%nextWorstMan%': reject.name,
         '%woman%': proposee.name,
       });
 
-      this.changePrefsStyle('group1', proposee.ranking[i], proposee, 'grey');
-      this.changePrefsStyle('group2', proposee, proposee.ranking[i], 'grey');
+      this.changePrefsStyle('group1', reject, proposee, 'grey');
+      this.changePrefsStyle('group2', proposee, reject, 'grey');
 
       this.saveStep(10, {
-        '%nextWorstMan%': proposee.ranking[i].name,
+        '%nextWorstMan%': reject.name,
         '%woman%': proposee.name,
       });
 
-      proposee.ranking[i].ranking.splice(proposeePosition, 1);
+      reject.ranking.splice(proposeePosition, 1);
       proposee.ranking.splice(i, 1);
       i--;
 
       this.relevantPrefs.pop();
     }
+
     this.saveStep(11, {
-      '%man%': currentAgent.name,
+      '%man%': agent.name,
       '%woman%': proposee.name,
     });
   }

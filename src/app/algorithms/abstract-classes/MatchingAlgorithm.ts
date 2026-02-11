@@ -65,6 +65,14 @@ export abstract class MatchingAlgorithm {
     return { name, match: new Array(), ranking: new Array() };
   }
 
+  createLine(from: Agent, to: Agent, colour: string) {
+    return [
+      this.utils.getLastChar(from.name),
+      this.utils.getLastChar(to.name),
+      colour,
+    ];
+  }
+
   generateAgents() {
     for (let i = 0; i < this.numberOfAgents; i++) {
       const name = this.group1Name + (i + 1);
@@ -131,9 +139,9 @@ export abstract class MatchingAlgorithm {
     );
   }
 
-  getRank(currentAgent: Agent, agentToFind: Agent): number {
-    return currentAgent.ranking.findIndex(
-      (agent) => agent.name == agentToFind.name,
+  getRank(agent: Agent, target: Agent): number {
+    return agent.ranking.findIndex(
+      (candidate) => candidate.name == target.name,
     );
   }
 
