@@ -8,37 +8,29 @@ import { inject } from '@angular/core';
 export abstract class MatchingAlgorithm {
   abstract group1Name: string;
   abstract group2Name: string;
+  protected numberOfAgents: number;
+  protected numberOfGroup2Agents: number;
 
-  numberOfAgents: number;
-  numberOfGroup2Agents: number;
+  protected freeAgents: Array<Agent>;
+  protected group1Agents: Map<String, Agent> = new Map();
+  protected group2Agents: Map<String, Agent> = new Map();
+  protected originalPrefsGroup1: Map<String, Array<String>> = new Map();
+  protected originalPrefsGroup2: Map<String, Array<String>> = new Map();
+  protected currentPrefsGroup1: Map<String, Array<String>> = new Map();
+  protected currentPrefsGroup2: Map<String, Array<String>> = new Map();
 
-  freeAgents: Array<Agent>;
+  protected currentlySelectedAgents: Array<string> = [];
+  protected currentLines: Array<Array<string>> = [];
+  protected algorithmSpecificData: Object = {};
+  protected relevantPreferences: Array<string> = [];
 
-  group1Agents: Map<String, Agent> = new Map();
-  group2Agents: Map<String, Agent> = new Map();
+  protected SRstable: boolean = true;
+  #stable: boolean = false;
 
-  algorithmData: AlgorithmData = {
+  #algorithmRunData: AlgorithmData = {
     commands: new Array(),
     descriptions: new Array(),
   };
-
-  SRstable: boolean = true;
-
-  currentLine: Array<string> = [];
-
-  originalPrefsGroup1: Map<String, Array<String>> = new Map();
-  originalPrefsGroup2: Map<String, Array<String>> = new Map();
-
-  currentPrefsGroup1: Map<String, Array<String>> = new Map();
-  currentPrefsGroup2: Map<String, Array<String>> = new Map();
-  currentlySelectedAgents: Array<string> = [];
-  currentLines: Array<Array<string>> = [];
-
-  algorithmSpecificData: Object = {};
-
-  relevantPreferences: Array<string> = [];
-
-  stable: boolean = false;
 
   protected utils = inject(UtilsService);
   protected colourHexService = inject(ColourHexService);
@@ -47,28 +39,26 @@ export abstract class MatchingAlgorithm {
     numberOfAgents: number,
     numberOfGroup2Agents: number = numberOfAgents,
   ) {
-    this.freeAgents = [];
+    this.numberOfAgents = numberOfAgents;
+    this.numberOfGroup2Agents = numberOfGroup2Agents;
 
+    this.freeAgents = [];
     this.group1Agents = new Map();
     this.group2Agents = new Map();
-
-    this.algorithmData = {
-      commands: new Array(),
-      descriptions: new Array(),
-    };
-
-    this.currentLine = [];
-
     this.currentPrefsGroup1 = new Map();
     this.currentPrefsGroup2 = new Map();
+
     this.currentlySelectedAgents = [];
     this.currentLines = [];
     this.algorithmSpecificData = {};
     this.relevantPreferences = [];
 
-    this.numberOfAgents = numberOfAgents;
-    this.numberOfGroup2Agents = numberOfGroup2Agents;
-    this.stable = false;
+    this.#stable = false;
+
+    this.#algorithmRunData = {
+      commands: new Array(),
+      descriptions: new Array(),
+    };
   }
 
   createAgent(name: string): Agent {
@@ -129,7 +119,7 @@ export abstract class MatchingAlgorithm {
       .algorithmData(structuredClone(this.algorithmSpecificData))
       .relevantPrefs(structuredClone(this.relevantPreferences))
       .build();
-    this.algorithmData.commands.push(currentStep);
+    this.#algorithmRunData.commands.push(currentStep);
   }
 
   getMatches(): Map<Agent, Array<String>> {
@@ -244,9 +234,9 @@ export abstract class MatchingAlgorithm {
 
     this.match();
 
-    this.stable = this.checkStability(this.getMatches());
+    this.#stable = this.checkStability(this.getMatches());
 
-    if (!this.stable) return undefined;
-    return this.algorithmData;
+    if (!this.#stable) return undefined;
+    return this.#algorithmRunData;
   }
 }
