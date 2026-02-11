@@ -62,7 +62,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     return positionMap.get(Math.max(...Array.from(positionMap.keys())));
   }
 
-  getNextPotentialProposee(hospital: Hospital): Agent {
+  getNextProposee(hospital: Hospital): Agent {
     // return first hospital on r's list
     return hospital.ranking[0];
   }

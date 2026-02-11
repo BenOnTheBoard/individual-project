@@ -4,69 +4,64 @@ import { ExtendedGaleShapley } from './ExtendedGaleShapley';
 // this file is the implementation for SM - EGS
 
 export abstract class EgsOneToMany extends ExtendedGaleShapley {
-  breakAssignment(currentAgent: Agent, potentialProposee: Agent) {
+  breakAssignment(currentAgent: Agent, proposee: Agent) {
     // if w is currently assigned to someone {
-    this.saveStep(4, { '%woman%': potentialProposee.name });
-    if (potentialProposee.match.length < 1) {
-      this.saveStep(6, { '%woman%': potentialProposee.name });
+    this.saveStep(4, { '%woman%': proposee.name });
+    if (proposee.match.length < 1) {
+      this.saveStep(6, { '%woman%': proposee.name });
       return;
     }
     // break the provisional assignment of r to h'
-    const matchPosition: number = this.getRank(
-      potentialProposee,
-      potentialProposee.match[0],
-    );
+    const matchPosition: number = this.getRank(proposee, proposee.match[0]);
 
     if (
-      potentialProposee.match[0].ranking.filter(
+      proposee.match[0].ranking.filter(
         (agent) => agent.match[0] != currentAgent,
       ).length > 0 &&
-      !this.freeAgents.includes(potentialProposee.match[0]) &&
-      potentialProposee.match[0].ranking.length > 0
+      !this.freeAgents.includes(proposee.match[0]) &&
+      proposee.match[0].ranking.length > 0
     ) {
-      this.freeAgents.push(potentialProposee.match[0]);
+      this.freeAgents.push(proposee.match[0]);
     }
 
     this.currentLines = this.removeSubArray(this.currentLines, [
-      this.utils.getLastChar(potentialProposee.match[0].name),
-      this.utils.getLastChar(potentialProposee.name),
+      this.utils.getLastChar(proposee.match[0].name),
+      this.utils.getLastChar(proposee.name),
       'green',
     ]);
 
     this.changePrefsStyle(
       this.currentPrefsGroup1,
-      this.utils.getLastChar(potentialProposee.match[0].name),
+      this.utils.getLastChar(proposee.match[0].name),
       this.originalPrefsGroup1
-        .get(this.utils.getLastChar(potentialProposee.match[0].name))
-        .findIndex(
-          (woman) => woman == this.utils.getLastChar(potentialProposee.name),
-        ),
+        .get(this.utils.getLastChar(proposee.match[0].name))
+        .findIndex((woman) => woman == this.utils.getLastChar(proposee.name)),
       'grey',
     );
     this.changePrefsStyle(
       this.currentPrefsGroup2,
-      this.utils.getLastChar(potentialProposee.name),
+      this.utils.getLastChar(proposee.name),
       matchPosition,
       'grey',
     );
 
     this.saveStep(5, {
-      '%woman%': potentialProposee.name,
-      '%currentPartner%': potentialProposee.match[0].name,
+      '%woman%': proposee.name,
+      '%currentPartner%': proposee.match[0].name,
     });
 
-    potentialProposee.ranking.splice(matchPosition, 1);
-    potentialProposee.match[0].ranking.splice(
-      this.getRank(potentialProposee.match[0], potentialProposee),
+    proposee.ranking.splice(matchPosition, 1);
+    proposee.match[0].ranking.splice(
+      this.getRank(proposee.match[0], proposee),
       1,
     );
   }
 
-  provisionallyAssign(currentAgent: Agent, potentialProposee: Agent) {
+  provisionallyAssign(currentAgent: Agent, proposee: Agent) {
     // provisionally assign r to h;
 
     const agentLastChar = this.utils.getLastChar(currentAgent.name);
-    const proposeeLastChar = this.utils.getLastChar(potentialProposee.name);
+    const proposeeLastChar = this.utils.getLastChar(proposee.name);
     this.currentLines = this.removeSubArray(this.currentLines, [
       agentLastChar,
       proposeeLastChar,
@@ -81,28 +76,26 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       agentLastChar,
       this.originalPrefsGroup1
         .get(agentLastChar)
-        .findIndex(
-          (woman) => woman == this.utils.getLastChar(potentialProposee.name),
-        ),
+        .findIndex((woman) => woman == this.utils.getLastChar(proposee.name)),
       'green',
     );
     this.changePrefsStyle(
       this.currentPrefsGroup2,
       proposeeLastChar,
-      this.getRank(potentialProposee, currentAgent),
+      this.getRank(proposee, currentAgent),
       'green',
     );
 
     this.saveStep(7, {
       '%man%': currentAgent.name,
-      '%woman%': potentialProposee.name,
+      '%woman%': proposee.name,
     });
-    potentialProposee.match[0] = currentAgent;
-    currentAgent.match.push(potentialProposee);
+    proposee.match[0] = currentAgent;
+    currentAgent.match.push(proposee);
   }
 
-  removeRuledOutPreferences(currentAgent: Agent, potentialProposee: Agent) {
-    const currentAgentPosition: number = potentialProposee.ranking.findIndex(
+  removeRuledOutPreferences(currentAgent: Agent, proposee: Agent) {
+    const currentAgentPosition: number = proposee.ranking.findIndex(
       (agent: { name: string }) => agent.name == currentAgent.name,
     );
 
@@ -111,51 +104,45 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     // for each successor h' of h on r's list {
     this.saveStep(8, {
       '%man%': currentAgent.name,
-      '%woman%': potentialProposee.name,
+      '%woman%': proposee.name,
     });
-    for (
-      let i = currentAgentPosition + 1;
-      i < potentialProposee.ranking.length;
-      i++
-    ) {
+    for (let i = currentAgentPosition + 1; i < proposee.ranking.length; i++) {
       const proposeePosition: number = this.getRank(
-        potentialProposee.ranking[i],
-        potentialProposee,
+        proposee.ranking[i],
+        proposee,
       );
       this.relevantPreferences.push(
-        this.utils.getLastChar(potentialProposee.ranking[i].name),
+        this.utils.getLastChar(proposee.ranking[i].name),
       );
       // remove h' and r from each other's lists
       this.saveStep(9, {
-        '%nextWorstMan%': potentialProposee.ranking[i].name,
-        '%woman%': potentialProposee.name,
+        '%nextWorstMan%': proposee.ranking[i].name,
+        '%woman%': proposee.name,
       });
 
       this.changePrefsStyle(
         this.currentPrefsGroup1,
-        this.utils.getLastChar(potentialProposee.ranking[i].name),
+        this.utils.getLastChar(proposee.ranking[i].name),
         this.originalPrefsGroup1
-          .get(this.utils.getLastChar(potentialProposee.ranking[i].name))
-          .findIndex(
-            (woman) => woman == this.utils.getLastChar(potentialProposee.name),
-          ),
+          .get(this.utils.getLastChar(proposee.ranking[i].name))
+          .findIndex((woman) => woman == this.utils.getLastChar(proposee.name)),
         'grey',
       );
 
       this.changePrefsStyle(
         this.currentPrefsGroup2,
-        this.utils.getLastChar(potentialProposee.name),
+        this.utils.getLastChar(proposee.name),
         proposeeRankingClearCounter,
         'grey',
       );
 
       this.saveStep(10, {
-        '%nextWorstMan%': potentialProposee.ranking[i].name,
-        '%woman%': potentialProposee.name,
+        '%nextWorstMan%': proposee.ranking[i].name,
+        '%woman%': proposee.name,
       });
 
-      potentialProposee.ranking[i].ranking.splice(proposeePosition, 1);
-      potentialProposee.ranking.splice(i, 1);
+      proposee.ranking[i].ranking.splice(proposeePosition, 1);
+      proposee.ranking.splice(i, 1);
       i--;
 
       proposeeRankingClearCounter++;
@@ -164,7 +151,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     }
     this.saveStep(11, {
       '%man%': currentAgent.name,
-      '%woman%': potentialProposee.name,
+      '%woman%': proposee.name,
     });
   }
 }

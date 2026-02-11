@@ -12,7 +12,7 @@ export const hrResidentConfig = new AlgorithmBuilder()
   .helpTextMap({
     1: 'Start with no assignments between residents and hospitals.',
     2: "%currentAgent% is the next resident who doesn't have a hospital and still has some hospitals in their preference list.",
-    3: '%currentAgent% selects %potentialProposee%, the first hospital left on its list.',
+    3: '%currentAgent% selects %proposee%, the first hospital left on its list.',
     4: 'We check whether %hospital% is currently full. If not, we provisionally assign %resident% to %hospital%.',
     5: "%hospital%'s number of residents is equal to its max capacity, so choose the worst resident assigned to %hospital% (%worstResident%).",
     6: 'We unassign %hospital% and %worstResident%.',

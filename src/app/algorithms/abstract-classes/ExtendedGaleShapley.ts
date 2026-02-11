@@ -4,7 +4,6 @@ import { MatchingAlgorithm } from './MatchingAlgorithm';
 
 export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
   match(): AlgorithmData {
-    // assign each resident to be free;
     this.saveStep(1);
 
     while (this.freeAgents.length > 0) {
@@ -13,15 +12,15 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
 
       if (
         currentAgent.ranking.length > 0 &&
-        !!this.getNextPotentialProposee(currentAgent)
+        !!this.getNextProposee(currentAgent)
       ) {
         this.saveStep(2, { '%currentAgent%': currentAgent.name });
 
-        const proposee = this.getNextPotentialProposee(currentAgent);
+        const proposee = this.getNextProposee(currentAgent);
 
         this.saveStep(3, {
           '%currentAgent%': currentAgent.name,
-          '%potentialProposee%': proposee.name,
+          '%proposee%': proposee.name,
         });
 
         this.breakAssignment(currentAgent, proposee);
@@ -36,17 +35,14 @@ export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
     return;
   }
 
-  abstract getNextPotentialProposee(currentAgent: Agent): Agent;
+  abstract getNextProposee(currentAgent: Agent): Agent;
 
-  abstract provisionallyAssign(
-    currentAgent: Agent,
-    potentialProposee: Agent,
-  ): void;
+  abstract provisionallyAssign(currentAgent: Agent, proposee: Agent): void;
 
   abstract removeRuledOutPreferences(
     currentAgent: Agent,
-    potentialProposee: Agent,
+    proposee: Agent,
   ): void;
 
-  abstract breakAssignment(currentAgent: Agent, potentialProposee: Agent): void;
+  abstract breakAssignment(currentAgent: Agent, proposee: Agent): void;
 }

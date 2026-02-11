@@ -12,7 +12,7 @@ export const smManEGSConfig = new AlgorithmBuilder()
   .helpTextMap({
     1: 'Start with no engagements between men and women.',
     2: '%currentAgent% is currently unengaged.',
-    3: '%currentAgent% selects %potentialProposee% because she is the most preferred woman remaining on his list.',
+    3: '%currentAgent% selects %proposee% because she is the most preferred woman remaining on his list.',
     4: 'We check whether %woman% is engaged already.',
     5: '%woman% is engaged to %currentPartner%, so we break the engagement between them.',
     6: '%woman% is not engaged.',

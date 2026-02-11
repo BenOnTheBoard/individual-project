@@ -54,7 +54,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  getNextPotentialProposee(hospital: Hospital): Agent | null {
+  getNextProposee(hospital: Hospital): Agent | null {
     for (const proposee of hospital.ranking) {
       if (proposee.match[0] != hospital) return proposee;
     }
@@ -324,33 +324,32 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
       if (
         currentHospital.ranking.length <= 0 ||
-        !this.getNextPotentialProposee(currentHospital)
+        !this.getNextProposee(currentHospital)
       ) {
         this.freeAgentsOfGroup2.shift();
       } else {
-        const potentialProposee: Agent =
-          this.getNextPotentialProposee(currentHospital);
+        const proposee: Agent = this.getNextProposee(currentHospital);
 
         // a RESIDENT r that is not assigned to h, but is on its pref list
         // "r := first resident on h's prefernace list not assigned to h",
-        this.saveStep(3, { '%resident%': potentialProposee.name });
+        this.saveStep(3, { '%resident%': proposee.name });
 
         // if proposee is assigned to a different hospital then un assign
         // if r is assigned to another hospital h
-        this.saveStep(4, { '%resident%': potentialProposee.name });
+        this.saveStep(4, { '%resident%': proposee.name });
 
-        if (potentialProposee.match[0] != null) {
-          this.breakAssignment(potentialProposee, potentialProposee.match[0]);
+        if (proposee.match[0] != null) {
+          this.breakAssignment(proposee, proposee.match[0]);
         }
 
         // provisionally assign r to h
-        this.provisionallyAssign(potentialProposee, currentHospital);
+        this.provisionallyAssign(proposee, currentHospital);
         this.saveStep(6, {
-          '%resident%': potentialProposee.name,
+          '%resident%': proposee.name,
           '%hospital%': currentHospital.name,
         });
 
-        this.removeRuledOutPreferences(potentialProposee, currentHospital);
+        this.removeRuledOutPreferences(proposee, currentHospital);
 
         this.freeAgentsOfGroup2 = this.checkFreeHospitals();
 

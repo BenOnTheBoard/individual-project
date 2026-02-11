@@ -33,8 +33,7 @@ export class ExecutionService {
     const descriptions = [];
 
     for (const step of this.#commandList.commands) {
-      const lineNumber = step['lineNumber'];
-      const { stepVariables } = step;
+      const { lineNumber, stepVariables } = step;
 
       if (stepVariables) {
         descriptions.push(this.#generateMessage(lineNumber, stepVariables));
