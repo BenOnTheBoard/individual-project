@@ -297,9 +297,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         this.changePrefsStyle(
           'group1',
           lecturer.ranking[i],
-          this.originalPrefsGroup1
-            .get(this.utils.getLastChar(lecturer.ranking[i].name))
-            .indexOf(this.utils.getLastChar(project.name)),
+          this.getOriginalRank(lecturer.ranking[i], project, 'group1'),
           'grey',
         );
 
@@ -337,9 +335,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
           this.changePrefsStyle(
             'group1',
             lecturer.ranking[i],
-            this.originalPrefsGroup1
-              .get(this.utils.getLastChar(lecturer.ranking[i].name))
-              .indexOf(this.utils.getLastChar(projectObject.name)),
+            this.getOriginalRank(lecturer.ranking[i], projectObject, 'group1'),
             'grey',
           );
 
@@ -452,9 +448,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       this.changePrefsStyle(
         'group1',
         student,
-        this.originalPrefsGroup1
-          .get(this.utils.getLastChar(student.name))
-          .indexOf(this.utils.getLastChar(preferedProject.name)),
+        this.getOriginalRank(student, preferedProject, 'group1'),
         'red',
       );
 
@@ -565,9 +559,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       this.changePrefsStyle(
         'group1',
         student,
-        this.originalPrefsGroup1
-          .get(this.utils.getLastChar(student.name))
-          .indexOf(this.utils.getLastChar(preferedProject.name)),
+        this.getOriginalRank(student, preferedProject, 'group1'),
         'black',
       );
 
@@ -582,9 +574,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         this.changePrefsStyle(
           'group1',
           student,
-          this.originalPrefsGroup1
-            .get(this.utils.getLastChar(student.name))
-            .indexOf(this.utils.getLastChar(student.match[0].name)),
+          this.getOriginalRank(student, student.match[0], 'group1'),
           'green',
         );
 

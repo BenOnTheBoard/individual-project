@@ -33,9 +33,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     this.changePrefsStyle(
       'group1',
       proposee.match[0],
-      this.originalPrefsGroup1
-        .get(this.utils.getLastChar(proposee.match[0].name))
-        .findIndex((woman) => woman == this.utils.getLastChar(proposee.name)),
+      this.getOriginalRank(proposee.match[0], proposee, 'group1'),
       'grey',
     );
     this.changePrefsStyle('group2', proposee, matchPosition, 'grey');
@@ -69,9 +67,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     this.changePrefsStyle(
       'group1',
       currentAgent,
-      this.originalPrefsGroup1
-        .get(agentLastChar)
-        .findIndex((woman) => woman == this.utils.getLastChar(proposee.name)),
+      this.getOriginalRank(currentAgent, proposee, 'group1'),
       'green',
     );
     this.changePrefsStyle(
@@ -94,8 +90,6 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       (agent: { name: string }) => agent.name == currentAgent.name,
     );
 
-    let proposeeRankingClearCounter: number = currentAgentPosition + 1;
-
     // for each successor h' of h on r's list {
     this.saveStep(8, {
       '%man%': currentAgent.name,
@@ -116,16 +110,14 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       this.changePrefsStyle(
         'group1',
         proposee.ranking[i],
-        this.originalPrefsGroup1
-          .get(this.utils.getLastChar(proposee.ranking[i].name))
-          .findIndex((woman) => woman == this.utils.getLastChar(proposee.name)),
+        this.getOriginalRank(proposee.ranking[i], proposee, 'group1'),
         'grey',
       );
 
       this.changePrefsStyle(
         'group2',
         proposee,
-        proposeeRankingClearCounter,
+        this.getOriginalRank(proposee, proposee.ranking[i], 'group2'),
         'grey',
       );
 
@@ -137,8 +129,6 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       proposee.ranking[i].ranking.splice(proposeePosition, 1);
       proposee.ranking.splice(i, 1);
       i--;
-
-      proposeeRankingClearCounter++;
 
       this.relevantPrefs.pop();
     }

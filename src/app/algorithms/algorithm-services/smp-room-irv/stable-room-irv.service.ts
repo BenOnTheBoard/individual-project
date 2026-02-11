@@ -137,18 +137,14 @@ export class StableRoomIrvService extends StableRoomMates {
     this.changePrefsStyle(
       'group1',
       agent1,
-      this.originalPrefsGroup1
-        .get(this.utils.getLastChar(agent1.name))
-        .indexOf(this.utils.getLastChar(agent2.name)),
+      this.getOriginalRank(agent1, agent2, 'group1'),
       'grey',
     );
 
     this.changePrefsStyle(
       'group1',
       agent2,
-      this.originalPrefsGroup1
-        .get(this.utils.getLastChar(agent2.name))
-        .indexOf(this.utils.getLastChar(agent1.name)),
+      this.getOriginalRank(agent2, agent1, 'group1'),
       'grey',
     );
   }
@@ -252,16 +248,16 @@ export class StableRoomIrvService extends StableRoomMates {
 
         // store prevouis person
         last_person = person;
-        ((last_pref = this.originalPrefsGroup1
-          .get(this.utils.getLastChar(person.name))
-          .indexOf(this.utils.getLastChar(person.ranking[0].name))),
+        ((last_pref = this.getOriginalRank(
+          person,
+          person.ranking[0],
+          'group1',
+        )),
           //highlight pref in persons list
           this.changePrefsStyle(
             'group1',
             person,
-            this.originalPrefsGroup1
-              .get(this.utils.getLastChar(person.name))
-              .indexOf(this.utils.getLastChar(person.ranking[0].name)),
+            this.getOriginalRank(person, person.ranking[0], 'group1'),
             'red',
           ));
 
@@ -428,11 +424,11 @@ export class StableRoomIrvService extends StableRoomMates {
                 this.changePrefsStyle(
                   'group1',
                   person_inner,
-                  this.originalPrefsGroup1
-                    .get(this.utils.getLastChar(person_inner.name))
-                    .indexOf(
-                      this.utils.getLastChar(person_inner.ranking[0].name),
-                    ),
+                  this.getOriginalRank(
+                    person_inner,
+                    person_inner.ranking[0],
+                    'group1',
+                  ),
                   'green',
                 );
 
@@ -506,9 +502,11 @@ export class StableRoomIrvService extends StableRoomMates {
           this.changePrefsStyle(
             'group1',
             person_inner,
-            this.originalPrefsGroup1
-              .get(this.utils.getLastChar(person_inner.name))
-              .indexOf(this.utils.getLastChar(person_inner.ranking[0].name)),
+            this.getOriginalRank(
+              person_inner,
+              person_inner.ranking[0],
+              'group1',
+            ),
             'green',
           );
 

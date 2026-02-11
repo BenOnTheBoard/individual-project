@@ -93,9 +93,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     this.changePrefsStyle(
       'group1',
       resident,
-      this.originalPrefsGroup1
-        .get(this.utils.getLastChar(resident.name))
-        .findIndex((h) => h == this.utils.getLastChar(hospital.name)),
+      this.getOriginalRank(resident, hospital, 'group1'),
       'grey',
     );
     this.changePrefsStyle(
@@ -157,18 +155,14 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     this.changePrefsStyle(
       'group1',
       resident,
-      this.originalPrefsGroup1
-        .get(agentLastChar)
-        .findIndex((h) => h == this.utils.getLastChar(hospital.name)),
+      this.getOriginalRank(resident, hospital, 'group1'),
       'green',
     );
 
     this.changePrefsStyle(
       'group2',
       hospital,
-      this.originalPrefsGroup2
-        .get(proposeeLastChar)
-        .findIndex((h) => h == this.utils.getLastChar(resident.name)),
+      this.getOriginalRank(hospital, resident, 'group2'),
       'green',
     );
 
@@ -241,9 +235,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       this.changePrefsStyle(
         'group1',
         hospital.ranking[i],
-        this.originalPrefsGroup1
-          .get(this.utils.getLastChar(hospital.ranking[i].name))
-          .findIndex((h) => h == this.utils.getLastChar(hospital.name)),
+        this.getOriginalRank(hospital.ranking[i], hospital, 'group1'),
         'grey',
       );
       this.changePrefsStyle(
