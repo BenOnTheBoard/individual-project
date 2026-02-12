@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StableRoomMates } from '../../abstract-classes/StableRoomMates';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
-import { Person } from '../../interfaces/Person';
-import { Agent } from '../../interfaces/Agent';
+import { Agent, Person } from '../../interfaces/Agents';
 
 @Injectable({
   providedIn: 'root',

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ExtendedGaleShapley } from '../../abstract-classes/ExtendedGaleShapley';
-import { Agent } from '../../interfaces/Agent';
+import { Agent, Hospital } from '../../interfaces/Agents';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
-import { Hospital } from '../../interfaces/Hospital';
 
 @Injectable({
   providedIn: 'root',
@@ -33,17 +32,17 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       const currentLetter = String.fromCharCode(65 + i);
       const group2AgentName = this.group2Name + currentLetter;
 
-      const availableSpaces = this.getRandomInt(1, this.numberOfAgents - 2);
+      const capacity = this.getRandomInt(1, this.numberOfAgents - 2);
       const agent = {
         name: group2AgentName,
         match: new Array(),
         ranking: new Array(),
-        availableSpaces,
+        capacity,
       };
 
       this.group2Agents.set(group2AgentName, agent);
       this.freeAgentsOfGroup2.push(agent);
-      this.hospitalCapacity.set(currentLetter, String(availableSpaces));
+      this.hospitalCapacity.set(currentLetter, String(capacity));
     }
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
   }
@@ -82,7 +81,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     const colourHex = this.colourHexService.getHex('black');
     this.hospitalCapacity.set(
       hospitalChar,
-      `{${colourHex}${String(hospital.availableSpaces)}}`,
+      `{${colourHex}${String(hospital.capacity)}}`,
     );
 
     // unassign r and h'
@@ -111,11 +110,11 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     this.changeLineColour(resident, hospital, 'red', 'green');
     this.stylePrefsMutual(resident, hospital, 'green');
 
-    if (hospital.match.length >= hospital.availableSpaces - 1) {
+    if (hospital.match.length >= hospital.capacity - 1) {
       const colourHex = this.colourHexService.getHex('green');
       this.hospitalCapacity.set(
         proposeeChar,
-        `{${colourHex}${String(hospital.availableSpaces)}}`,
+        `{${colourHex}${String(hospital.capacity)}}`,
       );
     }
 
@@ -153,7 +152,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
   }
 
   removeRuledOutPrefsOld(resident: Agent, hospital: Hospital): void {
-    if (hospital.match.length < hospital.availableSpaces) return;
+    if (hospital.match.length < hospital.capacity) return;
 
     const worstResident: Agent = this.getWorstResident(hospital);
     const worstResidentRank: number = this.getRank(hospital, worstResident);
@@ -199,7 +198,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
   checkFreeHospitals() {
     const freeHospitals = [];
     for (const hospital of this.group2Agents.values()) {
-      const hospitalCap = hospital.availableSpaces;
+      const hospitalCap = hospital.capacity;
 
       // if hospital in undersubbed and there is someone on the list that is not assigned to them
       if (

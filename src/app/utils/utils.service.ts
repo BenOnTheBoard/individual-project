@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Position } from './position';
-import { Agent } from '../algorithms/interfaces/Agent';
+import { Agent } from '../algorithms/interfaces/Agents';
 
 @Injectable({
   providedIn: 'root',

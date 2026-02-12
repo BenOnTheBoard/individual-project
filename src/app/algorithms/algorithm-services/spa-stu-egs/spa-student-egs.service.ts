@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StudentProjectAllocation } from '../../abstract-classes/StudentProjectAllocation';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
-import { Lecturer } from '../../interfaces/Lecturer';
-import { Project } from '../../interfaces/Project';
-import { Student } from '../../interfaces/Student';
-import { Agent } from '../../interfaces/Agent';
+import { Agent, Student, Project, Lecturer } from '../../interfaces/Agents';
 
 const projectCapacity = 2;
 

@@ -1,4 +1,4 @@
-import { Agent } from './Agent';
+import { Agent } from './Agents';
 
 export interface Step {
   lineNumber: number;

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ExtendedGaleShapley } from '../../abstract-classes/ExtendedGaleShapley';
-import { Agent } from '../../interfaces/Agent';
+import { Agent } from '../../interfaces/Agents';
 
 @Injectable({
   providedIn: 'root',

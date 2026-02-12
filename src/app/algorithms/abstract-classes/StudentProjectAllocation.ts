@@ -1,8 +1,6 @@
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
-import { Student } from '../interfaces/Student';
-import { Project } from '../interfaces/Project';
-import { Lecturer } from '../interfaces/Lecturer';
+import { Student, Project, Lecturer } from '../interfaces/Agents';
 
 export abstract class StudentProjectAllocation extends MatchingAlgorithm {
   group1Agents: Map<String, Student> = new Map();

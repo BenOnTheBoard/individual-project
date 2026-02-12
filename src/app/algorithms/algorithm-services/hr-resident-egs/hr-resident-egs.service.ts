@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ExtendedGaleShapley } from '../../abstract-classes/ExtendedGaleShapley';
-import { Agent } from '../../interfaces/Agent';
-import { Hospital } from '../../interfaces/Hospital';
+import { Agent, Hospital } from '../../interfaces/Agents';
 
-const availableSpaces = 2; //this.getRandomInt(1, this.numberOfAgents-2);
+const capacity = 2; //this.getRandomInt(1, this.numberOfAgents-2);
 
 @Injectable({
   providedIn: 'root',
@@ -35,10 +34,10 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
         name: group2AgentName,
         match: new Array(),
         ranking: new Array(),
-        availableSpaces,
+        capacity,
       });
 
-      this.hospitalCapacity.set(currentLetter, String(availableSpaces));
+      this.hospitalCapacity.set(currentLetter, String(capacity));
     }
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
   }
@@ -69,10 +68,10 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
   breakAssignment(resident: Agent, hospital: Hospital): void {
     this.saveStep(4, {
       '%hospital%': hospital.name,
-      '%capacity%': hospital.availableSpaces,
+      '%capacity%': hospital.capacity,
       '%resident%': resident.name,
     });
-    if (hospital.match.length < hospital.availableSpaces) return;
+    if (hospital.match.length < hospital.capacity) return;
 
     const worstResident = this.getWorstResident(hospital);
     this.saveStep(5, {
@@ -111,7 +110,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     this.changeLineColour(resident, hospital, 'red', 'green');
     this.stylePrefsMutual(resident, hospital, 'green');
 
-    if (hospital.match.length >= hospital.availableSpaces - 1) {
+    if (hospital.match.length >= hospital.capacity - 1) {
       const colourHex = this.colourHexService.getHex('green');
       this.hospitalCapacity.set(
         proposeeChar,
@@ -133,7 +132,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
       '%hospital%': hospital.name,
     });
 
-    if (hospital.match.length < hospital.availableSpaces) return;
+    if (hospital.match.length < hospital.capacity) return;
 
     const worstResident: Agent = this.getWorstResident(hospital);
     const worstResidentRank = this.getRank(hospital, worstResident);

@@ -1,4 +1,4 @@
-import { Agent } from '../interfaces/Agent';
+import { Agent } from '../interfaces/Agents';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
 

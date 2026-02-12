@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatchingAlgorithm } from '../../abstract-classes/MatchingAlgorithm';
-import { Agent } from '../../interfaces/Agent';
+import { Agent, Man } from '../../interfaces/Agents';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
-import { Man } from '../../interfaces/Man';
 
 @Injectable({
   providedIn: 'root',
