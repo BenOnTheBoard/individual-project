@@ -148,7 +148,7 @@ export class PreferenceRendererService {
         x: pos.x + this.#capacityOffsetX,
         y: pos.y + this.#defaultOffsetY,
       };
-      this.textRenderer.drawText(`(${String(capacity)})`, textPos);
+      this.textRenderer.drawText(`(${capacity})`, textPos);
     }
   }
 
