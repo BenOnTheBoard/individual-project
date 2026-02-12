@@ -15,16 +15,12 @@ describe('StableRoomIrvService', () => {
   });
 
   it('test correctness x 1000 (smp-room-irv)', () => {
-    let stable: boolean = true;
+    let stable = true;
     for (let i = 0; i < 1000; i++) {
-      let agentCount: number = Math.floor(Math.random() * 4 + 1) * 2;
-
+      const agentCount = Math.floor(Math.random() * 4 + 1) * 2;
       service.run(agentCount, agentCount, undefined);
-      if (!service.stable) {
-        stable = false;
-      }
+      if (!service.isStable()) stable = false;
     }
-
     expect(stable).toBeTrue();
   });
 });

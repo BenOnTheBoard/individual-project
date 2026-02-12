@@ -49,7 +49,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         capacity: projectCapacity,
       });
 
-      this.hospitalCapacity[currentLetter] = projectCapacity;
+      this.hospitalCapacity.set(currentLetter, String(projectCapacity));
     }
 
     // hospital capacity is placeholder name for project capacity - used so that it is displayed in canvas

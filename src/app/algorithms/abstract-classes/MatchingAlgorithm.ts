@@ -61,6 +61,10 @@ export abstract class MatchingAlgorithm {
     };
   }
 
+  isStable() {
+    return this.#stable;
+  }
+
   createAgent(name: string): Agent {
     return { name, match: new Array(), ranking: new Array() };
   }

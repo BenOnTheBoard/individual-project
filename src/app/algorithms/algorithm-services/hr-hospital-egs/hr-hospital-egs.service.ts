@@ -43,7 +43,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
       this.group2Agents.set(group2AgentName, agent);
       this.freeAgentsOfGroup2.push(agent);
-      this.hospitalCapacity[currentLetter] = availableSpaces;
+      this.hospitalCapacity.set(currentLetter, String(availableSpaces));
     }
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
   }
