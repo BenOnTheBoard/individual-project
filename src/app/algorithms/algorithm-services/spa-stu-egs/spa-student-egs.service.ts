@@ -280,7 +280,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         const projectRank = this.getRank(lecturer.ranking[i], project);
         lecturer.ranking[i].ranking.splice(projectRank, 1);
 
-        this.changePrefsStyle('group1', lecturer.ranking[i], project, 'grey');
+        this.stylePrefs('group1', lecturer.ranking[i], project, 'grey');
 
         // remove p from S_i's preference list
         this.saveStep(17, {
@@ -313,7 +313,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
           const projectRank = this.getRank(student, projectObject);
           student.ranking.splice(projectRank, 1);
 
-          this.changePrefsStyle('group1', student, projectObject, 'grey');
+          this.stylePrefs('group1', student, projectObject, 'grey');
 
           // remove p from S_i's preference list
           this.saveStep(22, {
@@ -418,7 +418,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       this.saveStep(4, { '%lecturer%': projectLecturer.name });
 
       // highlight assinged
-      this.changePrefsStyle('group1', student, preferedProject, 'red');
+      this.stylePrefs('group1', student, preferedProject, 'red');
 
       // provisionally assign student to project
       student.match.push(preferedProject);
@@ -519,7 +519,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       availableStudents = this.availableStudents();
 
       // unhighlight assinged
-      this.changePrefsStyle('group1', student, preferedProject, 'black');
+      this.stylePrefs('group1', student, preferedProject, 'black');
 
       // update viz
       this.updateCapacityVisualization();
@@ -529,7 +529,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     for (const student of this.group1Agents.values()) {
       // if the student has a matching - should
       if (student.match.length == 1) {
-        this.changePrefsStyle('group1', student, student.match[0], 'green');
+        this.stylePrefs('group1', student, student.match[0], 'green');
         this.changeLineColour(student, student.match[0], 'red', 'green');
       }
     }

@@ -187,13 +187,13 @@ export abstract class MatchingAlgorithm {
     return a.filter((subArray) => subArray[1] != target);
   }
 
-  changePrefsStyle(
+  stylePrefs(
     group: 'group1' | 'group2',
     agent: Agent,
     target: Agent,
     colour: string,
   ): void {
-    this.changePrefsStyleByIndex(
+    this.stylePrefsByIndex(
       group,
       agent,
       this.getOriginalRank(agent, target, group),
@@ -201,7 +201,7 @@ export abstract class MatchingAlgorithm {
     );
   }
 
-  changePrefsStyleByIndex(
+  stylePrefsByIndex(
     group: 'group1' | 'group2',
     agent: Agent,
     idx: number,

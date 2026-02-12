@@ -84,8 +84,8 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     const matchRank = this.getRank(hospital, worstResident);
 
     this.removeLine(worstResident, hospital, 'green');
-    this.changePrefsStyle('group1', worstResident, hospital, 'grey');
-    this.changePrefsStyleByIndex('group2', hospital, matchRank, 'grey');
+    this.stylePrefs('group1', worstResident, hospital, 'grey');
+    this.stylePrefsByIndex('group2', hospital, matchRank, 'grey');
 
     this.freeAgents.push(worstResident);
 
@@ -113,8 +113,8 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     const proposeeChar = this.utils.getAsChar(hospital);
 
     this.changeLineColour(resident, hospital, 'red', 'green');
-    this.changePrefsStyle('group1', resident, hospital, 'green');
-    this.changePrefsStyleByIndex(
+    this.stylePrefs('group1', resident, hospital, 'green');
+    this.stylePrefsByIndex(
       'group2',
       hospital,
       this.getRank(hospital, resident),
@@ -163,8 +163,8 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
         '%nextResident%': hospital.ranking[i].name,
       });
 
-      this.changePrefsStyle('group1', hospital.ranking[i], hospital, 'grey');
-      this.changePrefsStyleByIndex(
+      this.stylePrefs('group1', hospital.ranking[i], hospital, 'grey');
+      this.stylePrefsByIndex(
         'group2',
         hospital,
         hospitalRankingClearCounter,

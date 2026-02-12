@@ -85,13 +85,8 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     );
 
     this.removeLine(resident, hospital, 'green');
-    this.changePrefsStyle('group1', resident, hospital, 'grey');
-    this.changePrefsStyleByIndex(
-      'group2',
-      hospital,
-      originalRankOfResident,
-      'red',
-    );
+    this.stylePrefs('group1', resident, hospital, 'grey');
+    this.stylePrefsByIndex('group2', hospital, originalRankOfResident, 'red');
 
     const hospitalChar = this.utils.getAsChar(hospital);
     const colourHex = this.colourHexService.getHex('black');
@@ -104,12 +99,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       '%resident%': resident.name,
     });
 
-    this.changePrefsStyleByIndex(
-      'group2',
-      hospital,
-      originalRankOfResident,
-      'grey',
-    );
+    this.stylePrefsByIndex('group2', hospital, originalRankOfResident, 'grey');
 
     this.saveStep(1);
 
@@ -125,8 +115,8 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     const proposeeChar = this.utils.getAsChar(hospital);
 
     this.changeLineColour(resident, hospital, 'red', 'green');
-    this.changePrefsStyle('group1', resident, hospital, 'green');
-    this.changePrefsStyle('group2', hospital, resident, 'green');
+    this.stylePrefs('group1', resident, hospital, 'green');
+    this.stylePrefs('group2', hospital, resident, 'green');
 
     if (hospital.match.length >= hospital.availableSpaces - 1) {
       const colourHex = this.colourHexService.getHex('green');
@@ -160,8 +150,8 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
         // get Rank of resident in the removde hospitals og rankings
         const rank = this.getOriginalRank(removedHospital, resident, 'group2');
         // grey out
-        this.changePrefsStyleByIndex('group1', resident, i, 'grey');
-        this.changePrefsStyleByIndex('group2', removedHospital, rank, 'grey');
+        this.stylePrefsByIndex('group1', resident, i, 'grey');
+        this.stylePrefsByIndex('group2', removedHospital, rank, 'grey');
         // remove h' and r from each others preferance list
         this.saveStep(8, {
           '%hospital%': removedHospital.name,
@@ -188,8 +178,8 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       const hospitalRank = this.getRank(hospital.ranking[i], hospital);
       this.relevantPrefs.push(this.utils.getAsChar(hospital.ranking[i]));
 
-      this.changePrefsStyle('group1', hospital.ranking[i], hospital, 'grey');
-      this.changePrefsStyleByIndex(
+      this.stylePrefs('group1', hospital.ranking[i], hospital, 'grey');
+      this.stylePrefsByIndex(
         'group2',
         hospital,
         hospitalRankingClearCounter,

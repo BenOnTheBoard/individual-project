@@ -135,8 +135,8 @@ export class StableRoomIrvService extends StableRoomMates {
     }
 
     // grey out elms from visual lists
-    this.changePrefsStyle('group1', agent1, agent2, 'grey');
-    this.changePrefsStyle('group1', agent2, agent1, 'grey');
+    this.stylePrefs('group1', agent1, agent2, 'grey');
+    this.stylePrefs('group1', agent2, agent1, 'grey');
   }
 
   // returns a map of agents that are free - not assigned to anyone
@@ -231,7 +231,7 @@ export class StableRoomIrvService extends StableRoomMates {
 
         // change prevouis highlights back to black
         if (last_person != null) {
-          this.changePrefsStyle('group1', last_person, last_pref, 'black');
+          this.stylePrefs('group1', last_person, last_pref, 'black');
         }
 
         // store prevouis person
@@ -242,7 +242,7 @@ export class StableRoomIrvService extends StableRoomMates {
           'group1',
         )),
           //highlight pref in persons list
-          this.changePrefsStyle('group1', person, person.ranking[0], 'red'));
+          this.stylePrefs('group1', person, person.ranking[0], 'red'));
 
         //person b := first preferance on p's list
         this.saveStep(5, {
@@ -302,7 +302,7 @@ export class StableRoomIrvService extends StableRoomMates {
     }
 
     // fix last highlights number
-    this.changePrefsStyle('group1', last_person, last_pref, 'black');
+    this.stylePrefs('group1', last_person, last_pref, 'black');
 
     let agents_multiple_prefs = this.check_pref_count();
 
@@ -398,7 +398,7 @@ export class StableRoomIrvService extends StableRoomMates {
                 );
 
                 // update value in list
-                this.changePrefsStyle(
+                this.stylePrefs(
                   'group1',
                   person_inner,
                   person_inner.ranking[0],
@@ -464,7 +464,7 @@ export class StableRoomIrvService extends StableRoomMates {
       for (const person_inner of this.group1Agents.values()) {
         if (person_inner.ranking.length == 1) {
           // update value in list
-          this.changePrefsStyle(
+          this.stylePrefs(
             'group1',
             person_inner,
             person_inner.ranking[0],
