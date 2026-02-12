@@ -197,20 +197,7 @@ export abstract class MatchingAlgorithm {
     target: Agent,
     colour: string,
   ): void {
-    this.stylePrefsByIndex(
-      group,
-      agent,
-      this.getOriginalRank(agent, target, group),
-      colour,
-    );
-  }
-
-  stylePrefsByIndex(
-    group: 'group1' | 'group2',
-    agent: Agent,
-    idx: number,
-    colour: string,
-  ) {
+    const idx = this.getOriginalRank(agent, target, group);
     const prefLists =
       group == 'group1' ? this.currentPrefsGroup1 : this.currentPrefsGroup2;
     const agentChar = this.utils.getAsChar(agent);
