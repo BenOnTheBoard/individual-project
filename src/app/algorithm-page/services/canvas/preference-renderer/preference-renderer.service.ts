@@ -69,9 +69,7 @@ export class PreferenceRendererService {
   }
 
   #getOffsetX(group: 'LHS' | 'RHS', agent?: string): number {
-    const isHospital = Boolean(
-      this.#cmd.algorithmSpecificData['hospitalCapacity'],
-    );
+    const isHospital = !!this.#cmd.algorithmSpecificData['hospitalCapacity'];
 
     if (group == 'LHS') {
       return -this.#defaultOffsetX - this.#lineSizes.get(agent);
@@ -142,7 +140,7 @@ export class PreferenceRendererService {
 
     for (let i = 0; i < this.algRetriever.numberOfGroup2Agents; i++) {
       const letter = String.fromCharCode(65 + i);
-      const capacity = capacityMap[letter];
+      const capacity = capacityMap.get(letter);
       const pos = this.layoutService.getPositionOfAgent(`circle${letter}`);
       const textPos = {
         x: pos.x + this.#capacityOffsetX,

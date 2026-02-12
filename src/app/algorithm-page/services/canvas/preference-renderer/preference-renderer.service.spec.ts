@@ -116,7 +116,7 @@ describe('PreferenceRendererService', () => {
 
   it('should draw capacities when algorithmSpecificData has hospitalCapacity', () => {
     mockCommand.algorithmSpecificData = {
-      hospitalCapacity: { A: '3', B: '2' },
+      hospitalCapacity: new Map().set('A', '3').set('B', '2'),
     };
     service.setCurrentCommand(mockCommand);
 
