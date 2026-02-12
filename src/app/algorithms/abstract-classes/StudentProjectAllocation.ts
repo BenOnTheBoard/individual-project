@@ -49,7 +49,7 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
       // add lecture ranking to algorithmspecData for use in canvas display
       lecturerRanking = [];
       for (const student of agent3Rankings) {
-        lecturerRanking.push(this.utils.getLastChar(student.name));
+        lecturerRanking.push(this.utils.getAsChar(student));
       }
       this.algorithmSpecificData['lecturerRanking'].push(lecturerRanking);
       count++;

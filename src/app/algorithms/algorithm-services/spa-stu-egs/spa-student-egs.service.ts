@@ -90,12 +90,12 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         student.match.length == 0
           ? student.ranking.length
           : this.originalPrefsGroup1
-              .get(this.utils.getLastChar(student.name))
-              .indexOf(this.utils.getLastChar(student.match[0].name));
+              .get(this.utils.getAsChar(student))
+              .indexOf(this.utils.getAsChar(student.match[0]));
 
       // current student information
       const studentRanking = this.originalPrefsGroup1.get(
-        this.utils.getLastChar(student.name),
+        this.utils.getAsChar(student),
       );
 
       // loop over more preferable projects
@@ -354,14 +354,14 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       occupancy = this.getLecturerCurrentCapacity(lecturer);
       colour = this.getHexForFullness(occupancy, lecturer.capacity);
       this.algorithmSpecificData['lecturerCapacity'][
-        Number(this.utils.getLastChar(lecturer.name))
+        Number(this.utils.getAsChar(lecturer))
       ] = `{${colour}${lecturer.capacity}}`;
     }
 
     for (const project of this.group2Agents.values()) {
       colour = this.getHexForFullness(project.match.length, project.capacity);
       this.algorithmSpecificData['hospitalCapacity'][
-        this.utils.getLastChar(project.name)
+        this.utils.getAsChar(project)
       ] = `{${colour}${project.capacity}}`;
     }
   }
@@ -396,14 +396,14 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         const project = student.match[0];
         const lecturer = this.getProjectLecturer(project);
 
-        const lectureIndex = Number(this.utils.getLastChar(lecturer.name)) - 1;
+        const lectureIndex = Number(this.utils.getAsChar(lecturer)) - 1;
         const studentIndex = this.group3Agents
           .get(lecturer.name)
           .ranking.indexOf(student);
 
         this.algorithmSpecificData['lecturerRanking'][lectureIndex][
           studentIndex
-        ] = `{${colourHex}${this.utils.getLastChar(student.name)}}`;
+        ] = `{${colourHex}${this.utils.getAsChar(student)}}`;
       }
     }
   }

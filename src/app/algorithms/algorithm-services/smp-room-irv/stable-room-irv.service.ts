@@ -51,10 +51,10 @@ export class StableRoomIrvService extends StableRoomMates {
       // if agent has matches
       if (person.lastProposed) {
         const personMatchIndex = this.originalPrefsGroup1
-          .get(this.utils.getLastChar(person.name))
-          .indexOf(this.utils.getLastChar(person.lastProposed.name));
+          .get(this.utils.getAsChar(person))
+          .indexOf(this.utils.getAsChar(person.lastProposed));
         const personRanking = this.originalPrefsGroup1.get(
-          this.utils.getLastChar(person.name),
+          this.utils.getAsChar(person),
         );
 
         for (let i = personMatchIndex - 1; i >= 0; i--) {
@@ -113,7 +113,7 @@ export class StableRoomIrvService extends StableRoomMates {
 
         this.currentLines = this.removePerson(
           this.currentLines,
-          this.utils.getLastChar(person.name),
+          this.utils.getAsChar(person),
         );
         // add new free person to list
         this.freeAgents.push(person);
@@ -379,7 +379,7 @@ export class StableRoomIrvService extends StableRoomMates {
                 // remove lines starting from person_inner
                 this.currentLines = this.removePerson(
                   this.currentLines,
-                  this.utils.getLastChar(person_inner.name),
+                  this.utils.getAsChar(person_inner),
                 );
 
                 // let person_inner propose to their last remaining person
@@ -388,12 +388,12 @@ export class StableRoomIrvService extends StableRoomMates {
                 // remove lines going to their new proposal
                 this.currentLines = this.removeTarget(
                   this.currentLines,
-                  this.utils.getLastChar(person_inner.lastProposed.name),
+                  this.utils.getAsChar(person_inner.lastProposed),
                 );
                 // with lines are green early, without overlapping reds
                 this.currentLines = this.removePerson(
                   this.currentLines,
-                  this.utils.getLastChar(person_inner.lastProposed.name),
+                  this.utils.getAsChar(person_inner.lastProposed),
                 );
 
                 // update value in list
@@ -472,12 +472,12 @@ export class StableRoomIrvService extends StableRoomMates {
 
           this.currentLines = this.removePerson(
             this.currentLines,
-            this.utils.getLastChar(person_inner.name),
+            this.utils.getAsChar(person_inner),
           );
 
           this.currentLines = this.removeTarget(
             this.currentLines,
-            this.utils.getLastChar(person_inner.lastProposed.name),
+            this.utils.getAsChar(person_inner.lastProposed),
           );
 
           person_inner.lastProposed = person_inner.ranking.slice(0)[0];

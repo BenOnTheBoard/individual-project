@@ -65,7 +65,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     for (let i = agentRank + 1; i < proposee.ranking.length; i++) {
       const reject = proposee.ranking[i];
       const proposeePosition = this.getRank(reject, proposee);
-      this.relevantPrefs.push(this.utils.getLastChar(reject.name));
+      this.relevantPrefs.push(this.utils.getAsChar(reject));
 
       this.saveStep(9, {
         '%nextWorstMan%': reject.name,

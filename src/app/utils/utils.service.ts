@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Position } from './position';
+import { Agent } from '../algorithms/interfaces/Agent';
 
 @Injectable({
   providedIn: 'root',
@@ -31,8 +32,12 @@ export class UtilsService {
     return [...list];
   }
 
-  getLastChar(name: string) {
+  getLastChar(name: string): string {
     return name.slice(name.length - 1);
+  }
+
+  getAsChar(agent: Agent): string {
+    return this.getLastChar(agent.name);
   }
 
   polarToCartesian(

@@ -100,11 +100,11 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     worstResident.match.splice(0, 1);
     worstResident.ranking.splice(this.getRank(worstResident, hospital), 1);
 
-    const hospitalLastChar = this.utils.getLastChar(hospital.name);
+    const hospitalChar = this.utils.getAsChar(hospital);
     const currentHospitalCapacity: string =
-      this.algorithmSpecificData['hospitalCapacity'][hospitalLastChar];
+      this.algorithmSpecificData['hospitalCapacity'][hospitalChar];
 
-    this.algorithmSpecificData['hospitalCapacity'][hospitalLastChar] = String(
+    this.algorithmSpecificData['hospitalCapacity'][hospitalChar] = String(
       currentHospitalCapacity,
     ).charAt(currentHospitalCapacity.length - 2);
 
@@ -116,7 +116,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
 
   provisionallyAssign(resident: Agent, hospital: Hospital) {
     // provisionally assign r to h;
-    const proposeeLastChar = this.utils.getLastChar(hospital.name);
+    const proposeeChar = this.utils.getAsChar(hospital);
 
     this.changeLineColour(resident, hospital, 'red', 'green');
     this.changePrefsStyle('group1', resident, hospital, 'green');
@@ -129,8 +129,8 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
 
     if (hospital.match.length >= hospital.availableSpaces - 1) {
       const colourHex = this.colourHexService.getHex('green');
-      this.algorithmSpecificData['hospitalCapacity'][proposeeLastChar] =
-        `{${colourHex}${this.algorithmSpecificData['hospitalCapacity'][proposeeLastChar]}}`;
+      this.algorithmSpecificData['hospitalCapacity'][proposeeChar] =
+        `{${colourHex}${this.algorithmSpecificData['hospitalCapacity'][proposeeChar]}}`;
     }
 
     this.saveStep(7, {
@@ -165,7 +165,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
         hospital.ranking[i],
         hospital,
       );
-      this.relevantPrefs.push(this.utils.getLastChar(hospital.ranking[i].name));
+      this.relevantPrefs.push(this.utils.getAsChar(hospital.ranking[i]));
 
       this.saveStep(10, {
         '%hospital%': hospital.name,

@@ -66,11 +66,7 @@ export abstract class MatchingAlgorithm {
   }
 
   createLine(from: Agent, to: Agent, colour: string): [string, string, string] {
-    return [
-      this.utils.getLastChar(from.name),
-      this.utils.getLastChar(to.name),
-      colour,
-    ];
+    return [this.utils.getAsChar(from), this.utils.getAsChar(to), colour];
   }
 
   addLine(from: Agent, to: Agent, colour: string): void {
@@ -127,8 +123,8 @@ export abstract class MatchingAlgorithm {
   getRankings(agentMap: Map<String, Agent>): Map<String, Array<String>> {
     return new Map(
       Array.from(agentMap.values()).map((agent) => [
-        this.utils.getLastChar(agent.name),
-        agent.ranking.map((m) => this.utils.getLastChar(m.name)),
+        this.utils.getAsChar(agent),
+        agent.ranking.map((m) => this.utils.getAsChar(m)),
       ]),
     );
   }
@@ -171,8 +167,8 @@ export abstract class MatchingAlgorithm {
   ) {
     const originalPrefs =
       group == 'group1' ? this.originalPrefsGroup1 : this.originalPrefsGroup2;
-    const currentChar = this.utils.getLastChar(currentAgent.name);
-    const targetChar = this.utils.getLastChar(agentToFind.name);
+    const currentChar = this.utils.getAsChar(currentAgent);
+    const targetChar = this.utils.getAsChar(agentToFind);
     return originalPrefs.get(currentChar).indexOf(targetChar);
   }
 
@@ -213,7 +209,7 @@ export abstract class MatchingAlgorithm {
   ) {
     const prefLists =
       group == 'group1' ? this.currentPrefsGroup1 : this.currentPrefsGroup2;
-    const agentChar = this.utils.getLastChar(agent.name);
+    const agentChar = this.utils.getAsChar(agent);
     const prefs = prefLists.get(agentChar);
     const currentToken = prefs[position];
     const nameIdx = currentToken.includes('#')
