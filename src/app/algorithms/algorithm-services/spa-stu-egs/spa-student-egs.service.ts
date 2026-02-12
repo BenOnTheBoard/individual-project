@@ -351,7 +351,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
   // update all the free agents each iteration
   updateFreeList() {
-    const freeAgentsList: Array<Agent> = [];
+    const freeAgentsList: Array<Student> = [];
     for (const student of this.group1Agents.values()) {
       if (student.match.length <= 0) {
         freeAgentsList.push(student);

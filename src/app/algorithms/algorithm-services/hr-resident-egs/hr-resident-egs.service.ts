@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ExtendedGaleShapley } from '../../abstract-classes/ExtendedGaleShapley';
-import { Agent, Hospital } from '../../interfaces/Agents';
+import { Resident, Hospital } from '../../interfaces/Agents';
 
 const capacity = 2; //this.getRandomInt(1, this.numberOfAgents-2);
 
@@ -48,8 +48,8 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  getWorstResident(hospital: Hospital): Agent {
-    const positionMap: Map<number, Agent> = new Map();
+  getWorstResident(hospital: Hospital): Resident {
+    const positionMap: Map<number, Resident> = new Map();
 
     for (const resident of hospital.match) {
       positionMap.set(this.getRank(hospital, resident), resident);
@@ -60,12 +60,12 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     return positionMap.get(Math.max(...Array.from(positionMap.keys())));
   }
 
-  getNextProposee(hospital: Hospital): Agent {
+  getNextProposee(hospital: Hospital): Resident {
     // return first hospital on r's list
     return hospital.ranking[0];
   }
 
-  breakAssignment(resident: Agent, hospital: Hospital): void {
+  breakAssignment(resident: Resident, hospital: Hospital): void {
     this.saveStep(4, {
       '%hospital%': hospital.name,
       '%capacity%': hospital.capacity,
@@ -103,7 +103,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     });
   }
 
-  provisionallyAssign(resident: Agent, hospital: Hospital) {
+  provisionallyAssign(resident: Resident, hospital: Hospital) {
     // provisionally assign r to h;
     const proposeeChar = this.utils.getAsChar(hospital);
 
@@ -126,7 +126,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     hospital.match.push(resident);
   }
 
-  removeRuledOutPrefs(resident: Agent, hospital: Hospital): void {
+  removeRuledOutPrefs(resident: Resident, hospital: Hospital): void {
     this.saveStep(8, {
       '%resident%': resident.name,
       '%hospital%': hospital.name,
@@ -134,7 +134,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
 
     if (hospital.match.length < hospital.capacity) return;
 
-    const worstResident: Agent = this.getWorstResident(hospital);
+    const worstResident = this.getWorstResident(hospital);
     const worstResidentRank = this.getRank(hospital, worstResident);
 
     this.saveStep(9, {

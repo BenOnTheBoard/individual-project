@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ExtendedGaleShapley } from '../../abstract-classes/ExtendedGaleShapley';
-import { Agent, Hospital } from '../../interfaces/Agents';
+import { Resident, Hospital } from '../../interfaces/Agents';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
 
 @Injectable({
@@ -14,12 +14,12 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
   hospitalCapacity: Map<string, string> = new Map();
 
-  freeAgentsOfGroup2: Array<Agent> = new Array();
+  freeAgentsOfGroup2: Array<Hospital> = new Array();
 
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const group1AgentName = this.group1Name + i;
-      const agent: Agent = {
+      const agent: Resident = {
         name: group1AgentName,
         match: new Array(),
         ranking: new Array(),
@@ -53,15 +53,15 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  getNextProposee(hospital: Hospital): Agent | null {
+  getNextProposee(hospital: Hospital): Resident | null {
     for (const proposee of hospital.ranking) {
       if (proposee.match[0] != hospital) return proposee;
     }
     return null;
   }
 
-  getWorstResident(hospital: Hospital): Agent {
-    const positionMap: Map<number, Agent> = new Map();
+  getWorstResident(hospital: Hospital): Resident {
+    const positionMap: Map<number, Resident> = new Map();
 
     for (const resident of hospital.match) {
       positionMap.set(this.getRank(hospital, resident), resident);
@@ -72,7 +72,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     return positionMap.get(Math.max(...Array.from(positionMap.keys())));
   }
 
-  breakAssignment(resident: Agent, hospital): void {
+  breakAssignment(resident: Resident, hospital: Hospital): void {
     this.removeLine(resident, hospital, 'green');
     this.stylePrefs('group1', resident, hospital, 'grey');
     this.stylePrefs('group2', hospital, resident, 'red');
@@ -103,7 +103,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     resident.ranking.splice(rankOfHospital, 1);
   }
 
-  provisionallyAssign(resident: Agent, hospital: Hospital) {
+  provisionallyAssign(resident: Resident, hospital: Hospital) {
     // provisionally assign r to h;
     const proposeeChar = this.utils.getAsChar(hospital);
 
@@ -122,7 +122,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     hospital.match.push(resident);
   }
 
-  removeRuledOutPrefs(resident: Agent, hospital: Hospital): void {
+  removeRuledOutPrefs(resident: Resident, hospital: Hospital): void {
     // given h and r - remove h' of h on r's list
     const hospitalRank = this.getRank(resident, hospital);
 
@@ -151,10 +151,10 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     }
   }
 
-  removeRuledOutPrefsOld(resident: Agent, hospital: Hospital): void {
+  removeRuledOutPrefsOld(resident: Resident, hospital: Hospital): void {
     if (hospital.match.length < hospital.capacity) return;
 
-    const worstResident: Agent = this.getWorstResident(hospital);
+    const worstResident: Resident = this.getWorstResident(hospital);
     const worstResidentRank: number = this.getRank(hospital, worstResident);
 
     // for each successor h' of h on r's list
@@ -220,7 +220,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     // h's list contains a a RESIDENT r not assigned to h
     while (this.freeAgentsOfGroup2.length > 0) {
       // get first hospital on list
-      const currentHospital = this.freeAgentsOfGroup2[0] as Hospital;
+      const currentHospital = this.freeAgentsOfGroup2[0];
 
       // "While some hospital h is - undersubscibed,
       // and has a resident r on h's preferance list that is no assigned to h",
@@ -232,7 +232,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       ) {
         this.freeAgentsOfGroup2.shift();
       } else {
-        const proposee: Agent = this.getNextProposee(currentHospital);
+        const proposee = this.getNextProposee(currentHospital);
 
         // a RESIDENT r that is not assigned to h, but is on its pref list
         // "r := first resident on h's prefernace list not assigned to h",
