@@ -13,7 +13,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
   group2Agents: Map<String, Hospital> = new Map();
 
-  hospitalCapacity: Map<string, number> = new Map();
+  hospitalCapacity: Map<string, string> = new Map();
 
   freeAgentsOfGroup2: Array<Agent> = new Array();
 
@@ -90,8 +90,10 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
     const hospitalChar = this.utils.getAsChar(hospital);
     const colourHex = this.colourHexService.getHex('black');
-    this.algorithmSpecificData['hospitalCapacity'][hospitalChar] =
-      `{${colourHex}${String(hospital.availableSpaces)}}`;
+    this.hospitalCapacity.set(
+      hospitalChar,
+      `{${colourHex}${String(hospital.availableSpaces)}}`,
+    );
 
     // unassign r and h'
     this.saveStep(5, {
@@ -120,8 +122,10 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
     if (hospital.match.length >= hospital.availableSpaces - 1) {
       const colourHex = this.colourHexService.getHex('green');
-      this.algorithmSpecificData['hospitalCapacity'][proposeeChar] =
-        `{${colourHex}${String(hospital.availableSpaces)}}`;
+      this.hospitalCapacity.set(
+        proposeeChar,
+        `{${colourHex}${String(hospital.availableSpaces)}}`,
+      );
     }
 
     resident.match[0] = hospital;

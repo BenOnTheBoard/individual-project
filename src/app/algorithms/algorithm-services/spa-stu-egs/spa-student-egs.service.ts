@@ -20,7 +20,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   group2Agents: Map<String, Project> = new Map();
   group3Agents: Map<String, Lecturer> = new Map();
 
-  hospitalCapacity: Map<string, number> = new Map();
+  hospitalCapacity: Map<string, string> = new Map();
   lecturerCapacitys: Map<String, number> = new Map();
 
   numberLectures: number;
@@ -345,9 +345,10 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
     for (const project of this.group2Agents.values()) {
       colour = this.getHexForFullness(project.match.length, project.capacity);
-      this.algorithmSpecificData['hospitalCapacity'][
-        this.utils.getAsChar(project)
-      ] = `{${colour}${project.capacity}}`;
+      this.hospitalCapacity.set(
+        this.utils.getAsChar(project),
+        `{${colour}${project.capacity}}`,
+      );
     }
   }
 
