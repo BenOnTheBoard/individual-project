@@ -204,20 +204,20 @@ export abstract class MatchingAlgorithm {
   changePrefsStyleByIndex(
     group: 'group1' | 'group2',
     agent: Agent,
-    position: number,
+    idx: number,
     colour: string,
   ) {
     const prefLists =
       group == 'group1' ? this.currentPrefsGroup1 : this.currentPrefsGroup2;
     const agentChar = this.utils.getAsChar(agent);
     const prefs = prefLists.get(agentChar);
-    const currentToken = prefs[position];
+    const currentToken = prefs[idx];
     const nameIdx = currentToken.includes('#')
       ? currentToken.length - 2 // there's an extra closing bracket
       : currentToken.length - 1;
     const currentAgent = currentToken.charAt(nameIdx);
     const colourHex = this.colourHexService.getHex(colour);
-    prefs[position] = `{${colourHex}${currentAgent}}`;
+    prefs[idx] = `{${colourHex}${currentAgent}}`;
   }
 
   isBlockingPair(currentAgent: Agent, targetAgent: Agent): boolean {
@@ -232,9 +232,9 @@ export abstract class MatchingAlgorithm {
       const agentMatches = allMatches.get(g2Agent);
       if (agentMatches.length == 0) continue;
 
-      const lastAgentPosition = this.getLastMatch(g2Agent, agentMatches);
+      const lastAgentRank = this.getLastMatch(g2Agent, agentMatches);
 
-      for (const g1Agent of g2Agent.ranking.slice(0, lastAgentPosition)) {
+      for (const g1Agent of g2Agent.ranking.slice(0, lastAgentRank)) {
         if (agentMatches.includes(g1Agent.name)) continue;
         if (this.isBlockingPair(g2Agent, g1Agent)) return false;
       }
@@ -246,9 +246,9 @@ export abstract class MatchingAlgorithm {
     let furthestIndex = 0;
     for (const matchName of agentMatches) {
       const matchAgent = this.group1Agents.get(matchName);
-      const matchPosition = this.getRank(currentAgent, matchAgent);
-      if (matchPosition > furthestIndex) {
-        furthestIndex = matchPosition;
+      const matchRank = this.getRank(currentAgent, matchAgent);
+      if (matchRank > furthestIndex) {
+        furthestIndex = matchRank;
       }
     }
     return furthestIndex;

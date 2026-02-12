@@ -107,7 +107,6 @@ export class GsStableMarriageService extends MatchingAlgorithm {
           '%man%': man.name,
           '%match%': woman.match[0].name,
         });
-        const manName = man.name;
         this.changePrefsStyleByIndex(
           'group2',
           woman,
@@ -120,14 +119,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
           '%match%': woman.match[0].name,
         });
 
-        if (
-          woman.ranking.findIndex(
-            (man: { name: string }) => man.name == woman.match[0].name,
-          ) >
-          woman.ranking.findIndex(
-            (man: { name: string }) => man.name == manName,
-          )
-        ) {
+        if (this.getRank(woman, woman.match[0]) > this.getRank(woman, man)) {
           this.changePrefsStyleByIndex(
             'group2',
             woman,

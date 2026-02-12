@@ -109,8 +109,8 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
     if (this.SRstable) {
       for (const agent of Array.from(this.group1Agents.values())) {
         const agent1Rankings = Array.from(new Map(this.group1Agents).values());
-        const selfIndex = agent1Rankings.indexOf(agent);
-        agent1Rankings.splice(selfIndex, 1);
+        const selfRank = agent1Rankings.indexOf(agent);
+        agent1Rankings.splice(selfRank, 1);
 
         this.utils.shuffle(agent1Rankings);
         this.group1Agents.get(agent.name).ranking = agent1Rankings;

@@ -12,7 +12,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     }
 
     const match = proposee.match[0];
-    const matchPosition = this.getRank(proposee, match);
+    const matchRank = this.getRank(proposee, match);
 
     if (
       match.ranking.filter((agent) => agent.match[0] != currentAgent).length >
@@ -25,14 +25,14 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
 
     this.removeLine(match, proposee, 'green');
     this.changePrefsStyle('group1', match, proposee, 'grey');
-    this.changePrefsStyleByIndex('group2', proposee, matchPosition, 'grey');
+    this.changePrefsStyleByIndex('group2', proposee, matchRank, 'grey');
 
     this.saveStep(5, {
       '%woman%': proposee.name,
       '%currentPartner%': match.name,
     });
 
-    proposee.ranking.splice(matchPosition, 1);
+    proposee.ranking.splice(matchRank, 1);
     match.ranking.splice(this.getRank(match, proposee), 1);
   }
 
@@ -64,7 +64,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     const agentRank = this.getRank(proposee, agent);
     for (let i = agentRank + 1; i < proposee.ranking.length; i++) {
       const reject = proposee.ranking[i];
-      const proposeePosition = this.getRank(reject, proposee);
+      const proposeeRank = this.getRank(reject, proposee);
       this.relevantPrefs.push(this.utils.getAsChar(reject));
 
       this.saveStep(9, {
@@ -80,7 +80,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
         '%woman%': proposee.name,
       });
 
-      reject.ranking.splice(proposeePosition, 1);
+      reject.ranking.splice(proposeeRank, 1);
       proposee.ranking.splice(i, 1);
       i--;
 

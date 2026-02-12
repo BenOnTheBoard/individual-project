@@ -50,7 +50,7 @@ export class StableRoomIrvService extends StableRoomMates {
     for (const person of this.group1Agents.values()) {
       // if agent has matches
       if (person.lastProposed) {
-        const personMatchIndex = this.getOriginalRank(
+        const matchRank = this.getOriginalRank(
           person,
           person.lastProposed,
           'group1',
@@ -59,26 +59,25 @@ export class StableRoomIrvService extends StableRoomMates {
           this.utils.getAsChar(person),
         );
 
-        for (let i = personMatchIndex - 1; i >= 0; i--) {
-          // get better person
+        for (let i = matchRank - 1; i >= 0; i--) {
           const betterPersonName = Number(personRanking[i]);
           const betterPerson = this.group1Agents.get(
             this.group1Name + String(betterPersonName),
           );
-          // current person index within better persons ranking
-          const currentPersonIndex = this.getOriginalRank(
+
+          const currentRank = this.getOriginalRank(
             betterPerson,
             person,
             'group1',
           );
-          // betterPerson matchPosition
-          const matchPosition = this.getOriginalRank(
+
+          const matchRank = this.getOriginalRank(
             betterPerson,
             betterPerson.lastProposed,
             'group1',
           );
 
-          if (currentPersonIndex < matchPosition) {
+          if (currentRank < matchRank) {
             return false;
           }
         }
@@ -125,14 +124,14 @@ export class StableRoomIrvService extends StableRoomMates {
   }
 
   delete_pair(agent1, agent2) {
-    const agent1index = agent2.ranking.indexOf(agent1);
-    if (agent1index != -1) {
-      agent2.ranking.splice(agent1index, 1);
+    const agent1Rank = this.getRank(agent2, agent1);
+    if (agent1Rank != -1) {
+      agent2.ranking.splice(agent1Rank, 1);
     }
 
-    const agent2index = agent1.ranking.indexOf(agent2);
-    if (agent2index != -1) {
-      agent1.ranking.splice(agent2index, 1);
+    const agent2Rank = this.getRank(agent1, agent2);
+    if (agent2Rank != -1) {
+      agent1.ranking.splice(agent2Rank, 1);
     }
 
     // grey out elms from visual lists

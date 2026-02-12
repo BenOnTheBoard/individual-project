@@ -75,10 +75,10 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
   breakAssignment(resident: Agent, hospital): void {
     // get pos in each rankings lists to remove later
-    const matchPosition_resident = this.getRank(hospital, resident);
-    const matchPosition_hospital = this.getRank(resident, hospital);
+    const rankOfResident = this.getRank(hospital, resident);
+    const rankOfHospital = this.getRank(resident, hospital);
 
-    const matchPosition_resident_original = this.getOriginalRank(
+    const originalRankOfResident = this.getOriginalRank(
       hospital,
       resident,
       'group2',
@@ -89,7 +89,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     this.changePrefsStyleByIndex(
       'group2',
       hospital,
-      matchPosition_resident_original,
+      originalRankOfResident,
       'red',
     );
 
@@ -107,25 +107,17 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     this.changePrefsStyleByIndex(
       'group2',
       hospital,
-      matchPosition_resident_original,
+      originalRankOfResident,
       'grey',
     );
 
     this.saveStep(1);
 
-    // remove hospital from resident match
+    // remove
     resident.match.splice(0, 1);
-    // remove resident from hospital match
-    hospital.match.splice(
-      hospital.match.findIndex(
-        (agent: { name: string }) => agent.name == resident.name,
-      ),
-      1,
-    );
-
-    // REMOVE EACH OTHER FROM RANKING LIST
-    hospital.ranking.splice(matchPosition_resident, 1); // HOSPITAL
-    resident.ranking.splice(matchPosition_hospital, 1); //RESIDENT
+    hospital.match.splice(this.getRank(hospital, resident), 1);
+    hospital.ranking.splice(rankOfResident, 1);
+    resident.ranking.splice(rankOfHospital, 1);
   }
 
   provisionallyAssign(resident: Agent, hospital: Hospital) {
@@ -148,29 +140,28 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
   removeRuledOutPrefs(resident: Agent, hospital: Hospital): void {
     // given h and r - remove h' of h on r's list
-    const hospitalPosition: number = this.getRank(resident, hospital);
+    const hospitalRank = this.getRank(resident, hospital);
 
-    if (hospitalPosition + 1 < resident.ranking.length) {
+    if (hospitalRank + 1 < resident.ranking.length) {
       // for each successor h' of h on r's list
       this.saveStep(7, {
         '%resident%': resident.name,
         '%hospital%': hospital.name,
       });
 
-      for (let i = hospitalPosition + 1; i < resident.ranking.length; i++) {
+      for (let i = hospitalRank + 1; i < resident.ranking.length; i++) {
         const removedHospital = resident.ranking[i];
-        const residentIndex = this.getRank(removedHospital, resident);
+        const residentRank = this.getRank(removedHospital, resident);
 
-        removedHospital.ranking.splice(residentIndex, 1);
+        removedHospital.ranking.splice(residentRank, 1);
 
         // remove hsopital from resident
         resident.ranking.splice(i, 1);
-        // get index of resident in the removde hospitals og rankings
-        const pos = this.getOriginalRank(removedHospital, resident, 'group2');
-        //  grey out hos from res
+        // get Rank of resident in the removde hospitals og rankings
+        const rank = this.getOriginalRank(removedHospital, resident, 'group2');
+        // grey out
         this.changePrefsStyleByIndex('group1', resident, i, 'grey');
-        // grey out res from hos
-        this.changePrefsStyleByIndex('group2', removedHospital, pos, 'grey');
+        this.changePrefsStyleByIndex('group2', removedHospital, rank, 'grey');
         // remove h' and r from each others preferance list
         this.saveStep(8, {
           '%hospital%': removedHospital.name,
@@ -184,8 +175,8 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
     if (hospital.match.length < hospital.availableSpaces) return;
 
     const worstResident: Agent = this.getWorstResident(hospital);
-    const worstResidentPosition: number = this.getRank(hospital, worstResident);
-    let hospitalRankingClearCounter: number = worstResidentPosition + 1;
+    const worstResidentRank: number = this.getRank(hospital, worstResident);
+    let hospitalRankingClearCounter: number = worstResidentRank + 1;
 
     // for each successor h' of h on r's list
     this.saveStep(7, {
@@ -193,11 +184,8 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       '%hospital%': hospital.name,
     });
 
-    for (let i = worstResidentPosition + 1; i < hospital.ranking.length; i++) {
-      const hospitalPosition: number = this.getRank(
-        hospital.ranking[i],
-        hospital,
-      );
+    for (let i = worstResidentRank + 1; i < hospital.ranking.length; i++) {
+      const hospitalRank = this.getRank(hospital.ranking[i], hospital);
       this.relevantPrefs.push(this.utils.getAsChar(hospital.ranking[i]));
 
       this.changePrefsStyle('group1', hospital.ranking[i], hospital, 'grey');
@@ -214,7 +202,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
         '%resident%': hospital.ranking[i].name,
       });
 
-      hospital.ranking[i].ranking.splice(hospitalPosition, 1);
+      hospital.ranking[i].ranking.splice(hospitalRank, 1);
       hospital.ranking.splice(i, 1);
       i--;
       hospitalRankingClearCounter++;
