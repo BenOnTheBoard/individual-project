@@ -23,9 +23,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
       this.freeAgents.push(match);
     }
 
-    const greenLine = this.createLine(match, proposee, 'green');
-    this.currentLines = this.removeSubArray(this.currentLines, greenLine);
-
+    this.removeLine(match, proposee, 'green');
     this.changePrefsStyle('group1', match, proposee, 'grey');
     this.changePrefsStyleByIndex('group2', proposee, matchPosition, 'grey');
 
@@ -39,12 +37,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
   }
 
   provisionallyAssign(agent: Agent, proposee: Agent) {
-    const redLine = this.createLine(agent, proposee, 'red');
-    const greenLine = this.createLine(agent, proposee, 'green');
-
-    this.currentLines = this.removeSubArray(this.currentLines, redLine);
-    this.currentLines.push(greenLine);
-
+    this.changeLineColour(agent, proposee, 'red', 'green');
     this.changePrefsStyle('group1', agent, proposee, 'green');
     this.changePrefsStyleByIndex(
       'group2',

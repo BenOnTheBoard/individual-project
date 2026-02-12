@@ -58,11 +58,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
       this.selectedAgents.push(woman.name.substring(5));
       this.relevantPrefs.push(woman.name.substring(5));
 
-      const redLine = [man.name.substring(3), woman.name.substring(5), 'red'];
-      this.currentLines.push(redLine);
-
-      let greenLine = [];
-
+      this.addLine(man, woman, 'red');
       this.changePrefsStyleByIndex(
         'group2',
         woman,
@@ -101,9 +97,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
           'green',
         );
 
-        this.currentLines = this.removeSubArray(this.currentLines, redLine);
-        greenLine = [man.name.substring(3), woman.name.substring(5), 'green'];
-        this.currentLines.push(greenLine);
+        this.changeLineColour(man, woman, 'red', 'green');
 
         this.saveStep(5, { '%woman%': woman.name, '%man%': man.name });
       } else {
@@ -153,20 +147,13 @@ export class GsStableMarriageService extends MatchingAlgorithm {
             'green',
           );
 
-          this.currentLines = this.removeSubArray(this.currentLines, redLine);
-          this.currentLines = this.removeSubArray(this.currentLines, [
-            woman.match[0].name.substring(3),
-            woman.name.substring(5),
-            'green',
-          ]);
+          this.changeLineColour(man, woman, 'red', 'green');
+          this.removeLine(woman.match[0], woman, 'green');
 
           const match: string = woman.match[0].name;
 
           this.freeAgents.push(woman.match[0]);
           woman.match[0] = man;
-
-          greenLine = [man.name.substring(3), woman.name.substring(5), 'green'];
-          this.currentLines.push(greenLine);
 
           this.changePrefsStyleByIndex(
             'group1',
@@ -194,7 +181,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
             this.getRank(woman, man),
             'grey',
           );
-          this.currentLines = this.removeSubArray(this.currentLines, redLine);
+          this.removeLine(man, woman, 'red');
           this.saveStep(9, {
             '%woman%': woman.name,
             '%man%': man.name,

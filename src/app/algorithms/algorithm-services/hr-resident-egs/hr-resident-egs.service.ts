@@ -83,12 +83,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
 
     const matchPosition = this.getRank(hospital, worstResident);
 
-    this.currentLines = this.removeSubArray(this.currentLines, [
-      this.utils.getLastChar(worstResident.name),
-      this.utils.getLastChar(hospital.name),
-      'green',
-    ]);
-
+    this.removeLine(worstResident, hospital, 'green');
     this.changePrefsStyle('group1', worstResident, hospital, 'grey');
     this.changePrefsStyleByIndex('group2', hospital, matchPosition, 'grey');
 
@@ -121,18 +116,9 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
 
   provisionallyAssign(resident: Agent, hospital: Hospital) {
     // provisionally assign r to h;
-    const agentLastChar = this.utils.getLastChar(resident.name);
     const proposeeLastChar = this.utils.getLastChar(hospital.name);
 
-    this.currentLines = this.removeSubArray(this.currentLines, [
-      agentLastChar,
-      proposeeLastChar,
-      'red',
-    ]);
-
-    const greenLine = [agentLastChar, proposeeLastChar, 'green'];
-    this.currentLines.push(greenLine);
-
+    this.changeLineColour(resident, hospital, 'red', 'green');
     this.changePrefsStyle('group1', resident, hospital, 'green');
     this.changePrefsStyleByIndex(
       'group2',

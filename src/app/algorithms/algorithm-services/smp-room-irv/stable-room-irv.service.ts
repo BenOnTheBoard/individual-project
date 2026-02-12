@@ -203,8 +203,6 @@ export class StableRoomIrvService extends StableRoomMates {
       this.selectedAgents = [];
       this.relevantPrefs = [];
 
-      let redLine = ['1', 'B', 'red'];
-
       //loop through each agent in the list
       for (const person of free_agents.values()) {
         //While some person p is free (not assigned to someone)
@@ -252,13 +250,7 @@ export class StableRoomIrvService extends StableRoomMates {
         });
 
         const pref = person.ranking[0];
-
-        redLine = [
-          this.utils.getLastChar(person.name),
-          this.utils.getLastChar(pref.name),
-          'red',
-        ];
-        this.currentLines.push(redLine);
+        this.addLine(person, pref, 'red');
 
         // update free agents - remove first elm
         this.freeAgents.shift();
@@ -411,16 +403,8 @@ export class StableRoomIrvService extends StableRoomMates {
                   person_inner.ranking[0],
                   'green',
                 );
+                this.addLine(person_inner, person_inner.lastProposed, 'green');
 
-                // draw line to new proposal from, to, colour
-                const line = [
-                  this.utils.getLastChar(person_inner.name),
-                  this.utils.getLastChar(person_inner.lastProposed.name),
-                  'green',
-                ];
-                this.currentLines.push(line);
-
-                // add person to finished person list
                 finished_people.push(person);
               }
             }
@@ -497,12 +481,7 @@ export class StableRoomIrvService extends StableRoomMates {
           );
 
           person_inner.lastProposed = person_inner.ranking.slice(0)[0];
-          const line = [
-            this.utils.getLastChar(person_inner.name),
-            this.utils.getLastChar(person_inner.lastProposed.name),
-            'green',
-          ];
-          this.currentLines.push(line);
+          this.addLine(person_inner, person_inner.lastProposed, 'green');
         }
       }
     }

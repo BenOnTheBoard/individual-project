@@ -250,11 +250,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     const studentIndex = project.match.indexOf(student);
     project.match.splice(studentIndex, 1);
 
-    this.currentLines = this.removeSubArray(this.currentLines, [
-      this.utils.getLastChar(student.name),
-      this.utils.getLastChar(project.name),
-      'red',
-    ]);
+    this.removeLine(student, project, 'red');
     this.updateCapacityVisualization();
     this.updateFreeList();
   }
@@ -413,9 +409,6 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   }
 
   match(): AlgorithmData {
-    let redLine = [];
-    let greenLine = [];
-
     this.saveStep(1);
 
     let availableStudents = this.availableStudents();
@@ -448,12 +441,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
       this.updateFreeList();
 
-      redLine = [
-        this.utils.getLastChar(student.name),
-        this.utils.getLastChar(preferedProject.name),
-        'red',
-      ];
-      this.currentLines.push(redLine);
+      this.addLine(student, preferedProject, 'red');
       // provisionally assign s to p
       this.updateCapacityVisualization();
       this.saveStep(5, {
@@ -557,18 +545,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       // if the student has a matching - should
       if (student.match.length == 1) {
         this.changePrefsStyle('group1', student, student.match[0], 'green');
-
-        greenLine = [
-          this.utils.getLastChar(student.name),
-          this.utils.getLastChar(student.match[0].name),
-          'green',
-        ];
-        this.currentLines.push(greenLine);
-        this.currentLines = this.removeSubArray(this.currentLines, [
-          this.utils.getLastChar(student.name),
-          this.utils.getLastChar(student.match[0].name),
-          'red',
-        ]);
+        this.changeLineColour(student, student.match[0], 'red', 'green');
       }
     }
 

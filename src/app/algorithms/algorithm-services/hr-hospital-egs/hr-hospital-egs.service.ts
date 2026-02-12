@@ -84,12 +84,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       'group2',
     );
 
-    this.currentLines = this.removeSubArray(this.currentLines, [
-      this.utils.getLastChar(resident.name),
-      this.utils.getLastChar(hospital.name),
-      'green',
-    ]);
-
+    this.removeLine(resident, hospital, 'green');
     this.changePrefsStyle('group1', resident, hospital, 'grey');
     this.changePrefsStyleByIndex(
       'group2',
@@ -135,18 +130,9 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
   provisionallyAssign(resident: Agent, hospital: Hospital) {
     // provisionally assign r to h;
-    const agentLastChar = this.utils.getLastChar(resident.name);
     const proposeeLastChar = this.utils.getLastChar(hospital.name);
 
-    this.currentLines = this.removeSubArray(this.currentLines, [
-      agentLastChar,
-      proposeeLastChar,
-      'red',
-    ]);
-
-    const greenLine = [agentLastChar, proposeeLastChar, 'green'];
-    this.currentLines.push(greenLine);
-
+    this.changeLineColour(resident, hospital, 'red', 'green');
     this.changePrefsStyle('group1', resident, hospital, 'green');
     this.changePrefsStyle('group2', hospital, resident, 'green');
 

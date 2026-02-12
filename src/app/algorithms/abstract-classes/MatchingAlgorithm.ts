@@ -65,12 +65,31 @@ export abstract class MatchingAlgorithm {
     return { name, match: new Array(), ranking: new Array() };
   }
 
-  createLine(from: Agent, to: Agent, colour: string) {
+  createLine(from: Agent, to: Agent, colour: string): [string, string, string] {
     return [
       this.utils.getLastChar(from.name),
       this.utils.getLastChar(to.name),
       colour,
     ];
+  }
+
+  addLine(from: Agent, to: Agent, colour: string): void {
+    this.currentLines.push(this.createLine(from, to, colour));
+  }
+
+  removeLine(from: Agent, to: Agent, colour: string): void {
+    const line = this.createLine(from, to, colour);
+    this.currentLines = this.removeSubArray(this.currentLines, line);
+  }
+
+  changeLineColour(
+    from: Agent,
+    to: Agent,
+    oldColour: string,
+    newColour: string,
+  ): void {
+    this.removeLine(from, to, oldColour);
+    this.addLine(from, to, newColour);
   }
 
   generateAgents() {
