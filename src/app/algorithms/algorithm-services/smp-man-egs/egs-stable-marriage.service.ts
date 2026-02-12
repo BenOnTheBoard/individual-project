@@ -1,13 +1,94 @@
 import { Injectable } from '@angular/core';
-import { EgsOneToMany } from '../../abstract-classes/EgsOneToMany';
+import { ExtendedGaleShapley } from '../../abstract-classes/ExtendedGaleShapley';
 import { Agent } from '../../interfaces/Agent';
 
 @Injectable({
   providedIn: 'root',
 })
-export class EgsStableMarriageService extends EgsOneToMany {
+export class EgsStableMarriageService extends ExtendedGaleShapley {
   group1Name = 'man';
   group2Name = 'woman';
+
+  breakAssignment(currentAgent: Agent, proposee: Agent) {
+    this.saveStep(4, { '%woman%': proposee.name });
+    if (proposee.match.length < 1) {
+      this.saveStep(6, { '%woman%': proposee.name });
+      return;
+    }
+
+    const match = proposee.match[0];
+
+    if (
+      match.ranking.filter((agent) => agent.match[0] != currentAgent).length >
+        0 &&
+      !this.freeAgents.includes(match) &&
+      match.ranking.length > 0
+    ) {
+      this.freeAgents.push(match);
+    }
+
+    this.removeLine(match, proposee, 'green');
+    this.stylePrefsMutual(match, proposee, 'grey');
+
+    this.saveStep(5, {
+      '%woman%': proposee.name,
+      '%currentPartner%': match.name,
+    });
+
+    const matchRank = this.getRank(proposee, match);
+    proposee.ranking.splice(matchRank, 1);
+    match.ranking.splice(this.getRank(match, proposee), 1);
+  }
+
+  provisionallyAssign(agent: Agent, proposee: Agent) {
+    this.changeLineColour(agent, proposee, 'red', 'green');
+    this.stylePrefsMutual(agent, proposee, 'green');
+
+    this.saveStep(7, {
+      '%man%': agent.name,
+      '%woman%': proposee.name,
+    });
+
+    proposee.match[0] = agent;
+    agent.match.push(proposee);
+  }
+
+  removeRuledOutPrefs(agent: Agent, proposee: Agent) {
+    this.saveStep(8, {
+      '%man%': agent.name,
+      '%woman%': proposee.name,
+    });
+
+    const agentRank = this.getRank(proposee, agent);
+    for (let i = agentRank + 1; i < proposee.ranking.length; i++) {
+      const reject = proposee.ranking[i];
+      const proposeeRank = this.getRank(reject, proposee);
+      this.relevantPrefs.push(this.utils.getAsChar(reject));
+
+      this.saveStep(9, {
+        '%nextWorstMan%': reject.name,
+        '%woman%': proposee.name,
+      });
+
+      this.stylePrefsMutual(reject, proposee, 'grey');
+
+      this.saveStep(10, {
+        '%nextWorstMan%': reject.name,
+        '%woman%': proposee.name,
+      });
+
+      reject.ranking.splice(proposeeRank, 1);
+      proposee.ranking.splice(i, 1);
+      i--;
+
+      this.relevantPrefs.pop();
+    }
+
+    this.saveStep(11, {
+      '%man%': agent.name,
+      '%woman%': proposee.name,
+    });
+  }
 
   getNextProposee(currentAgent: Agent): Agent {
     return currentAgent.ranking[0];
