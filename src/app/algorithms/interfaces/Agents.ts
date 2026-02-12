@@ -4,8 +4,15 @@ export interface Agent {
   ranking: Array<Agent>;
 }
 
+export interface Woman extends Agent {
+  match: Array<Man>;
+  ranking: Array<Man>;
+}
+
 export interface Man extends Agent {
-  lastProposed: number;
+  match: Array<Woman>;
+  ranking: Array<Woman>;
+  lastProposed: Woman;
 }
 
 export interface Resident extends Agent {
