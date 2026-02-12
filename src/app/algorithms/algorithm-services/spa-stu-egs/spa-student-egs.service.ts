@@ -89,9 +89,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       studentMatchIndex =
         student.match.length == 0
           ? student.ranking.length
-          : this.originalPrefsGroup1
-              .get(this.utils.getAsChar(student))
-              .indexOf(this.utils.getAsChar(student.match[0]));
+          : this.getOriginalRank(student, student.match[0], 'group1');
 
       // current student information
       const studentRanking = this.originalPrefsGroup1.get(

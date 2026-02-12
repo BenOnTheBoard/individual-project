@@ -164,7 +164,7 @@ export abstract class MatchingAlgorithm {
     currentAgent: Agent,
     agentToFind: Agent,
     group: 'group1' | 'group2',
-  ) {
+  ): number {
     const originalPrefs =
       group == 'group1' ? this.originalPrefsGroup1 : this.originalPrefsGroup2;
     const currentChar = this.utils.getAsChar(currentAgent);

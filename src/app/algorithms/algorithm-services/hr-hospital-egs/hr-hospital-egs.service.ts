@@ -166,9 +166,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
         // remove hsopital from resident
         resident.ranking.splice(i, 1);
         // get index of resident in the removde hospitals og rankings
-        const pos = this.originalPrefsGroup2
-          .get(this.utils.getAsChar(removedHospital))
-          .findIndex((h) => h == this.utils.getAsChar(resident));
+        const pos = this.getOriginalRank(removedHospital, resident, 'group2');
         //  grey out hos from res
         this.changePrefsStyleByIndex('group1', resident, i, 'grey');
         // grey out res from hos

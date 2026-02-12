@@ -50,9 +50,11 @@ export class StableRoomIrvService extends StableRoomMates {
     for (const person of this.group1Agents.values()) {
       // if agent has matches
       if (person.lastProposed) {
-        const personMatchIndex = this.originalPrefsGroup1
-          .get(this.utils.getAsChar(person))
-          .indexOf(this.utils.getAsChar(person.lastProposed));
+        const personMatchIndex = this.getOriginalRank(
+          person,
+          person.lastProposed,
+          'group1',
+        );
         const personRanking = this.originalPrefsGroup1.get(
           this.utils.getAsChar(person),
         );
