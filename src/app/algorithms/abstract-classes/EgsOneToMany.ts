@@ -23,8 +23,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     }
 
     this.removeLine(match, proposee, 'green');
-    this.stylePrefs('group1', match, proposee, 'grey');
-    this.stylePrefs('group2', proposee, match, 'grey');
+    this.stylePrefsMutual(match, proposee, 'grey');
 
     this.saveStep(5, {
       '%woman%': proposee.name,
@@ -38,8 +37,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
 
   provisionallyAssign(agent: Agent, proposee: Agent) {
     this.changeLineColour(agent, proposee, 'red', 'green');
-    this.stylePrefs('group1', agent, proposee, 'green');
-    this.stylePrefs('group2', proposee, agent, 'green');
+    this.stylePrefsMutual(agent, proposee, 'green');
 
     this.saveStep(7, {
       '%man%': agent.name,
@@ -67,8 +65,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
         '%woman%': proposee.name,
       });
 
-      this.stylePrefs('group1', reject, proposee, 'grey');
-      this.stylePrefs('group2', proposee, reject, 'grey');
+      this.stylePrefsMutual(reject, proposee, 'grey');
 
       this.saveStep(10, {
         '%nextWorstMan%': reject.name,

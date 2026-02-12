@@ -81,8 +81,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     });
 
     this.removeLine(worstResident, hospital, 'green');
-    this.stylePrefs('group1', worstResident, hospital, 'grey');
-    this.stylePrefs('group2', hospital, worstResident, 'grey');
+    this.stylePrefsMutual(worstResident, hospital, 'grey');
 
     this.freeAgents.push(worstResident);
 
@@ -110,8 +109,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     const proposeeChar = this.utils.getAsChar(hospital);
 
     this.changeLineColour(resident, hospital, 'red', 'green');
-    this.stylePrefs('group1', resident, hospital, 'green');
-    this.stylePrefs('group2', hospital, resident, 'green');
+    this.stylePrefsMutual(resident, hospital, 'green');
 
     if (hospital.match.length >= hospital.availableSpaces - 1) {
       const colourHex = this.colourHexService.getHex('green');
@@ -156,8 +154,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
         '%nextResident%': resident.name,
       });
 
-      this.stylePrefs('group1', resident, hospital, 'grey');
-      this.stylePrefs('group2', hospital, resident, 'grey');
+      this.stylePrefsMutual(resident, hospital, 'grey');
       resident.ranking.splice(hospitalRank, 1);
 
       // remove h' and r from each other's lists

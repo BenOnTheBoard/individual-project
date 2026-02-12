@@ -134,7 +134,7 @@ export class StableRoomIrvService extends StableRoomMates {
       agent1.ranking.splice(agent2Rank, 1);
     }
 
-    // grey out elms from visual lists
+    // can't use stylePrefsMutual, because these are of the same group
     this.stylePrefs('group1', agent1, agent2, 'grey');
     this.stylePrefs('group1', agent2, agent1, 'grey');
   }

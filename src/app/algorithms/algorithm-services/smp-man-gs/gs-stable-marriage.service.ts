@@ -59,8 +59,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
       this.relevantPrefs.push(this.utils.getAsChar(woman));
 
       this.addLine(man, woman, 'red');
-      this.stylePrefs('group2', woman, man, 'red');
-      this.stylePrefs('group1', man, woman, 'red');
+      this.stylePrefsMutual(man, woman, 'red');
 
       this.saveStep(3, { '%woman%': woman.name, '%man%': man.name });
 
@@ -73,11 +72,8 @@ export class GsStableMarriageService extends MatchingAlgorithm {
         man.match[0] = woman;
         this.freeAgents.shift();
 
-        // colour preferences (for when a partner is instantly selected)
-        this.stylePrefs('group2', woman, man, 'green');
-        this.stylePrefs('group1', man, woman, 'green');
-
         this.changeLineColour(man, woman, 'red', 'green');
+        this.stylePrefsMutual(man, woman, 'green');
 
         this.saveStep(5, { '%woman%': woman.name, '%man%': man.name });
       } else {
@@ -95,29 +91,24 @@ export class GsStableMarriageService extends MatchingAlgorithm {
         });
 
         if (this.getRank(woman, woman.match[0]) > this.getRank(woman, man)) {
-          this.stylePrefs('group2', woman, woman.match[0], 'grey');
-          this.stylePrefs('group1', woman.match[0], woman, 'grey');
-          this.stylePrefs('group2', woman, man, 'green');
-
+          this.stylePrefsMutual(woman.match[0], woman, 'grey');
+          this.stylePrefsMutual(man, woman, 'green');
           this.changeLineColour(man, woman, 'red', 'green');
           this.removeLine(woman.match[0], woman, 'green');
 
           const match: string = woman.match[0].name;
 
           this.freeAgents.push(woman.match[0]);
+          this.freeAgents.shift();
           woman.match[0] = man;
 
-          this.stylePrefs('group1', man, woman, 'green');
-
-          this.freeAgents.shift();
           this.saveStep(8, {
             '%woman%': woman.name,
             '%man%': man.name,
             '%match%': match,
           });
         } else {
-          this.stylePrefs('group1', man, woman, 'grey');
-          this.stylePrefs('group2', woman, man, 'grey');
+          this.stylePrefsMutual(man, woman, 'grey');
           this.removeLine(man, woman, 'red');
           this.saveStep(9, {
             '%woman%': woman.name,

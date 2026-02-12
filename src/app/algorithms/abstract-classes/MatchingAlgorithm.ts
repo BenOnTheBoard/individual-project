@@ -211,6 +211,11 @@ export abstract class MatchingAlgorithm {
     prefs[idx] = `{${colourHex}${currentAgent}}`;
   }
 
+  stylePrefsMutual(g1Agent: Agent, g2Agent: Agent, colour: string): void {
+    this.stylePrefs('group1', g1Agent, g2Agent, colour);
+    this.stylePrefs('group2', g2Agent, g1Agent, colour);
+  }
+
   isBlockingPair(currentAgent: Agent, targetAgent: Agent): boolean {
     const match = targetAgent.match[0];
     const matchRank = this.getOriginalRank(targetAgent, match, 'group1');
