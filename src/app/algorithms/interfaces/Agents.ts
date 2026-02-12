@@ -31,7 +31,7 @@ export interface Project extends Agent {
 export interface Lecturer extends Agent {
   capacity: number;
   ranking: Array<Student>;
-  projects: Array<String>;
+  projects: Array<Project>;
 }
 
 export interface Person extends Agent {
