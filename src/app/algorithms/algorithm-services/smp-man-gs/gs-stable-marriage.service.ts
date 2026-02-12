@@ -59,8 +59,8 @@ export class GsStableMarriageService extends MatchingAlgorithm {
       this.relevantPrefs.push(this.utils.getAsChar(woman));
 
       this.addLine(man, woman, 'red');
-      this.stylePrefsByIndex('group2', woman, this.getRank(woman, man), 'red');
-      this.stylePrefsByIndex('group1', man, this.getRank(man, woman), 'red');
+      this.stylePrefs('group2', woman, man, 'red');
+      this.stylePrefs('group1', man, woman, 'red');
 
       this.saveStep(3, { '%woman%': woman.name, '%man%': man.name });
 
@@ -74,18 +74,8 @@ export class GsStableMarriageService extends MatchingAlgorithm {
         this.freeAgents.shift();
 
         // colour preferences (for when a partner is instantly selected)
-        this.stylePrefsByIndex(
-          'group2',
-          woman,
-          this.getRank(woman, man),
-          'green',
-        );
-        this.stylePrefsByIndex(
-          'group1',
-          man,
-          this.getRank(man, woman),
-          'green',
-        );
+        this.stylePrefs('group2', woman, man, 'green');
+        this.stylePrefs('group1', man, woman, 'green');
 
         this.changeLineColour(man, woman, 'red', 'green');
 
@@ -97,12 +87,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
           '%man%': man.name,
           '%match%': woman.match[0].name,
         });
-        this.stylePrefsByIndex(
-          'group2',
-          woman,
-          this.getRank(woman, man),
-          'red',
-        );
+        this.stylePrefs('group2', woman, man, 'red');
         this.saveStep(7, {
           '%woman%': woman.name,
           '%man%': man.name,
@@ -110,24 +95,9 @@ export class GsStableMarriageService extends MatchingAlgorithm {
         });
 
         if (this.getRank(woman, woman.match[0]) > this.getRank(woman, man)) {
-          this.stylePrefsByIndex(
-            'group2',
-            woman,
-            this.getRank(woman, woman.match[0]),
-            'grey',
-          );
-          this.stylePrefsByIndex(
-            'group1',
-            woman.match[0],
-            this.getRank(woman.match[0], woman),
-            'grey',
-          );
-          this.stylePrefsByIndex(
-            'group2',
-            woman,
-            this.getRank(woman, man),
-            'green',
-          );
+          this.stylePrefs('group2', woman, woman.match[0], 'grey');
+          this.stylePrefs('group1', woman.match[0], woman, 'grey');
+          this.stylePrefs('group2', woman, man, 'green');
 
           this.changeLineColour(man, woman, 'red', 'green');
           this.removeLine(woman.match[0], woman, 'green');
@@ -137,12 +107,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
           this.freeAgents.push(woman.match[0]);
           woman.match[0] = man;
 
-          this.stylePrefsByIndex(
-            'group1',
-            man,
-            this.getRank(man, woman),
-            'green',
-          );
+          this.stylePrefs('group1', man, woman, 'green');
 
           this.freeAgents.shift();
           this.saveStep(8, {
@@ -151,18 +116,8 @@ export class GsStableMarriageService extends MatchingAlgorithm {
             '%match%': match,
           });
         } else {
-          this.stylePrefsByIndex(
-            'group1',
-            man,
-            this.getRank(man, woman),
-            'grey',
-          );
-          this.stylePrefsByIndex(
-            'group2',
-            woman,
-            this.getRank(woman, man),
-            'grey',
-          );
+          this.stylePrefs('group1', man, woman, 'grey');
+          this.stylePrefs('group2', woman, man, 'grey');
           this.removeLine(man, woman, 'red');
           this.saveStep(9, {
             '%woman%': woman.name,

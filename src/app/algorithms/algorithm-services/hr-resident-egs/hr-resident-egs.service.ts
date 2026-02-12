@@ -80,17 +80,15 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
       '%worstResident%': worstResident.name,
     });
 
-    const matchRank = this.getRank(hospital, worstResident);
-
     this.removeLine(worstResident, hospital, 'green');
     this.stylePrefs('group1', worstResident, hospital, 'grey');
-    this.stylePrefsByIndex('group2', hospital, matchRank, 'grey');
+    this.stylePrefs('group2', hospital, worstResident, 'grey');
 
     this.freeAgents.push(worstResident);
 
     hospital.match.splice(this.getRank(hospital, worstResident), 1);
     worstResident.match.splice(0, 1);
-    hospital.ranking.splice(matchRank, 1);
+    hospital.ranking.splice(this.getRank(hospital, worstResident), 1);
     worstResident.ranking.splice(this.getRank(worstResident, hospital), 1);
 
     const hospitalChar = this.utils.getAsChar(hospital);
@@ -113,12 +111,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
 
     this.changeLineColour(resident, hospital, 'red', 'green');
     this.stylePrefs('group1', resident, hospital, 'green');
-    this.stylePrefsByIndex(
-      'group2',
-      hospital,
-      this.getRank(hospital, resident),
-      'green',
-    );
+    this.stylePrefs('group2', hospital, resident, 'green');
 
     if (hospital.match.length >= hospital.availableSpaces - 1) {
       const colourHex = this.colourHexService.getHex('green');

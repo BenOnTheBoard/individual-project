@@ -74,19 +74,9 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
   }
 
   breakAssignment(resident: Agent, hospital): void {
-    // get pos in each rankings lists to remove later
-    const rankOfResident = this.getRank(hospital, resident);
-    const rankOfHospital = this.getRank(resident, hospital);
-
-    const originalRankOfResident = this.getOriginalRank(
-      hospital,
-      resident,
-      'group2',
-    );
-
     this.removeLine(resident, hospital, 'green');
     this.stylePrefs('group1', resident, hospital, 'grey');
-    this.stylePrefsByIndex('group2', hospital, originalRankOfResident, 'red');
+    this.stylePrefs('group2', hospital, resident, 'red');
 
     const hospitalChar = this.utils.getAsChar(hospital);
     const colourHex = this.colourHexService.getHex('black');
@@ -101,11 +91,13 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       '%resident%': resident.name,
     });
 
-    this.stylePrefsByIndex('group2', hospital, originalRankOfResident, 'grey');
+    this.stylePrefs('group2', hospital, resident, 'grey');
 
     this.saveStep(1);
 
     // remove
+    const rankOfResident = this.getRank(hospital, resident);
+    const rankOfHospital = this.getRank(resident, hospital);
     resident.match.splice(0, 1);
     hospital.match.splice(this.getRank(hospital, resident), 1);
     hospital.ranking.splice(rankOfResident, 1);
@@ -149,13 +141,11 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
         removedHospital.ranking.splice(residentRank, 1);
 
-        // remove hsopital from resident
+        // remove hospital from resident
         resident.ranking.splice(i, 1);
-        // get Rank of resident in the removde hospitals og rankings
-        const rank = this.getOriginalRank(removedHospital, resident, 'group2');
         // grey out
-        this.stylePrefsByIndex('group1', resident, i, 'grey');
-        this.stylePrefsByIndex('group2', removedHospital, rank, 'grey');
+        this.stylePrefs('group1', resident, removedHospital, 'grey');
+        this.stylePrefs('group2', removedHospital, resident, 'grey');
         // remove h' and r from each others preferance list
         this.saveStep(8, {
           '%hospital%': removedHospital.name,

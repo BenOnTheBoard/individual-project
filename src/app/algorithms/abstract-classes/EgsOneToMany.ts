@@ -12,7 +12,6 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
     }
 
     const match = proposee.match[0];
-    const matchRank = this.getRank(proposee, match);
 
     if (
       match.ranking.filter((agent) => agent.match[0] != currentAgent).length >
@@ -25,13 +24,14 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
 
     this.removeLine(match, proposee, 'green');
     this.stylePrefs('group1', match, proposee, 'grey');
-    this.stylePrefsByIndex('group2', proposee, matchRank, 'grey');
+    this.stylePrefs('group2', proposee, match, 'grey');
 
     this.saveStep(5, {
       '%woman%': proposee.name,
       '%currentPartner%': match.name,
     });
 
+    const matchRank = this.getRank(proposee, match);
     proposee.ranking.splice(matchRank, 1);
     match.ranking.splice(this.getRank(match, proposee), 1);
   }
@@ -39,12 +39,7 @@ export abstract class EgsOneToMany extends ExtendedGaleShapley {
   provisionallyAssign(agent: Agent, proposee: Agent) {
     this.changeLineColour(agent, proposee, 'red', 'green');
     this.stylePrefs('group1', agent, proposee, 'green');
-    this.stylePrefsByIndex(
-      'group2',
-      proposee,
-      this.getRank(proposee, agent),
-      'green',
-    );
+    this.stylePrefs('group2', proposee, agent, 'green');
 
     this.saveStep(7, {
       '%man%': agent.name,
