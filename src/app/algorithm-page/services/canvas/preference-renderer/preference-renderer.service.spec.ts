@@ -6,6 +6,7 @@ import { ColourHexService } from '../../../../utils/colour-hex.service';
 import { AgentRendererService } from '../agent-renderer/agent-renderer.service';
 import { PreferenceRendererService } from './preference-renderer.service';
 import { Step, StepBuilder } from 'src/app/algorithms/interfaces/Step';
+import { Project } from 'src/app/algorithms/interfaces/Agents';
 
 describe('PreferenceRendererService', () => {
   let service: PreferenceRendererService;
@@ -130,8 +131,13 @@ describe('PreferenceRendererService', () => {
 
   it('should draw lecturer brackets and text', () => {
     mockCommand.algorithmSpecificData = {
-      lecturerProjects: [['projectA', 'projectB']],
-      lecturerCapacity: [2],
+      lecturerProjects: [
+        [
+          { name: 'projectA', match: [], ranking: [], capacity: 2 } as Project,
+          { name: 'projectB', match: [], ranking: [], capacity: 2 } as Project,
+        ],
+      ],
+      lecturerCapacity: new Map().set(1, 2),
       lecturerRanking: [['1', '2']],
     };
     service.setCurrentCommand(mockCommand);
