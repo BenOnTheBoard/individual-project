@@ -8,7 +8,7 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
   group3Agents: Map<String, Lecturer> = new Map();
 
   generatePrefs(): void {
-    const numberLectures = Math.ceil(this.numberOfGroup2Agents / 3);
+    const numLecturers = Math.ceil(this.numberOfGroup2Agents / 3);
     const projectLists: Array<Array<Project>> = [];
 
     // Students - Group 1
@@ -18,7 +18,7 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
       this.group1Agents.get(student.name).ranking = agent1Rankings;
     }
 
-    for (let i = 0; i < numberLectures; i++) {
+    for (let i = 0; i < numLecturers; i++) {
       projectLists.push([]);
     }
 
@@ -30,10 +30,10 @@ export abstract class StudentProjectAllocation extends MatchingAlgorithm {
       count++;
     }
 
-    // Lectures - Group 3
+    // Lecturers - Group 3
     this.algorithmSpecificData['lecturerRanking'] = [];
     count = 0;
-    let lecturerRanking = [];
+    let lecturerRanking: Array<string>;
     for (const lecturer of Array.from(this.group3Agents.values())) {
       const agent3Rankings = Array.from(new Map(this.group1Agents).values());
       this.utils.shuffle(agent3Rankings);

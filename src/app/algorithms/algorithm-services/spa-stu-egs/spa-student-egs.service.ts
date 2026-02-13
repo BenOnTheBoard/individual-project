@@ -18,9 +18,9 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   group3Agents: Map<String, Lecturer> = new Map();
 
   hospitalCapacity: Map<string, string> = new Map();
-  lecturerCapacitys: Map<String, number> = new Map();
+  lecturerCapacities: Map<number, number> = new Map();
 
-  numberLectures: number;
+  numLecturers: number;
   lecturerCapacity: number;
 
   generateAgents() {
@@ -52,13 +52,13 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     // hospital capacity is placeholder name for project capacity - used so that it is displayed in canvas
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
 
-    this.numberLectures = Math.ceil(this.numberOfGroup2Agents / 3);
+    this.numLecturers = Math.ceil(this.numberOfGroup2Agents / 3);
     this.lecturerCapacity = Math.ceil(this.numberOfAgents / 3) + 1;
 
     // reset the group - if prevouis run had more projects/lecturers then they dont all get deleted - causes issues - rank errors
     this.group3Agents = new Map();
 
-    for (let i = 1; i < this.numberLectures + 1; i++) {
+    for (let i = 1; i < this.numLecturers + 1; i++) {
       const group3AgentName = this.group3Name + i;
 
       this.group3Agents.set(group3AgentName, {
@@ -69,9 +69,9 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
         capacity: this.lecturerCapacity,
       });
 
-      this.lecturerCapacitys[i] = this.lecturerCapacity;
+      this.lecturerCapacities.set(i, this.lecturerCapacity);
     }
-    this.algorithmSpecificData['lecturerCapacity'] = this.lecturerCapacitys;
+    this.algorithmSpecificData['lecturerCapacity'] = this.lecturerCapacities;
   }
 
   getRandomInt(min: number, max: number): number {
