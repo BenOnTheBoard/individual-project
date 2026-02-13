@@ -1,48 +1,30 @@
-export interface Agent {
+interface AbstractAgent<T> {
   name: string;
-  match: Array<Agent>;
-  ranking: Array<Agent>;
+  match: Array<T>;
+  ranking: Array<T>;
 }
 
-export interface Woman extends Agent {
-  match: Array<Man>;
-  ranking: Array<Man>;
+interface AbstracCapacitatedAgent<T> extends AbstractAgent<T> {
+  capacity: number;
 }
 
-export interface Man extends Agent {
-  match: Array<Woman>;
-  ranking: Array<Woman>;
+// We cast all the other agents to this one as a generic type
+export type Agent = AbstractAgent<Agent>;
+
+export type Woman = AbstractAgent<Man>;
+export type Man = AbstractAgent<Woman> & {
   lastProposed: Woman;
-}
+};
 
-export interface Resident extends Agent {
-  match: Array<Hospital>;
-  ranking: Array<Hospital>;
-}
+export type Resident = AbstractAgent<Hospital>;
+export type Hospital = AbstracCapacitatedAgent<Resident>;
 
-export interface Hospital extends Agent {
-  capacity: number;
-  match: Array<Resident>;
-  ranking: Array<Resident>;
-}
-
-export interface Student extends Agent {
-  match: Array<Project>;
-}
-
-export interface Project extends Agent {
-  capacity: number;
-  match: Array<Student>;
-}
-
-export interface Lecturer extends Agent {
-  capacity: number;
-  ranking: Array<Student>;
+export type Student = AbstractAgent<Project>;
+export type Project = AbstracCapacitatedAgent<Student>;
+export type Lecturer = AbstracCapacitatedAgent<Student> & {
   projects: Array<Project>;
-}
+};
 
-export interface Person extends Agent {
-  match: Array<Person>;
-  ranking: Array<Person>;
+export type Person = AbstractAgent<Person> & {
   lastProposed: Person;
-}
+};

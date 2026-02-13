@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StudentProjectAllocation } from '../../abstract-classes/StudentProjectAllocation';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
-import { Agent, Student, Project, Lecturer } from '../../interfaces/Agents';
+import { Student, Project, Lecturer } from '../../interfaces/Agents';
 
 const projectCapacity = 2;
 
@@ -80,7 +80,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  checkStability(allMatches: Map<Agent, Array<String>>): boolean {
+  checkStability(allMatches: Map<Student, Array<String>>): boolean {
     for (const student of this.group1Agents.values()) {
       const studentMatchRank =
         student.match.length == 0
