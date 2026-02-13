@@ -1,6 +1,5 @@
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
-import { Agent } from '../interfaces/Agent';
 
 export abstract class StableRoomMates extends MatchingAlgorithm {
   readonly #unstable4 = [
@@ -99,7 +98,7 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
     }
   }
 
-  generatePreferences(): void {
+  generatePrefs(): void {
     let count = 0;
     let instance = [];
 
@@ -110,8 +109,8 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
     if (this.SRstable) {
       for (const agent of Array.from(this.group1Agents.values())) {
         const agent1Rankings = Array.from(new Map(this.group1Agents).values());
-        const selfIndex = agent1Rankings.indexOf(agent);
-        agent1Rankings.splice(selfIndex, 1);
+        const selfRank = agent1Rankings.indexOf(agent);
+        agent1Rankings.splice(selfRank, 1);
 
         this.utils.shuffle(agent1Rankings);
         this.group1Agents.get(agent.name).ranking = agent1Rankings;
@@ -126,22 +125,6 @@ export abstract class StableRoomMates extends MatchingAlgorithm {
         }
         count++;
       }
-    }
-  }
-
-  populatePreferences(preferences: Map<String, Array<String>>): void {
-    let tempCopyList: Array<Agent>;
-
-    for (const agent of Array.from(this.group1Agents.keys())) {
-      tempCopyList = [];
-      for (const preferenceAgent of preferences.get(
-        this.utils.getLastChar(String(agent)),
-      )) {
-        tempCopyList.push(
-          this.group1Agents.get(this.group1Name + preferenceAgent),
-        );
-      }
-      this.group1Agents.get(agent).ranking = tempCopyList;
     }
   }
 

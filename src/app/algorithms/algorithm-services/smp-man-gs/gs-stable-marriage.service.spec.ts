@@ -17,13 +17,10 @@ describe('GsStableMarriageService', () => {
   it('test correctness x10000 (smp-man-gs)', () => {
     let stable: boolean = true;
     for (let i = 0; i < 1000; i++) {
-      let agentCount: number = Math.floor(Math.random() * (9 - 2) + 2);
+      const agentCount = Math.floor(Math.random() * (9 - 2) + 2);
       service.run(agentCount, agentCount, undefined);
-      if (!service.stable) {
-        stable = false;
-      }
+      if (!service.isStable()) stable = false;
     }
-
     expect(stable).toBeTrue();
   });
 });

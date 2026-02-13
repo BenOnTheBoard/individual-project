@@ -70,8 +70,7 @@ export class AlgPageNavbarComponent {
   }
 
   protected refreshCanvas(): void {
-    this.drawService.alwaysShowPreferences =
-      !this.drawService.alwaysShowPreferences;
+    this.drawService.alwaysShowPrefs = !this.drawService.alwaysShowPrefs;
     this.drawService.redrawCanvas();
   }
 

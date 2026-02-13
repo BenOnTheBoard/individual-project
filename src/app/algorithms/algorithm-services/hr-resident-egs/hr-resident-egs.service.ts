@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ExtendedGaleShapley } from '../../abstract-classes/ExtendedGaleShapley';
-import { Agent } from '../../interfaces/Agent';
-import { Hospital } from '../../interfaces/Hospital';
+import { Resident, Hospital } from '../../interfaces/Agents';
 
-const availableSpaces = 2; //this.getRandomInt(1, this.numberOfAgents-2);
+const capacity = 2; //this.getRandomInt(1, this.numberOfAgents-2);
 
 @Injectable({
   providedIn: 'root',
@@ -13,20 +12,18 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
   group2Name = 'hospital';
 
   group2Agents: Map<String, Hospital> = new Map();
-
-  hospitalCapacity: Map<string, number> = new Map();
+  hospitalCapacity: Map<string, string> = new Map();
 
   generateAgents() {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const group1AgentName = this.group1Name + i;
-
-      this.group1Agents.set(group1AgentName, {
+      const agent = {
         name: group1AgentName,
         match: new Array(),
         ranking: new Array(),
-      });
-
-      this.freeAgentsOfGroup1.push(group1AgentName);
+      };
+      this.group1Agents.set(group1AgentName, agent);
+      this.freeAgents.push(agent);
     }
 
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
@@ -37,10 +34,10 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
         name: group2AgentName,
         match: new Array(),
         ranking: new Array(),
-        availableSpaces,
+        capacity,
       });
 
-      this.hospitalCapacity[currentLetter] = availableSpaces;
+      this.hospitalCapacity.set(currentLetter, String(capacity));
     }
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
   }
@@ -51,11 +48,11 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  getWorstResident(hospital: Hospital): Agent {
-    const positionMap: Map<number, Agent> = new Map();
+  getWorstResident(hospital: Hospital): Resident {
+    const positionMap: Map<number, Resident> = new Map();
 
     for (const resident of hospital.match) {
-      positionMap.set(this.findPositionInMatches(hospital, resident), resident);
+      positionMap.set(this.getRank(hospital, resident), resident);
     }
 
     // use destructuring assingment to extract data from array into distinct variables
@@ -63,114 +60,65 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     return positionMap.get(Math.max(...Array.from(positionMap.keys())));
   }
 
-  getNextPotentialProposee(hospital: Hospital): Agent {
+  getNextProposee(hospital: Hospital): Resident {
     // return first hospital on r's list
     return hospital.ranking[0];
   }
 
-  breakAssignment(resident: Agent, hospital: Hospital): void {
-    this.update(4, {
+  breakAssignment(resident: Resident, hospital: Hospital): void {
+    this.saveStep(4, {
       '%hospital%': hospital.name,
-      '%capacity%': hospital.availableSpaces,
+      '%capacity%': hospital.capacity,
       '%resident%': resident.name,
     });
-    if (hospital.match.length < hospital.availableSpaces) return;
+    if (hospital.match.length < hospital.capacity) return;
 
     const worstResident = this.getWorstResident(hospital);
-    this.update(5, {
+    this.saveStep(5, {
       '%hospital%': hospital.name,
       '%worstResident%': worstResident.name,
     });
 
-    const matchPosition = this.findPositionInMatches(hospital, worstResident);
+    this.removeLine(worstResident, hospital, 'green');
+    this.stylePrefsMutual(worstResident, hospital, 'grey');
 
-    this.removeArrayFromArray(this.currentLines, [
-      this.utils.getLastChar(worstResident.name),
-      this.utils.getLastChar(hospital.name),
-      'green',
-    ]);
+    this.freeAgents.push(worstResident);
 
-    this.changePreferenceStyle(
-      this.group1CurrentPreferences,
-      this.utils.getLastChar(worstResident.name),
-      this.originalGroup1CurrentPreferences
-        .get(this.utils.getLastChar(worstResident.name))
-        .findIndex((h) => h == this.utils.getLastChar(hospital.name)),
-      'grey',
-    );
-    this.changePreferenceStyle(
-      this.group2CurrentPreferences,
-      this.utils.getLastChar(hospital.name),
-      matchPosition,
-      'grey',
-    );
-
-    this.freeAgentsOfGroup1.push(worstResident.name);
-
-    hospital.match.splice(
-      hospital.match.findIndex(
-        (agent: { name: string }) => agent.name == worstResident.name,
-      ),
-      1,
-    );
-    hospital.ranking.splice(matchPosition, 1);
-
+    hospital.match.splice(this.getRank(hospital, worstResident), 1);
     worstResident.match.splice(0, 1);
-    worstResident.ranking.splice(
-      this.findPositionInMatches(worstResident, hospital),
-      1,
+    hospital.ranking.splice(this.getRank(hospital, worstResident), 1);
+    worstResident.ranking.splice(this.getRank(worstResident, hospital), 1);
+
+    const hospitalChar = this.utils.getAsChar(hospital);
+    const capacity = this.hospitalCapacity.get(hospitalChar);
+
+    this.hospitalCapacity.set(
+      hospitalChar,
+      capacity.charAt(capacity.length - 2),
     );
 
-    const hospitalLastChar = this.utils.getLastChar(hospital.name);
-    const currentHospitalCapacity: string =
-      this.algorithmSpecificData['hospitalCapacity'][hospitalLastChar];
-
-    this.algorithmSpecificData['hospitalCapacity'][hospitalLastChar] = String(
-      currentHospitalCapacity,
-    ).charAt(currentHospitalCapacity.length - 2);
-
-    this.update(6, {
+    this.saveStep(6, {
       '%hospital%': hospital.name,
       '%worstResident%': worstResident.name,
     });
   }
 
-  provisionallyAssign(resident: Agent, hospital: Hospital) {
+  provisionallyAssign(resident: Resident, hospital: Hospital) {
     // provisionally assign r to h;
-    const agentLastChar = this.utils.getLastChar(resident.name);
-    const proposeeLastChar = this.utils.getLastChar(hospital.name);
+    const proposeeChar = this.utils.getAsChar(hospital);
 
-    this.removeArrayFromArray(this.currentLines, [
-      agentLastChar,
-      proposeeLastChar,
-      'red',
-    ]);
+    this.changeLineColour(resident, hospital, 'red', 'green');
+    this.stylePrefsMutual(resident, hospital, 'green');
 
-    const greenLine = [agentLastChar, proposeeLastChar, 'green'];
-    this.currentLines.push(greenLine);
-
-    this.changePreferenceStyle(
-      this.group1CurrentPreferences,
-      agentLastChar,
-      this.originalGroup1CurrentPreferences
-        .get(agentLastChar)
-        .findIndex((h) => h == this.utils.getLastChar(hospital.name)),
-      'green',
-    );
-    this.changePreferenceStyle(
-      this.group2CurrentPreferences,
-      proposeeLastChar,
-      this.findPositionInMatches(hospital, resident),
-      'green',
-    );
-
-    if (hospital.match.length >= hospital.availableSpaces - 1) {
+    if (hospital.match.length >= hospital.capacity - 1) {
       const colourHex = this.colourHexService.getHex('green');
-      this.algorithmSpecificData['hospitalCapacity'][proposeeLastChar] =
-        `{${colourHex}${this.algorithmSpecificData['hospitalCapacity'][proposeeLastChar]}}`;
+      this.hospitalCapacity.set(
+        proposeeChar,
+        `{${colourHex}${this.hospitalCapacity.get(proposeeChar)}}`,
+      );
     }
 
-    this.update(7, {
+    this.saveStep(7, {
       '%resident%': resident.name,
       '%hospital%': hospital.name,
     });
@@ -178,71 +126,46 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     hospital.match.push(resident);
   }
 
-  removeRuledOutPreferences(resident: Agent, hospital: Hospital): void {
-    this.update(8, {
+  removeRuledOutPrefs(resident: Resident, hospital: Hospital): void {
+    this.saveStep(8, {
       '%resident%': resident.name,
       '%hospital%': hospital.name,
     });
 
-    if (hospital.match.length < hospital.availableSpaces) return;
+    if (hospital.match.length < hospital.capacity) return;
 
-    const worstResident: Agent = this.getWorstResident(hospital);
-    const worstResidentPosition: number = this.findPositionInMatches(
-      hospital,
-      worstResident,
-    );
+    const worstResident = this.getWorstResident(hospital);
+    const worstResidentRank = this.getRank(hospital, worstResident);
 
-    this.update(9, {
+    this.saveStep(9, {
       '%hospital%': hospital.name,
       '%worstResident%': worstResident.name,
     });
 
-    let hospitalRankingClearCounter: number = worstResidentPosition + 1;
-
     // for each successor h' of h on r's list {
-    for (let i = worstResidentPosition + 1; i < hospital.ranking.length; i++) {
-      const hospitalPosition: number = this.findPositionInMatches(
-        hospital.ranking[i],
-        hospital,
-      );
-      this.relevantPreferences.push(
-        this.utils.getLastChar(hospital.ranking[i].name),
-      );
+    for (let i = worstResidentRank + 1; i < hospital.ranking.length; i++) {
+      const resident = hospital.ranking[i];
+      const hospitalRank = this.getRank(resident, hospital);
+      this.relevantPrefs.push(this.utils.getAsChar(resident));
 
-      this.update(10, {
+      this.saveStep(10, {
         '%hospital%': hospital.name,
-        '%nextResident%': hospital.ranking[i].name,
+        '%nextResident%': resident.name,
       });
 
-      this.changePreferenceStyle(
-        this.group1CurrentPreferences,
-        this.utils.getLastChar(hospital.ranking[i].name),
-        this.originalGroup1CurrentPreferences
-          .get(this.utils.getLastChar(hospital.ranking[i].name))
-          .findIndex((h) => h == this.utils.getLastChar(hospital.name)),
-        'grey',
-      );
-
-      this.changePreferenceStyle(
-        this.group2CurrentPreferences,
-        this.utils.getLastChar(hospital.name),
-        hospitalRankingClearCounter,
-        'grey',
-      );
-      hospital.ranking[i].ranking.splice(hospitalPosition, 1);
+      this.stylePrefsMutual(resident, hospital, 'grey');
+      resident.ranking.splice(hospitalRank, 1);
 
       // remove h' and r from each other's lists
-      this.update(11, {
+      this.saveStep(11, {
         '%hospital%': hospital.name,
-        '%nextResident%': hospital.ranking[i].name,
+        '%nextResident%': resident.name,
       });
 
       hospital.ranking.splice(i, 1);
       i--;
 
-      hospitalRankingClearCounter++;
-
-      this.relevantPreferences.pop();
+      this.relevantPrefs.pop();
     }
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Position } from './position';
+import { Agent } from '../algorithms/interfaces/Agents';
 
 @Injectable({
   providedIn: 'root',
@@ -27,22 +28,16 @@ export class UtilsService {
     }
   }
 
-  cloneMap<K, V>(mapIn: Map<K, Array<V>>): Map<K, Array<V>> {
-    const mapCloned = new Map<K, Array<V>>();
-
-    mapIn.forEach((value, key) => {
-      mapCloned.set(key, [...value]);
-    });
-
-    return mapCloned;
-  }
-
   cloneList<T>(list: Array<T>): Array<T> {
     return [...list];
   }
 
-  getLastChar(name: string) {
+  getLastChar(name: string): string {
     return name.slice(name.length - 1);
+  }
+
+  getAsChar(agent: Agent): string {
+    return this.getLastChar(agent.name);
   }
 
   polarToCartesian(

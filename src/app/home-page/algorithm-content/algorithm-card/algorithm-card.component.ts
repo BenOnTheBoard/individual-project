@@ -37,7 +37,7 @@ export class AlgorithmCardComponent {
   protected router = inject(Router);
   protected utils = inject(UtilsService);
 
-  async onGeneratePreferences(): Promise<void> {
+  async onGeneratePrefs(): Promise<void> {
     // change the global algorithm to the one passed into this dialog
     this.algRetriever.currentAlgorithm = this.algorithm();
 

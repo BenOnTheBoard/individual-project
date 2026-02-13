@@ -1,60 +1,45 @@
-import { Agent } from '../interfaces/Agent';
+import { Agent } from '../interfaces/Agents';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
 
 export abstract class ExtendedGaleShapley extends MatchingAlgorithm {
   match(): AlgorithmData {
-    // assign each resident to be free;
-    this.update(1);
+    this.saveStep(1);
 
-    while (this.freeAgentsOfGroup1.length > 0) {
-      const currentAgent = this.group1Agents.get(this.freeAgentsOfGroup1[0]);
+    while (this.freeAgents.length > 0) {
+      const currentAgent = this.freeAgents[0];
+      this.freeAgents.shift();
 
       if (
         currentAgent.ranking.length > 0 &&
-        !!this.getNextPotentialProposee(currentAgent)
+        !!this.getNextProposee(currentAgent)
       ) {
-        this.update(2, { '%currentAgent%': currentAgent.name });
+        this.saveStep(2, { '%currentAgent%': currentAgent.name });
 
-        // r := first such resident on h's list;
-        const potentialProposee: Agent =
-          this.getNextPotentialProposee(currentAgent);
+        const proposee = this.getNextProposee(currentAgent);
 
-        this.update(3, {
+        this.saveStep(3, {
           '%currentAgent%': currentAgent.name,
-          '%potentialProposee%': potentialProposee.name,
+          '%proposee%': proposee.name,
         });
 
-        // if h is fully subscribed, then break the assignment of the worst resident of that hospital
-        this.breakAssignment(currentAgent, potentialProposee);
-
-        this.provisionallyAssign(currentAgent, potentialProposee);
-
-        this.removeRuledOutPreferences(currentAgent, potentialProposee);
+        this.breakAssignment(currentAgent, proposee);
+        this.provisionallyAssign(currentAgent, proposee);
+        this.removeRuledOutPrefs(currentAgent, proposee);
       }
-
-      this.freeAgentsOfGroup1.shift();
     }
 
-    this.currentlySelectedAgents = [];
-    this.relevantPreferences = [];
-    // a stable matching has been found
-    this.update(12);
-
+    this.selectedAgents = [];
+    this.relevantPrefs = [];
+    this.saveStep(12);
     return;
   }
 
-  abstract getNextPotentialProposee(currentAgent: Agent): Agent;
+  abstract getNextProposee(currentAgent: Agent): Agent;
 
-  abstract provisionallyAssign(
-    currentAgent: Agent,
-    potentialProposee: Agent,
-  ): void;
+  abstract provisionallyAssign(currentAgent: Agent, proposee: Agent): void;
 
-  abstract removeRuledOutPreferences(
-    currentAgent: Agent,
-    potentialProposee: Agent,
-  ): void;
+  abstract removeRuledOutPrefs(currentAgent: Agent, proposee: Agent): void;
 
-  abstract breakAssignment(currentAgent: Agent, potentialProposee: Agent): void;
+  abstract breakAssignment(currentAgent: Agent, proposee: Agent): void;
 }
