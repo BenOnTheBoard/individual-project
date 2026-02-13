@@ -92,7 +92,7 @@ export abstract class MatchingAlgorithm {
     this.addLine(from, to, newColour);
   }
 
-  generateAgents() {
+  generateAgents(): void {
     for (let i = 0; i < this.numberOfAgents; i++) {
       const name = this.group1Name + (i + 1);
       const agent = this.createAgent(name);

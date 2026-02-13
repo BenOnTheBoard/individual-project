@@ -23,30 +23,29 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   numLecturers: number;
   lecturerCapacity: number;
 
-  generateAgents() {
+  generateAgents(): void {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
-      const group1AgentName = this.group1Name + i;
-      const agent = {
-        name: group1AgentName,
+      const name = this.group1Name + i;
+      const agent: Student = {
+        name,
         match: new Array(),
         ranking: new Array(),
       };
-      this.group1Agents.set(group1AgentName, agent);
+      this.group1Agents.set(name, agent);
       this.freeAgents.push(agent);
     }
 
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
-      const currentLetter = String.fromCharCode(65 + i);
-      const group2AgentName = this.group2Name + currentLetter;
-
-      this.group2Agents.set(group2AgentName, {
-        name: group2AgentName,
+      const letter = String.fromCharCode(65 + i);
+      const name = this.group2Name + letter;
+      const agent: Project = {
+        name,
         match: new Array(),
         ranking: new Array(),
         capacity: projectCapacity,
-      });
-
-      this.hospitalCapacity.set(currentLetter, String(projectCapacity));
+      };
+      this.group2Agents.set(name, agent);
+      this.hospitalCapacity.set(letter, String(projectCapacity));
     }
 
     // hospital capacity is placeholder name for project capacity - used so that it is displayed in canvas

@@ -12,31 +12,32 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
   group2Agents: Map<String, Hospital> = new Map();
   hospitalCapacity: Map<string, string> = new Map();
 
-  generateAgents() {
+  generateAgents(): void {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
-      const group1AgentName = this.group1Name + i;
-      const agent = {
-        name: group1AgentName,
+      const name = this.group1Name + i;
+      const agent: Resident = {
+        name,
         match: new Array(),
         ranking: new Array(),
       };
-      this.group1Agents.set(group1AgentName, agent);
+      this.group1Agents.set(name, agent);
       this.freeAgents.push(agent);
     }
 
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
-      const currentLetter = String.fromCharCode(65 + i);
-      const group2AgentName = this.group2Name + currentLetter;
+      const letter = String.fromCharCode(65 + i);
+      const name = this.group2Name + letter;
       const randomCap = this.utils.getRandomInt(0, this.numberOfAgents);
       const capacity = Math.max(2, randomCap);
-      this.group2Agents.set(group2AgentName, {
-        name: group2AgentName,
+      const agent: Hospital = {
+        name,
         match: new Array(),
         ranking: new Array(),
         capacity,
-      });
+      };
+      this.group2Agents.set(name, agent);
 
-      this.hospitalCapacity.set(currentLetter, String(capacity));
+      this.hospitalCapacity.set(letter, String(capacity));
     }
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
   }

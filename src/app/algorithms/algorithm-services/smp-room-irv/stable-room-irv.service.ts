@@ -12,34 +12,29 @@ export class StableRoomIrvService extends StableRoomMates {
 
   group1Agents: Map<String, Person> = new Map();
 
-  generateAgents() {
-    if (this.numberOfAgents % 2 == 1) {
-      this.numberOfAgents = this.numberOfAgents + 1;
-    }
-
-    // make each person
+  generateAgents(): void {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
-      const group1AgentName = this.group1Name + i;
-      const agent = {
-        name: group1AgentName,
+      const name = this.group1Name + i;
+      const agent: Person = {
+        name,
         match: new Array(),
         ranking: new Array(),
         lastProposed: null,
       };
-      this.group1Agents.set(group1AgentName, agent);
+      this.group1Agents.set(name, agent);
       this.freeAgents.push(agent);
     }
 
     // we need these to call getMatches
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
-      const currentLetter = String.fromCharCode(65 + i);
-      const group2AgentName = this.group2Name + currentLetter;
-
-      this.group2Agents.set(group2AgentName, {
-        name: group2AgentName,
+      const letter = String.fromCharCode(65 + i);
+      const name = this.group2Name + letter;
+      const agent = {
+        name,
         match: new Array(),
         ranking: new Array(),
-      });
+      };
+      this.group2Agents.set(name, agent);
     }
 
     this.algorithmSpecificData['SR'] = true;

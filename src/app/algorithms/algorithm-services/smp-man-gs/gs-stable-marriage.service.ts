@@ -13,28 +13,28 @@ export class GsStableMarriageService extends MatchingAlgorithm {
   freeAgents: Array<Man>;
   group1Agents: Map<String, Man> = new Map();
 
-  generateAgents() {
+  generateAgents(): void {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
-      const group1AgentName = this.group1Name + i;
+      const name = this.group1Name + i;
       const agent: Man = {
-        name: group1AgentName,
+        name,
         match: new Array(),
         ranking: new Array(),
         lastProposed: undefined,
       };
-      this.group1Agents.set(group1AgentName, agent);
+      this.group1Agents.set(name, agent);
       this.freeAgents.push(agent);
     }
 
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
       const currentLetter = String.fromCharCode(65 + i);
-      const group2AgentName = this.group2Name + currentLetter;
+      const name = this.group2Name + currentLetter;
       const agent: Woman = {
-        name: group2AgentName,
+        name,
         match: new Array(),
         ranking: new Array(),
       };
-      this.group2Agents.set(group2AgentName, agent);
+      this.group2Agents.set(name, agent);
     }
   }
 
