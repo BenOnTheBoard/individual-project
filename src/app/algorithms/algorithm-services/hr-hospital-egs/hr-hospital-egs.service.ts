@@ -16,7 +16,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
   freeAgentsOfGroup2: Array<Hospital> = new Array();
 
-  generateAgents() {
+  generateAgents(): void {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const group1AgentName = this.group1Name + i;
       const agent: Resident = {
@@ -195,8 +195,8 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
   // returns all the hospitals that should be looked at
   // they are undersubbed and there is someone not assigned to them that the hospital wants
-  checkFreeHospitals() {
-    const freeHospitals = [];
+  getFreeHospitals(): Array<Hospital> {
+    const freeHospitals: Array<Hospital> = [];
     for (const hospital of this.group2Agents.values()) {
       const hospitalCap = hospital.capacity;
 
@@ -205,7 +205,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
         hospital.match.length < hospitalCap &&
         this.checkHospitalPrefList(hospital)
       ) {
-        freeHospitals.push(hospital.name);
+        freeHospitals.push(hospital);
       }
     }
 
@@ -255,7 +255,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
 
         this.removeRuledOutPrefs(proposee, currentHospital);
 
-        this.freeAgentsOfGroup2 = this.checkFreeHospitals();
+        this.freeAgentsOfGroup2 = this.getFreeHospitals();
 
         // continous loop as guessed + not clear way to define/get free hospitals
         // rankings should be deleted until convergence?
