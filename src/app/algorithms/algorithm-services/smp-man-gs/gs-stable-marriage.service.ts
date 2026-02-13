@@ -40,7 +40,68 @@ export class GsStableMarriageService extends MatchingAlgorithm {
 
   incrementLastProposed(man: Man): void {
     const rank = this.getOriginalRank(man, man.lastProposed, 'group1');
-    man.lastProposed = man.ranking[rank + 1];
+    if (rank + 1 < man.ranking.length) {
+      man.lastProposed = man.ranking[rank + 1];
+    }
+  }
+
+  #packageStepVars(man?: Man, woman?: Woman, match?: Man): Object {
+    const placeholderValues = new Object();
+    if (man) placeholderValues['%man%'] = man.name;
+    if (woman) placeholderValues['%woman%'] = woman.name;
+    if (match) placeholderValues['%match%'] = match.name;
+    return placeholderValues;
+  }
+
+  #saveStepTwo(man: Man) {
+    const manChar = this.utils.getAsChar(man);
+    this.relevantPrefs.push(manChar);
+    this.selectedAgents.push(manChar);
+    this.saveStep(2, this.#packageStepVars(man));
+  }
+
+  #saveStepThree(man: Man, woman: Woman) {
+    const womanChar = this.utils.getAsChar(woman);
+    this.relevantPrefs.push(womanChar);
+    this.selectedAgents.push(womanChar);
+    this.addLine(man, woman, 'red');
+    this.stylePrefsMutual(man, woman, 'red');
+    this.saveStep(3, this.#packageStepVars(man, woman));
+  }
+
+  #saveStepFive(man: Man, woman: Woman) {
+    this.changeLineColour(man, woman, 'red', 'green');
+    this.stylePrefsMutual(man, woman, 'green');
+    this.saveStep(5, this.#packageStepVars(man, woman));
+  }
+
+  #saveStepSix(man: Man, woman: Woman, match: Man) {
+    this.relevantPrefs.push(this.utils.getAsChar(match));
+    this.saveStep(6, this.#packageStepVars(man, woman, match));
+  }
+
+  #saveStepSeven(man: Man, woman: Woman, match: Man) {
+    this.stylePrefs('group2', woman, man, 'red');
+    this.saveStep(7, this.#packageStepVars(man, woman, match));
+  }
+
+  #saveStepEight(man: Man, woman: Woman, match: Man) {
+    this.stylePrefsMutual(match, woman, 'grey');
+    this.stylePrefsMutual(man, woman, 'green');
+    this.changeLineColour(man, woman, 'red', 'green');
+    this.removeLine(match, woman, 'green');
+    this.saveStep(8, this.#packageStepVars(man, woman, match));
+  }
+
+  #saveStepNine(man: Man, woman: Woman, match: Man) {
+    this.stylePrefsMutual(man, woman, 'grey');
+    this.removeLine(man, woman, 'red');
+    this.saveStep(9, this.#packageStepVars(man, woman, match));
+  }
+
+  #engage(man: Man, woman: Woman) {
+    woman.match[0] = man;
+    man.match[0] = woman;
   }
 
   match(): AlgorithmData {
@@ -50,79 +111,33 @@ export class GsStableMarriageService extends MatchingAlgorithm {
 
     this.saveStep(1);
 
-    // 2: while some man m is free do
     while (this.freeAgents.length > 0) {
       this.selectedAgents = [];
       this.relevantPrefs = [];
-
       const man = this.freeAgents[0];
       const woman = man.lastProposed;
       const match = woman.match[0];
-
-      this.relevantPrefs.push(this.utils.getAsChar(man));
-      this.selectedAgents.push(this.utils.getAsChar(man));
-
-      this.saveStep(2, { '%man%': man.name });
-
-      this.selectedAgents.push(this.utils.getAsChar(woman));
-      this.relevantPrefs.push(this.utils.getAsChar(woman));
-
-      this.addLine(man, woman, 'red');
-      this.stylePrefsMutual(man, woman, 'red');
-
-      this.saveStep(3, { '%woman%': woman.name, '%man%': man.name });
+      this.#saveStepTwo(man);
+      this.#saveStepThree(man, woman);
 
       this.incrementLastProposed(man);
       this.saveStep(4, { '%woman%': woman.name });
 
       if (woman.match.length <= 0) {
-        woman.match.splice(0, 1);
-        woman.match.push(man);
-        man.match[0] = woman;
+        this.#engage(man, woman);
         this.freeAgents.shift();
-
-        this.changeLineColour(man, woman, 'red', 'green');
-        this.stylePrefsMutual(man, woman, 'green');
-
-        this.saveStep(5, { '%woman%': woman.name, '%man%': man.name });
+        this.#saveStepFive(man, woman);
       } else {
-        this.relevantPrefs.push(this.utils.getAsChar(match));
-        this.saveStep(6, {
-          '%woman%': woman.name,
-          '%man%': man.name,
-          '%match%': match.name,
-        });
-        this.stylePrefs('group2', woman, man, 'red');
-        this.saveStep(7, {
-          '%woman%': woman.name,
-          '%man%': man.name,
-          '%match%': match.name,
-        });
+        this.#saveStepSix(man, woman, match);
+        this.#saveStepSeven(man, woman, match);
 
         if (this.getRank(woman, match) > this.getRank(woman, man)) {
-          this.stylePrefsMutual(match, woman, 'grey');
-          this.stylePrefsMutual(man, woman, 'green');
-          this.changeLineColour(man, woman, 'red', 'green');
-          this.removeLine(match, woman, 'green');
-
+          this.#engage(man, woman);
           this.freeAgents.push(match);
           this.freeAgents.shift();
-          woman.match[0] = man;
-
-          this.saveStep(8, {
-            '%woman%': woman.name,
-            '%man%': man.name,
-            '%match%': match.name,
-          });
+          this.#saveStepEight(man, woman, match);
         } else {
-          this.stylePrefsMutual(man, woman, 'grey');
-          this.removeLine(man, woman, 'red');
-          this.saveStep(9, {
-            '%woman%': woman.name,
-            '%man%': man.name,
-            '%match%': match.name,
-          });
-
+          this.#saveStepNine(man, woman, match);
           this.saveStep(10);
         }
       }
@@ -130,13 +145,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
 
     this.selectedAgents = [];
     this.relevantPrefs = [];
-
     this.saveStep(11);
-
-    for (const woman of Array.from(this.group2Agents.values())) {
-      woman.match[0].match[0] = woman;
-    }
-
     return;
   }
 }
