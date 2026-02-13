@@ -32,7 +32,7 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       const currentLetter = String.fromCharCode(65 + i);
       const group2AgentName = this.group2Name + currentLetter;
 
-      const capacity = this.getRandomInt(1, this.numberOfAgents - 2);
+      const capacity = this.utils.getRandomInt(1, this.numberOfAgents - 2);
       const agent = {
         name: group2AgentName,
         match: new Array(),
@@ -45,12 +45,6 @@ export class HrHospitalEgsService extends ExtendedGaleShapley {
       this.hospitalCapacity.set(currentLetter, String(capacity));
     }
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
-  }
-
-  getRandomInt(min: number, max: number): number {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
   getNextProposee(hospital: Hospital): Resident | null {

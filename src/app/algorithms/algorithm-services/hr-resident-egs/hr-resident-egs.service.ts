@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { ExtendedGaleShapley } from '../../abstract-classes/ExtendedGaleShapley';
 import { Resident, Hospital } from '../../interfaces/Agents';
 
-const capacity = 2; //this.getRandomInt(1, this.numberOfAgents-2);
-
 @Injectable({
   providedIn: 'root',
 })
@@ -29,7 +27,8 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
       const currentLetter = String.fromCharCode(65 + i);
       const group2AgentName = this.group2Name + currentLetter;
-
+      const randomCap = this.utils.getRandomInt(0, this.numberOfAgents);
+      const capacity = Math.max(2, randomCap);
       this.group2Agents.set(group2AgentName, {
         name: group2AgentName,
         match: new Array(),
@@ -40,12 +39,6 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
       this.hospitalCapacity.set(currentLetter, String(capacity));
     }
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
-  }
-
-  getRandomInt(min: number, max: number): number {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
   getWorstResident(hospital: Hospital): Resident {

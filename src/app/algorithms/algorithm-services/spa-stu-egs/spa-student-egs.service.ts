@@ -74,12 +74,6 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     this.algorithmSpecificData['lecturerCapacity'] = this.lecturerCapacities;
   }
 
-  getRandomInt(min: number, max: number): number {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-
   checkStability(allMatches: Map<Student, Array<String>>): boolean {
     for (const student of this.group1Agents.values()) {
       const studentMatchRank =

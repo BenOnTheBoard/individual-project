@@ -40,6 +40,12 @@ export class UtilsService {
     return this.getLastChar(agent.name);
   }
 
+  getRandomInt(min: number, max: number): number {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
   polarToCartesian(
     r: number,
     theta: number,
