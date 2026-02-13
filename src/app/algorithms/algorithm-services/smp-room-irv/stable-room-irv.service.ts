@@ -196,8 +196,8 @@ export class StableRoomIrvService extends StableRoomMates {
     // Set each person to be free
     this.saveStep(1);
 
-    let last_person = null;
-    let last_pref = null;
+    let last_person: Person;
+    let last_pref: Person;
 
     while (free_agents.size > 0) {
       this.selectedAgents = [];
@@ -235,13 +235,9 @@ export class StableRoomIrvService extends StableRoomMates {
 
         // store prevouis person
         last_person = person;
-        ((last_pref = this.getOriginalRank(
-          person,
-          person.ranking[0],
-          'group1',
-        )),
-          //highlight pref in persons list
-          this.stylePrefs('group1', person, person.ranking[0], 'red'));
+        last_pref = person.ranking[0];
+        //highlight pref in persons list
+        this.stylePrefs('group1', person, person.ranking[0], 'red');
 
         //person b := first preferance on p's list
         this.saveStep(5, {
