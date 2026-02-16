@@ -1,4 +1,4 @@
-import { Agent } from '../interfaces/Agents';
+import { Agent, AgentFactory } from '../interfaces/Agents';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { StepBuilder } from '../interfaces/Step';
 import { UtilsService } from 'src/app/utils/utils.service';
@@ -65,10 +65,6 @@ export abstract class MatchingAlgorithm {
     return this.#stable;
   }
 
-  createAgent(name: string): Agent {
-    return { name, match: new Array(), ranking: new Array() };
-  }
-
   createLine(from: Agent, to: Agent, colour: string): [string, string, string] {
     return [this.utils.getAsChar(from), this.utils.getAsChar(to), colour];
   }
@@ -95,7 +91,7 @@ export abstract class MatchingAlgorithm {
   generateAgents(): void {
     for (let i = 0; i < this.numberOfAgents; i++) {
       const name = this.group1Name + (i + 1);
-      const agent = this.createAgent(name);
+      const agent = AgentFactory.createAgent(name);
       this.group1Agents.set(name, agent);
       this.freeAgents.push(agent);
     }
@@ -103,7 +99,7 @@ export abstract class MatchingAlgorithm {
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
       const currentLetter = String.fromCharCode(65 + i);
       const name = this.group2Name + currentLetter;
-      const agent = this.createAgent(name);
+      const agent = AgentFactory.createAgent(name);
       this.group2Agents.set(name, agent);
     }
   }

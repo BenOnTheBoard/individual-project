@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { StudentProjectAllocation } from '../../abstract-classes/StudentProjectAllocation';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
-import { Student, Project, Lecturer } from '../../interfaces/Agents';
+import {
+  Student,
+  Project,
+  Lecturer,
+  AgentFactory,
+} from '../../interfaces/Agents';
 
 const projectCapacity = 2;
 
@@ -26,11 +31,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   generateAgents(): void {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const name = this.group1Name + i;
-      const agent: Student = {
-        name,
-        match: new Array(),
-        ranking: new Array(),
-      };
+      const agent = AgentFactory.createStudent(name);
       this.group1Agents.set(name, agent);
       this.freeAgents.push(agent);
     }
@@ -38,12 +39,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
       const letter = String.fromCharCode(65 + i);
       const name = this.group2Name + letter;
-      const agent: Project = {
-        name,
-        match: new Array(),
-        ranking: new Array(),
-        capacity: projectCapacity,
-      };
+      const agent = AgentFactory.createProject(name, projectCapacity);
       this.group2Agents.set(name, agent);
       this.hospitalCapacity.set(letter, String(projectCapacity));
     }
@@ -58,16 +54,9 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     this.group3Agents = new Map();
 
     for (let i = 1; i < this.numLecturers + 1; i++) {
-      const group3AgentName = this.group3Name + i;
-
-      this.group3Agents.set(group3AgentName, {
-        name: group3AgentName,
-        match: new Array(),
-        ranking: new Array(),
-        projects: new Array(),
-        capacity: this.lecturerCapacity,
-      });
-
+      const name = this.group3Name + i;
+      const agent = AgentFactory.createLecturer(name, this.lecturerCapacity);
+      this.group3Agents.set(name, agent);
       this.lecturerCapacities.set(i, this.lecturerCapacity);
     }
     this.algorithmSpecificData['lecturerCapacity'] = this.lecturerCapacities;

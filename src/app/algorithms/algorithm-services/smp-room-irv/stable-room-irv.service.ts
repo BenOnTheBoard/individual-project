@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StableRoomMates } from '../../abstract-classes/StableRoomMates';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
-import { Person } from '../../interfaces/Agents';
+import { AgentFactory, Person } from '../../interfaces/Agents';
 
 @Injectable({
   providedIn: 'root',
@@ -15,12 +15,7 @@ export class StableRoomIrvService extends StableRoomMates {
   generateAgents(): void {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const name = this.group1Name + i;
-      const agent: Person = {
-        name,
-        match: new Array(),
-        ranking: new Array(),
-        lastProposed: null,
-      };
+      const agent = AgentFactory.createPerson(name);
       this.group1Agents.set(name, agent);
       this.freeAgents.push(agent);
     }
@@ -29,11 +24,7 @@ export class StableRoomIrvService extends StableRoomMates {
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
       const letter = String.fromCharCode(65 + i);
       const name = this.group2Name + letter;
-      const agent = {
-        name,
-        match: new Array(),
-        ranking: new Array(),
-      };
+      const agent = AgentFactory.createPerson(name);
       this.group2Agents.set(name, agent);
     }
 

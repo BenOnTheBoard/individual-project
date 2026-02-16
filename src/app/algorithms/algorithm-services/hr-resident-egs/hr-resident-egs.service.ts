@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ExtendedGaleShapley } from '../../abstract-classes/ExtendedGaleShapley';
-import { Resident, Hospital } from '../../interfaces/Agents';
+import { Resident, Hospital, AgentFactory } from '../../interfaces/Agents';
 
 @Injectable({
   providedIn: 'root',
@@ -15,11 +15,7 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
   generateAgents(): void {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const name = this.group1Name + i;
-      const agent: Resident = {
-        name,
-        match: new Array(),
-        ranking: new Array(),
-      };
+      const agent = AgentFactory.createResident(name);
       this.group1Agents.set(name, agent);
       this.freeAgents.push(agent);
     }
@@ -29,14 +25,9 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
       const name = this.group2Name + letter;
       const randomCap = this.utils.getRandomInt(0, this.numberOfAgents);
       const capacity = Math.max(2, randomCap);
-      const agent: Hospital = {
-        name,
-        match: new Array(),
-        ranking: new Array(),
-        capacity,
-      };
-      this.group2Agents.set(name, agent);
+      const agent = AgentFactory.createHospital(name, capacity);
 
+      this.group2Agents.set(name, agent);
       this.hospitalCapacity.set(letter, String(capacity));
     }
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;

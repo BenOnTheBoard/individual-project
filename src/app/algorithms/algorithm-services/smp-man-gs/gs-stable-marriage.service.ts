@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatchingAlgorithm } from '../../abstract-classes/MatchingAlgorithm';
-import { Man, Woman } from '../../interfaces/Agents';
+import { AgentFactory, Man, Woman } from '../../interfaces/Agents';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
 
 @Injectable({
@@ -16,12 +16,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
   generateAgents(): void {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const name = this.group1Name + i;
-      const agent: Man = {
-        name,
-        match: new Array(),
-        ranking: new Array(),
-        lastProposed: undefined,
-      };
+      const agent = AgentFactory.createMan(name);
       this.group1Agents.set(name, agent);
       this.freeAgents.push(agent);
     }
@@ -29,11 +24,7 @@ export class GsStableMarriageService extends MatchingAlgorithm {
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
       const currentLetter = String.fromCharCode(65 + i);
       const name = this.group2Name + currentLetter;
-      const agent: Woman = {
-        name,
-        match: new Array(),
-        ranking: new Array(),
-      };
+      const agent = AgentFactory.createWoman(name);
       this.group2Agents.set(name, agent);
     }
   }
