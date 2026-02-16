@@ -137,7 +137,6 @@ export abstract class MatchingAlgorithm {
     const currentStep = new StepBuilder()
       .lineNumber(step)
       .freeAgents(structuredClone(this.freeAgents))
-      .matches(new Map())
       .stepVariables(stepVariables)
       .group1Prefs(structuredClone(this.currentPrefsGroup1))
       .group2Prefs(structuredClone(this.currentPrefsGroup2))

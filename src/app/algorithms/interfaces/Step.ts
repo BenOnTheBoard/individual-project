@@ -3,7 +3,6 @@ import { Agent } from './Agents';
 export interface Step {
   lineNumber: number;
   freeAgents: Array<Agent>;
-  matches: Map<String, String>;
   stepVariables: Object;
   currentPrefsGroup1: Map<String, Array<String>>;
   currentPrefsGroup2: Map<String, Array<String>>;
@@ -27,11 +26,6 @@ export class StepBuilder {
 
   freeAgents(agents: Array<Agent>): this {
     this.#step.freeAgents = agents;
-    return this;
-  }
-
-  matches(map: Map<String, String>): this {
-    this.#step.matches = map;
     return this;
   }
 
