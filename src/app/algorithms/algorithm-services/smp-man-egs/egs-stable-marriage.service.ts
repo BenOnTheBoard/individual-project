@@ -7,76 +7,75 @@ import { SM } from '../../abstract-classes/SM';
   providedIn: 'root',
 })
 export class EgsStableMarriageService extends SM {
-  breakAssignment(currentAgent: Man, proposee: Woman) {
-    this.saveStep(4, { '%woman%': proposee.name });
-    if (proposee.match.length < 1) {
-      this.saveStep(6, { '%woman%': proposee.name });
+  breakAssignment(man: Man, woman: Woman) {
+    this.saveStep(4, { '%woman%': woman.name });
+    if (woman.match.length < 1) {
+      this.saveStep(6, { '%woman%': woman.name });
       return;
     }
 
-    const match = proposee.match[0];
+    const match = woman.match[0];
 
     if (
-      match.ranking.filter((agent) => agent.match[0] != currentAgent).length >
-        0 &&
+      match.ranking.filter((agent) => agent.match[0] != man).length > 0 &&
       !this.freeAgents.includes(match) &&
       match.ranking.length > 0
     ) {
       this.freeAgents.push(match);
     }
 
-    this.removeLine(match, proposee, 'green');
-    this.stylePrefsMutual(match, proposee, 'grey');
+    this.removeLine(match, woman, 'green');
+    this.stylePrefsMutual(match, woman, 'grey');
 
     this.saveStep(5, {
-      '%woman%': proposee.name,
+      '%woman%': woman.name,
       '%currentPartner%': match.name,
     });
 
-    const matchRank = this.getRank(proposee, match);
-    proposee.ranking.splice(matchRank, 1);
-    match.ranking.splice(this.getRank(match, proposee), 1);
+    const matchRank = this.getRank(woman, match);
+    woman.ranking.splice(matchRank, 1);
+    match.ranking.splice(this.getRank(match, woman), 1);
   }
 
-  provisionallyAssign(agent: Man, proposee: Woman) {
-    this.changeLineColour(agent, proposee, 'red', 'green');
-    this.stylePrefsMutual(agent, proposee, 'green');
+  provisionallyAssign(agent: Man, woman: Woman) {
+    this.changeLineColour(agent, woman, 'red', 'green');
+    this.stylePrefsMutual(agent, woman, 'green');
 
     this.saveStep(7, {
       '%man%': agent.name,
-      '%woman%': proposee.name,
+      '%woman%': woman.name,
     });
 
-    proposee.match[0] = agent;
-    agent.match.push(proposee);
+    woman.match[0] = agent;
+    agent.match.push(woman);
   }
 
-  removeRuledOutPrefs(agent: Man, proposee: Woman) {
+  removeRuledOutPrefs(agent: Man, woman: Woman) {
     this.saveStep(8, {
       '%man%': agent.name,
-      '%woman%': proposee.name,
+      '%woman%': woman.name,
     });
 
-    const agentRank = this.getRank(proposee, agent);
-    for (let i = agentRank + 1; i < proposee.ranking.length; i++) {
-      const reject = proposee.ranking[i];
-      const proposeeRank = this.getRank(reject, proposee);
+    const agentRank = this.getRank(woman, agent);
+    for (let i = agentRank + 1; i < woman.ranking.length; i++) {
+      const reject = woman.ranking[i];
+      const womanRank = this.getRank(reject, woman);
       this.relevantPrefs.push(this.utils.getAsChar(reject));
 
       this.saveStep(9, {
         '%nextWorstMan%': reject.name,
-        '%woman%': proposee.name,
+        '%woman%': woman.name,
       });
 
-      this.stylePrefsMutual(reject, proposee, 'grey');
+      this.stylePrefsMutual(reject, woman, 'grey');
 
       this.saveStep(10, {
         '%nextWorstMan%': reject.name,
-        '%woman%': proposee.name,
+        '%woman%': woman.name,
       });
 
-      reject.ranking.splice(proposeeRank, 1);
-      proposee.ranking.splice(i, 1);
+      reject.ranking.splice(womanRank, 1);
+      woman.ranking.splice(i, 1);
       i--;
 
       this.relevantPrefs.pop();
@@ -84,37 +83,34 @@ export class EgsStableMarriageService extends SM {
 
     this.saveStep(11, {
       '%man%': agent.name,
-      '%woman%': proposee.name,
+      '%woman%': woman.name,
     });
   }
 
-  getNextProposee(currentAgent: Man): Woman {
-    return currentAgent.ranking[0];
+  getNextWoman(man: Man): Woman {
+    return man.ranking[0];
   }
 
   match(): AlgorithmData {
     this.saveStep(1);
 
     while (this.freeAgents.length > 0) {
-      const currentAgent = this.freeAgents[0];
+      const man = this.freeAgents[0];
       this.freeAgents.shift();
 
-      if (
-        currentAgent.ranking.length > 0 &&
-        !!this.getNextProposee(currentAgent)
-      ) {
-        this.saveStep(2, { '%currentAgent%': currentAgent.name });
+      if (man.ranking.length > 0 && !!this.getNextWoman(man)) {
+        this.saveStep(2, { '%man%': man.name });
 
-        const proposee = this.getNextProposee(currentAgent);
+        const woman = this.getNextWoman(man);
 
         this.saveStep(3, {
-          '%currentAgent%': currentAgent.name,
-          '%proposee%': proposee.name,
+          '%man%': man.name,
+          '%woman%': woman.name,
         });
 
-        this.breakAssignment(currentAgent, proposee);
-        this.provisionallyAssign(currentAgent, proposee);
-        this.removeRuledOutPrefs(currentAgent, proposee);
+        this.breakAssignment(man, woman);
+        this.provisionallyAssign(man, woman);
+        this.removeRuledOutPrefs(man, woman);
       }
     }
 

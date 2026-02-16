@@ -7,12 +7,12 @@ import { HR } from '../../abstract-classes/HR';
   providedIn: 'root',
 })
 export class HrHospitalEgsService extends HR {
-  freeAgentsOfGroup2: Array<Hospital> = new Array();
+  freeHospitals: Array<Hospital> = new Array();
 
   generateAgents(): void {
     super.generateAgents();
     for (const agent of this.group2Agents.values()) {
-      this.freeAgentsOfGroup2.push(agent);
+      this.freeHospitals.push(agent);
     }
   }
 
@@ -181,9 +181,9 @@ export class HrHospitalEgsService extends HR {
 
     // while a HOSPITAL h is under-subscribed and
     // h's list contains a a RESIDENT r not assigned to h
-    while (this.freeAgentsOfGroup2.length > 0) {
+    while (this.freeHospitals.length > 0) {
       // get first hospital on list
-      const currentHospital = this.freeAgentsOfGroup2[0];
+      const currentHospital = this.freeHospitals[0];
 
       // "While some hospital h is - undersubscibed,
       // and has a resident r on h's preferance list that is no assigned to h",
@@ -193,7 +193,7 @@ export class HrHospitalEgsService extends HR {
         currentHospital.ranking.length <= 0 ||
         !this.getNextProposee(currentHospital)
       ) {
-        this.freeAgentsOfGroup2.shift();
+        this.freeHospitals.shift();
       } else {
         const proposee = this.getNextProposee(currentHospital);
 
@@ -218,7 +218,7 @@ export class HrHospitalEgsService extends HR {
 
         this.removeRuledOutPrefs(proposee, currentHospital);
 
-        this.freeAgentsOfGroup2 = this.getFreeHospitals();
+        this.freeHospitals = this.getFreeHospitals();
       }
     }
 
