@@ -16,7 +16,7 @@ export class HrResidentEgsService extends HR {
     }
   }
 
-  getNextProposee(resident: Resident): Hospital {
+  getNextHospital(resident: Resident): Hospital {
     return resident.ranking[0];
   }
 
@@ -64,33 +64,28 @@ export class HrResidentEgsService extends HR {
       const resident = this.freeAgents[0];
       this.freeAgents.shift();
 
-      if (resident.ranking.length > 0 && !!this.getNextProposee(resident)) {
+      if (resident.ranking.length > 0 && !!this.getNextHospital(resident)) {
         this.saveStep(2, this.packageStepVars(resident));
 
-        const hospital = this.getNextProposee(resident);
-
+        const hospital = this.getNextHospital(resident);
         this.saveStep(3, this.packageStepVars(resident, hospital));
         this.saveStep(4, this.packageStepVars(resident, hospital));
 
         if (hospital.match.length >= hospital.capacity) {
           const worstResident = this.getWorstResident(hospital);
-
           this.saveStep(5, this.packageStepVars(worstResident, hospital));
 
           this.breakAssignment(worstResident, hospital);
-
           this.saveStep(6, this.packageStepVars(resident, hospital));
         }
-        this.provisionallyAssign(resident, hospital);
 
+        this.provisionallyAssign(resident, hospital);
         this.saveStep(7, this.packageStepVars(resident, hospital));
 
         this.removeRuledOutPrefs(resident, hospital);
       }
     }
 
-    this.selectedAgents = [];
-    this.relevantPrefs = [];
     this.saveStep(12);
     return;
   }
