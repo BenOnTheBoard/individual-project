@@ -1,38 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Resident, Hospital, AgentFactory } from '../../interfaces/Agents';
+import { Resident, Hospital } from '../../interfaces/Agents';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
-import { MatchingAlgorithm } from '../../abstract-classes/MatchingAlgorithm';
+import { HR } from '../../abstract-classes/HR';
 
 @Injectable({
   providedIn: 'root',
 })
-export class HrHospitalEgsService extends MatchingAlgorithm {
-  group1Name = 'resident';
-  group2Name = 'hospital';
-
-  group2Agents: Map<String, Hospital> = new Map();
-  hospitalCapacity: Map<string, string> = new Map();
+export class HrHospitalEgsService extends HR {
   freeAgentsOfGroup2: Array<Hospital> = new Array();
 
   generateAgents(): void {
-    for (let i = 1; i < this.numberOfAgents + 1; i++) {
-      const name = this.group1Name + i;
-      const agent = AgentFactory.createResident(name);
-      this.group1Agents.set(name, agent);
-      this.freeAgents.push(agent);
-    }
-
-    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
-      const letter = String.fromCharCode(65 + i);
-      const name = this.group2Name + letter;
-      const capacity = this.utils.getRandomInt(1, this.numberOfAgents - 2);
-      const agent = AgentFactory.createHospital(name, capacity);
-
-      this.group2Agents.set(name, agent);
+    super.generateAgents();
+    for (const agent of this.group2Agents.values()) {
       this.freeAgentsOfGroup2.push(agent);
-      this.hospitalCapacity.set(letter, String(capacity));
     }
-    this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
   }
 
   getNextProposee(hospital: Hospital): Resident | null {
@@ -238,11 +219,6 @@ export class HrHospitalEgsService extends MatchingAlgorithm {
         this.removeRuledOutPrefs(proposee, currentHospital);
 
         this.freeAgentsOfGroup2 = this.getFreeHospitals();
-
-        // continous loop as guessed + not clear way to define/get free hospitals
-        // rankings should be deleted until convergence?
-
-        this.freeAgents.shift();
       }
     }
 

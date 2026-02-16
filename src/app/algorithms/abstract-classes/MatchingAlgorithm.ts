@@ -1,4 +1,4 @@
-import { Agent, AgentFactory } from '../interfaces/Agents';
+import { Agent } from '../interfaces/Agents';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { StepBuilder } from '../interfaces/Step';
 import { UtilsService } from 'src/app/utils/utils.service';
@@ -86,22 +86,6 @@ export abstract class MatchingAlgorithm {
   ): void {
     this.removeLine(from, to, oldColour);
     this.addLine(from, to, newColour);
-  }
-
-  generateAgents(): void {
-    for (let i = 0; i < this.numberOfAgents; i++) {
-      const name = this.group1Name + (i + 1);
-      const agent = AgentFactory.createAgent(name);
-      this.group1Agents.set(name, agent);
-      this.freeAgents.push(agent);
-    }
-
-    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
-      const currentLetter = String.fromCharCode(65 + i);
-      const name = this.group2Name + currentLetter;
-      const agent = AgentFactory.createAgent(name);
-      this.group2Agents.set(name, agent);
-    }
   }
 
   shuffleRankings(
@@ -243,6 +227,8 @@ export abstract class MatchingAlgorithm {
     }
     return furthestIndex;
   }
+
+  abstract generateAgents(): void;
 
   abstract match(): AlgorithmData;
 

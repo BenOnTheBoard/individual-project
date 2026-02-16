@@ -1,16 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Agent } from '../../interfaces/Agents';
+import { Man, Woman } from '../../interfaces/Agents';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
-import { MatchingAlgorithm } from '../../abstract-classes/MatchingAlgorithm';
+import { SM } from '../../abstract-classes/SM';
 
 @Injectable({
   providedIn: 'root',
 })
-export class EgsStableMarriageService extends MatchingAlgorithm {
-  group1Name = 'man';
-  group2Name = 'woman';
-
-  breakAssignment(currentAgent: Agent, proposee: Agent) {
+export class EgsStableMarriageService extends SM {
+  breakAssignment(currentAgent: Man, proposee: Woman) {
     this.saveStep(4, { '%woman%': proposee.name });
     if (proposee.match.length < 1) {
       this.saveStep(6, { '%woman%': proposee.name });
@@ -41,7 +38,7 @@ export class EgsStableMarriageService extends MatchingAlgorithm {
     match.ranking.splice(this.getRank(match, proposee), 1);
   }
 
-  provisionallyAssign(agent: Agent, proposee: Agent) {
+  provisionallyAssign(agent: Man, proposee: Woman) {
     this.changeLineColour(agent, proposee, 'red', 'green');
     this.stylePrefsMutual(agent, proposee, 'green');
 
@@ -54,7 +51,7 @@ export class EgsStableMarriageService extends MatchingAlgorithm {
     agent.match.push(proposee);
   }
 
-  removeRuledOutPrefs(agent: Agent, proposee: Agent) {
+  removeRuledOutPrefs(agent: Man, proposee: Woman) {
     this.saveStep(8, {
       '%man%': agent.name,
       '%woman%': proposee.name,
@@ -91,7 +88,7 @@ export class EgsStableMarriageService extends MatchingAlgorithm {
     });
   }
 
-  getNextProposee(currentAgent: Agent): Agent {
+  getNextProposee(currentAgent: Man): Woman {
     return currentAgent.ranking[0];
   }
 

@@ -1,38 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Resident, Hospital, AgentFactory } from '../../interfaces/Agents';
+import { Resident, Hospital } from '../../interfaces/Agents';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
-import { MatchingAlgorithm } from '../../abstract-classes/MatchingAlgorithm';
+import { HR } from '../../abstract-classes/HR';
 
 @Injectable({
   providedIn: 'root',
 })
-export class HrResidentEgsService extends MatchingAlgorithm {
-  group1Name = 'resident';
-  group2Name = 'hospital';
-
-  group2Agents: Map<String, Hospital> = new Map();
-  hospitalCapacity: Map<string, string> = new Map();
-  protected freeAgents: Array<Resident>;
+export class HrResidentEgsService extends HR {
+  freeAgents: Array<Resident>;
 
   generateAgents(): void {
-    for (let i = 1; i < this.numberOfAgents + 1; i++) {
-      const name = this.group1Name + i;
-      const agent = AgentFactory.createResident(name);
-      this.group1Agents.set(name, agent);
+    super.generateAgents();
+    for (const agent of this.group1Agents.values()) {
       this.freeAgents.push(agent);
     }
-
-    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
-      const letter = String.fromCharCode(65 + i);
-      const name = this.group2Name + letter;
-      const randomCap = this.utils.getRandomInt(0, this.numberOfAgents);
-      const capacity = Math.max(2, randomCap);
-      const agent = AgentFactory.createHospital(name, capacity);
-
-      this.group2Agents.set(name, agent);
-      this.hospitalCapacity.set(letter, String(capacity));
-    }
-    this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
   }
 
   getWorstResident(hospital: Hospital): Resident {
