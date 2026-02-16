@@ -26,7 +26,7 @@ export class HrHospitalEgsService extends HR {
   breakAssignment(resident: Resident, hospital: Hospital): void {
     this.assignmentBreakStyling(resident, hospital);
     this.saveStep(5, {
-      '%oldHospital%': resident.match[0].name,
+      '%hospital%': resident.match[0].name, // old hospital
       '%resident%': resident.name,
     });
     super.breakAssignment(resident, hospital);

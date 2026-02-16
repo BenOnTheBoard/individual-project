@@ -14,7 +14,7 @@ export const hrHospitalConfig = new AlgorithmBuilder()
     2: '%hospital% is undersubscribed and has a resident on their preference list that is not assigned to them.',
     3: '%hospital% selects %resident%, the best resident on its preference list.',
     4: 'We check whether %resident% is assigned to another hospital.',
-    5: 'We unassign %resident% and %oldHospital% from each other.',
+    5: 'We unassign %resident% and %hospital% from each other.',
     6: 'We assign %resident% and %hospital% to each other.',
     7: "We loop over each hospital h' which %resident% prefers %hospital% to on %resident%'s preference list.",
     8: "We remove %resident% AND %hospital% from each other's list.",

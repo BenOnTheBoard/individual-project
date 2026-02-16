@@ -40,7 +40,7 @@ export class HrResidentEgsService extends HR {
 
     this.saveStep(9, {
       '%hospital%': hospital.name,
-      '%worstResident%': worstResident.name,
+      '%resident%': worstResident.name,
     });
 
     // for each successor h' of h on r's list {
@@ -51,7 +51,7 @@ export class HrResidentEgsService extends HR {
 
       this.saveStep(10, {
         '%hospital%': hospital.name,
-        '%nextResident%': resident.name,
+        '%resident%': resident.name,
       });
 
       this.stylePrefsMutual(resident, hospital, 'grey');
@@ -60,7 +60,7 @@ export class HrResidentEgsService extends HR {
       // remove h' and r from each other's lists
       this.saveStep(11, {
         '%hospital%': hospital.name,
-        '%nextResident%': resident.name,
+        '%resident%': resident.name,
       });
 
       hospital.ranking.splice(i, 1);
@@ -78,13 +78,13 @@ export class HrResidentEgsService extends HR {
       this.freeAgents.shift();
 
       if (resident.ranking.length > 0 && !!this.getNextProposee(resident)) {
-        this.saveStep(2, { '%currentAgent%': resident.name });
+        this.saveStep(2, { '%resident%': resident.name });
 
         const hospital = this.getNextProposee(resident);
 
         this.saveStep(3, {
-          '%currentAgent%': resident.name,
-          '%proposee%': hospital.name,
+          '%resident%': resident.name,
+          '%hospital%': hospital.name,
         });
 
         this.saveStep(4, {
@@ -98,14 +98,14 @@ export class HrResidentEgsService extends HR {
 
           this.saveStep(5, {
             '%hospital%': hospital.name,
-            '%worstResident%': worstResident.name,
+            '%resident%': worstResident.name,
           });
 
           this.breakAssignment(worstResident, hospital);
 
           this.saveStep(6, {
             '%hospital%': hospital.name,
-            '%worstResident%': resident.name,
+            '%resident%': resident.name,
           });
         }
         this.provisionallyAssign(resident, hospital);
