@@ -17,7 +17,6 @@ export class HrResidentEgsService extends HR {
   }
 
   getNextProposee(resident: Resident): Hospital {
-    // return first hospital on r's list
     return resident.ranking[0];
   }
 
@@ -28,20 +27,14 @@ export class HrResidentEgsService extends HR {
   }
 
   removeRuledOutPrefs(resident: Resident, hospital: Hospital): void {
-    this.saveStep(8, {
-      '%resident%': resident.name,
-      '%hospital%': hospital.name,
-    });
+    this.saveStep(8, this.packageStepVars(resident, hospital));
 
     if (hospital.match.length < hospital.capacity) return;
 
     const worstResident = this.getWorstResident(hospital);
     const worstResidentRank = this.getRank(hospital, worstResident);
 
-    this.saveStep(9, {
-      '%hospital%': hospital.name,
-      '%resident%': worstResident.name,
-    });
+    this.saveStep(9, this.packageStepVars(worstResident, hospital));
 
     // for each successor h' of h on r's list {
     for (let i = worstResidentRank + 1; i < hospital.ranking.length; i++) {
@@ -49,19 +42,13 @@ export class HrResidentEgsService extends HR {
       const hospitalRank = this.getRank(resident, hospital);
       this.relevantPrefs.push(this.utils.getAsChar(resident));
 
-      this.saveStep(10, {
-        '%hospital%': hospital.name,
-        '%resident%': resident.name,
-      });
+      this.saveStep(10, this.packageStepVars(resident, hospital));
 
       this.stylePrefsMutual(resident, hospital, 'grey');
       resident.ranking.splice(hospitalRank, 1);
 
       // remove h' and r from each other's lists
-      this.saveStep(11, {
-        '%hospital%': hospital.name,
-        '%resident%': resident.name,
-      });
+      this.saveStep(11, this.packageStepVars(resident, hospital));
 
       hospital.ranking.splice(i, 1);
       i--;
@@ -78,42 +65,25 @@ export class HrResidentEgsService extends HR {
       this.freeAgents.shift();
 
       if (resident.ranking.length > 0 && !!this.getNextProposee(resident)) {
-        this.saveStep(2, { '%resident%': resident.name });
+        this.saveStep(2, this.packageStepVars(resident));
 
         const hospital = this.getNextProposee(resident);
 
-        this.saveStep(3, {
-          '%resident%': resident.name,
-          '%hospital%': hospital.name,
-        });
-
-        this.saveStep(4, {
-          '%hospital%': hospital.name,
-          '%capacity%': hospital.capacity,
-          '%resident%': resident.name,
-        });
+        this.saveStep(3, this.packageStepVars(resident, hospital));
+        this.saveStep(4, this.packageStepVars(resident, hospital));
 
         if (hospital.match.length >= hospital.capacity) {
           const worstResident = this.getWorstResident(hospital);
 
-          this.saveStep(5, {
-            '%hospital%': hospital.name,
-            '%resident%': worstResident.name,
-          });
+          this.saveStep(5, this.packageStepVars(worstResident, hospital));
 
           this.breakAssignment(worstResident, hospital);
 
-          this.saveStep(6, {
-            '%hospital%': hospital.name,
-            '%resident%': resident.name,
-          });
+          this.saveStep(6, this.packageStepVars(resident, hospital));
         }
         this.provisionallyAssign(resident, hospital);
 
-        this.saveStep(7, {
-          '%resident%': resident.name,
-          '%hospital%': hospital.name,
-        });
+        this.saveStep(7, this.packageStepVars(resident, hospital));
 
         this.removeRuledOutPrefs(resident, hospital);
       }

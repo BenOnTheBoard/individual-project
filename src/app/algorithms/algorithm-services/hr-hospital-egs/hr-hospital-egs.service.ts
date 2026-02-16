@@ -16,19 +16,16 @@ export class HrHospitalEgsService extends HR {
     }
   }
 
-  getNextProposee(hospital: Hospital): Resident | null {
-    for (const proposee of hospital.ranking) {
-      if (proposee.match[0] != hospital) return proposee;
+  getNextResident(hospital: Hospital): Resident | null {
+    for (const resident of hospital.ranking) {
+      if (resident.match[0] != hospital) return resident;
     }
     return null;
   }
 
   breakAssignment(resident: Resident, hospital: Hospital): void {
     this.assignmentBreakStyling(resident, hospital);
-    this.saveStep(5, {
-      '%hospital%': resident.match[0].name, // old hospital
-      '%resident%': resident.name,
-    });
+    this.saveStep(5, this.packageStepVars(resident, resident.match[0])); //old hospital
     super.breakAssignment(resident, hospital);
   }
 
@@ -38,10 +35,7 @@ export class HrHospitalEgsService extends HR {
 
     if (hospitalRank + 1 < resident.ranking.length) {
       // for each successor h' of h on r's list
-      this.saveStep(7, {
-        '%resident%': resident.name,
-        '%hospital%': hospital.name,
-      });
+      this.saveStep(7, this.packageStepVars(resident, hospital));
 
       for (let i = hospitalRank + 1; i < resident.ranking.length; i++) {
         const removedHospital = resident.ranking[i];
@@ -53,10 +47,7 @@ export class HrHospitalEgsService extends HR {
         resident.ranking.splice(i, 1);
         this.stylePrefsMutual(resident, removedHospital, 'grey');
         // remove h' and r from each others preferance list
-        this.saveStep(8, {
-          '%hospital%': removedHospital.name,
-          '%resident%': resident.name,
-        });
+        this.saveStep(8, this.packageStepVars(resident, removedHospital));
       }
     }
   }
@@ -97,40 +88,34 @@ export class HrHospitalEgsService extends HR {
     // h's list contains a a RESIDENT r not assigned to h
     while (this.freeHospitals.length > 0) {
       // get first hospital on list
-      const currentHospital = this.freeHospitals[0];
+      const hospital = this.freeHospitals[0];
 
       // "While some hospital h is - undersubscibed,
       // and has a resident r on h's preferance list that is no assigned to h",
-      this.saveStep(2, { '%hospital%': currentHospital.name });
+      this.saveStep(2, this.packageStepVars(null, hospital));
 
-      if (
-        currentHospital.ranking.length <= 0 ||
-        !this.getNextProposee(currentHospital)
-      ) {
+      if (hospital.ranking.length <= 0 || !this.getNextResident(hospital)) {
         this.freeHospitals.shift();
       } else {
-        const proposee = this.getNextProposee(currentHospital);
+        const resident = this.getNextResident(hospital);
 
         // a RESIDENT r that is not assigned to h, but is on its pref list
         // "r := first resident on h's prefernace list not assigned to h",
-        this.saveStep(3, { '%resident%': proposee.name });
+        this.saveStep(3, this.packageStepVars(resident));
 
-        // if proposee is assigned to a different hospital then un assign
+        // if resident is assigned to a different hospital then un assign
         // if r is assigned to another hospital h
-        this.saveStep(4, { '%resident%': proposee.name });
+        this.saveStep(4, this.packageStepVars(resident));
 
-        if (proposee.match[0] != null) {
-          this.breakAssignment(proposee, proposee.match[0]);
+        if (resident.match[0] != null) {
+          this.breakAssignment(resident, resident.match[0]);
         }
 
         // provisionally assign r to h
-        this.provisionallyAssign(proposee, currentHospital);
-        this.saveStep(6, {
-          '%resident%': proposee.name,
-          '%hospital%': currentHospital.name,
-        });
+        this.provisionallyAssign(resident, hospital);
+        this.saveStep(6, this.packageStepVars(resident, hospital));
 
-        this.removeRuledOutPrefs(proposee, currentHospital);
+        this.removeRuledOutPrefs(resident, hospital);
 
         this.freeHospitals = this.getFreeHospitals();
       }

@@ -9,6 +9,16 @@ export abstract class HR extends MatchingAlgorithm {
   group2Agents: Map<String, Hospital> = new Map();
   hospitalCapacity: Map<string, string> = new Map();
 
+  packageStepVars(resident?: Resident, hospital?: Hospital) {
+    const placeholderValues = new Object();
+    if (resident) placeholderValues['%resident%'] = resident.name;
+    if (hospital) {
+      placeholderValues['%hospital%'] = hospital.name;
+      placeholderValues['%capacity%'] = hospital.capacity;
+    }
+    return placeholderValues;
+  }
+
   generateAgents(): void {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const name = this.group1Name + i;
