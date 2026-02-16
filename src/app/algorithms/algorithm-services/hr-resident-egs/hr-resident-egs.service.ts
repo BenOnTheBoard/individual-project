@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
-import { ExtendedGaleShapley } from '../../abstract-classes/ExtendedGaleShapley';
 import { Resident, Hospital, AgentFactory } from '../../interfaces/Agents';
+import { AlgorithmData } from '../../interfaces/AlgorithmData';
+import { MatchingAlgorithm } from '../../abstract-classes/MatchingAlgorithm';
 
 @Injectable({
   providedIn: 'root',
 })
-export class HrResidentEgsService extends ExtendedGaleShapley {
+export class HrResidentEgsService extends MatchingAlgorithm {
   group1Name = 'resident';
   group2Name = 'hospital';
 
   group2Agents: Map<String, Hospital> = new Map();
   hospitalCapacity: Map<string, string> = new Map();
+  protected freeAgents: Array<Resident>;
 
   generateAgents(): void {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
@@ -45,9 +47,9 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
     return positionMap.get(Math.max(...Array.from(positionMap.keys())));
   }
 
-  getNextProposee(hospital: Hospital): Resident {
+  getNextProposee(resident: Resident): Hospital {
     // return first hospital on r's list
-    return hospital.ranking[0];
+    return resident.ranking[0];
   }
 
   breakAssignment(resident: Resident, hospital: Hospital): void {
@@ -152,5 +154,37 @@ export class HrResidentEgsService extends ExtendedGaleShapley {
 
       this.relevantPrefs.pop();
     }
+  }
+
+  match(): AlgorithmData {
+    this.saveStep(1);
+
+    while (this.freeAgents.length > 0) {
+      const currentAgent = this.freeAgents[0];
+      this.freeAgents.shift();
+
+      if (
+        currentAgent.ranking.length > 0 &&
+        !!this.getNextProposee(currentAgent)
+      ) {
+        this.saveStep(2, { '%currentAgent%': currentAgent.name });
+
+        const proposee = this.getNextProposee(currentAgent);
+
+        this.saveStep(3, {
+          '%currentAgent%': currentAgent.name,
+          '%proposee%': proposee.name,
+        });
+
+        this.breakAssignment(currentAgent, proposee);
+        this.provisionallyAssign(currentAgent, proposee);
+        this.removeRuledOutPrefs(currentAgent, proposee);
+      }
+    }
+
+    this.selectedAgents = [];
+    this.relevantPrefs = [];
+    this.saveStep(12);
+    return;
   }
 }

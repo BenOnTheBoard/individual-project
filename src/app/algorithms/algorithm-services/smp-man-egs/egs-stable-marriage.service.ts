@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ExtendedGaleShapley } from '../../abstract-classes/ExtendedGaleShapley';
 import { Agent } from '../../interfaces/Agents';
+import { AlgorithmData } from '../../interfaces/AlgorithmData';
+import { MatchingAlgorithm } from '../../abstract-classes/MatchingAlgorithm';
 
 @Injectable({
   providedIn: 'root',
 })
-export class EgsStableMarriageService extends ExtendedGaleShapley {
+export class EgsStableMarriageService extends MatchingAlgorithm {
   group1Name = 'man';
   group2Name = 'woman';
 
@@ -92,5 +93,37 @@ export class EgsStableMarriageService extends ExtendedGaleShapley {
 
   getNextProposee(currentAgent: Agent): Agent {
     return currentAgent.ranking[0];
+  }
+
+  match(): AlgorithmData {
+    this.saveStep(1);
+
+    while (this.freeAgents.length > 0) {
+      const currentAgent = this.freeAgents[0];
+      this.freeAgents.shift();
+
+      if (
+        currentAgent.ranking.length > 0 &&
+        !!this.getNextProposee(currentAgent)
+      ) {
+        this.saveStep(2, { '%currentAgent%': currentAgent.name });
+
+        const proposee = this.getNextProposee(currentAgent);
+
+        this.saveStep(3, {
+          '%currentAgent%': currentAgent.name,
+          '%proposee%': proposee.name,
+        });
+
+        this.breakAssignment(currentAgent, proposee);
+        this.provisionallyAssign(currentAgent, proposee);
+        this.removeRuledOutPrefs(currentAgent, proposee);
+      }
+    }
+
+    this.selectedAgents = [];
+    this.relevantPrefs = [];
+    this.saveStep(12);
+    return;
   }
 }
