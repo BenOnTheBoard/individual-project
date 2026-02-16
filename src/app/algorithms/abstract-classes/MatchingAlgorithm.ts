@@ -211,11 +211,12 @@ export abstract class MatchingAlgorithm {
     this.stylePrefs('group2', g2Agent, g1Agent, colour);
   }
 
-  isBlockingPair(currentAgent: Agent, targetAgent: Agent): boolean {
-    const match = targetAgent.match[0];
-    const matchRank = this.getOriginalRank(targetAgent, match, 'group1');
-    const curRank = this.getOriginalRank(targetAgent, currentAgent, 'group1');
-    return curRank < matchRank;
+  isBlockingPair(agent: Agent, target: Agent): boolean {
+    const agentBlock = this.getOriginalRank(agent, target, 'group2');
+    const agentCur = this.getOriginalRank(agent, agent.match[0], 'group2');
+    const targetBlock = this.getOriginalRank(target, agent, 'group1');
+    const targetCur = this.getOriginalRank(target, target.match[0], 'group1');
+    return agentBlock < agentCur && targetBlock < targetCur;
   }
 
   checkStability(allMatches: Map<Agent, Array<String>>): boolean {
@@ -223,9 +224,7 @@ export abstract class MatchingAlgorithm {
       const agentMatches = allMatches.get(g2Agent);
       if (agentMatches.length == 0) continue;
 
-      const lastAgentRank = this.getLastMatch(g2Agent, agentMatches);
-
-      for (const g1Agent of g2Agent.ranking.slice(0, lastAgentRank)) {
+      for (const g1Agent of g2Agent.ranking) {
         if (agentMatches.includes(g1Agent.name)) continue;
         if (this.isBlockingPair(g2Agent, g1Agent)) return false;
       }

@@ -62,6 +62,35 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     this.algorithmSpecificData['lecturerCapacity'] = this.lecturerCapacities;
   }
 
+  isBlockingPair(student: Student, project: Project): boolean {
+    const lecturer = this.getProjectLecturer(project);
+    const lastMatchRank = this.getLastMatchLecturer(lecturer);
+    const currentStudentRank = this.getRank(lecturer, student);
+
+    // pj undersubscribed,
+    if (project.match.length < project.capacity) {
+      // (a) lk undersubscribed
+      if (this.getLecturerCurrentCapacity(lecturer) < this.lecturerCapacity) {
+        return true;
+      } else if (
+        // (b) lk full, but si is in M(lk) better than the worst student in M(lk)
+        this.getLecturerCurrentCapacity(lecturer) == this.lecturerCapacity &&
+        (lecturer.projects.includes(student.match[0]) ||
+          currentStudentRank < lastMatchRank)
+      ) {
+        return true;
+      }
+    }
+    // (c) pj full, but si is better than the worst student in M(pj)
+    if (
+      project.match.length == project.capacity &&
+      currentStudentRank < this.getLastMatchProject(project)
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   checkStability(allMatches: Map<Student, Array<String>>): boolean {
     for (const student of this.group1Agents.values()) {
       const studentMatchRank =
@@ -76,42 +105,9 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
       // loop over more preferable projects
       for (let i = studentMatchRank - 1; i >= 0; i--) {
-        const betterProjectname = studentRanking[i];
-        const betterProject = this.group2Agents.get(
-          this.group2Name + betterProjectname,
-        );
-        const betterProjectLecturer = this.getProjectLecturer(betterProject);
-
-        // get lecturers ranking list to compare positions
-        const lastMatchRank = this.getLastMatchLecturer(betterProjectLecturer);
-        const currentStudentRank = this.getRank(betterProjectLecturer, student);
-
-        // pj undersubscribed,
-        if (betterProject.match.length < betterProject.capacity) {
-          // (a) lk undersubscribed
-          if (
-            this.getLecturerCurrentCapacity(betterProjectLecturer) <
-            this.lecturerCapacity
-          ) {
-            return false;
-          } else if (
-            // (b) lk full, but si is in M(lk) better than the worst student in M(lk)
-            this.getLecturerCurrentCapacity(betterProjectLecturer) ==
-              this.lecturerCapacity &&
-            (betterProjectLecturer.projects.includes(student.match[0]) ||
-              currentStudentRank < lastMatchRank)
-          ) {
-            return false;
-          }
-        }
-
-        // (c) pj full, but si is better than the worst student in M(pj)
-        if (
-          betterProject.match.length == betterProject.capacity &&
-          currentStudentRank < this.getLastMatchProject(betterProject)
-        ) {
-          return false;
-        }
+        const projectName = studentRanking[i];
+        const project = this.group2Agents.get(this.group2Name + projectName);
+        if (this.isBlockingPair(student, project)) return false;
       }
     }
     return true;
