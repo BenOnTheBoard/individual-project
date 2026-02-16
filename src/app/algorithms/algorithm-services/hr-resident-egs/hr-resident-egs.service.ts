@@ -16,82 +16,15 @@ export class HrResidentEgsService extends HR {
     }
   }
 
-  getWorstResident(hospital: Hospital): Resident {
-    const positionMap: Map<number, Resident> = new Map();
-
-    for (const resident of hospital.match) {
-      positionMap.set(this.getRank(hospital, resident), resident);
-    }
-
-    // use destructuring assingment to extract data from array into distinct variables
-    // return the worst resident from the hospital's matches
-    return positionMap.get(Math.max(...Array.from(positionMap.keys())));
-  }
-
   getNextProposee(resident: Resident): Hospital {
     // return first hospital on r's list
     return resident.ranking[0];
   }
 
   breakAssignment(resident: Resident, hospital: Hospital): void {
-    this.saveStep(4, {
-      '%hospital%': hospital.name,
-      '%capacity%': hospital.capacity,
-      '%resident%': resident.name,
-    });
-    if (hospital.match.length < hospital.capacity) return;
-
-    const worstResident = this.getWorstResident(hospital);
-    this.saveStep(5, {
-      '%hospital%': hospital.name,
-      '%worstResident%': worstResident.name,
-    });
-
-    this.removeLine(worstResident, hospital, 'green');
-    this.stylePrefsMutual(worstResident, hospital, 'grey');
-
-    this.freeAgents.push(worstResident);
-
-    hospital.match.splice(this.getRank(hospital, worstResident), 1);
-    worstResident.match.splice(0, 1);
-    hospital.ranking.splice(this.getRank(hospital, worstResident), 1);
-    worstResident.ranking.splice(this.getRank(worstResident, hospital), 1);
-
-    const hospitalChar = this.utils.getAsChar(hospital);
-    const capacity = this.hospitalCapacity.get(hospitalChar);
-
-    this.hospitalCapacity.set(
-      hospitalChar,
-      capacity.charAt(capacity.length - 2),
-    );
-
-    this.saveStep(6, {
-      '%hospital%': hospital.name,
-      '%worstResident%': worstResident.name,
-    });
-  }
-
-  provisionallyAssign(resident: Resident, hospital: Hospital) {
-    // provisionally assign r to h;
-    const proposeeChar = this.utils.getAsChar(hospital);
-
-    this.changeLineColour(resident, hospital, 'red', 'green');
-    this.stylePrefsMutual(resident, hospital, 'green');
-
-    if (hospital.match.length >= hospital.capacity - 1) {
-      const colourHex = this.colourHexService.getHex('green');
-      this.hospitalCapacity.set(
-        proposeeChar,
-        `{${colourHex}${this.hospitalCapacity.get(proposeeChar)}}`,
-      );
-    }
-
-    this.saveStep(7, {
-      '%resident%': resident.name,
-      '%hospital%': hospital.name,
-    });
-    resident.match[0] = hospital;
-    hospital.match.push(resident);
+    this.assignmentBreakStyling(resident, hospital);
+    super.breakAssignment(resident, hospital);
+    this.freeAgents.push(resident);
   }
 
   removeRuledOutPrefs(resident: Resident, hospital: Hospital): void {
@@ -141,25 +74,48 @@ export class HrResidentEgsService extends HR {
     this.saveStep(1);
 
     while (this.freeAgents.length > 0) {
-      const currentAgent = this.freeAgents[0];
+      const resident = this.freeAgents[0];
       this.freeAgents.shift();
 
-      if (
-        currentAgent.ranking.length > 0 &&
-        !!this.getNextProposee(currentAgent)
-      ) {
-        this.saveStep(2, { '%currentAgent%': currentAgent.name });
+      if (resident.ranking.length > 0 && !!this.getNextProposee(resident)) {
+        this.saveStep(2, { '%currentAgent%': resident.name });
 
-        const proposee = this.getNextProposee(currentAgent);
+        const hospital = this.getNextProposee(resident);
 
         this.saveStep(3, {
-          '%currentAgent%': currentAgent.name,
-          '%proposee%': proposee.name,
+          '%currentAgent%': resident.name,
+          '%proposee%': hospital.name,
         });
 
-        this.breakAssignment(currentAgent, proposee);
-        this.provisionallyAssign(currentAgent, proposee);
-        this.removeRuledOutPrefs(currentAgent, proposee);
+        this.saveStep(4, {
+          '%hospital%': hospital.name,
+          '%capacity%': hospital.capacity,
+          '%resident%': resident.name,
+        });
+
+        if (hospital.match.length >= hospital.capacity) {
+          const worstResident = this.getWorstResident(hospital);
+
+          this.saveStep(5, {
+            '%hospital%': hospital.name,
+            '%worstResident%': worstResident.name,
+          });
+
+          this.breakAssignment(worstResident, hospital);
+
+          this.saveStep(6, {
+            '%hospital%': hospital.name,
+            '%worstResident%': resident.name,
+          });
+        }
+        this.provisionallyAssign(resident, hospital);
+
+        this.saveStep(7, {
+          '%resident%': resident.name,
+          '%hospital%': hospital.name,
+        });
+
+        this.removeRuledOutPrefs(resident, hospital);
       }
     }
 
