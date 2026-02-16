@@ -26,7 +26,6 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   lecturerCapacities: Map<number, number> = new Map();
 
   numLecturers: number;
-  lecturerCapacity: number;
 
   generateAgents(): void {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
@@ -48,16 +47,16 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
 
     this.numLecturers = Math.ceil(this.numberOfGroup2Agents / 3);
-    this.lecturerCapacity = Math.ceil(this.numberOfAgents / 3) + 1;
+    const lecturerCapacity = Math.ceil(this.numberOfAgents / 3) + 1;
 
     // reset the group - if prevouis run had more projects/lecturers then they dont all get deleted - causes issues - rank errors
     this.group3Agents = new Map();
 
     for (let i = 1; i < this.numLecturers + 1; i++) {
       const name = this.group3Name + i;
-      const agent = AgentFactory.createLecturer(name, this.lecturerCapacity);
+      const agent = AgentFactory.createLecturer(name, lecturerCapacity);
       this.group3Agents.set(name, agent);
-      this.lecturerCapacities.set(i, this.lecturerCapacity);
+      this.lecturerCapacities.set(i, lecturerCapacity);
     }
     this.algorithmSpecificData['lecturerCapacity'] = this.lecturerCapacities;
   }
@@ -70,11 +69,11 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     // pj undersubscribed,
     if (project.match.length < project.capacity) {
       // (a) lk undersubscribed
-      if (this.getLecturerCurrentCapacity(lecturer) < this.lecturerCapacity) {
+      if (this.getLecturerOccupancy(lecturer) < lecturer.capacity) {
         return true;
       } else if (
         // (b) lk full, but si is in M(lk) better than the worst student in M(lk)
-        this.getLecturerCurrentCapacity(lecturer) == this.lecturerCapacity &&
+        this.getLecturerOccupancy(lecturer) == lecturer.capacity &&
         (lecturer.projects.includes(student.match[0]) ||
           currentStudentRank < lastMatchRank)
       ) {
@@ -183,7 +182,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   }
 
   // get the worst student given a lecture assigned to any of that lectures projects
-  getWorstStudentOverall(lecturer: Lecturer) {
+  getWorstStudentLecturer(lecturer: Lecturer) {
     const assignedStudents = [];
 
     // for each project the lecture runs
@@ -213,19 +212,19 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
 
     this.removeLine(student, project, 'red');
     this.updateCapacityVisualization();
-    this.updateFreeList();
+    this.updateFreeAgentList();
   }
 
-  getLecturerCurrentCapacity(lecturer: Lecturer) {
-    let currentCapacity = 0;
+  getLecturerOccupancy(lecturer: Lecturer) {
+    let occupancy = 0;
     for (const project of lecturer.projects) {
-      currentCapacity += project.match.length;
+      occupancy += project.match.length;
     }
-    return currentCapacity;
+    return occupancy;
   }
 
   // dels successors of student from projects
-  deleteFullPairsProject(
+  deletePairsFullProject(
     worstStudent: Student,
     project: Project,
     lecturer: Lecturer,
@@ -261,7 +260,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     }
   }
 
-  deleteFullPairsLecturer(worstStudent: Student, lecturer: Lecturer) {
+  deletePairsFullLecturer(worstStudent: Student, lecturer: Lecturer) {
     // loop through lecturer rankings backwards - stop when we reach worst student
     this.saveStep(20, {
       '%student%': worstStudent.name,
@@ -293,7 +292,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     }
   }
 
-  getHexForFullness(occupancy: number, capacity: number) {
+  getHexByFullness(occupancy: number, capacity: number) {
     return this.colourHexService.getHex(
       occupancy == capacity ? 'green' : occupancy > capacity ? 'red' : 'black',
     );
@@ -304,15 +303,15 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
     let colour: string;
 
     for (const lecturer of this.group3Agents.values()) {
-      occupancy = this.getLecturerCurrentCapacity(lecturer);
-      colour = this.getHexForFullness(occupancy, lecturer.capacity);
+      occupancy = this.getLecturerOccupancy(lecturer);
+      colour = this.getHexByFullness(occupancy, lecturer.capacity);
       this.algorithmSpecificData['lecturerCapacity'][
         Number(this.utils.getAsChar(lecturer))
       ] = `{${colour}${lecturer.capacity}}`;
     }
 
     for (const project of this.group2Agents.values()) {
-      colour = this.getHexForFullness(project.match.length, project.capacity);
+      colour = this.getHexByFullness(project.match.length, project.capacity);
       this.hospitalCapacity.set(
         this.utils.getAsChar(project),
         `{${colour}${project.capacity}}`,
@@ -321,7 +320,7 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
   }
 
   // update all the free agents each iteration
-  updateFreeList() {
+  updateFreeAgentList() {
     const freeAgentsList: Array<Student> = [];
     for (const student of this.group1Agents.values()) {
       if (student.match.length <= 0) {
@@ -376,119 +375,107 @@ export class SpaStudentEgsService extends StudentProjectAllocation {
       this.saveStep(2, { '%student%': student.name });
 
       // get students most prefered project and its lecturer
-      const preferedProject = student.ranking[0];
-      const projectLecturer = this.getProjectLecturer(preferedProject);
+      const project = student.ranking[0];
+      const lecturer = this.getProjectLecturer(project);
 
       // p = next most prefered project on s's list | l = lecturer who offers p
       this.saveStep(3, {
         '%student%': student.name,
-        '%project%': preferedProject.name,
+        '%project%': project.name,
       });
-      this.saveStep(4, { '%lecturer%': projectLecturer.name });
+      this.saveStep(4, { '%lecturer%': lecturer.name });
 
       // highlight assinged
-      this.stylePrefs('group1', student, preferedProject, 'red');
+      this.stylePrefs('group1', student, project, 'red');
 
       // provisionally assign student to project
-      student.match.push(preferedProject);
-      preferedProject.match.push(student);
+      student.match.push(project);
+      project.match.push(student);
 
-      this.updateFreeList();
+      this.updateFreeAgentList();
 
-      this.addLine(student, preferedProject, 'red');
+      this.addLine(student, project, 'red');
       // provisionally assign s to p
       this.updateCapacityVisualization();
       this.saveStep(5, {
         '%student%': student.name,
-        '%project%': preferedProject.name,
+        '%project%': project.name,
       });
 
       // if p is over-subscribed
-      this.saveStep(6, { '%project%': preferedProject.name });
+      this.saveStep(6, { '%project%': project.name });
 
       // if project is over-subbed - remove worst student assigned to project
-      if (preferedProject.match.length > preferedProject.capacity) {
+      if (project.match.length > project.capacity) {
         // worst student on this project, ranked by the projects lecturer
-        const worstStudent = this.getWorstStudent(preferedProject);
+        const worstStudent = this.getWorstStudent(project);
         this.saveStep(7, {
           '%student%': worstStudent.name,
-          '%project%': preferedProject.name,
+          '%project%': project.name,
         });
-        this.breakMatch(worstStudent, preferedProject);
+        this.breakMatch(worstStudent, project);
         this.saveStep(8, {
           '%student%': worstStudent.name,
-          '%project%': preferedProject.name,
+          '%project%': project.name,
         });
       } else {
         // else if the lecturer is over-subbed - remove overall worst student
-        this.saveStep(9, { '%lecturer%': projectLecturer.name });
-        if (
-          this.getLecturerCurrentCapacity(projectLecturer) >
-          projectLecturer.capacity
-        ) {
+        this.saveStep(9, { '%lecturer%': lecturer.name });
+        if (this.getLecturerOccupancy(lecturer) > lecturer.capacity) {
           // worst student assigned to the lecture
-          const worstStudentOverall =
-            this.getWorstStudentOverall(projectLecturer);
-          const worstStudentProject = worstStudentOverall.match[0];
+          const worstStudentLecturer = this.getWorstStudentLecturer(lecturer);
+          const worstStudentProject = worstStudentLecturer.match[0];
 
           // Sw = worst student assigned to l | Pw = project that Sw is assigned to
           this.saveStep(10, {
-            '%student%': worstStudentOverall.name,
-            '%lecturer%': projectLecturer.name,
+            '%student%': worstStudentLecturer.name,
+            '%lecturer%': lecturer.name,
           });
           this.saveStep(11, {
             '%student%': student.name,
             '%project%': worstStudentProject.name,
           });
 
-          this.breakMatch(worstStudentOverall, worstStudentProject);
+          this.breakMatch(worstStudentLecturer, worstStudentProject);
           // break provisional assignment between Sw and Pw
           this.saveStep(12, {
-            '%student%': worstStudentOverall.name,
+            '%student%': worstStudentLecturer.name,
             '%project%': worstStudentProject.name,
           });
         }
       }
 
       // if the project is full - then delete successors
-      this.saveStep(13, { '%project%': preferedProject.name });
-      if (preferedProject.match.length == preferedProject.capacity) {
+      this.saveStep(13, { '%project%': project.name });
+      if (project.match.length == project.capacity) {
         // worst student on this project, ranked by the projects lecturer
-        const worstStudent = this.getWorstStudent(preferedProject);
+        const worstStudent = this.getWorstStudent(project);
         this.saveStep(14, {
           '%student%': worstStudent.name,
-          '%project%': preferedProject.name,
+          '%project%': project.name,
         });
         // for each successor st of sr on lecturer k's project - del pair (st, pj)
-        this.deleteFullPairsProject(
-          worstStudent,
-          preferedProject,
-          projectLecturer,
-        );
+        this.deletePairsFullProject(worstStudent, project, lecturer);
       }
 
       // If the lecturer is at capacity
-      this.saveStep(18, { '%lecturer%': projectLecturer.name });
-      if (
-        this.getLecturerCurrentCapacity(projectLecturer) ==
-        projectLecturer.capacity
-      ) {
+      this.saveStep(18, { '%lecturer%': lecturer.name });
+      if (this.getLecturerOccupancy(lecturer) == lecturer.capacity) {
         // worst student ranked by the lecturer
-        const worstStudentOverall =
-          this.getWorstStudentOverall(projectLecturer);
+        const worstStudentLecturer = this.getWorstStudentLecturer(lecturer);
         this.saveStep(19, {
-          '%student%': worstStudentOverall.name,
-          '%lecturer%': projectLecturer.name,
+          '%student%': worstStudentLecturer.name,
+          '%lecturer%': lecturer.name,
         });
 
         // delete the project from worse students than ^
-        this.deleteFullPairsLecturer(worstStudentOverall, projectLecturer);
+        this.deletePairsFullLecturer(worstStudentLecturer, lecturer);
       }
 
       availableStudents = this.availableStudents();
 
       // unhighlight assinged
-      this.stylePrefs('group1', student, preferedProject, 'black');
+      this.stylePrefs('group1', student, project, 'black');
 
       // update viz
       this.updateCapacityVisualization();
