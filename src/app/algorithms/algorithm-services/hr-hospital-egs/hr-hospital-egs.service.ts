@@ -9,6 +9,11 @@ import { HR } from '../../abstract-classes/HR';
 export class HrHospitalEgsService extends HR {
   freeHospitals: Array<Hospital> = new Array();
 
+  #saveStepEight(resident: Resident, hospital: Hospital) {
+    this.stylePrefsMutual(resident, hospital, 'grey');
+    this.saveStep(8, this.packageStepVars(resident, hospital));
+  }
+
   generateAgents(): void {
     super.generateAgents();
     for (const agent of this.group2Agents.values()) {
@@ -23,7 +28,7 @@ export class HrHospitalEgsService extends HR {
     return null;
   }
 
-  removeRuledOutPrefs(resident: Resident, hospital: Hospital): void {
+  removeOutrankedHospitals(resident: Resident, hospital: Hospital): void {
     const hospitalRank = this.getRank(resident, hospital);
 
     if (hospitalRank + 1 < resident.ranking.length) {
@@ -34,9 +39,7 @@ export class HrHospitalEgsService extends HR {
         const residentRank = this.getRank(removedHospital, resident);
         removedHospital.ranking.splice(residentRank, 1);
         resident.ranking.splice(i, 1);
-
-        this.stylePrefsMutual(resident, removedHospital, 'grey');
-        this.saveStep(8, this.packageStepVars(resident, removedHospital));
+        this.#saveStepEight(resident, removedHospital);
       }
     }
   }
@@ -57,9 +60,8 @@ export class HrHospitalEgsService extends HR {
 
     while (this.freeHospitals.length > 0) {
       const hospital = this.freeHospitals[0];
-      this.saveStep(2, this.packageStepVars(null, hospital));
-
       const resident = this.getNextResident(hospital);
+      this.saveStep(2, this.packageStepVars(null, hospital));
       this.saveStep(3, this.packageStepVars(resident));
       this.saveStep(4, this.packageStepVars(resident));
 
@@ -71,7 +73,7 @@ export class HrHospitalEgsService extends HR {
       this.provisionallyAssign(resident, hospital);
       this.saveStep(6, this.packageStepVars(resident, hospital));
 
-      this.removeRuledOutPrefs(resident, hospital);
+      this.removeOutrankedHospitals(resident, hospital);
       this.freeHospitals = this.getFreeHospitals();
     }
 
