@@ -23,12 +23,6 @@ export class HrHospitalEgsService extends HR {
     return null;
   }
 
-  breakAssignment(resident: Resident, hospital: Hospital): void {
-    this.assignmentBreakStyling(resident, hospital);
-    this.saveStep(5, this.packageStepVars(resident, resident.match[0])); //old hospital
-    super.breakAssignment(resident, hospital);
-  }
-
   removeRuledOutPrefs(resident: Resident, hospital: Hospital): void {
     const hospitalRank = this.getRank(resident, hospital);
 
@@ -71,13 +65,13 @@ export class HrHospitalEgsService extends HR {
 
       if (resident.match[0] != null) {
         this.breakAssignment(resident, resident.match[0]);
+        this.saveStep(5, this.packageStepVars(resident, resident.match[0]));
       }
 
       this.provisionallyAssign(resident, hospital);
       this.saveStep(6, this.packageStepVars(resident, hospital));
 
       this.removeRuledOutPrefs(resident, hospital);
-
       this.freeHospitals = this.getFreeHospitals();
     }
 

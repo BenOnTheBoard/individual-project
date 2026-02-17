@@ -60,6 +60,7 @@ export abstract class HR extends MatchingAlgorithm {
   }
 
   breakAssignment(resident: Resident, hospital: Hospital): void {
+    this.assignmentBreakStyling(resident, hospital);
     const rankOfResident = this.getRank(hospital, resident);
     const rankOfHospital = this.getRank(resident, hospital);
     resident.match.splice(0, 1);

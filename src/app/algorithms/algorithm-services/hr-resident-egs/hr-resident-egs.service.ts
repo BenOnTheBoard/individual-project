@@ -20,12 +20,6 @@ export class HrResidentEgsService extends HR {
     return resident.ranking[0];
   }
 
-  breakAssignment(resident: Resident, hospital: Hospital): void {
-    this.assignmentBreakStyling(resident, hospital);
-    super.breakAssignment(resident, hospital);
-    this.freeAgents.push(resident);
-  }
-
   removeRuledOutPrefs(resident: Resident, hospital: Hospital): void {
     this.saveStep(8, this.packageStepVars(resident, hospital));
 
@@ -74,8 +68,8 @@ export class HrResidentEgsService extends HR {
         if (hospital.match.length >= hospital.capacity) {
           const worstResident = this.getWorstResident(hospital);
           this.saveStep(5, this.packageStepVars(worstResident, hospital));
-
           this.breakAssignment(worstResident, hospital);
+          this.freeAgents.push(resident);
           this.saveStep(6, this.packageStepVars(resident, hospital));
         }
 
