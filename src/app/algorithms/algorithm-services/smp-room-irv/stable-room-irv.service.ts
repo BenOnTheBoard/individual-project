@@ -50,7 +50,7 @@ export class StableRoomIrvService extends StableRoomMates {
       const personRanking = this.originalPrefsGroup1.get(
         this.utils.getAsChar(person),
       );
-      for (const otherName in personRanking) {
+      for (const otherName of personRanking) {
         const other = this.group1Agents.get(this.group1Name + otherName);
         if (this.isBlockingPair(person, other)) return false;
       }
