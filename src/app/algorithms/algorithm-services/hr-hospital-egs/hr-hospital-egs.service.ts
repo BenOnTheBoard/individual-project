@@ -71,6 +71,7 @@ export class HrHospitalEgsService extends HR {
       }
 
       this.provisionallyAssign(resident, hospital);
+      this.provisionalAssignmentStyling(resident, hospital);
       this.saveStep(6, this.packageStepVars(resident, hospital));
 
       this.removeOutrankedHospitals(resident, hospital);

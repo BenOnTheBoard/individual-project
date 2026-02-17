@@ -66,6 +66,7 @@ export class HrResidentEgsService extends HR {
         }
 
         this.provisionallyAssign(resident, hospital);
+        this.provisionalAssignmentStyling(resident, hospital);
         this.saveStep(7, this.packageStepVars(resident, hospital));
         this.saveStep(8, this.packageStepVars(resident, hospital));
 

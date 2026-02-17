@@ -19,6 +19,12 @@ export abstract class HR extends MatchingAlgorithm {
     return placeholderValues;
   }
 
+  setCapacityStyle(hospital: Hospital, colour: string) {
+    const char = this.utils.getAsChar(hospital);
+    const hex = this.colourHexService.getHex(colour);
+    this.hospitalCapacity.set(char, `{${hex}${String(hospital.capacity)}}`);
+  }
+
   generateAgents(): void {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const name = this.group1Name + i;
@@ -34,7 +40,7 @@ export abstract class HR extends MatchingAlgorithm {
       const agent = AgentFactory.createHospital(name, capacity);
 
       this.group2Agents.set(name, agent);
-      this.hospitalCapacity.set(letter, String(capacity));
+      this.setCapacityStyle(agent, 'black');
     }
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
   }
@@ -50,13 +56,7 @@ export abstract class HR extends MatchingAlgorithm {
   assignmentBreakStyling(resident: Resident, hospital: Hospital): void {
     this.removeLine(resident, hospital, 'green');
     this.stylePrefsMutual(resident, hospital, 'grey');
-
-    const hospitalChar = this.utils.getAsChar(hospital);
-    const colourHex = this.colourHexService.getHex('black');
-    this.hospitalCapacity.set(
-      hospitalChar,
-      `{${colourHex}${String(hospital.capacity)}}`,
-    );
+    this.setCapacityStyle(hospital, 'black');
   }
 
   breakAssignment(resident: Resident, hospital: Hospital): void {
@@ -69,21 +69,15 @@ export abstract class HR extends MatchingAlgorithm {
     resident.ranking.splice(rankOfHospital, 1);
   }
 
-  provisionallyAssign(resident: Resident, hospital: Hospital) {
-    // provisionally assign r to h;
-    const proposeeChar = this.utils.getAsChar(hospital);
-
+  provisionalAssignmentStyling(resident: Resident, hospital: Hospital) {
     this.changeLineColour(resident, hospital, 'red', 'green');
     this.stylePrefsMutual(resident, hospital, 'green');
-
-    if (hospital.match.length >= hospital.capacity - 1) {
-      const colourHex = this.colourHexService.getHex('green');
-      this.hospitalCapacity.set(
-        proposeeChar,
-        `{${colourHex}${String(hospital.capacity)}}`,
-      );
+    if (hospital.match.length >= hospital.capacity) {
+      this.setCapacityStyle(hospital, 'green');
     }
+  }
 
+  provisionallyAssign(resident: Resident, hospital: Hospital) {
     resident.match[0] = hospital;
     hospital.match.push(resident);
   }
