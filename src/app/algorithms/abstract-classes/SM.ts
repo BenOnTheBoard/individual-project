@@ -9,6 +9,14 @@ export abstract class SM extends MatchingAlgorithm {
   group1Agents: Map<String, Man> = new Map();
   group2Agents: Map<String, Woman> = new Map();
 
+  protected packageStepVars(man?: Man, woman?: Woman, match?: Man): Object {
+    const placeholderValues = new Object();
+    if (man) placeholderValues['%man%'] = man.name;
+    if (woman) placeholderValues['%woman%'] = woman.name;
+    if (match) placeholderValues['%match%'] = match.name;
+    return placeholderValues;
+  }
+
   generateAgents(): void {
     for (let i = 0; i < this.numberOfAgents; i++) {
       const name = this.group1Name + (i + 1);

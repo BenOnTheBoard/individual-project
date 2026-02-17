@@ -14,19 +14,11 @@ export class GsStableMarriageService extends SM {
     }
   }
 
-  #packageStepVars(man?: Man, woman?: Woman, match?: Man): Object {
-    const placeholderValues = new Object();
-    if (man) placeholderValues['%man%'] = man.name;
-    if (woman) placeholderValues['%woman%'] = woman.name;
-    if (match) placeholderValues['%match%'] = match.name;
-    return placeholderValues;
-  }
-
   #saveStepTwo(man: Man) {
     const manChar = this.utils.getAsChar(man);
     this.relevantPrefs.push(manChar);
     this.selectedAgents.push(manChar);
-    this.saveStep(2, this.#packageStepVars(man));
+    this.saveStep(2, this.packageStepVars(man));
   }
 
   #saveStepThree(man: Man, woman: Woman) {
@@ -35,23 +27,23 @@ export class GsStableMarriageService extends SM {
     this.selectedAgents.push(womanChar);
     this.addLine(man, woman, 'red');
     this.stylePrefsMutual(man, woman, 'red');
-    this.saveStep(3, this.#packageStepVars(man, woman));
+    this.saveStep(3, this.packageStepVars(man, woman));
   }
 
   #saveStepFive(man: Man, woman: Woman) {
     this.changeLineColour(man, woman, 'red', 'green');
     this.stylePrefsMutual(man, woman, 'green');
-    this.saveStep(5, this.#packageStepVars(man, woman));
+    this.saveStep(5, this.packageStepVars(man, woman));
   }
 
   #saveStepSix(man: Man, woman: Woman, match: Man) {
     this.relevantPrefs.push(this.utils.getAsChar(match));
-    this.saveStep(6, this.#packageStepVars(man, woman, match));
+    this.saveStep(6, this.packageStepVars(man, woman, match));
   }
 
   #saveStepSeven(man: Man, woman: Woman, match: Man) {
     this.stylePrefs('group2', woman, man, 'red');
-    this.saveStep(7, this.#packageStepVars(man, woman, match));
+    this.saveStep(7, this.packageStepVars(man, woman, match));
   }
 
   #saveStepEight(man: Man, woman: Woman, match: Man) {
@@ -59,13 +51,13 @@ export class GsStableMarriageService extends SM {
     this.stylePrefsMutual(man, woman, 'green');
     this.changeLineColour(man, woman, 'red', 'green');
     this.removeLine(match, woman, 'green');
-    this.saveStep(8, this.#packageStepVars(man, woman, match));
+    this.saveStep(8, this.packageStepVars(man, woman, match));
   }
 
   #saveStepNine(man: Man, woman: Woman, match: Man) {
     this.stylePrefsMutual(man, woman, 'grey');
     this.removeLine(man, woman, 'red');
-    this.saveStep(9, this.#packageStepVars(man, woman, match));
+    this.saveStep(9, this.packageStepVars(man, woman, match));
   }
 
   #engage(man: Man, woman: Woman) {

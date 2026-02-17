@@ -7,84 +7,65 @@ import { SM } from '../../abstract-classes/SM';
   providedIn: 'root',
 })
 export class EgsStableMarriageService extends SM {
-  breakAssignment(man: Man, woman: Woman) {
-    this.saveStep(4, { '%woman%': woman.name });
-    if (woman.match.length < 1) {
-      this.saveStep(6, { '%woman%': woman.name });
-      return;
-    }
+  #saveStepFive(man: Man, woman: Woman, match: Man): void {
+    this.removeLine(match, woman, 'green');
+    this.stylePrefsMutual(match, woman, 'grey');
+    this.saveStep(5, this.packageStepVars(man, woman));
+  }
 
+  #saveStepSeven(man: Man, woman: Woman) {
+    this.changeLineColour(man, woman, 'red', 'green');
+    this.stylePrefsMutual(man, woman, 'green');
+    this.saveStep(7, this.packageStepVars(man, woman));
+  }
+
+  #saveStepsNineAndTen(man: Man, woman: Woman) {
+    this.relevantPrefs.push(this.utils.getAsChar(man));
+    this.saveStep(9, this.packageStepVars(man, woman));
+    this.stylePrefsMutual(man, woman, 'grey');
+    this.saveStep(10, this.packageStepVars(man, woman));
+    this.relevantPrefs.pop();
+  }
+
+  breakAssignment(man: Man, woman: Woman) {
     const match = woman.match[0];
 
     if (
       match.ranking.filter((agent) => agent.match[0] != man).length > 0 &&
-      !this.freeAgents.includes(match) &&
-      match.ranking.length > 0
+      !this.freeAgents.includes(match)
     ) {
       this.freeAgents.push(match);
     }
 
-    this.removeLine(match, woman, 'green');
-    this.stylePrefsMutual(match, woman, 'grey');
-
-    this.saveStep(5, {
-      '%woman%': woman.name,
-      '%currentPartner%': match.name,
-    });
+    this.#saveStepFive(man, woman, match);
 
     const matchRank = this.getRank(woman, match);
     woman.ranking.splice(matchRank, 1);
     match.ranking.splice(this.getRank(match, woman), 1);
   }
 
-  provisionallyAssign(agent: Man, woman: Woman) {
-    this.changeLineColour(agent, woman, 'red', 'green');
-    this.stylePrefsMutual(agent, woman, 'green');
-
-    this.saveStep(7, {
-      '%man%': agent.name,
-      '%woman%': woman.name,
-    });
-
-    woman.match[0] = agent;
-    agent.match.push(woman);
+  provisionallyAssign(man: Man, woman: Woman) {
+    this.#saveStepSeven(man, woman);
+    woman.match[0] = man;
+    man.match.push(woman);
   }
 
-  removeRuledOutPrefs(agent: Man, woman: Woman) {
-    this.saveStep(8, {
-      '%man%': agent.name,
-      '%woman%': woman.name,
-    });
+  removeRuledOutPrefs(man: Man, woman: Woman) {
+    this.saveStep(8, this.packageStepVars(man, woman));
 
-    const agentRank = this.getRank(woman, agent);
+    const agentRank = this.getRank(woman, man);
     for (let i = agentRank + 1; i < woman.ranking.length; i++) {
       const reject = woman.ranking[i];
       const womanRank = this.getRank(reject, woman);
-      this.relevantPrefs.push(this.utils.getAsChar(reject));
 
-      this.saveStep(9, {
-        '%nextWorstMan%': reject.name,
-        '%woman%': woman.name,
-      });
-
-      this.stylePrefsMutual(reject, woman, 'grey');
-
-      this.saveStep(10, {
-        '%nextWorstMan%': reject.name,
-        '%woman%': woman.name,
-      });
+      this.#saveStepsNineAndTen(reject, woman);
 
       reject.ranking.splice(womanRank, 1);
       woman.ranking.splice(i, 1);
       i--;
-
-      this.relevantPrefs.pop();
     }
 
-    this.saveStep(11, {
-      '%man%': agent.name,
-      '%woman%': woman.name,
-    });
+    this.saveStep(11, this.packageStepVars(man, woman));
   }
 
   getNextWoman(man: Man): Woman {
@@ -99,16 +80,16 @@ export class EgsStableMarriageService extends SM {
       this.freeAgents.shift();
 
       if (man.ranking.length > 0 && !!this.getNextWoman(man)) {
-        this.saveStep(2, { '%man%': man.name });
-
+        this.saveStep(2, this.packageStepVars(man));
         const woman = this.getNextWoman(man);
+        this.saveStep(3, this.packageStepVars(man, woman));
 
-        this.saveStep(3, {
-          '%man%': man.name,
-          '%woman%': woman.name,
-        });
-
-        this.breakAssignment(man, woman);
+        this.saveStep(4, this.packageStepVars(null, woman));
+        if (woman.match.length < 1) {
+          this.saveStep(6, this.packageStepVars(null, woman));
+        } else {
+          this.breakAssignment(man, woman);
+        }
         this.provisionallyAssign(man, woman);
         this.removeRuledOutPrefs(man, woman);
       }
