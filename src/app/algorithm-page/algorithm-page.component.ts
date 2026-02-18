@@ -89,7 +89,6 @@ export class AlgorithmPageComponent implements OnInit {
         currentAlgorithm.id,
         numberOfGroup1Agents,
         numberOfGroup2Agents,
-        null,
         this.SRstable,
       );
     } else {
@@ -128,7 +127,7 @@ export class AlgorithmPageComponent implements OnInit {
         return;
       case 'r':
       case '#':
-        this.generateNewPreferences();
+        this.generateNewPrefs();
         return;
     }
   }
@@ -137,8 +136,8 @@ export class AlgorithmPageComponent implements OnInit {
 
   protected handleNavbarCommand(command: string): void {
     switch (command) {
-      case 'generatePreferences':
-        this.generateNewPreferences();
+      case 'generatePrefs':
+        this.generateNewPrefs();
         return;
       case 'goHome':
         this.goHome();
@@ -161,7 +160,7 @@ export class AlgorithmPageComponent implements OnInit {
     this.router.navigateByUrl('/');
   }
 
-  protected async generateNewPreferences(): Promise<void> {
+  protected async generateNewPrefs(): Promise<void> {
     this.#fadeCanvas(true);
     await this.utils.delay(300);
     this.#setupPlaybackService();

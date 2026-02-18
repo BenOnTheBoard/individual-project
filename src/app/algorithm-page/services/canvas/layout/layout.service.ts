@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
+import { Step } from 'src/app/algorithms/interfaces/Step';
 import { Position } from 'src/app/utils/position';
 import { UtilsService } from 'src/app/utils/utils.service';
 
@@ -77,7 +78,7 @@ export class LayoutService {
 
   public calculateBipartitePositions(
     canvas: HTMLCanvasElement,
-    currentCommand: Object,
+    currentCommand: Step,
   ): void {
     const LHSHeightOffset =
       this.#heightOffsetMap.get(this.algRetriever.numberOfGroup1Agents) || 0;
@@ -94,7 +95,7 @@ export class LayoutService {
       effectiveHeight / this.algRetriever.numberOfGroup2Agents +
       RHSHeightOffset;
 
-    const LHSPosX = currentCommand['algorithmSpecificData']['hospitalCapacity']
+    const LHSPosX = currentCommand.algorithmSpecificData['hospitalCapacity']
       ? canvas.width * this.#xMargin - this.#hospitalCapacityOffset
       : canvas.width * this.#xMargin;
 

@@ -38,13 +38,13 @@
             (click)="updateTutorialStep(0)">cancel</mat-icon>
         }
         <mat-icon class="navbarIconButton unselectable mr-4" matTooltip="Generate New Random Preferences"
-            (click)="emitToPage('generatePreferences')" [ngClass]="{'disabled': step != 0}">
+            (click)="emitToPage('generatePrefs')" [ngClass]="{'disabled': step != 0}">
             refresh
         </mat-icon>
         <mat-icon class="navbarIconButton unselectable mr-4" (click)="refreshCanvas()"
-            matTooltip="{{drawService.alwaysShowPreferences ? 'Show All Preferences' : 'Only Show Relevant Preferences'}}"
+            matTooltip="{{drawService.alwaysShowPrefs ? 'Show All Preferences' : 'Only Show Relevant Preferences'}}"
             [ngClass]="{'disabled': step != 0}">
-            {{drawService.alwaysShowPreferences ? "visibility_off" : "visibility"}}
+            {{drawService.alwaysShowPrefs ? "visibility_off" : "visibility"}}
         </mat-icon>
         <mat-icon class="navbarIconButton unselectable mr-4" matTooltip="Animation Guide"
             (click)="openAnimationGuideDialog()" [ngClass]="{'disabled': step != 0}">

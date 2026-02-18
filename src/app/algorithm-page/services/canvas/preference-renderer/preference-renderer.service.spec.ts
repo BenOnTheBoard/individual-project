@@ -6,6 +6,7 @@ import { ColourHexService } from '../../../../utils/colour-hex.service';
 import { AgentRendererService } from '../agent-renderer/agent-renderer.service';
 import { PreferenceRendererService } from './preference-renderer.service';
 import { Step, StepBuilder } from 'src/app/algorithms/interfaces/Step';
+import { AgentFactory } from 'src/app/algorithms/interfaces/Agents';
 
 describe('PreferenceRendererService', () => {
   let service: PreferenceRendererService;
@@ -85,7 +86,7 @@ describe('PreferenceRendererService', () => {
   it('should draw bipartite preferences for both groups', () => {
     service.setCurrentCommand(mockCommand);
 
-    service.drawBipartitePreferences();
+    service.drawBipartitePrefs();
 
     for (const agent of ['circle1', 'circle2', 'circleA', 'circleB']) {
       expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledWith(agent);
@@ -96,7 +97,7 @@ describe('PreferenceRendererService', () => {
   it('should draw SR preferences with first half LHS and second half RHS', () => {
     service.setCurrentCommand(mockCommand);
 
-    service.drawSRPreferences();
+    service.drawSRPrefs();
 
     for (const agent of ['circle1', 'circle2']) {
       expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledWith(agent);
@@ -106,7 +107,7 @@ describe('PreferenceRendererService', () => {
 
   it('should draw relevant preferences', () => {
     service.setCurrentCommand(mockCommand);
-    service.drawRelevantPreferences();
+    service.drawRelevantPrefs();
 
     for (const agent of ['circle1', 'circleA']) {
       expect(mockLayoutService.getPositionOfAgent).toHaveBeenCalledWith(agent);
@@ -116,7 +117,7 @@ describe('PreferenceRendererService', () => {
 
   it('should draw capacities when algorithmSpecificData has hospitalCapacity', () => {
     mockCommand.algorithmSpecificData = {
-      hospitalCapacity: { A: 3, B: 2 },
+      hospitalCapacity: new Map().set('A', '3').set('B', '2'),
     };
     service.setCurrentCommand(mockCommand);
 
@@ -130,8 +131,13 @@ describe('PreferenceRendererService', () => {
 
   it('should draw lecturer brackets and text', () => {
     mockCommand.algorithmSpecificData = {
-      lecturerProjects: [['projectA', 'projectB']],
-      lecturerCapacity: [2],
+      lecturerProjects: [
+        [
+          AgentFactory.createProject('projectA', 2),
+          AgentFactory.createProject('projectAB', 2),
+        ],
+      ],
+      lecturerCapacity: new Map().set(1, 2),
       lecturerRanking: [['1', '2']],
     };
     service.setCurrentCommand(mockCommand);

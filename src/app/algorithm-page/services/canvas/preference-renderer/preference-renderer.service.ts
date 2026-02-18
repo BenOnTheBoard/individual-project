@@ -7,6 +7,7 @@ import { ColourHexService } from '../../../../utils/colour-hex.service';
 import { AgentRendererService } from '../agent-renderer/agent-renderer.service';
 import { Position } from 'src/app/utils/position';
 import { UtilsService } from 'src/app/utils/utils.service';
+import { Project } from 'src/app/algorithms/interfaces/Agents';
 
 @Injectable({
   providedIn: 'root',
@@ -55,7 +56,7 @@ export class PreferenceRendererService {
     this.#lineSizes = new Map();
     for (let i = 1; i < this.algRetriever.numberOfGroup1Agents + 1; i++) {
       const lineSize = this.#ctx.measureText(
-        this.#cmd.group1CurrentPreferences.get(String(i)).join(', '),
+        this.#cmd.currentPrefsGroup1.get(String(i)).join(', '),
       ).width;
       this.#lineSizes.set(String(i), lineSize);
     }
@@ -63,15 +64,13 @@ export class PreferenceRendererService {
 
   #getPreferenceText(agent: string): string {
     const prefList = agent.match(/[A-Z]/i)
-      ? this.#cmd.group2CurrentPreferences.get(agent)
-      : this.#cmd.group1CurrentPreferences.get(agent);
+      ? this.#cmd.currentPrefsGroup2.get(agent)
+      : this.#cmd.currentPrefsGroup1.get(agent);
     return prefList.join(', ');
   }
 
   #getOffsetX(group: 'LHS' | 'RHS', agent?: string): number {
-    const isHospital = Boolean(
-      this.#cmd.algorithmSpecificData['hospitalCapacity'],
-    );
+    const isHospital = !!this.#cmd.algorithmSpecificData['hospitalCapacity'];
 
     if (group == 'LHS') {
       return -this.#defaultOffsetX - this.#lineSizes.get(agent);
@@ -96,7 +95,7 @@ export class PreferenceRendererService {
     }
   }
 
-  public drawBipartitePreferences(): void {
+  public drawBipartitePrefs(): void {
     this.textRenderer.setFontSize(this.#prefFontSize);
     const lhsCount = this.algRetriever.numberOfGroup1Agents;
     const rhsCount = this.algRetriever.numberOfGroup2Agents;
@@ -109,7 +108,7 @@ export class PreferenceRendererService {
     );
   }
 
-  public drawSRPreferences(): void {
+  public drawSRPrefs(): void {
     // Given agents arranged clockwise from 6 o'clock
     // the first half should have their preferences on their left
     // and the second should have their preferences on their right
@@ -126,9 +125,9 @@ export class PreferenceRendererService {
     );
   }
 
-  public drawRelevantPreferences(): void {
+  public drawRelevantPrefs(): void {
     this.textRenderer.setFontSize(this.#prefFontSize);
-    const relevantPrefs = this.#cmd.relevantPreferences;
+    const { relevantPrefs } = this.#cmd;
     const lhsAgents = relevantPrefs.filter((a) => !/[A-Z]/i.test(a));
     const rhsAgents = relevantPrefs.filter((a) => /[A-Z]/i.test(a));
 
@@ -138,17 +137,18 @@ export class PreferenceRendererService {
 
   public drawCapacities(): void {
     this.textRenderer.setFontSize(this.#prefFontSize);
-    const capacityMap = this.#cmd.algorithmSpecificData['hospitalCapacity'];
+    const capacityMap: Map<string, string> =
+      this.#cmd.algorithmSpecificData['hospitalCapacity'];
 
     for (let i = 0; i < this.algRetriever.numberOfGroup2Agents; i++) {
       const letter = String.fromCharCode(65 + i);
-      const capacity = capacityMap[letter];
+      const capacity = capacityMap.get(letter);
       const pos = this.layoutService.getPositionOfAgent(`circle${letter}`);
       const textPos = {
         x: pos.x + this.#capacityOffsetX,
         y: pos.y + this.#defaultOffsetY,
       };
-      this.textRenderer.drawText(`(${String(capacity)})`, textPos);
+      this.textRenderer.drawText(`(${capacity})`, textPos);
     }
   }
 
@@ -171,20 +171,21 @@ export class PreferenceRendererService {
   }
 
   #drawLecturerText(lecturerNum: number, location: Position): void {
-    const lecturerCapacity =
+    const capacities: Map<number, number> =
       this.#cmd.algorithmSpecificData['lecturerCapacity'];
-    const lecturerRanking = this.#cmd.algorithmSpecificData['lecturerRanking'];
-    const lecturerText = `Lecturer ${String(lecturerNum)} (${
-      lecturerCapacity[lecturerNum]
-    })\n${String(lecturerRanking[lecturerNum - 1])}`;
-    this.textRenderer.drawText(lecturerText, location);
+    const capacity = capacities.get(lecturerNum);
+    const prefs: Array<Array<string>> =
+      this.#cmd.algorithmSpecificData['lecturerRanking'];
+    const prefText = prefs[lecturerNum - 1].join(', ');
+    const text = `Lecturer ${lecturerNum} (${capacity})\n${prefText}`;
+    this.textRenderer.drawText(text, location);
   }
 
-  #getProjectPositions(projectList: Array<string>): [Position, Position] {
+  #getProjectPositions(projectList: Array<Project>): [Position, Position] {
     const first = projectList[0];
     const last = projectList[projectList.length - 1];
-    const firstProject = this.utils.getLastChar(first);
-    const lastProject = this.utils.getLastChar(last);
+    const firstProject = this.utils.getAsChar(first);
+    const lastProject = this.utils.getAsChar(last);
     const posFirst = this.layoutService.getPositionOfAgent(
       `circle${firstProject}`,
     );
@@ -199,10 +200,10 @@ export class PreferenceRendererService {
     this.#ctx.lineWidth = this.#lecturerBracketWidth;
     this.textRenderer.setFontSize(this.#lecturerFontSize);
 
-    const lecturerProjects =
+    const lecturerProjects: Array<Array<Project>> =
       this.#cmd.algorithmSpecificData['lecturerProjects'];
 
-    lecturerProjects.forEach((projectList: Array<string>, idx: number) => {
+    lecturerProjects.forEach((projectList: Array<Project>, idx: number) => {
       const lecturerNum = idx + 1;
       const [posFirst, posLast] = this.#getProjectPositions(projectList);
       const centralY = (posLast.y + posFirst.y) / 2;

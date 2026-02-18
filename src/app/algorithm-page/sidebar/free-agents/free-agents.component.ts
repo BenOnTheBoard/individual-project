@@ -14,8 +14,7 @@ export class FreeAgentsComponent {
   protected utils = inject(UtilsService);
 
   getFreeAgentString(): string {
-    const freeAgents: Array<string> =
-      this.playback.commandList[this.playback.stepCounter]['freeAgents'];
-    return freeAgents.map((item) => item.slice(-1)).join(', ');
+    const { freeAgents } = this.playback.commandList[this.playback.stepCounter];
+    return `[${freeAgents.map((agent) => agent.name.slice(-1)).join(', ')}]`;
   }
 }

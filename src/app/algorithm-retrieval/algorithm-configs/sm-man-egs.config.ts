@@ -11,15 +11,15 @@ export const smManEGSConfig = new AlgorithmBuilder()
   )
   .helpTextMap({
     1: 'Start with no engagements between men and women.',
-    2: '%currentAgent% is currently unengaged.',
-    3: '%currentAgent% selects %potentialProposee% because she is the most preferred woman remaining on his list.',
+    2: '%man% is currently unengaged.',
+    3: '%man% selects %woman% because she is the most preferred woman remaining on his list.',
     4: 'We check whether %woman% is engaged already.',
-    5: '%woman% is engaged to %currentPartner%, so we break the engagement between them.',
+    5: '%woman% is engaged to %man%, so we break the engagement between them.',
     6: '%woman% is not engaged.',
     7: 'We engage %man% and %woman%.',
     8: "We loop over all the men on %woman%'s list whom she prefers %man% to.",
-    9: "The next worst man on %woman%'s list is %nextWorstMan%.",
-    10: "We remove %nextWorstMan% and %woman% from each other's lists.",
+    9: "The next worst man on %woman%'s list is %man%.",
+    10: "We remove %man% and %woman% from each other's lists.",
     11: 'All men to whom %woman% prefers %man% have been removed.',
     12: 'We have arrived at a stable matching.',
   })

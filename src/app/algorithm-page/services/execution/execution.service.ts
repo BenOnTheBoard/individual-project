@@ -15,15 +15,13 @@ export class ExecutionService {
     algorithm: string,
     numberOfAgents: number,
     numberOfGroup2Agents: number = numberOfAgents,
-    preferences: Map<String, Array<String>>,
     SRstable: boolean = true,
-  ): Object {
+  ): AlgorithmData {
     const { service, helpTextMap } = this.algRetriever.getAlgorithm(algorithm);
     this.#helpTextMap = helpTextMap;
     this.#commandList = service.run(
       numberOfAgents,
       numberOfGroup2Agents,
-      preferences,
       SRstable,
     );
 
@@ -35,8 +33,7 @@ export class ExecutionService {
     const descriptions = [];
 
     for (const step of this.#commandList.commands) {
-      const lineNumber = step['lineNumber'];
-      const { stepVariables } = step;
+      const { lineNumber, stepVariables } = step;
 
       if (stepVariables) {
         descriptions.push(this.#generateMessage(lineNumber, stepVariables));

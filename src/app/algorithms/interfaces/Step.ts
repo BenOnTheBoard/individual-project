@@ -1,14 +1,15 @@
+import { Agent } from './Agents';
+
 export interface Step {
   lineNumber: number;
-  freeAgents: Array<String>;
-  matches: Map<String, String>;
+  freeAgents: Array<Agent>;
   stepVariables: Object;
-  group1CurrentPreferences: Map<String, Array<String>>;
-  group2CurrentPreferences: Map<String, Array<String>>;
-  currentlySelectedAgents: Array<string>;
+  currentPrefsGroup1: Map<String, Array<String>>;
+  currentPrefsGroup2: Map<String, Array<String>>;
+  selectedAgents: Array<string>;
   currentLines: Array<Array<string>>;
   algorithmSpecificData: Object;
-  relevantPreferences: Array<string>;
+  relevantPrefs: Array<string>;
 }
 
 export class StepBuilder {
@@ -23,13 +24,8 @@ export class StepBuilder {
     return this;
   }
 
-  freeAgents(agents: Array<String>): this {
+  freeAgents(agents: Array<Agent>): this {
     this.#step.freeAgents = agents;
-    return this;
-  }
-
-  matches(map: Map<String, String>): this {
-    this.#step.matches = map;
     return this;
   }
 
@@ -39,17 +35,17 @@ export class StepBuilder {
   }
 
   group1Prefs(prefs: Map<String, Array<String>>): this {
-    this.#step.group1CurrentPreferences = prefs;
+    this.#step.currentPrefsGroup1 = prefs;
     return this;
   }
 
   group2Prefs(prefs: Map<String, Array<String>>): this {
-    this.#step.group2CurrentPreferences = prefs;
+    this.#step.currentPrefsGroup2 = prefs;
     return this;
   }
 
   selectedAgents(agents: Array<string>): this {
-    this.#step.currentlySelectedAgents = agents;
+    this.#step.selectedAgents = agents;
     return this;
   }
 
@@ -64,7 +60,7 @@ export class StepBuilder {
   }
 
   relevantPrefs(prefs: Array<string>): this {
-    this.#step.relevantPreferences = prefs;
+    this.#step.relevantPrefs = prefs;
     return this;
   }
 

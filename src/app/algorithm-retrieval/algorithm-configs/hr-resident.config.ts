@@ -11,16 +11,16 @@ export const hrResidentConfig = new AlgorithmBuilder()
   )
   .helpTextMap({
     1: 'Start with no assignments between residents and hospitals.',
-    2: "%currentAgent% is the next resident who doesn't have a hospital and still has some hospitals in their preference list.",
-    3: '%currentAgent% selects %potentialProposee%, the first hospital left on its list.',
+    2: "%resident% is the next resident who doesn't have a hospital and still has some hospitals in their preference list.",
+    3: '%resident% selects %hospital%, the first hospital left on its list.',
     4: 'We check whether %hospital% is currently full. If not, we provisionally assign %resident% to %hospital%.',
-    5: "%hospital%'s number of residents is equal to its max capacity, so choose the worst resident assigned to %hospital% (%worstResident%).",
-    6: 'We unassign %hospital% and %worstResident%.',
+    5: "%hospital%'s number of residents is equal to its max capacity, so choose the worst resident assigned to %hospital% (%resident%).",
+    6: 'We unassign %hospital% and %resident%.',
     7: 'Assign %resident% to %hospital%.',
     8: 'We check whether %hospital% is full after assigning %resident% to %hospital%.',
-    9: "%hospital% is fully subscribed, so we choose the worst resident assigned to them (%worstResident%) and remove each successor from %hospital%'s preference list.",
-    10: '%hospital% selects %nextResident% as the next resident to be removed from its list.',
-    11: "We remove %nextResident% from %hospital%'s list.",
+    9: "%hospital% is fully subscribed, so we choose the worst resident assigned to them (%resident%) and remove each successor from %hospital%'s preference list.",
+    10: '%hospital% selects %resident% as the next resident to be removed from its list.',
+    11: "We remove %resident% from %hospital%'s list.",
     12: 'We have arrived at a stable matching.',
   })
   .code([
