@@ -28,6 +28,10 @@ export class UtilsService {
     }
   }
 
+  selectRandomElement<T>(arr: Array<T>): T {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
   cloneList<T>(list: Array<T>): Array<T> {
     return [...list];
   }

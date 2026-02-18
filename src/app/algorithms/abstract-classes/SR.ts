@@ -1,6 +1,11 @@
 import { AgentFactory, Person } from '../interfaces/Agents';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
+import {
+  unstable4,
+  unstableInstances6,
+  unstableInstances8,
+} from './SRUnstableInstances';
 
 export abstract class SR extends MatchingAlgorithm {
   group1Name = 'person';
@@ -9,95 +14,14 @@ export abstract class SR extends MatchingAlgorithm {
   freeAgents: Array<Person> = [];
   group1Agents: Map<String, Person> = new Map();
 
-  readonly #unstable4 = [
-    ['2', '3', '4'],
-    ['3', '1', '4'],
-    ['1', '2', '4'],
-    ['1', '2', '3'],
-  ];
-
-  readonly #unstable6_1 = [
-    ['4', '6', '5', '2', '3'],
-    ['5', '4', '3', '6', '1'],
-    ['4', '5', '2', '1', '6'],
-    ['5', '3', '1', '6', '2'],
-    ['6', '2', '1', '4', '3'],
-    ['3', '2', '4', '5', '1'],
-  ];
-
-  readonly #unstable6_2 = [
-    ['5', '4', '3', '2', '6'],
-    ['3', '5', '6', '1', '4'],
-    ['5', '1', '4', '6', '2'],
-    ['3', '2', '1', '6', '5'],
-    ['2', '3', '6', '4', '1'],
-    ['5', '1', '2', '4', '3'],
-  ];
-
-  readonly #unstable6_3 = [
-    ['5', '2', '6', '4', '3'],
-    ['4', '1', '6', '3', '5'],
-    ['5', '2', '6', '1', '4'],
-    ['5', '2', '6', '1', '3'],
-    ['6', '4', '1', '2', '3'],
-    ['1', '5', '4', '2', '3'],
-  ];
-
-  readonly #unstable8_1 = [
-    ['3', '8', '7', '4', '5', '6', '2'],
-    ['5', '3', '4', '1', '6', '7', '8'],
-    ['8', '6', '2', '7', '1', '4', '5'],
-    ['2', '1', '5', '7', '8', '6', '3'],
-    ['4', '1', '7', '2', '6', '8', '3'],
-    ['8', '1', '2', '4', '3', '5', '7'],
-    ['3', '6', '8', '4', '2', '1', '5'],
-    ['7', '1', '5', '4', '6', '3', '2'],
-  ];
-
-  readonly #unstable8_2 = [
-    ['2', '7', '4', '5', '3', '6', '8'],
-    ['1', '4', '5', '7', '3', '8', '6'],
-    ['1', '7', '8', '5', '2', '6', '4'],
-    ['8', '5', '1', '6', '7', '3', '2'],
-    ['2', '6', '1', '8', '4', '3', '7'],
-    ['5', '3', '2', '7', '1', '4', '8'],
-    ['5', '2', '8', '6', '3', '4', '1'],
-    ['3', '1', '7', '5', '6', '4', '2'],
-  ];
-
-  readonly #unstable8_3 = [
-    ['7', '6', '5', '3', '4', '2', '8'],
-    ['5', '6', '4', '1', '8', '3', '7'],
-    ['2', '7', '8', '6', '5', '1', '4'],
-    ['8', '3', '6', '2', '5', '7', '1'],
-    ['1', '7', '3', '8', '6', '2', '4'],
-    ['1', '2', '8', '5', '7', '4', '3'],
-    ['1', '2', '8', '6', '5', '3', '4'],
-    ['7', '2', '3', '1', '5', '4', '6'],
-  ];
-
-  readonly #nonStableSRInstances6 = [
-    this.#unstable6_1,
-    this.#unstable6_2,
-    this.#unstable6_3,
-  ];
-  readonly #nonStableSRInstances8 = [
-    this.#unstable8_1,
-    this.#unstable8_2,
-    this.#unstable8_3,
-  ];
-
   selectUnstableInstance(): Array<Array<string>> {
-    let random = 0;
     switch (this.numberOfAgents) {
       case 4:
-        return this.#unstable4;
+        return unstable4;
       case 6:
-        random = Math.floor(Math.random() * this.#nonStableSRInstances6.length);
-        return this.#nonStableSRInstances6[random];
+        return this.utils.selectRandomElement(unstableInstances6);
       case 8:
-        random = Math.floor(Math.random() * this.#nonStableSRInstances8.length);
-        return this.#nonStableSRInstances8[random];
+        return this.utils.selectRandomElement(unstableInstances8);
       default:
         throw new RangeError(
           'selectUnstableInstance called while number of agents is not in {4,6,8}',
@@ -112,21 +36,10 @@ export abstract class SR extends MatchingAlgorithm {
       this.group1Agents.set(name, agent);
       this.freeAgents.push(agent);
     }
-
-    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
-      const letter = String.fromCharCode(65 + i);
-      const name = this.group2Name + letter;
-      const agent = AgentFactory.createPerson(name);
-      this.group2Agents.set(name, agent);
-    }
-
     this.algorithmSpecificData['SR'] = true;
   }
 
   generatePrefs(): void {
-    let count = 0;
-    let instance = [];
-
     if (this.numberOfAgents == 2) {
       this.SRstable = true;
     }
@@ -138,7 +51,8 @@ export abstract class SR extends MatchingAlgorithm {
         agent.ranking.splice(selfRank, 1);
       }
     } else {
-      instance = this.selectUnstableInstance();
+      let count = 0;
+      const instance = this.selectUnstableInstance();
       for (const person of this.group1Agents.values()) {
         for (let i = 0; i < this.group1Agents.size - 1; i++) {
           person.ranking[i] = this.group1Agents.get(
