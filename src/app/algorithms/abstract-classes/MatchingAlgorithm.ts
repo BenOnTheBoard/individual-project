@@ -88,7 +88,7 @@ export abstract class MatchingAlgorithm {
     this.addLine(from, to, newColour);
   }
 
-  shuffleRankings(
+  generateRandomRankings(
     rankers: Map<String, Agent>,
     targets: Map<String, Agent>,
   ): void {

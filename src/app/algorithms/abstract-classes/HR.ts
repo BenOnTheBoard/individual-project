@@ -75,8 +75,8 @@ export abstract class HR extends MatchingAlgorithm {
   }
 
   generatePrefs(): void {
-    this.shuffleRankings(this.group1Agents, this.group2Agents);
-    this.shuffleRankings(this.group2Agents, this.group1Agents);
+    this.generateRandomRankings(this.group1Agents, this.group2Agents);
+    this.generateRandomRankings(this.group2Agents, this.group1Agents);
   }
 
   getWorstResident(hospital: Hospital): Resident {

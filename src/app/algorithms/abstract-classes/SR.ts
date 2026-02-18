@@ -132,7 +132,7 @@ export abstract class SR extends MatchingAlgorithm {
     }
 
     if (this.SRstable) {
-      this.shuffleRankings(this.group1Agents, this.group1Agents);
+      this.generateRandomRankings(this.group1Agents, this.group1Agents);
       for (const agent of Array.from(this.group1Agents.values())) {
         const selfRank = agent.ranking.indexOf(agent);
         agent.ranking.splice(selfRank, 1);
