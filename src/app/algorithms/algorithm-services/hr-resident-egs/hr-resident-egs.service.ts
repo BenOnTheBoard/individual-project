@@ -61,7 +61,7 @@ export class HrResidentEgsService extends HR {
           const worstResident = this.getWorstResident(hospital);
           this.saveStep(5, this.packageStepVars(worstResident, hospital));
           this.breakAssignment(worstResident, hospital);
-          this.freeAgents.push(resident);
+          this.freeAgents.push(worstResident);
           this.saveStep(6, this.packageStepVars(resident, hospital));
         }
 
