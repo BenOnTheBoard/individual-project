@@ -6,31 +6,29 @@ import { ColourHexService } from '../../utils/colour-hex.service';
 import { inject } from '@angular/core';
 
 export abstract class MatchingAlgorithm {
-  abstract group1Name: string;
-  abstract group2Name: string;
+  protected abstract group1Name: string;
+  protected abstract group2Name: string;
+
+  protected abstract freeAgents: Array<Agent>;
+  protected abstract group1Agents: Map<String, Agent>;
+  protected group2Agents: Map<String, Agent>;
+
   protected numberOfAgents: number;
   protected numberOfGroup2Agents: number;
 
-  protected freeAgents: Array<Agent>;
-  protected group1Agents: Map<String, Agent> = new Map();
-  protected group2Agents: Map<String, Agent> = new Map();
-  protected originalPrefsGroup1: Map<String, Array<String>> = new Map();
-  protected originalPrefsGroup2: Map<String, Array<String>> = new Map();
-  protected currentPrefsGroup1: Map<String, Array<String>> = new Map();
-  protected currentPrefsGroup2: Map<String, Array<String>> = new Map();
+  protected originalPrefsGroup1: Map<String, Array<String>>;
+  protected originalPrefsGroup2: Map<String, Array<String>>;
+  protected currentPrefsGroup1: Map<String, Array<String>>;
+  protected currentPrefsGroup2: Map<String, Array<String>>;
 
-  protected selectedAgents: Array<string> = [];
-  protected currentLines: Array<Array<string>> = [];
-  protected algorithmSpecificData: Object = {};
-  protected relevantPrefs: Array<string> = [];
+  protected selectedAgents: Array<string>;
+  protected currentLines: Array<Array<string>>;
+  protected algorithmSpecificData: Object;
+  protected relevantPrefs: Array<string>;
 
   protected SRstable: boolean = true;
   #stable: boolean = false;
-
-  #algorithmRunData: AlgorithmData = {
-    commands: new Array(),
-    descriptions: new Array(),
-  };
+  #algorithmRunData: AlgorithmData;
 
   protected utils = inject(UtilsService);
   protected colourHexService = inject(ColourHexService);
@@ -54,7 +52,6 @@ export abstract class MatchingAlgorithm {
     this.relevantPrefs = [];
 
     this.#stable = false;
-
     this.#algorithmRunData = {
       commands: new Array(),
       descriptions: new Array(),
@@ -207,8 +204,10 @@ export abstract class MatchingAlgorithm {
     this.currentPrefsGroup1 = this.getRankings(this.group1Agents);
     this.originalPrefsGroup1 = structuredClone(this.currentPrefsGroup1);
 
-    this.currentPrefsGroup2 = this.getRankings(this.group2Agents);
-    this.originalPrefsGroup2 = structuredClone(this.currentPrefsGroup2);
+    if (this.group2Agents) {
+      this.currentPrefsGroup2 = this.getRankings(this.group2Agents);
+      this.originalPrefsGroup2 = structuredClone(this.currentPrefsGroup2);
+    }
 
     this.match();
 
