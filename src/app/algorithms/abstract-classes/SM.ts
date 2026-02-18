@@ -61,5 +61,10 @@ export abstract class SM extends MatchingAlgorithm {
     }
   }
 
+  generatePrefs(): void {
+    this.shuffleRankings(this.group1Agents, this.group2Agents);
+    this.shuffleRankings(this.group2Agents, this.group1Agents);
+  }
+
   abstract match(): AlgorithmData;
 }

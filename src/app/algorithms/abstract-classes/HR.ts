@@ -74,6 +74,11 @@ export abstract class HR extends MatchingAlgorithm {
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
   }
 
+  generatePrefs(): void {
+    this.shuffleRankings(this.group1Agents, this.group2Agents);
+    this.shuffleRankings(this.group2Agents, this.group1Agents);
+  }
+
   getWorstResident(hospital: Hospital): Resident {
     const positionMap: Map<number, Resident> = new Map();
     for (const resident of hospital.match) {

@@ -99,11 +99,6 @@ export abstract class MatchingAlgorithm {
     }
   }
 
-  generatePrefs(): void {
-    this.shuffleRankings(this.group1Agents, this.group2Agents);
-    this.shuffleRankings(this.group2Agents, this.group1Agents);
-  }
-
   getRankings(agentMap: Map<String, Agent>): Map<String, Array<String>> {
     return new Map(
       Array.from(agentMap.values()).map((agent) => [
@@ -208,9 +203,8 @@ export abstract class MatchingAlgorithm {
   }
 
   abstract checkStability(): boolean;
-
   abstract generateAgents(): void;
-
+  abstract generatePrefs(): void;
   abstract match(): AlgorithmData;
 
   run(
