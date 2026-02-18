@@ -98,7 +98,7 @@ export abstract class HR extends MatchingAlgorithm {
     const rankOfResident = this.getRank(hospital, resident);
     const rankOfHospital = this.getRank(resident, hospital);
     resident.match.splice(0, 1);
-    hospital.match.splice(this.getRank(hospital, resident), 1);
+    hospital.match.splice(rankOfResident, 1);
     hospital.ranking.splice(rankOfResident, 1);
     resident.ranking.splice(rankOfHospital, 1);
   }

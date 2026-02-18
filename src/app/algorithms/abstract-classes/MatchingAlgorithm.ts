@@ -65,6 +65,8 @@ export abstract class MatchingAlgorithm {
     return this.#stable;
   }
 
+  // --- Presentation Helper Functions ---
+
   createLine(from: Agent, to: Agent, colour: string): [string, string, string] {
     return [this.utils.getAsChar(from), this.utils.getAsChar(to), colour];
   }
@@ -86,83 +88,6 @@ export abstract class MatchingAlgorithm {
   ): void {
     this.removeLine(from, to, oldColour);
     this.addLine(from, to, newColour);
-  }
-
-  generateRandomRankings(
-    rankers: Map<String, Agent>,
-    targets: Map<String, Agent>,
-  ): void {
-    for (const agent of Array.from(rankers.values())) {
-      const shuffledTargets = Array.from(targets.values());
-      this.utils.shuffle(shuffledTargets);
-      agent.ranking = shuffledTargets;
-    }
-  }
-
-  getRankings(agentMap: Map<String, Agent>): Map<String, Array<String>> {
-    return new Map(
-      Array.from(agentMap.values()).map((agent) => [
-        this.utils.getAsChar(agent),
-        agent.ranking.map((m) => this.utils.getAsChar(m)),
-      ]),
-    );
-  }
-
-  saveStep(step: number, stepVariables?: Object): void {
-    const currentStep = new StepBuilder()
-      .lineNumber(step)
-      .freeAgents(structuredClone(this.freeAgents))
-      .stepVariables(stepVariables)
-      .group1Prefs(structuredClone(this.currentPrefsGroup1))
-      .group2Prefs(structuredClone(this.currentPrefsGroup2))
-      .selectedAgents(structuredClone(this.selectedAgents))
-      .currentLines(structuredClone(this.currentLines))
-      .algorithmData(structuredClone(this.algorithmSpecificData))
-      .relevantPrefs(structuredClone(this.relevantPrefs))
-      .build();
-    this.#algorithmRunData.commands.push(currentStep);
-  }
-
-  getMatches(): Map<Agent, Array<String>> {
-    return new Map(
-      Array.from(this.group2Agents.values()).map((agent) => [
-        agent,
-        agent.match.map((m) => m.name),
-      ]),
-    );
-  }
-
-  getRank(agent: Agent, target: Agent): number {
-    return agent.ranking.findIndex(
-      (candidate) => candidate.name == target.name,
-    );
-  }
-
-  getOriginalRank(
-    currentAgent: Agent,
-    agentToFind: Agent,
-    group: 'group1' | 'group2',
-  ): number {
-    const originalPrefs =
-      group == 'group1' ? this.originalPrefsGroup1 : this.originalPrefsGroup2;
-    const currentChar = this.utils.getAsChar(currentAgent);
-    const targetChar = this.utils.getAsChar(agentToFind);
-    return originalPrefs.get(currentChar).indexOf(targetChar);
-  }
-
-  removeSubArray(
-    a: Array<Array<string>>,
-    b: Array<string>,
-  ): Array<Array<string>> {
-    return a.filter((subArray) => !this.utils.checkArrayEquality(subArray, b));
-  }
-
-  removePerson(a: Array<Array<string>>, person: string): Array<Array<string>> {
-    return a.filter((subArray) => subArray[0] != person);
-  }
-
-  removeTarget(a: Array<Array<string>>, target: string): Array<Array<string>> {
-    return a.filter((subArray) => subArray[1] != target);
   }
 
   stylePrefs(
@@ -190,6 +115,72 @@ export abstract class MatchingAlgorithm {
     this.stylePrefs('group2', g2Agent, g1Agent, colour);
   }
 
+  saveStep(step: number, stepVariables?: Object): void {
+    const currentStep = new StepBuilder()
+      .lineNumber(step)
+      .freeAgents(structuredClone(this.freeAgents))
+      .stepVariables(stepVariables)
+      .group1Prefs(structuredClone(this.currentPrefsGroup1))
+      .group2Prefs(structuredClone(this.currentPrefsGroup2))
+      .selectedAgents(structuredClone(this.selectedAgents))
+      .currentLines(structuredClone(this.currentLines))
+      .algorithmData(structuredClone(this.algorithmSpecificData))
+      .relevantPrefs(structuredClone(this.relevantPrefs))
+      .build();
+    this.#algorithmRunData.commands.push(currentStep);
+  }
+
+  // --- Ranking Helper Functions ---
+
+  generateRandomRankings(
+    rankers: Map<String, Agent>,
+    targets: Map<String, Agent>,
+  ): void {
+    for (const agent of Array.from(rankers.values())) {
+      const shuffledTargets = Array.from(targets.values());
+      this.utils.shuffle(shuffledTargets);
+      agent.ranking = shuffledTargets;
+    }
+  }
+
+  getRankings(agentMap: Map<String, Agent>): Map<String, Array<String>> {
+    return new Map(
+      Array.from(agentMap.values()).map((agent) => [
+        this.utils.getAsChar(agent),
+        agent.ranking.map((m) => this.utils.getAsChar(m)),
+      ]),
+    );
+  }
+
+  getRank(agent: Agent, target: Agent): number {
+    return agent.ranking.findIndex(
+      (candidate) => candidate.name == target.name,
+    );
+  }
+
+  getOriginalRank(
+    currentAgent: Agent,
+    agentToFind: Agent,
+    group: 'group1' | 'group2',
+  ): number {
+    const originalPrefs =
+      group == 'group1' ? this.originalPrefsGroup1 : this.originalPrefsGroup2;
+    const currentChar = this.utils.getAsChar(currentAgent);
+    const targetChar = this.utils.getAsChar(agentToFind);
+    return originalPrefs.get(currentChar).indexOf(targetChar);
+  }
+
+  // --- Match Helper Functions ---
+
+  getMatches(): Map<Agent, Array<String>> {
+    return new Map(
+      Array.from(this.group2Agents.values()).map((agent) => [
+        agent,
+        agent.match.map((m) => m.name),
+      ]),
+    );
+  }
+
   getLastMatch(currentAgent: Agent, agentMatches: Array<String>): number {
     let furthestIndex = 0;
     for (const matchName of agentMatches) {
@@ -201,6 +192,25 @@ export abstract class MatchingAlgorithm {
     }
     return furthestIndex;
   }
+
+  // --- Other Helper Functions ---
+
+  removeSubArray(
+    a: Array<Array<string>>,
+    b: Array<string>,
+  ): Array<Array<string>> {
+    return a.filter((subArray) => !this.utils.checkArrayEquality(subArray, b));
+  }
+
+  removePerson(a: Array<Array<string>>, person: string): Array<Array<string>> {
+    return a.filter((subArray) => subArray[0] != person);
+  }
+
+  removeTarget(a: Array<Array<string>>, target: string): Array<Array<string>> {
+    return a.filter((subArray) => subArray[1] != target);
+  }
+
+  // ---
 
   abstract checkStability(): boolean;
   abstract generateAgents(): void;
