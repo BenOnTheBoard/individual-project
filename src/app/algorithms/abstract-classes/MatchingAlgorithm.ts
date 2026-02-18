@@ -195,27 +195,6 @@ export abstract class MatchingAlgorithm {
     this.stylePrefs('group2', g2Agent, g1Agent, colour);
   }
 
-  isBlockingPair(agent: Agent, target: Agent): boolean {
-    const agentBlock = this.getOriginalRank(agent, target, 'group2');
-    const agentCur = this.getOriginalRank(agent, agent.match[0], 'group2');
-    const targetBlock = this.getOriginalRank(target, agent, 'group1');
-    const targetCur = this.getOriginalRank(target, target.match[0], 'group1');
-    return agentBlock < agentCur && targetBlock < targetCur;
-  }
-
-  checkStability(allMatches: Map<Agent, Array<String>>): boolean {
-    for (const g2Agent of allMatches.keys()) {
-      const agentMatches = allMatches.get(g2Agent);
-      if (agentMatches.length == 0) continue;
-
-      for (const g1Agent of g2Agent.ranking) {
-        if (agentMatches.includes(g1Agent.name)) continue;
-        if (this.isBlockingPair(g2Agent, g1Agent)) return false;
-      }
-    }
-    return true;
-  }
-
   getLastMatch(currentAgent: Agent, agentMatches: Array<String>): number {
     let furthestIndex = 0;
     for (const matchName of agentMatches) {
@@ -227,6 +206,8 @@ export abstract class MatchingAlgorithm {
     }
     return furthestIndex;
   }
+
+  abstract checkStability(): boolean;
 
   abstract generateAgents(): void;
 
@@ -250,7 +231,7 @@ export abstract class MatchingAlgorithm {
 
     this.match();
 
-    this.#stable = this.checkStability(this.getMatches());
+    this.#stable = this.checkStability();
 
     if (!this.#stable) return undefined;
     return this.#algorithmRunData;

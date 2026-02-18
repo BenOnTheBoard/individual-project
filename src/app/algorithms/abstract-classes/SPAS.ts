@@ -3,9 +3,17 @@ import { MatchingAlgorithm } from './MatchingAlgorithm';
 import { Student, Project, Lecturer } from '../interfaces/Agents';
 
 export abstract class SPAS extends MatchingAlgorithm {
+  group1Name = 'student';
+  group2Name = 'project';
+  group3Name = 'lecturer';
+
   group1Agents: Map<String, Student> = new Map();
   group2Agents: Map<String, Project> = new Map();
   group3Agents: Map<String, Lecturer> = new Map();
+
+  hospitalCapacity: Map<string, string> = new Map();
+  lecturerCapacities: Map<number, number> = new Map();
+  numLecturers: number;
 
   generatePrefs(): void {
     const numLecturers = Math.ceil(this.numberOfGroup2Agents / 3);
@@ -50,6 +58,142 @@ export abstract class SPAS extends MatchingAlgorithm {
       count++;
     }
     this.algorithmSpecificData['lecturerProjects'] = projectLists;
+  }
+  // returns the lecturer that runs the passed in project
+  getProjectLecturer(project: Project) {
+    for (const lecturer of this.group3Agents.values()) {
+      if (lecturer.projects.includes(project)) {
+        return lecturer;
+      }
+    }
+    return null;
+  }
+
+  // get the least prefered student assigned to a project according to the lecturer
+  getWorstStudent(project: Project) {
+    const lecturer = this.getProjectLecturer(project);
+
+    // loop through ranking in reverse - first assigned student to appear is the worst
+    for (let i = lecturer.ranking.length - 1; i > -1; i--) {
+      if (project.match.includes(lecturer.ranking[i])) {
+        return lecturer.ranking[i];
+      }
+    }
+
+    return null;
+  }
+
+  // get the worst student given a lecture assigned to any of that lectures projects
+  getWorstStudentLecturer(lecturer: Lecturer) {
+    const assignedStudents = [];
+
+    // for each project the lecture runs
+    for (const project of lecturer.projects) {
+      // add the assigned students of the project to a list
+      for (const student of project.match) {
+        assignedStudents.push(student);
+      }
+    }
+    // loop through ranking in reverse - first assigned student to appear is the worst
+    for (let i = lecturer.ranking.length - 1; i > -1; i--) {
+      if (assignedStudents.includes(lecturer.ranking[i])) {
+        return lecturer.ranking[i];
+      }
+    }
+
+    return null;
+  }
+
+  // returns Rank of worst ranked studnet for a project according to the lecture within the lecturers preference list
+  getLastMatchProject(project: Project) {
+    const lecturer = this.getProjectLecturer(project);
+    let worstRank = 0;
+
+    for (const student of project.match) {
+      const rank = this.getRank(lecturer, student);
+
+      if (rank > worstRank) {
+        worstRank = rank;
+      }
+    }
+
+    return worstRank;
+  }
+
+  // returns the rank of the least preferred match for a lecturer
+  getLastMatchLecturer(lecturer: Lecturer) {
+    let rank = null;
+    // for each student in ranking
+    for (let i = 0; i < lecturer.ranking.length; i++) {
+      // for each project that they host
+      const student = lecturer.ranking[i];
+      for (const project of lecturer.projects) {
+        if (project.match.includes(student)) {
+          rank = i;
+        }
+      }
+
+      return rank;
+    }
+  }
+
+  getLecturerOccupancy(lecturer: Lecturer) {
+    let occupancy = 0;
+    for (const project of lecturer.projects) {
+      occupancy += project.match.length;
+    }
+    return occupancy;
+  }
+
+  isBlockingPair(student: Student, project: Project): boolean {
+    const lecturer = this.getProjectLecturer(project);
+    const lastMatchRank = this.getLastMatchLecturer(lecturer);
+    const currentStudentRank = this.getRank(lecturer, student);
+
+    // pj undersubscribed,
+    if (project.match.length < project.capacity) {
+      // (a) lk undersubscribed
+      if (this.getLecturerOccupancy(lecturer) < lecturer.capacity) {
+        return true;
+      } else if (
+        // (b) lk full, but si is in M(lk) better than the worst student in M(lk)
+        this.getLecturerOccupancy(lecturer) == lecturer.capacity &&
+        (lecturer.projects.includes(student.match[0]) ||
+          currentStudentRank < lastMatchRank)
+      ) {
+        return true;
+      }
+    }
+    // (c) pj full, but si is better than the worst student in M(pj)
+    if (
+      project.match.length == project.capacity &&
+      currentStudentRank < this.getLastMatchProject(project)
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  checkStability(): boolean {
+    for (const student of this.group1Agents.values()) {
+      const studentMatchRank =
+        student.match.length == 0
+          ? student.ranking.length
+          : this.getOriginalRank(student, student.match[0], 'group1');
+
+      // current student information
+      const studentRanking = this.originalPrefsGroup1.get(
+        this.utils.getAsChar(student),
+      );
+
+      // loop over more preferable projects
+      for (let i = studentMatchRank - 1; i >= 0; i--) {
+        const projectName = studentRanking[i];
+        const project = this.group2Agents.get(this.group2Name + projectName);
+        if (this.isBlockingPair(student, project)) return false;
+      }
+    }
+    return true;
   }
 
   abstract match(): AlgorithmData;

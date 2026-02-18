@@ -25,6 +25,35 @@ export abstract class HR extends MatchingAlgorithm {
     this.hospitalCapacity.set(char, `{${hex}${String(hospital.capacity)}}`);
   }
 
+  // We assume that all lists are complete
+  // i.e. an agent always prefers to be matched over not, full over not
+  isBlockingPair(res: Resident, hos: Hospital): boolean {
+    let resBlocks = true;
+    let hosBlocks = true;
+    if (res.match.length > 0) {
+      const resBlock = this.getOriginalRank(res, hos, 'group1');
+      const resMatch = this.getOriginalRank(res, res.match[0], 'group1');
+      resBlocks = resBlock < resMatch;
+    }
+    if (hos.match.length >= hos.capacity) {
+      const worstRes = this.getWorstResident(hos);
+      const hosBlock = this.getOriginalRank(hos, res, 'group2');
+      const hosWorst = this.getOriginalRank(hos, worstRes, 'group2');
+      hosBlocks = hosBlock < hosWorst;
+    }
+    return resBlocks && hosBlocks;
+  }
+
+  checkStability(): boolean {
+    for (const hospital of this.group2Agents.values()) {
+      for (const resident of hospital.ranking) {
+        if (hospital.match.includes(resident)) continue;
+        if (this.isBlockingPair(resident, hospital)) return false;
+      }
+    }
+    return true;
+  }
+
   generateAgents(): void {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
       const name = this.group1Name + i;

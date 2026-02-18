@@ -1,7 +1,13 @@
+import { Person } from '../interfaces/Agents';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
 
 export abstract class SR extends MatchingAlgorithm {
+  group1Name = 'person';
+  group2Name = 'Other';
+
+  group1Agents: Map<String, Person> = new Map();
+
   readonly #unstable4 = [
     ['2', '3', '4'],
     ['3', '1', '4'],
@@ -126,6 +132,33 @@ export abstract class SR extends MatchingAlgorithm {
         count++;
       }
     }
+  }
+
+  isBlockingPair(person: Person, other: Person): boolean {
+    const personBlock = this.getOriginalRank(person, other, 'group1');
+    const personCur = this.getOriginalRank(
+      person,
+      person.lastProposed,
+      'group1',
+    );
+    const otherBlock = this.getOriginalRank(other, person, 'group1');
+    const otherCur = this.getOriginalRank(other, other.lastProposed, 'group1');
+    return personBlock < personCur && otherBlock < otherCur;
+  }
+
+  checkStability(): boolean {
+    for (const person of this.group1Agents.values()) {
+      if (!person.lastProposed) continue; // if agent has no matches
+
+      const personRanking = this.originalPrefsGroup1.get(
+        this.utils.getAsChar(person),
+      );
+      for (const otherName of personRanking) {
+        const other = this.group1Agents.get(this.group1Name + otherName);
+        if (this.isBlockingPair(person, other)) return false;
+      }
+    }
+    return true;
   }
 
   abstract match(): AlgorithmData;
