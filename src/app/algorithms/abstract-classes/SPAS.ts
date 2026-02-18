@@ -2,7 +2,7 @@ import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
 import { Student, Project, Lecturer } from '../interfaces/Agents';
 
-export abstract class StudentProjectAllocation extends MatchingAlgorithm {
+export abstract class SPAS extends MatchingAlgorithm {
   group1Agents: Map<String, Student> = new Map();
   group2Agents: Map<String, Project> = new Map();
   group3Agents: Map<String, Lecturer> = new Map();

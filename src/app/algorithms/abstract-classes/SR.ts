@@ -1,7 +1,7 @@
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
 
-export abstract class StableRoomMates extends MatchingAlgorithm {
+export abstract class SR extends MatchingAlgorithm {
   readonly #unstable4 = [
     ['2', '3', '4'],
     ['3', '1', '4'],

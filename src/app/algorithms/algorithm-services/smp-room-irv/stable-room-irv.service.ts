@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { StableRoomMates } from '../../abstract-classes/StableRoomMates';
+import { SR } from '../../abstract-classes/SR';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { AgentFactory, Person } from '../../interfaces/Agents';
 
 @Injectable({
   providedIn: 'root',
 })
-export class StableRoomIrvService extends StableRoomMates {
+export class StableRoomIrvService extends SR {
   group1Name = 'person';
   group2Name = 'Other';
 

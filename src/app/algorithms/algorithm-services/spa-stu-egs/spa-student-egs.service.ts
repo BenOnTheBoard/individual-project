@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { StudentProjectAllocation } from '../../abstract-classes/StudentProjectAllocation';
+import { SPAS } from '../../abstract-classes/SPAS';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import {
   Student,
@@ -13,7 +13,7 @@ const projectCapacity = 2;
 @Injectable({
   providedIn: 'root',
 })
-export class SpaStudentEgsService extends StudentProjectAllocation {
+export class SpaStudentEgsService extends SPAS {
   group1Name = 'student';
   group2Name = 'project';
   group3Name = 'lecturer';
