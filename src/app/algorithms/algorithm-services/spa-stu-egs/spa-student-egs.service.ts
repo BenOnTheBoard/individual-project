@@ -1,53 +1,12 @@
 import { Injectable } from '@angular/core';
 import { SPAS } from '../../abstract-classes/SPAS';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
-import {
-  Student,
-  Project,
-  Lecturer,
-  AgentFactory,
-} from '../../interfaces/Agents';
-
-const projectCapacity = 2;
+import { Student, Project, Lecturer } from '../../interfaces/Agents';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SpaStudentEgsService extends SPAS {
-  generateAgents(): void {
-    for (let i = 1; i < this.numberOfAgents + 1; i++) {
-      const name = this.group1Name + i;
-      const agent = AgentFactory.createStudent(name);
-      this.group1Agents.set(name, agent);
-      this.freeAgents.push(agent);
-    }
-
-    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
-      const letter = String.fromCharCode(65 + i);
-      const name = this.group2Name + letter;
-      const agent = AgentFactory.createProject(name, projectCapacity);
-      this.group2Agents.set(name, agent);
-      this.hospitalCapacity.set(letter, String(projectCapacity));
-    }
-
-    // hospital capacity is placeholder name for project capacity - used so that it is displayed in canvas
-    this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
-
-    this.numLecturers = Math.ceil(this.numberOfGroup2Agents / 3);
-    const lecturerCapacity = Math.ceil(this.numberOfAgents / 3) + 1;
-
-    // reset the group - if prevouis run had more projects/lecturers then they dont all get deleted - causes issues - rank errors
-    this.group3Agents = new Map();
-
-    for (let i = 1; i < this.numLecturers + 1; i++) {
-      const name = this.group3Name + i;
-      const agent = AgentFactory.createLecturer(name, lecturerCapacity);
-      this.group3Agents.set(name, agent);
-      this.lecturerCapacities.set(i, lecturerCapacity);
-    }
-    this.algorithmSpecificData['lecturerCapacity'] = this.lecturerCapacities;
-  }
-
   // list of students that need to be matched and are available
   availableStudents() {
     const students = [];

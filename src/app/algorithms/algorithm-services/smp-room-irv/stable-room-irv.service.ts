@@ -1,31 +1,12 @@
 import { Injectable } from '@angular/core';
 import { SR } from '../../abstract-classes/SR';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
-import { AgentFactory, Person } from '../../interfaces/Agents';
+import { Person } from '../../interfaces/Agents';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StableRoomIrvService extends SR {
-  generateAgents(): void {
-    for (let i = 1; i < this.numberOfAgents + 1; i++) {
-      const name = this.group1Name + i;
-      const agent = AgentFactory.createPerson(name);
-      this.group1Agents.set(name, agent);
-      this.freeAgents.push(agent);
-    }
-
-    // we need these to call getMatches
-    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
-      const letter = String.fromCharCode(65 + i);
-      const name = this.group2Name + letter;
-      const agent = AgentFactory.createPerson(name);
-      this.group2Agents.set(name, agent);
-    }
-
-    this.algorithmSpecificData['SR'] = true;
-  }
-
   // checks is anyone is assigned to a person, returns assigned person if true, null otherwise
   assign_check(assinged: String) {
     for (let [key, person] of this.group1Agents.entries()) {

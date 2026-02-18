@@ -1,4 +1,4 @@
-import { Person } from '../interfaces/Agents';
+import { AgentFactory, Person } from '../interfaces/Agents';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
 
@@ -102,6 +102,25 @@ export abstract class SR extends MatchingAlgorithm {
           'selectUnstableInstance called while number of agents is not in {4,6,8}',
         );
     }
+  }
+
+  generateAgents(): void {
+    for (let i = 1; i < this.numberOfAgents + 1; i++) {
+      const name = this.group1Name + i;
+      const agent = AgentFactory.createPerson(name);
+      this.group1Agents.set(name, agent);
+      this.freeAgents.push(agent);
+    }
+
+    // we need these to call getMatches
+    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
+      const letter = String.fromCharCode(65 + i);
+      const name = this.group2Name + letter;
+      const agent = AgentFactory.createPerson(name);
+      this.group2Agents.set(name, agent);
+    }
+
+    this.algorithmSpecificData['SR'] = true;
   }
 
   generatePrefs(): void {

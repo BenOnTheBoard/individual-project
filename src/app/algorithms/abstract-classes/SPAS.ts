@@ -1,6 +1,6 @@
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
-import { Student, Project, Lecturer } from '../interfaces/Agents';
+import { Student, Project, Lecturer, AgentFactory } from '../interfaces/Agents';
 
 export abstract class SPAS extends MatchingAlgorithm {
   group1Name = 'student';
@@ -13,7 +13,42 @@ export abstract class SPAS extends MatchingAlgorithm {
 
   hospitalCapacity: Map<string, string> = new Map();
   lecturerCapacities: Map<number, number> = new Map();
+  projectCap = 2;
   numLecturers: number;
+
+  generateAgents(): void {
+    for (let i = 1; i < this.numberOfAgents + 1; i++) {
+      const name = this.group1Name + i;
+      const agent = AgentFactory.createStudent(name);
+      this.group1Agents.set(name, agent);
+      this.freeAgents.push(agent);
+    }
+
+    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
+      const letter = String.fromCharCode(65 + i);
+      const name = this.group2Name + letter;
+      const agent = AgentFactory.createProject(name, this.projectCap);
+      this.group2Agents.set(name, agent);
+      this.hospitalCapacity.set(letter, String(this.projectCap));
+    }
+
+    // hospital capacity is placeholder name for project capacity - used so that it is displayed in canvas
+    this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
+
+    this.numLecturers = Math.ceil(this.numberOfGroup2Agents / 3);
+    const lecturerCapacity = Math.ceil(this.numberOfAgents / 3) + 1;
+
+    // reset the group - if prevouis run had more projects/lecturers then they dont all get deleted - causes issues - rank errors
+    this.group3Agents = new Map();
+
+    for (let i = 1; i < this.numLecturers + 1; i++) {
+      const name = this.group3Name + i;
+      const agent = AgentFactory.createLecturer(name, lecturerCapacity);
+      this.group3Agents.set(name, agent);
+      this.lecturerCapacities.set(i, lecturerCapacity);
+    }
+    this.algorithmSpecificData['lecturerCapacity'] = this.lecturerCapacities;
+  }
 
   generatePrefs(): void {
     const numLecturers = Math.ceil(this.numberOfGroup2Agents / 3);
