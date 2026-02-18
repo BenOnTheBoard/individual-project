@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { LayoutService } from './layout.service';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
+import { StepBuilder } from 'src/app/algorithms/interfaces/Step';
 
 describe('LayoutService', () => {
   let service: LayoutService;
@@ -28,7 +29,7 @@ describe('LayoutService', () => {
   });
   describe('calculateBipartitePositions', () => {
     it('should calculate positions for both LHS and RHS groups', () => {
-      const command = { algorithmSpecificData: {} };
+      const command = new StepBuilder().build();
       service.calculateBipartitePositions(mockCanvas, command);
 
       const positions = service.getPositions();
@@ -44,7 +45,9 @@ describe('LayoutService', () => {
     });
 
     it('should apply hospital capacity offset when specified', () => {
-      const command = { algorithmSpecificData: { hospitalCapacity: true } };
+      const command = new StepBuilder()
+        .algorithmData({ hospitalCapacity: true })
+        .build();
       service.calculateBipartitePositions(mockCanvas, command);
 
       const lhsPos = service.getPositions().circle1.x;
@@ -54,7 +57,7 @@ describe('LayoutService', () => {
     it('should handle zero agents gracefully', () => {
       mockalgRetriever.numberOfGroup1Agents = 0;
       mockalgRetriever.numberOfGroup2Agents = 0;
-      const command = { algorithmSpecificData: {} };
+      const command = new StepBuilder().build();
 
       expect(() =>
         service.calculateBipartitePositions(mockCanvas, command),
@@ -63,7 +66,7 @@ describe('LayoutService', () => {
 
     it('should use height offset map when group size matches', () => {
       mockalgRetriever.numberOfGroup1Agents = 8;
-      const command = { algorithmSpecificData: {} };
+      const command = new StepBuilder().build();
       service.calculateBipartitePositions(mockCanvas, command);
 
       expect(service.getPositions().circle1).toBeDefined();
