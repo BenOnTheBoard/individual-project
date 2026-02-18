@@ -170,29 +170,6 @@ export abstract class MatchingAlgorithm {
     return originalPrefs.get(currentChar).indexOf(targetChar);
   }
 
-  // --- Match Helper Functions ---
-
-  getMatches(): Map<Agent, Array<String>> {
-    return new Map(
-      Array.from(this.group2Agents.values()).map((agent) => [
-        agent,
-        agent.match.map((m) => m.name),
-      ]),
-    );
-  }
-
-  getLastMatch(currentAgent: Agent, agentMatches: Array<String>): number {
-    let furthestIndex = 0;
-    for (const matchName of agentMatches) {
-      const matchAgent = this.group1Agents.get(matchName);
-      const matchRank = this.getRank(currentAgent, matchAgent);
-      if (matchRank > furthestIndex) {
-        furthestIndex = matchRank;
-      }
-    }
-    return furthestIndex;
-  }
-
   // --- Other Helper Functions ---
 
   removeSubArray(

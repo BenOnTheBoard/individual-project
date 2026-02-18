@@ -112,7 +112,6 @@ export abstract class SR extends MatchingAlgorithm {
       this.freeAgents.push(agent);
     }
 
-    // we need these to call getMatches
     for (let i = 0; i < this.numberOfGroup2Agents; i++) {
       const letter = String.fromCharCode(65 + i);
       const name = this.group2Name + letter;
