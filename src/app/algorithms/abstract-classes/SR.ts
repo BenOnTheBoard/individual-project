@@ -6,6 +6,7 @@ export abstract class SR extends MatchingAlgorithm {
   group1Name = 'person';
   group2Name = 'Other';
 
+  freeAgents: Array<Person> = [];
   group1Agents: Map<String, Person> = new Map();
 
   readonly #unstable4 = [

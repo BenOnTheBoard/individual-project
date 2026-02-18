@@ -7,6 +7,7 @@ import { Student, Project, Lecturer } from '../../interfaces/Agents';
   providedIn: 'root',
 })
 export class SpaStudentEgsService extends SPAS {
+  freeAgents: Array<Student> = [];
   // list of students that need to be matched and are available
   availableStudents() {
     const students = [];

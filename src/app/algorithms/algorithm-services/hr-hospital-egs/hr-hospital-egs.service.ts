@@ -7,7 +7,7 @@ import { HR } from '../../abstract-classes/HR';
   providedIn: 'root',
 })
 export class HrHospitalEgsService extends HR {
-  freeHospitals: Array<Hospital> = new Array();
+  freeAgents: Array<Hospital> = new Array();
 
   #saveStepEight(resident: Resident, hospital: Hospital) {
     this.stylePrefsMutual(resident, hospital, 'grey');
@@ -17,7 +17,7 @@ export class HrHospitalEgsService extends HR {
   generateAgents(): void {
     super.generateAgents();
     for (const agent of this.group2Agents.values()) {
-      this.freeHospitals.push(agent);
+      this.freeAgents.push(agent);
     }
   }
 
@@ -58,8 +58,8 @@ export class HrHospitalEgsService extends HR {
   match(): AlgorithmData {
     this.saveStep(1);
 
-    while (this.freeHospitals.length > 0) {
-      const hospital = this.freeHospitals[0];
+    while (this.freeAgents.length > 0) {
+      const hospital = this.freeAgents[0];
       const resident = this.getNextResident(hospital);
       this.saveStep(2, this.packageStepVars(null, hospital));
       this.saveStep(3, this.packageStepVars(resident));
@@ -75,7 +75,7 @@ export class HrHospitalEgsService extends HR {
       this.saveStep(6, this.packageStepVars(resident, hospital));
 
       this.removeOutrankedHospitals(resident, hospital);
-      this.freeHospitals = this.getFreeHospitals();
+      this.freeAgents = this.getFreeHospitals();
     }
 
     this.saveStep(9);
