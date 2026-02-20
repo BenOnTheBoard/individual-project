@@ -1,36 +1,48 @@
 interface AbstractAgent<T> {
   name: string;
   match: Array<T>;
+}
+interface UntiedAgent<T> extends AbstractAgent<T> {
   ranking: Array<T>;
 }
-
-interface AbstractCapacitatedAgent<T> extends AbstractAgent<T> {
+interface UntiedCapAgent<T> extends UntiedAgent<T> {
   capacity: number;
 }
 
-// We cast all the other agents to this one as a generic type
-export type Agent = AbstractAgent<Agent>;
+// We cast the other agents to this one as a generic type
+export type Agent = UntiedAgent<Agent>;
 
-export type Woman = AbstractAgent<Man>;
-export type Man = AbstractAgent<Woman> & {
+export type Woman = UntiedAgent<Man>;
+export type Man = UntiedAgent<Woman> & {
   lastProposed: Woman;
 };
 
-export type Resident = AbstractAgent<Hospital>;
-export type Hospital = AbstractCapacitatedAgent<Resident>;
+export type Resident = UntiedAgent<Hospital>;
+export type Hospital = UntiedCapAgent<Resident>;
 
-export type Student = AbstractAgent<Project>;
-export type Project = AbstractCapacitatedAgent<Student>;
-export type Lecturer = AbstractCapacitatedAgent<Student> & {
+export type Student = UntiedAgent<Project>;
+export type Project = UntiedCapAgent<Student>;
+export type Lecturer = UntiedCapAgent<Student> & {
   projects: Array<Project>;
 };
 
-export type Person = AbstractAgent<Person> & {
+export type Person = UntiedAgent<Person> & {
   lastProposed: Person;
 };
 
+// Ties
+interface AbstractTiedAgent<T> extends AbstractAgent<T> {
+  ranking: Array<Array<T>>;
+}
+
+// We cast the other agents to this one as a generic type
+export type TiedAgent = AbstractTiedAgent<Agent>;
+
+export type TiedWoman = AbstractTiedAgent<Man>;
+export type TiedMan = AbstractTiedAgent<Woman>;
+
 export class AgentFactory {
-  static #createBaseAgent(name: string, extras?: Object): AbstractAgent<any> {
+  static #createBaseAgent(name: string, extras?: Object): Object {
     return { name, match: [], ranking: [], ...extras };
   }
 
@@ -68,5 +80,18 @@ export class AgentFactory {
 
   static createPerson(name: string): Person {
     return this.#createBaseAgent(name, { lastProposed: null }) as Person;
+  }
+
+  //Ties
+  static createTiedAgent(name: string): TiedAgent {
+    return this.#createBaseAgent(name) as TiedAgent;
+  }
+
+  static createTiedWoman(name: string): TiedWoman {
+    return this.#createBaseAgent(name) as TiedWoman;
+  }
+
+  static createTiedMan(name: string): TiedMan {
+    return this.#createBaseAgent(name, { lastProposed: null }) as TiedMan;
   }
 }
