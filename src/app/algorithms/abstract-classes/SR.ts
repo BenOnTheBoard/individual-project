@@ -1,13 +1,13 @@
 import { AgentFactory, Person } from '../interfaces/Agents';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
-import { MatchingAlgorithm } from './MatchingAlgorithm';
 import {
   unstable4,
   unstableInstances6,
   unstableInstances8,
 } from './SRUnstableInstances';
+import { UntiedMatchingAlgorithm } from './UntiedMatchingAlgorithm';
 
-export abstract class SR extends MatchingAlgorithm {
+export abstract class SR extends UntiedMatchingAlgorithm {
   group1Name = 'person';
   group2Name = 'Other';
 

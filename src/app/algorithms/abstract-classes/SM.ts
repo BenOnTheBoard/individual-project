@@ -1,8 +1,8 @@
 import { AgentFactory, Man, Woman } from '../interfaces/Agents';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
-import { MatchingAlgorithm } from './MatchingAlgorithm';
+import { UntiedMatchingAlgorithm } from './UntiedMatchingAlgorithm';
 
-export abstract class SM extends MatchingAlgorithm {
+export abstract class SM extends UntiedMatchingAlgorithm {
   group1Name = 'man';
   group2Name = 'woman';
   freeAgents: Array<Man>;
