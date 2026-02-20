@@ -1,6 +1,6 @@
-import { AgentFactory, Hospital, Resident } from '../interfaces/Agents';
-import { AlgorithmData } from '../interfaces/AlgorithmData';
-import { UntiedMatchingAlgorithm } from './UntiedMatchingAlgorithm';
+import { AgentFactory, Hospital, Resident } from '../../interfaces/Agents';
+import { AlgorithmData } from '../../interfaces/AlgorithmData';
+import { UntiedMatchingAlgorithm } from '../UntiedMatchingAlgorithm';
 
 export abstract class HR extends UntiedMatchingAlgorithm {
   group1Name = 'resident';

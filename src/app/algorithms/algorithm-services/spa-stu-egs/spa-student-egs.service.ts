@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SPAS } from '../../abstract-classes/SPAS';
+import { SPAS } from '../../abstract-classes/problem-definitions/SPAS';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { Student, Project, Lecturer } from '../../interfaces/Agents';
 

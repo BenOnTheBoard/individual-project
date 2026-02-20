@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SR } from '../../abstract-classes/SR';
+import { SR } from '../../abstract-classes/problem-definitions/SR/SR';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { Person } from '../../interfaces/Agents';
 

@@ -1,6 +1,6 @@
-import { AgentFactory, Man, Woman } from '../interfaces/Agents';
-import { AlgorithmData } from '../interfaces/AlgorithmData';
-import { UntiedMatchingAlgorithm } from './UntiedMatchingAlgorithm';
+import { AgentFactory, Man, Woman } from '../../interfaces/Agents';
+import { AlgorithmData } from '../../interfaces/AlgorithmData';
+import { UntiedMatchingAlgorithm } from '../UntiedMatchingAlgorithm';
 
 export abstract class SM extends UntiedMatchingAlgorithm {
   group1Name = 'man';

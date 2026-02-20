@@ -1,6 +1,11 @@
-import { AlgorithmData } from '../interfaces/AlgorithmData';
-import { Student, Project, Lecturer, AgentFactory } from '../interfaces/Agents';
-import { UntiedMatchingAlgorithm } from './UntiedMatchingAlgorithm';
+import { AlgorithmData } from '../../interfaces/AlgorithmData';
+import {
+  Student,
+  Project,
+  Lecturer,
+  AgentFactory,
+} from '../../interfaces/Agents';
+import { UntiedMatchingAlgorithm } from '../UntiedMatchingAlgorithm';
 
 export abstract class SPAS extends UntiedMatchingAlgorithm {
   group1Name = 'student';

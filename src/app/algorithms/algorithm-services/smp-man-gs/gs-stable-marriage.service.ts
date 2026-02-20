@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Man, Woman } from '../../interfaces/Agents';
 import { AlgorithmData } from '../../interfaces/AlgorithmData';
-import { SM } from '../../abstract-classes/SM';
+import { SM } from '../../abstract-classes/problem-definitions/SM';
 
 @Injectable({
   providedIn: 'root',
