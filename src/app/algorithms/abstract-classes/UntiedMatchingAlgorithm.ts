@@ -8,12 +8,22 @@ export abstract class UntiedMatchingAlgorithm extends MatchingAlgorithm {
   protected originalPrefsGroup1: Map<String, Array<String>>;
   protected originalPrefsGroup2: Map<String, Array<String>>;
 
+  copyOriginalPrefs(group: Group): Map<String, Array<String>> {
+    const agents = group == 'group1' ? this.group1Agents : this.group2Agents;
+    return new Map(
+      Array.from(agents.values()).map((agent) => [
+        agent.name,
+        agent.ranking.map((a) => a.name),
+      ]),
+    );
+  }
+
   initCurrentAndOriginalPrefs() {
     this.currentPrefsGroup1 = this.getRankings(this.group1Agents);
-    this.originalPrefsGroup1 = structuredClone(this.currentPrefsGroup1);
+    this.originalPrefsGroup1 = this.copyOriginalPrefs('group1');
     if (this.group2Agents) {
       this.currentPrefsGroup2 = this.getRankings(this.group2Agents);
-      this.originalPrefsGroup2 = structuredClone(this.currentPrefsGroup2);
+      this.originalPrefsGroup2 = this.copyOriginalPrefs('group2');
     }
   }
 
@@ -50,9 +60,7 @@ export abstract class UntiedMatchingAlgorithm extends MatchingAlgorithm {
   ): number {
     const originalPrefs =
       group == 'group1' ? this.originalPrefsGroup1 : this.originalPrefsGroup2;
-    const currentChar = this.utils.getAsChar(agent);
-    const targetChar = this.utils.getAsChar(target);
-    return originalPrefs.get(currentChar).indexOf(targetChar);
+    return originalPrefs.get(agent.name).indexOf(target.name);
   }
 
   packageCurrentPrefs(group: Group): Map<String, Array<String>> {
