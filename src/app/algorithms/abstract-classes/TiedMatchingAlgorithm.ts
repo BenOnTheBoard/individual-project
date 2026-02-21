@@ -40,7 +40,7 @@ export abstract class TiedMatchingAlgorithm extends MatchingAlgorithm {
         curTie = [];
       }
     }
-    if (curTie) tiedList.push(curTie);
+    if (curTie.length > 0) tiedList.push(curTie);
     return tiedList;
   }
 
