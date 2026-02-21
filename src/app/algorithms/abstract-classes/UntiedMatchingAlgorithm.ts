@@ -2,6 +2,9 @@ import { Agent, Group } from '../interfaces/Agents';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
 
 export abstract class UntiedMatchingAlgorithm extends MatchingAlgorithm {
+  protected abstract group1Agents: Map<String, Agent>;
+  protected abstract group2Agents: Map<String, Agent>;
+
   protected originalPrefsGroup1: Map<String, Array<String>>;
   protected originalPrefsGroup2: Map<String, Array<String>>;
 

@@ -1,4 +1,4 @@
-import { Agent, Group } from '../interfaces/Agents';
+import { AbstractAgent, Agent, Group } from '../interfaces/Agents';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { StepBuilder } from '../interfaces/Step';
 import { UtilsService } from 'src/app/utils/utils.service';
@@ -10,8 +10,8 @@ export abstract class MatchingAlgorithm {
   protected abstract group2Name: string;
 
   protected abstract freeAgents: Array<Agent>;
-  protected abstract group1Agents: Map<String, Agent>;
-  protected group2Agents: Map<String, Agent>;
+  protected abstract group1Agents: Map<String, any>;
+  protected abstract group2Agents: Map<String, any>;
 
   protected numberOfAgents: number;
   protected numberOfGroup2Agents: number;
@@ -60,22 +60,34 @@ export abstract class MatchingAlgorithm {
 
   // --- Presentation Helper Functions ---
 
-  createLine(from: Agent, to: Agent, colour: string): [string, string, string] {
+  createLine(
+    from: AbstractAgent<any>,
+    to: AbstractAgent<any>,
+    colour: string,
+  ): [string, string, string] {
     return [this.utils.getAsChar(from), this.utils.getAsChar(to), colour];
   }
 
-  addLine(from: Agent, to: Agent, colour: string): void {
+  addLine(
+    from: AbstractAgent<any>,
+    to: AbstractAgent<any>,
+    colour: string,
+  ): void {
     this.currentLines.push(this.createLine(from, to, colour));
   }
 
-  removeLine(from: Agent, to: Agent, colour: string): void {
+  removeLine(
+    from: AbstractAgent<any>,
+    to: AbstractAgent<any>,
+    colour: string,
+  ): void {
     const line = this.createLine(from, to, colour);
     this.currentLines = this.removeSubArray(this.currentLines, line);
   }
 
   changeLineColour(
-    from: Agent,
-    to: Agent,
+    from: AbstractAgent<any>,
+    to: AbstractAgent<any>,
     oldColour: string,
     newColour: string,
   ): void {
@@ -83,7 +95,11 @@ export abstract class MatchingAlgorithm {
     this.addLine(from, to, newColour);
   }
 
-  stylePrefsMutual(g1Agent: Agent, g2Agent: Agent, colour: string): void {
+  stylePrefsMutual(
+    g1Agent: AbstractAgent<any>,
+    g2Agent: AbstractAgent<any>,
+    colour: string,
+  ): void {
     this.stylePrefs('group1', g1Agent, g2Agent, colour);
     this.stylePrefs('group2', g2Agent, g1Agent, colour);
   }
@@ -125,8 +141,8 @@ export abstract class MatchingAlgorithm {
 
   abstract stylePrefs(
     group: Group,
-    agent: Agent,
-    target: Agent,
+    agent: AbstractAgent<any>,
+    target: AbstractAgent<any>,
     colour: string,
   ): void;
 

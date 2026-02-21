@@ -1,6 +1,6 @@
 export type Group = 'group1' | 'group2';
 
-interface AbstractAgent<T> {
+export interface AbstractAgent<T> {
   name: string;
   match: Array<T>;
 }
