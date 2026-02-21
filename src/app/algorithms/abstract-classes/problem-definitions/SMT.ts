@@ -1,5 +1,4 @@
 import { AgentFactory, TiedMan, TiedWoman } from '../../interfaces/Agents';
-import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { TiedMatchingAlgorithm } from '../TiedMatchingAlgorithm';
 
 export abstract class SMT extends TiedMatchingAlgorithm {
@@ -60,5 +59,5 @@ export abstract class SMT extends TiedMatchingAlgorithm {
     this.generateRandomRankings(this.group2Agents, this.group1Agents);
   }
 
-  abstract match(): AlgorithmData;
+  abstract match(): void;
 }

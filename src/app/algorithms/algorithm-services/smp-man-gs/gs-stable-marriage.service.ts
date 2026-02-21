@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Man, Woman } from '../../interfaces/Agents';
-import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { SM } from '../../abstract-classes/problem-definitions/SM';
 
 @Injectable({
@@ -65,7 +64,7 @@ export class GsStableMarriageService extends SM {
     man.match[0] = woman;
   }
 
-  match(): AlgorithmData {
+  match(): void {
     for (const man of Array.from(this.group1Agents.values())) {
       man.lastProposed = man.ranking[0];
     }

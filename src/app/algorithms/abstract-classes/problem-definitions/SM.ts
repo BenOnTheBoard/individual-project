@@ -1,5 +1,4 @@
 import { AgentFactory, Man, Woman } from '../../interfaces/Agents';
-import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { UntiedMatchingAlgorithm } from '../UntiedMatchingAlgorithm';
 
 export abstract class SM extends UntiedMatchingAlgorithm {
@@ -66,5 +65,5 @@ export abstract class SM extends UntiedMatchingAlgorithm {
     this.generateRandomRankings(this.group2Agents, this.group1Agents);
   }
 
-  abstract match(): AlgorithmData;
+  abstract match(): void;
 }

@@ -1,4 +1,3 @@
-import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import {
   Student,
   Project,
@@ -230,5 +229,5 @@ export abstract class SPAS extends UntiedMatchingAlgorithm {
     return true;
   }
 
-  abstract match(): AlgorithmData;
+  abstract match(): void;
 }

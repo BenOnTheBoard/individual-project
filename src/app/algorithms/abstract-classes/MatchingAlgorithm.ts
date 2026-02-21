@@ -155,7 +155,7 @@ export abstract class MatchingAlgorithm {
   abstract checkStability(): boolean;
   abstract generateAgents(): void;
   abstract generatePrefs(): void;
-  abstract match(): AlgorithmData;
+  abstract match(): void;
 
   run(
     numberOfAgents: number,

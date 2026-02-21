@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Man, Woman } from '../../interfaces/Agents';
-import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { SM } from '../../abstract-classes/problem-definitions/SM';
 
 @Injectable({
@@ -72,7 +71,7 @@ export class EgsStableMarriageService extends SM {
     return man.ranking[0];
   }
 
-  match(): AlgorithmData {
+  match(): void {
     this.saveStep(1);
 
     while (this.freeAgents.length > 0) {

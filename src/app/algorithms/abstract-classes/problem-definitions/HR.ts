@@ -1,5 +1,4 @@
 import { AgentFactory, Hospital, Resident } from '../../interfaces/Agents';
-import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { UntiedMatchingAlgorithm } from '../UntiedMatchingAlgorithm';
 
 export abstract class HR extends UntiedMatchingAlgorithm {
@@ -115,5 +114,5 @@ export abstract class HR extends UntiedMatchingAlgorithm {
     hospital.match.push(resident);
   }
 
-  abstract match(): AlgorithmData;
+  abstract match(): void;
 }

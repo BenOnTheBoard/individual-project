@@ -1,5 +1,4 @@
 import { AgentFactory, Person } from '../../../interfaces/Agents';
-import { AlgorithmData } from '../../../interfaces/AlgorithmData';
 import {
   unstable4,
   unstableInstances6,
@@ -89,5 +88,5 @@ export abstract class SR extends UntiedMatchingAlgorithm {
     return true;
   }
 
-  abstract match(): AlgorithmData;
+  abstract match(): void;
 }

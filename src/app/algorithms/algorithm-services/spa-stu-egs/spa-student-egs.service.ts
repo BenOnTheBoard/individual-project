@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { SPAS } from '../../abstract-classes/problem-definitions/SPAS';
-import { AlgorithmData } from '../../interfaces/AlgorithmData';
 import { Student, Project, Lecturer } from '../../interfaces/Agents';
 
 @Injectable({
@@ -171,7 +170,7 @@ export class SpaStudentEgsService extends SPAS {
     }
   }
 
-  match(): AlgorithmData {
+  match(): void {
     this.saveStep(1);
 
     let availableStudents = this.availableStudents();
