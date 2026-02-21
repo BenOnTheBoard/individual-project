@@ -56,7 +56,7 @@ export class PreferenceRendererService {
     this.#lineSizes = new Map();
     for (let i = 1; i < this.algRetriever.numberOfG1Agents; i++) {
       const lineSize = this.#ctx.measureText(
-        this.#cmd.styledPrefsG1.get(String(i)).join(', '),
+        this.#getPreferenceText(String(i)),
       ).width;
       this.#lineSizes.set(String(i), lineSize);
     }
@@ -66,7 +66,27 @@ export class PreferenceRendererService {
     const prefList = agent.match(/[A-Z]/i)
       ? this.#cmd.styledPrefsG2.get(agent)
       : this.#cmd.styledPrefsG1.get(agent);
-    return prefList.join(', ');
+
+    const segments = new Array<String>();
+    let i = 0;
+    while (i < prefList.length) {
+      if (prefList[i] == '(') {
+        i++;
+        const group = new Array<String>();
+        while (i < prefList.length && prefList[i] != ')') {
+          group.push(prefList[i]);
+          i++;
+        }
+        segments.push(`(${group.join(', ')})`);
+      } else {
+        segments.push(`${prefList[i]}`);
+      }
+      if (i < prefList.length) {
+        segments.push(', ');
+      }
+      i++;
+    }
+    return segments.join('');
   }
 
   #getOffsetX(group: 'LHS' | 'RHS', agent?: string): number {
