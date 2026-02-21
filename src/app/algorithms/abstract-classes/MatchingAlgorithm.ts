@@ -1,4 +1,4 @@
-import { Agent } from '../interfaces/Agents';
+import { Agent, Group } from '../interfaces/Agents';
 import { AlgorithmData } from '../interfaces/AlgorithmData';
 import { StepBuilder } from '../interfaces/Step';
 import { UtilsService } from 'src/app/utils/utils.service';
@@ -124,7 +124,7 @@ export abstract class MatchingAlgorithm {
   abstract initCurrentAndOriginalPrefs(): void;
 
   abstract stylePrefs(
-    group: 'group1' | 'group2',
+    group: Group,
     agent: Agent,
     target: Agent,
     colour: string,

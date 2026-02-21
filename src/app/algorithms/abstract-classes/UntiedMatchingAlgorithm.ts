@@ -1,4 +1,4 @@
-import { Agent } from '../interfaces/Agents';
+import { Agent, Group } from '../interfaces/Agents';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
 
 export abstract class UntiedMatchingAlgorithm extends MatchingAlgorithm {
@@ -40,30 +40,21 @@ export abstract class UntiedMatchingAlgorithm extends MatchingAlgorithm {
     );
   }
 
-  getOriginalRank(
-    currentAgent: Agent,
-    agentToFind: Agent,
-    group: 'group1' | 'group2',
-  ): number {
+  getOriginalRank(agent: Agent, target: Agent, group: Group): number {
     const originalPrefs =
       group == 'group1' ? this.originalPrefsGroup1 : this.originalPrefsGroup2;
-    const currentChar = this.utils.getAsChar(currentAgent);
-    const targetChar = this.utils.getAsChar(agentToFind);
+    const currentChar = this.utils.getAsChar(agent);
+    const targetChar = this.utils.getAsChar(target);
     return originalPrefs.get(currentChar).indexOf(targetChar);
   }
 
-  packageCurrentPrefs(group: 'group1' | 'group2'): Map<String, Array<String>> {
+  packageCurrentPrefs(group: Group): Map<String, Array<String>> {
     const currentPrefs =
       group == 'group1' ? this.currentPrefsGroup1 : this.currentPrefsGroup2;
     return structuredClone(currentPrefs);
   }
 
-  stylePrefs(
-    group: 'group1' | 'group2',
-    agent: Agent,
-    target: Agent,
-    colour: string,
-  ): void {
+  stylePrefs(group: Group, agent: Agent, target: Agent, colour: string): void {
     const idx = this.getOriginalRank(agent, target, group);
     const prefLists =
       group == 'group1' ? this.currentPrefsGroup1 : this.currentPrefsGroup2;
