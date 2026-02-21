@@ -33,8 +33,8 @@ describe('AgentRendererService', () => {
       },
     );
     mockalgRetriever = {
-      numberOfGroup1Agents: 2,
-      numberOfGroup2Agents: 2,
+      numberOfG1Agents: 2,
+      numberOfG2Agents: 2,
     } as AlgorithmRetrievalService;
     mockLayoutService = jasmine.createSpyObj('LayoutService', [
       'getPositionOfAgent',

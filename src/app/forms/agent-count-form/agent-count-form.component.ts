@@ -20,13 +20,13 @@ export class AgentCountFormComponent {
   readonly algorithm = input<Algorithm>(undefined);
   readonly enterEvent = output();
 
-  protected numberOfGroup1Agents = new FormControl<number | null>(null, [
+  protected numberOfG1Agents = new FormControl<number | null>(null, [
     Validators.required,
     Validators.min(1),
     Validators.max(9),
   ]);
 
-  protected numberOfGroup2Agents = new FormControl<number | null>(null, [
+  protected numberOfG2Agents = new FormControl<number | null>(null, [
     Validators.required,
     Validators.min(1),
     Validators.max(9),
@@ -51,12 +51,10 @@ export class AgentCountFormComponent {
   isFormValid(): boolean {
     switch (this.algorithm().name) {
       case 'Stable Marriage Problem':
-        return this.numberOfGroup1Agents.valid;
+        return this.numberOfG1Agents.valid;
       case 'Hospitals/Residents Problem':
       case 'Student-Project Allocation':
-        return (
-          this.numberOfGroup1Agents.valid && this.numberOfGroup2Agents.valid
-        );
+        return this.numberOfG1Agents.valid && this.numberOfG2Agents.valid;
       case 'Stable Roommates Problem':
         return this.numberOfSRAgents.valid;
       default:
@@ -64,14 +62,13 @@ export class AgentCountFormComponent {
     }
   }
 
-  getGroup1AgentCount(): number {
-    return this.numberOfGroup1Agents.value;
+  getG1AgentCount(): number {
+    return this.numberOfG1Agents.value;
   }
 
-  getGroup2AgentCount(): number {
-    return this.numberOfGroup2Agents.value;
+  getG2AgentCount(): number {
+    return this.numberOfG2Agents.value;
   }
-
   getSRAgentCount(): number {
     return this.numberOfSRAgents.value;
   }

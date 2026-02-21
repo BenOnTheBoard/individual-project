@@ -19,8 +19,8 @@ import { smtSuperManConfig } from './algorithm-configs/smt-super-man.config';
 })
 export class AlgorithmRetrievalService {
   public currentAlgorithm: Algorithm;
-  public numberOfGroup1Agents: number = 5;
-  public numberOfGroup2Agents: number = 5;
+  public numberOfG1Agents = 5;
+  public numberOfG2Agents = 5;
 
   // Algorithm Injections
   protected gsStableMarriageService = inject(GsStableMarriageService);

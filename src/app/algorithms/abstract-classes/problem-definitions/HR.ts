@@ -61,7 +61,7 @@ export abstract class HR extends UntiedMatchingAlgorithm {
       this.group1Agents.set(name, agent);
     }
 
-    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
+    for (let i = 0; i < this.numberOfG2Agents; i++) {
       const letter = String.fromCharCode(65 + i);
       const name = this.group2Name + letter;
       const capacity = this.utils.getRandomInt(2, this.numberOfAgents / 2);

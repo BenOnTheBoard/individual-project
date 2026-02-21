@@ -140,11 +140,7 @@ export class StableRoomIrvService extends SR {
 
           // if stable == true then regenerate
           if (this.SRstable) {
-            this.run(
-              this.numberOfAgents,
-              this.numberOfGroup2Agents,
-              this.SRstable,
-            );
+            this.run(this.numberOfAgents, this.numberOfG2Agents, this.SRstable);
           }
 
           return;
@@ -361,11 +357,7 @@ export class StableRoomIrvService extends SR {
           // if stable == true then regenerate
           if (this.SRstable) {
             // console.log("ReRun")
-            this.run(
-              this.numberOfAgents,
-              this.numberOfGroup2Agents,
-              this.SRstable,
-            );
+            this.run(this.numberOfAgents, this.numberOfG2Agents, this.SRstable);
           }
 
           return;

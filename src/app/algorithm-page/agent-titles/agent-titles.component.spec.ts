@@ -14,8 +14,8 @@ describe('AgentTitlesComponent', () => {
         {
           provide: AlgorithmRetrievalService,
           useValue: {
-            numberOfGroup1Agents: 3,
-            numberOfGroup2Agents: 3,
+            numberOfG1Agents: 3,
+            numberOfG2Agents: 3,
             currentAlgorithm: {
               id: 'smp-man-egs',
               name: 'Stable Marriage Problem',

@@ -53,7 +53,7 @@ export abstract class SM extends UntiedMatchingAlgorithm {
       this.freeAgents.push(agent);
     }
 
-    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
+    for (let i = 0; i < this.numberOfG2Agents; i++) {
       const currentLetter = String.fromCharCode(65 + i);
       const name = this.group2Name + currentLetter;
       const agent = AgentFactory.createWoman(name);

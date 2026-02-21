@@ -82,20 +82,20 @@ export class AlgorithmPageComponent implements OnInit {
   }
 
   #setupPlaybackService(): void {
-    const { currentAlgorithm, numberOfGroup1Agents, numberOfGroup2Agents } =
+    const { currentAlgorithm, numberOfG1Agents, numberOfG2Agents } =
       this.algRetriever;
     if (currentAlgorithm.name == 'Stable Roommates Problem') {
       this.playback.setAlgorithm(
         currentAlgorithm.id,
-        numberOfGroup1Agents,
-        numberOfGroup2Agents,
+        numberOfG1Agents,
+        numberOfG2Agents,
         this.SRstable,
       );
     } else {
       this.playback.setAlgorithm(
         currentAlgorithm.id,
-        numberOfGroup1Agents,
-        numberOfGroup2Agents,
+        numberOfG1Agents,
+        numberOfG2Agents,
       );
     }
   }

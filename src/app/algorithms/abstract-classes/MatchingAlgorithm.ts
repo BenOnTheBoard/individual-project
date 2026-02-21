@@ -16,10 +16,10 @@ export abstract class MatchingAlgorithm {
   protected abstract group2Agents: Map<String, any>;
 
   protected numberOfAgents: number;
-  protected numberOfGroup2Agents: number;
+  protected numberOfG2Agents: number;
 
-  protected styledPrefGroup1: Map<String, Array<String>>;
-  protected styledPrefGroup2: Map<String, Array<String>>;
+  protected styledPrefsG1: Map<String, Array<String>>;
+  protected styledPrefsG2: Map<String, Array<String>>;
 
   protected selectedAgents: Array<string>;
   protected currentLines: Array<Line>;
@@ -35,10 +35,10 @@ export abstract class MatchingAlgorithm {
 
   initialise(
     numberOfAgents: number,
-    numberOfGroup2Agents: number = numberOfAgents,
+    numberOfG2Agents: number = numberOfAgents,
   ) {
     this.numberOfAgents = numberOfAgents;
-    this.numberOfGroup2Agents = numberOfGroup2Agents;
+    this.numberOfG2Agents = numberOfG2Agents;
 
     this.freeAgents = [];
     this.group1Agents = new Map();
@@ -99,8 +99,8 @@ export abstract class MatchingAlgorithm {
       .lineNumber(step)
       .freeAgents(structuredClone(this.freeAgents))
       .stepVariables(stepVariables)
-      .group1Prefs(structuredClone(this.styledPrefGroup1))
-      .group2Prefs(structuredClone(this.styledPrefGroup2))
+      .group1Prefs(structuredClone(this.styledPrefsG1))
+      .group2Prefs(structuredClone(this.styledPrefsG2))
       .selectedAgents(structuredClone(this.selectedAgents))
       .currentLines(structuredClone(this.currentLines))
       .algorithmData(structuredClone(this.algorithmSpecificData))
@@ -140,10 +140,10 @@ export abstract class MatchingAlgorithm {
 
   run(
     numberOfAgents: number,
-    numberOfGroup2Agents: number = numberOfAgents,
+    numberOfG2Agents: number = numberOfAgents,
     SRstable: boolean = true,
   ): AlgorithmData {
-    this.initialise(numberOfAgents, numberOfGroup2Agents);
+    this.initialise(numberOfAgents, numberOfG2Agents);
     this.generateAgents();
     this.generatePrefs();
     this.initCurrentAndOriginalPrefs();

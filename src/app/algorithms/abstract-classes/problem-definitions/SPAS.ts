@@ -29,7 +29,7 @@ export abstract class SPAS extends UntiedMatchingAlgorithm {
       this.freeAgents.push(agent);
     }
 
-    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
+    for (let i = 0; i < this.numberOfG2Agents; i++) {
       const letter = String.fromCharCode(65 + i);
       const name = this.group2Name + letter;
       const agent = AgentFactory.createProject(name, this.projectCap);
@@ -40,7 +40,7 @@ export abstract class SPAS extends UntiedMatchingAlgorithm {
     // hospital capacity is placeholder name for project capacity - used so that it is displayed in canvas
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
 
-    this.numLecturers = Math.ceil(this.numberOfGroup2Agents / 3);
+    this.numLecturers = Math.ceil(this.numberOfG2Agents / 3);
     const lecturerCapacity = Math.ceil(this.numberOfAgents / 3) + 1;
 
     // reset the group - if prevouis run had more projects/lecturers then they dont all get deleted - causes issues - rank errors
@@ -56,7 +56,7 @@ export abstract class SPAS extends UntiedMatchingAlgorithm {
   }
 
   generatePrefs(): void {
-    const numLecturers = Math.ceil(this.numberOfGroup2Agents / 3);
+    const numLecturers = Math.ceil(this.numberOfG2Agents / 3);
     const projectLists: Array<Array<Project>> = [];
 
     // Students - Group 1
@@ -220,7 +220,7 @@ export abstract class SPAS extends UntiedMatchingAlgorithm {
         student.match.length == 0
           ? student.ranking.length
           : this.getOriginalRank(student, student.match[0], 'group1');
-      const studentRanking = this.origPrefsGroup1.get(student.name);
+      const studentRanking = this.origPrefsG1.get(student.name);
       // loop over more preferable projects
       for (let i = studentMatchRank - 1; i >= 0; i--) {
         const project = this.group2Agents.get(studentRanking[i]);

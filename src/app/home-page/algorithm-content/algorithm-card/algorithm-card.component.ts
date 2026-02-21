@@ -42,14 +42,14 @@ export class AlgorithmCardComponent {
     this.algRetriever.currentAlgorithm = this.algorithm();
 
     const isRoommates = this.algRetriever.currentAlgorithm.id == 'smp-room-irv';
-    this.algRetriever.numberOfGroup1Agents = isRoommates
+    this.algRetriever.numberOfG1Agents = isRoommates
       ? this.agentForm().getSRAgentCount()
-      : this.agentForm().getGroup1AgentCount();
+      : this.agentForm().getG1AgentCount();
 
-    const specifiesGroup2Count = !this.agentForm().getGroup2AgentCount();
-    this.algRetriever.numberOfGroup2Agents = specifiesGroup2Count
-      ? this.agentForm().getGroup1AgentCount()
-      : this.agentForm().getGroup2AgentCount();
+    const specifiesG2Count = !this.agentForm().getG2AgentCount();
+    this.algRetriever.numberOfG2Agents = specifiesG2Count
+      ? this.agentForm().getG1AgentCount()
+      : this.agentForm().getG2AgentCount();
 
     anime({
       targets: '.main-page',

@@ -5,8 +5,8 @@ export abstract class UntiedMatchingAlgorithm extends MatchingAlgorithm {
   protected group1Agents: Map<String, UntiedAgent>;
   protected group2Agents: Map<String, UntiedAgent>;
 
-  protected origPrefsGroup1: Map<String, Array<String>>;
-  protected origPrefsGroup2: Map<String, Array<String>>;
+  protected origPrefsG1: Map<String, Array<String>>;
+  protected origPrefsG2: Map<String, Array<String>>;
 
   copyOriginalPrefs(group: Group): Map<String, Array<String>> {
     const agents = group == 'group1' ? this.group1Agents : this.group2Agents;
@@ -19,11 +19,11 @@ export abstract class UntiedMatchingAlgorithm extends MatchingAlgorithm {
   }
 
   initCurrentAndOriginalPrefs() {
-    this.styledPrefGroup1 = this.getRankings(this.group1Agents);
-    this.origPrefsGroup1 = this.copyOriginalPrefs('group1');
+    this.styledPrefsG1 = this.getRankings(this.group1Agents);
+    this.origPrefsG1 = this.copyOriginalPrefs('group1');
     if (this.group2Agents) {
-      this.styledPrefGroup2 = this.getRankings(this.group2Agents);
-      this.origPrefsGroup2 = this.copyOriginalPrefs('group2');
+      this.styledPrefsG2 = this.getRankings(this.group2Agents);
+      this.origPrefsG2 = this.copyOriginalPrefs('group2');
     }
   }
 
@@ -58,14 +58,13 @@ export abstract class UntiedMatchingAlgorithm extends MatchingAlgorithm {
     target: UntiedAgent,
     group: Group,
   ): number {
-    const origPrefs =
-      group == 'group1' ? this.origPrefsGroup1 : this.origPrefsGroup2;
+    const origPrefs = group == 'group1' ? this.origPrefsG1 : this.origPrefsG2;
     return origPrefs.get(agent.name).indexOf(target.name);
   }
 
   packageCurrentPrefs(group: Group): Map<String, Array<String>> {
     const currentPrefs =
-      group == 'group1' ? this.styledPrefGroup1 : this.styledPrefGroup2;
+      group == 'group1' ? this.styledPrefsG1 : this.styledPrefsG2;
     return structuredClone(currentPrefs);
   }
 
@@ -77,7 +76,7 @@ export abstract class UntiedMatchingAlgorithm extends MatchingAlgorithm {
   ): void {
     const idx = this.getOriginalRank(agent, target, group);
     const prefLists =
-      group == 'group1' ? this.styledPrefGroup1 : this.styledPrefGroup2;
+      group == 'group1' ? this.styledPrefsG1 : this.styledPrefsG2;
     const agentChar = this.utils.getAsChar(agent);
     const prefs = prefLists.get(agentChar);
     const currentToken = prefs[idx];
