@@ -170,8 +170,6 @@ export abstract class MatchingAlgorithm {
 
     this.match();
     this.#stable = this.checkStability();
-
-    if (!this.#stable) return undefined;
     return this.#algorithmRunData;
   }
 }
