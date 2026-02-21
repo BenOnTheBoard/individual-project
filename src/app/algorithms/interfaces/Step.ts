@@ -4,8 +4,8 @@ export interface Step {
   lineNumber: number;
   freeAgents: Array<Agent<any>>;
   stepVariables: Object;
-  currentPrefsGroup1: Map<String, Array<String>>;
-  currentPrefsGroup2: Map<String, Array<String>>;
+  styledPrefGroup1: Map<String, Array<String>>;
+  styledPrefGroup2: Map<String, Array<String>>;
   selectedAgents: Array<string>;
   currentLines: Array<Array<string>>;
   algorithmSpecificData: Object;
@@ -35,12 +35,12 @@ export class StepBuilder {
   }
 
   group1Prefs(prefs: Map<String, Array<String>>): this {
-    this.#step.currentPrefsGroup1 = prefs;
+    this.#step.styledPrefGroup1 = prefs;
     return this;
   }
 
   group2Prefs(prefs: Map<String, Array<String>>): this {
-    this.#step.currentPrefsGroup2 = prefs;
+    this.#step.styledPrefGroup2 = prefs;
     return this;
   }
 

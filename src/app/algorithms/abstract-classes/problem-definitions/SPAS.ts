@@ -220,7 +220,7 @@ export abstract class SPAS extends UntiedMatchingAlgorithm {
         student.match.length == 0
           ? student.ranking.length
           : this.getOriginalRank(student, student.match[0], 'group1');
-      const studentRanking = this.originalPrefsGroup1.get(student.name);
+      const studentRanking = this.origPrefsGroup1.get(student.name);
       // loop over more preferable projects
       for (let i = studentMatchRank - 1; i >= 0; i--) {
         const project = this.group2Agents.get(studentRanking[i]);

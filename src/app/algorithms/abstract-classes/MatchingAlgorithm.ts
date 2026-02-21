@@ -18,8 +18,8 @@ export abstract class MatchingAlgorithm {
   protected numberOfAgents: number;
   protected numberOfGroup2Agents: number;
 
-  protected currentPrefsGroup1: Map<String, Array<String>>;
-  protected currentPrefsGroup2: Map<String, Array<String>>;
+  protected styledPrefGroup1: Map<String, Array<String>>;
+  protected styledPrefGroup2: Map<String, Array<String>>;
 
   protected selectedAgents: Array<string>;
   protected currentLines: Array<Line>;
@@ -99,8 +99,8 @@ export abstract class MatchingAlgorithm {
       .lineNumber(step)
       .freeAgents(structuredClone(this.freeAgents))
       .stepVariables(stepVariables)
-      .group1Prefs(structuredClone(this.currentPrefsGroup1))
-      .group2Prefs(structuredClone(this.currentPrefsGroup2))
+      .group1Prefs(structuredClone(this.styledPrefGroup1))
+      .group2Prefs(structuredClone(this.styledPrefGroup2))
       .selectedAgents(structuredClone(this.selectedAgents))
       .currentLines(structuredClone(this.currentLines))
       .algorithmData(structuredClone(this.algorithmSpecificData))

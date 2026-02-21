@@ -80,7 +80,7 @@ export abstract class SR extends UntiedMatchingAlgorithm {
     for (const person of this.group1Agents.values()) {
       if (!person.lastProposed) continue; // if agent has no matches
 
-      const personRanking = this.originalPrefsGroup1.get(person.name);
+      const personRanking = this.origPrefsGroup1.get(person.name);
       for (const otherName of personRanking) {
         const other = this.group1Agents.get(otherName);
         if (this.isBlockingPair(person, other)) return false;

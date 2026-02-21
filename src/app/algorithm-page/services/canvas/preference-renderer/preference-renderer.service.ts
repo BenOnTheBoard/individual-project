@@ -56,7 +56,7 @@ export class PreferenceRendererService {
     this.#lineSizes = new Map();
     for (let i = 1; i < this.algRetriever.numberOfGroup1Agents + 1; i++) {
       const lineSize = this.#ctx.measureText(
-        this.#cmd.currentPrefsGroup1.get(String(i)).join(', '),
+        this.#cmd.styledPrefGroup1.get(String(i)).join(', '),
       ).width;
       this.#lineSizes.set(String(i), lineSize);
     }
@@ -64,8 +64,8 @@ export class PreferenceRendererService {
 
   #getPreferenceText(agent: string): string {
     const prefList = agent.match(/[A-Z]/i)
-      ? this.#cmd.currentPrefsGroup2.get(agent)
-      : this.#cmd.currentPrefsGroup1.get(agent);
+      ? this.#cmd.styledPrefGroup2.get(agent)
+      : this.#cmd.styledPrefGroup1.get(agent);
     return prefList.join(', ');
   }
 
