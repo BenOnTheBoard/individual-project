@@ -67,24 +67,4 @@ export abstract class UntiedMatchingAlgorithm extends MatchingAlgorithm {
       group == 'group1' ? this.styledPrefsG1 : this.styledPrefsG2;
     return structuredClone(currentPrefs);
   }
-
-  stylePrefs(
-    group: Group,
-    agent: UntiedAgent,
-    target: UntiedAgent,
-    colour: string,
-  ): void {
-    const idx = this.getOriginalRank(agent, target, group);
-    const prefLists =
-      group == 'group1' ? this.styledPrefsG1 : this.styledPrefsG2;
-    const agentChar = this.utils.getAsChar(agent);
-    const prefs = prefLists.get(agentChar);
-    const currentToken = prefs[idx];
-    const nameIdx = currentToken.includes('#')
-      ? currentToken.length - 2 // there's an extra closing bracket
-      : currentToken.length - 1;
-    const currentAgent = currentToken.charAt(nameIdx);
-    const colourHex = this.colourHexService.getHex(colour);
-    prefs[idx] = `{${colourHex}${currentAgent}}`;
-  }
 }

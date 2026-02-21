@@ -85,6 +85,26 @@ export abstract class MatchingAlgorithm {
     this.addLine(from, to, newColour);
   }
 
+  stylePrefs(
+    group: Group,
+    agent: Agent<any>,
+    target: Agent<any>,
+    colour: string,
+  ): void {
+    const idx = this.getOriginalRank(agent, target, group);
+    const prefLists =
+      group == 'group1' ? this.styledPrefsG1 : this.styledPrefsG2;
+    const prefs = prefLists.get(this.utils.getAsChar(agent));
+
+    const currentToken = prefs[idx];
+    const charIdx = currentToken.includes('#')
+      ? currentToken.length - 2 // there's an extra closing bracket
+      : currentToken.length - 1;
+    const agentChar = currentToken.charAt(charIdx);
+    const colourHex = this.colourHexService.getHex(colour);
+    prefs[idx] = `{${colourHex}${agentChar}}`;
+  }
+
   stylePrefsMutual(
     g1Agent: Agent<any>,
     g2Agent: Agent<any>,
@@ -126,12 +146,11 @@ export abstract class MatchingAlgorithm {
   // ---
   abstract initCurrentAndOriginalPrefs(): void;
 
-  abstract stylePrefs(
-    group: Group,
+  abstract getOriginalRank(
     agent: Agent<any>,
     target: Agent<any>,
-    colour: string,
-  ): void;
+    group: Group,
+  ): number;
 
   abstract checkStability(): boolean;
   abstract generateAgents(): void;
