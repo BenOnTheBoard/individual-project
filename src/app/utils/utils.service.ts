@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Position } from './position';
-import { AbstractAgent } from '../algorithms/interfaces/Agents';
+import { Agent } from '../algorithms/interfaces/Agents';
 
 @Injectable({
   providedIn: 'root',
@@ -40,7 +40,7 @@ export class UtilsService {
     return name.slice(name.length - 1);
   }
 
-  getAsChar(agent: AbstractAgent<any>): string {
+  getAsChar(agent: Agent<any>): string {
     return this.getLastChar(agent.name);
   }
 

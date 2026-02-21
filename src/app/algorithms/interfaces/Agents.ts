@@ -1,44 +1,44 @@
 export type Group = 'group1' | 'group2';
 
-export interface AbstractAgent<T> {
+export interface Agent<T> {
   name: string;
   match: Array<T>;
 }
-interface UntiedAgent<T> extends AbstractAgent<T> {
+interface AbstractUntiedAgent<T> extends Agent<T> {
   ranking: Array<T>;
 }
-interface UntiedCapAgent<T> extends UntiedAgent<T> {
+interface UntiedCapAgent<T> extends AbstractUntiedAgent<T> {
   capacity: number;
 }
 
 // We cast the other agents to this one as a generic type
-export type Agent = UntiedAgent<Agent>;
+export type UntiedAgent = AbstractUntiedAgent<UntiedAgent>;
 
-export type Woman = UntiedAgent<Man>;
-export type Man = UntiedAgent<Woman> & {
+export type Woman = AbstractUntiedAgent<Man>;
+export type Man = AbstractUntiedAgent<Woman> & {
   lastProposed: Woman;
 };
 
-export type Resident = UntiedAgent<Hospital>;
+export type Resident = AbstractUntiedAgent<Hospital>;
 export type Hospital = UntiedCapAgent<Resident>;
 
-export type Student = UntiedAgent<Project>;
+export type Student = AbstractUntiedAgent<Project>;
 export type Project = UntiedCapAgent<Student>;
 export type Lecturer = UntiedCapAgent<Student> & {
   projects: Array<Project>;
 };
 
-export type Person = UntiedAgent<Person> & {
+export type Person = AbstractUntiedAgent<Person> & {
   lastProposed: Person;
 };
 
 // Ties
-interface AbstractTiedAgent<T> extends AbstractAgent<T> {
+interface AbstractTiedAgent<T> extends Agent<T> {
   ranking: Array<Array<T>>;
 }
 
 // We cast the other agents to this one as a generic type
-export type TiedAgent = AbstractTiedAgent<Agent>;
+export type TiedAgent = AbstractTiedAgent<TiedAgent>;
 
 export type TiedWoman = AbstractTiedAgent<Man>;
 export type TiedMan = AbstractTiedAgent<Woman>;
@@ -48,8 +48,8 @@ export class AgentFactory {
     return { name, match: [], ranking: [], ...extras };
   }
 
-  static createAgent(name: string): Agent {
-    return this.#createBaseAgent(name) as Agent;
+  static createUntiedAgent(name: string): UntiedAgent {
+    return this.#createBaseAgent(name) as UntiedAgent;
   }
 
   static createWoman(name: string): Woman {
