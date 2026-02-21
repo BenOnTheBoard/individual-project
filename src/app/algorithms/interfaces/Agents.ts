@@ -40,8 +40,8 @@ interface AbstractTiedAgent<T> extends Agent<T> {
 // We cast the other agents to this one as a generic type
 export type TiedAgent = AbstractTiedAgent<TiedAgent>;
 
-export type TiedWoman = AbstractTiedAgent<Man>;
-export type TiedMan = AbstractTiedAgent<Woman>;
+export type TiedWoman = AbstractTiedAgent<TiedMan>;
+export type TiedMan = AbstractTiedAgent<TiedWoman>;
 
 export class AgentFactory {
   static #createBaseAgent(name: string, extras?: Object): Object {
