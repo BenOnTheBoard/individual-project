@@ -20,7 +20,7 @@ export class SMTSuperService extends SMT {
     woman.match.splice(womanIdx, 1);
     man.match.splice(manIdx, 1);
 
-    if (man.match.length == 0) {
+    if (man.match.length == 0 && !this.hasEmptyList(man)) {
       this.freeAgents.push(man);
     }
   }
@@ -65,7 +65,7 @@ export class SMTSuperService extends SMT {
       );
   }
 
-  isEmptyList(man: TiedMan): boolean {
+  hasEmptyList(man: TiedMan): boolean {
     for (const tie of man.ranking) {
       if (tie.length > 0) {
         return false;
@@ -80,7 +80,7 @@ export class SMTSuperService extends SMT {
 
   canHalt(): boolean {
     const someEmpty = [...this.group1Agents.values()].some((man) =>
-      this.isEmptyList(man),
+      this.hasEmptyList(man),
     );
     return someEmpty || this.allEngaged();
   }
