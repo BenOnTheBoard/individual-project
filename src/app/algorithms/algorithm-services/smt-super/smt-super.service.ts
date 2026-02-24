@@ -7,11 +7,14 @@ import { TiedMan, TiedWoman } from '../../interfaces/Agents';
 })
 export class SMTSuperService extends SMT {
   assign(man: TiedMan, woman: TiedWoman) {
+    this.changeLineColour(man, woman, 'red', 'green');
+    this.stylePrefsMutual(man, woman, 'green');
     woman.match.push(man);
     man.match.push(woman);
   }
 
   breakAssignment(man: TiedMan, woman: TiedWoman) {
+    this.removeLine(man, woman, 'green');
     const womanIdx = woman.match.indexOf(man);
     const manIdx = man.match.indexOf(woman);
     if (womanIdx == -1 || manIdx == -1) {
@@ -26,6 +29,7 @@ export class SMTSuperService extends SMT {
   }
 
   delete(man: TiedMan, woman: TiedWoman) {
+    this.stylePrefsMutual(man, woman, 'grey');
     const manTie = woman.ranking[this.getRank(woman, man)];
     const womanTie = man.ranking[this.getRank(man, woman)];
     manTie.splice(this.getIdxInTie(manTie, man), 1);
@@ -113,6 +117,7 @@ export class SMTSuperService extends SMT {
     this.saveStep(4, this.packageStepVars(man));
 
     for (const woman of head) {
+      this.addLine(man, woman, 'red');
       this.saveStep(5, this.packageStepVars(man, woman));
       this.assign(man, woman);
       this.removeSuccessors(man, woman);
