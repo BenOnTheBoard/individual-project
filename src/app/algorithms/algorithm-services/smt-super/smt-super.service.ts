@@ -99,7 +99,7 @@ export class SMTSuperService extends SMT {
     this.saveStep(11, this.packageStepVars(null, woman));
   }
 
-  breakAllAssignments(woman: TiedWoman) {
+  breakAllAssignments(woman: TiedWoman): void {
     while (woman.match.length != 0) {
       const match = woman.match[0];
       this.saveStep(16, this.packageStepVars(match, woman));
@@ -108,7 +108,18 @@ export class SMTSuperService extends SMT {
     this.saveStep(17, this.packageStepVars(null, woman));
   }
 
-  deleteTail(woman: TiedWoman) {
+  applyToHead(man: TiedMan): void {
+    const head = this.getHead(man);
+    this.saveStep(4, this.packageStepVars(man));
+
+    for (const woman of head) {
+      this.saveStep(5, this.packageStepVars(man, woman));
+      this.assign(man, woman);
+      this.removeSuccessors(man, woman);
+    }
+  }
+
+  deleteTail(woman: TiedWoman): void {
     this.saveStep(18, this.packageStepVars(null, woman));
     for (const reject of this.getTail(woman)) {
       this.saveStep(19, this.packageStepVars(reject, woman));
@@ -122,26 +133,20 @@ export class SMTSuperService extends SMT {
     do {
       while (this.freeAgents.length > 0) {
         const man = this.getNextFreeAgent();
+        this.selectedAgents.push(this.utils.getAsChar(man));
         this.saveStep(3, this.packageStepVars(man));
-
-        const head = this.getHead(man);
-        this.saveStep(4, this.packageStepVars(man));
-
-        for (const woman of head) {
-          this.saveStep(5, this.packageStepVars(man, woman));
-          this.assign(man, woman);
-          this.removeSuccessors(man, woman);
-        }
+        this.applyToHead(man);
+        this.selectedAgents.pop();
         this.saveStep(12, this.packageStepVars(man));
       }
       this.saveStep(13);
-
       for (const woman of this.group2Agents.values()) {
         if (woman.match.length < 2) continue;
+        this.selectedAgents.push(this.utils.getAsChar(woman));
         this.saveStep(14, this.packageStepVars(null, woman));
-
         this.breakAllAssignments(woman);
         this.deleteTail(woman);
+        this.selectedAgents.pop();
       }
       this.saveStep(21);
       this.saveStep(22);
