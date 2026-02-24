@@ -4,7 +4,7 @@
 }
 
 <alg-page-navbar #topNavbar [duringAnimation]="duringAnimation" [isCodeShowing]="isCodeShowing"
-  [isInfoShowing]="isInfoShowing" [SRStable]="SRstable" (commandEmitter)="handleNavbarCommand($event)"
+  [isInfoShowing]="isInfoShowing" [generateStable]="generateStable" (commandEmitter)="handleNavbarCommand($event)"
   (dialogOpenEmitter)="dialogOpen=$event;" (tutorialStepEmitter)="tutorialUpdate($event)" />
 
 <!--- these are absolutely positioned-->

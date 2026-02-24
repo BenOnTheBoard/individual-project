@@ -15,11 +15,15 @@ export class ExecutionService {
     algorithm: string,
     numberOfAgents: number,
     numberOfG2Agents: number = numberOfAgents,
-    SRstable: boolean = true,
+    generateStable: boolean = true,
   ): AlgorithmData {
     const { service, helpTextMap } = this.algRetriever.getAlgorithm(algorithm);
     this.#helpTextMap = helpTextMap;
-    this.#commandList = service.run(numberOfAgents, numberOfG2Agents, SRstable);
+    this.#commandList = service.run(
+      numberOfAgents,
+      numberOfG2Agents,
+      generateStable,
+    );
 
     this.#commandList.descriptions = this.#generateDescriptions();
     return this.#commandList;

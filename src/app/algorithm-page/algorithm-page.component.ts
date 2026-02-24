@@ -54,7 +54,7 @@ export class AlgorithmPageComponent implements OnInit {
   protected duringAnimation: boolean = false;
   protected isCodeShowing: boolean = true;
   protected isInfoShowing: boolean = true;
-  protected SRstable: boolean = true;
+  protected generateStable: boolean = true;
   protected tutorialStep: number;
 
   protected playback = inject(PlaybackService);
@@ -89,7 +89,7 @@ export class AlgorithmPageComponent implements OnInit {
         currentAlgorithm.id,
         numberOfG1Agents,
         numberOfG2Agents,
-        this.SRstable,
+        this.generateStable,
       );
     } else {
       this.playback.setAlgorithm(
@@ -148,8 +148,8 @@ export class AlgorithmPageComponent implements OnInit {
       case 'toggleRightSidebar':
         this.toggleSidebar('right');
         return;
-      case 'toggleSRStable':
-        this.SRstable = !this.SRstable;
+      case 'toggleGenerateStable':
+        this.generateStable = !this.generateStable;
         return;
     }
   }

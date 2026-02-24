@@ -25,7 +25,7 @@ export class AlgPageNavbarComponent {
   protected duringAnimation = input<boolean>();
   protected isCodeShowing = input<boolean>();
   protected isInfoShowing = input<boolean>();
-  protected SRStable = input<boolean>();
+  protected generateStable = input<boolean>();
   protected step = 0;
 
   // for instructions to page

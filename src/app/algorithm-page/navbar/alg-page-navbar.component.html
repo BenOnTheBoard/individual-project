@@ -22,14 +22,14 @@
 
     @if (possiblyUnstable()) {
     <div class="col-2 text-right">
-        <span class="headerSpans">Generating {{SRStable() ? "S" : "Uns"}}table Matchings</span>
+        <span class="headerSpans">Generating {{generateStable() ? "S" : "Uns"}}table Matchings</span>
     </div>
     }
 
     <div class="col-3 text-right">
         @if (possiblyUnstable()) {
         <mat-icon class="navbarIconButton unselectable mr-4" matTooltip="Stable/Unstable" mat-button
-            (click)="emitToPage('toggleSRStable');" [ngClass]="{'disabled': step != 0}">{{SRStable() ?
+            (click)="emitToPage('toggleGenerateStable');" [ngClass]="{'disabled': step != 0}">{{generateStable() ?
             "check_box":"check_box_outline_blank"}}</mat-icon>
         }
 
