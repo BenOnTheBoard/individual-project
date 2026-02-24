@@ -23,7 +23,7 @@
       </div>
 
       <div class="col-5 text-right">
-        <button class="cardButton flex-fill" mat-stroked-button cdkFocusInitial [disabled]="!agentForm().isFormValid()"
+        <button class="cardButton flex-fill" mat-stroked-button cdkFocusInitial [disabled]="isFormValid()"
           (click)="onGeneratePrefs()">Generate Preferences</button>
       </div>
     </div>
