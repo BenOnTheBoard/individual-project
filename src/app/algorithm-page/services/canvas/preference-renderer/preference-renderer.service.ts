@@ -54,7 +54,7 @@ export class PreferenceRendererService {
     this.#firstRun = false;
     this.textRenderer.setFontSize(this.#prefFontSize);
     this.#lineSizes = new Map();
-    for (let i = 1; i < this.algRetriever.numberOfG1Agents; i++) {
+    for (let i = 1; i <= this.algRetriever.numberOfG1Agents; i++) {
       const lineSize = this.#ctx.measureText(
         this.#getPreferenceText(String(i)),
       ).width;
