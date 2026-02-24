@@ -34,7 +34,11 @@ export abstract class SMT extends TiedMatchingAlgorithm {
   }
 
   checkStability(): boolean {
+    for (const man of this.group1Agents.values()) {
+      if (man.match.length != 1) return false;
+    }
     for (const woman of this.group2Agents.values()) {
+      if (woman.match.length != 1) return false;
       for (const tie of woman.ranking) {
         for (const man of tie) {
           if (woman.match.includes(man)) continue;
