@@ -36,11 +36,11 @@ export abstract class TiedMatchingAlgorithm extends MatchingAlgorithm {
     for (const agent of list) {
       curTie.push(agent);
       if (Math.random() > TIEFREQ) {
-        tiedList.push(curTie);
+        tiedList.push([...curTie]);
         curTie = [];
       }
     }
-    if (curTie.length > 0) tiedList.push(curTie);
+    if (curTie.length > 0) tiedList.push([...curTie]);
     return tiedList;
   }
 
