@@ -23,7 +23,7 @@ export class SMTSuperService extends SMT {
     woman.match.splice(womanIdx, 1);
     man.match.splice(manIdx, 1);
 
-    if (man.match.length == 0 && !this.hasEmptyList(man)) {
+    if (man.match.length == 0 && !this.freeAgents.includes(man)) {
       this.freeAgents.push(man);
     }
   }
@@ -34,6 +34,10 @@ export class SMTSuperService extends SMT {
     const womanTie = man.ranking[this.getRank(man, woman)];
     manTie.splice(this.getIdxInTie(manTie, man), 1);
     womanTie.splice(this.getIdxInTie(womanTie, woman), 1);
+
+    if (this.freeAgents.includes(man) && this.hasEmptyList(man)) {
+      this.freeAgents.splice(this.freeAgents.indexOf(man), 1);
+    }
   }
 
   getNextFreeAgent(): TiedMan {
@@ -137,6 +141,7 @@ export class SMTSuperService extends SMT {
     this.saveStep(1);
     do {
       while (this.freeAgents.length > 0) {
+        console.log(this.freeAgents.map((a) => a.name));
         const man = this.getNextFreeAgent();
         this.selectedAgents.push(this.utils.getAsChar(man));
         this.saveStep(3, this.packageStepVars(man));
