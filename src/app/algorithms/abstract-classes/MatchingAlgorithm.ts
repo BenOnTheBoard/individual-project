@@ -85,24 +85,39 @@ export abstract class MatchingAlgorithm {
     this.addLine(from, to, newColour);
   }
 
+  getCharFromToken(token: String): string {
+    return token.charAt(
+      token.includes('#')
+        ? token.length - 2 // there's an extra closing bracket
+        : token.length - 1,
+    );
+  }
+
+  getStyledTokenIdx(prefs: Array<String>, targetChar: String): number {
+    let idx = 0;
+    for (const token of prefs) {
+      const char = this.getCharFromToken(token);
+      if (char == targetChar) {
+        return idx;
+      }
+      idx++;
+    }
+    throw Error(`${targetChar} not found`);
+  }
+
   stylePrefs(
     group: Group,
     agent: Agent<any>,
     target: Agent<any>,
     colour: string,
   ): void {
-    const idx = this.getOriginalRank(agent, target, group);
     const prefLists =
       group == 'group1' ? this.styledPrefsG1 : this.styledPrefsG2;
     const prefs = prefLists.get(this.utils.getAsChar(agent));
-
-    const currentToken = prefs[idx];
-    const charIdx = currentToken.includes('#')
-      ? currentToken.length - 2 // there's an extra closing bracket
-      : currentToken.length - 1;
-    const agentChar = currentToken.charAt(charIdx);
+    const char = this.utils.getAsChar(target);
+    const idx = this.getStyledTokenIdx(prefs, char);
     const colourHex = this.colourHexService.getHex(colour);
-    prefs[idx] = `{${colourHex}${agentChar}}`;
+    prefs[idx] = `{${colourHex}${char}}`;
   }
 
   stylePrefsMutual(
