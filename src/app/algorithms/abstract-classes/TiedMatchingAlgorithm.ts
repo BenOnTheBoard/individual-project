@@ -76,6 +76,10 @@ export abstract class TiedMatchingAlgorithm extends MatchingAlgorithm {
     );
   }
 
+  getIdxInTie(tie: Array<TiedAgent>, target: TiedAgent): number {
+    return tie.findIndex((a) => a.name == target.name);
+  }
+
   getRank(agent: TiedAgent, target: TiedAgent): number {
     return agent.ranking.findIndex((tie) => tie.includes(target));
   }

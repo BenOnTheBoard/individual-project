@@ -28,8 +28,8 @@ export class SMTSuperService extends SMT {
   delete(man: TiedMan, woman: TiedWoman) {
     const manTie = woman.ranking[this.getRank(woman, man)];
     const womanTie = man.ranking[this.getRank(man, woman)];
-    manTie.splice(manTie.indexOf(man), 1);
-    womanTie.splice(womanTie.indexOf(man), 1);
+    manTie.splice(this.getIdxInTie(manTie, man), 1);
+    womanTie.splice(this.getIdxInTie(womanTie, woman), 1);
   }
 
   getNextFreeAgent(): TiedMan {
