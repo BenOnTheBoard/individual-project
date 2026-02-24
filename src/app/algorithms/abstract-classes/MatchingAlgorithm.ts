@@ -26,7 +26,7 @@ export abstract class MatchingAlgorithm {
   protected algorithmSpecificData: Object;
   protected relevantPrefs: Array<string>;
 
-  protected SRstable: boolean = true;
+  protected generateStable: boolean = true;
   #stable: boolean = false;
   #algorithmRunData: AlgorithmData;
 
@@ -175,16 +175,18 @@ export abstract class MatchingAlgorithm {
   run(
     numberOfAgents: number,
     numberOfG2Agents: number = numberOfAgents,
-    SRstable: boolean = true,
+    generateStable: boolean = true,
   ): AlgorithmData {
-    this.initialise(numberOfAgents, numberOfG2Agents);
-    this.generateAgents();
-    this.generatePrefs();
-    this.initCurrentAndOriginalPrefs();
-    this.SRstable = SRstable;
+    do {
+      this.initialise(numberOfAgents, numberOfG2Agents);
+      this.generateAgents();
+      this.generatePrefs();
+      this.initCurrentAndOriginalPrefs();
+      this.generateStable = generateStable;
 
-    this.match();
-    this.#stable = this.checkStability();
+      this.match();
+      this.#stable = this.checkStability();
+    } while (this.#stable != generateStable);
     return this.#algorithmRunData;
   }
 }

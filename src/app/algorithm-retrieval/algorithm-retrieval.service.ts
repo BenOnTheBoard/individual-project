@@ -35,6 +35,7 @@ export class AlgorithmRetrievalService {
   protected smtSuperService = inject(SMTSuperService);
 
   #mapOfAvailableAlgorithms = new Map<String, Algorithm>();
+  #possiblyUnstableAlgs = ['smp-room-irv', 'smt-super-man'];
 
   #irregularPluralMap: Map<string, string> = new Map([
     ['Man', 'Men'],
@@ -86,5 +87,9 @@ export class AlgorithmRetrievalService {
     const side = this.currentAlgorithm.orientation[proposing ? 0 : 1];
     if (!plural) return side;
     return this.#irregularPluralMap.get(side) ?? `${side}s`;
+  }
+
+  mayBeUnstable(id: string) {
+    return this.#possiblyUnstableAlgs.includes(id);
   }
 }

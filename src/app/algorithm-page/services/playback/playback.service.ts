@@ -47,14 +47,14 @@ export class PlaybackService {
     algorithm: string,
     numberOfAgents: number,
     numberOfG2Agents: number = numberOfAgents,
-    SRstable: boolean = true,
+    generateStable: boolean = true,
   ): void {
     this.initialise();
     this.algorithmData = this.exeService.getExecutionFlow(
       algorithm,
       numberOfAgents,
       numberOfG2Agents,
-      SRstable,
+      generateStable,
     );
     this.commandList = this.algorithmData.commands;
     this.resetPlaybackData();

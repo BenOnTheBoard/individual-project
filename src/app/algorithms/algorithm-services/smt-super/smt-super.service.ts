@@ -101,19 +101,17 @@ export class SMTSuperService extends SMT {
         this.saveStep(8, this.packageStepVars(reject, woman));
         this.breakAssignment(reject, woman);
       }
-      this.saveStep(10, this.packageStepVars(reject, woman));
+      this.saveStep(9, this.packageStepVars(reject, woman));
       this.delete(reject, woman);
     }
-    this.saveStep(11, this.packageStepVars(null, woman));
   }
 
   breakAllAssignments(woman: TiedWoman): void {
     while (woman.match.length != 0) {
       const match = woman.match[0];
-      this.saveStep(16, this.packageStepVars(match, woman));
+      this.saveStep(12, this.packageStepVars(match, woman));
       this.breakAssignment(match, woman);
     }
-    this.saveStep(17, this.packageStepVars(null, woman));
   }
 
   applyToHead(man: TiedMan): void {
@@ -129,12 +127,11 @@ export class SMTSuperService extends SMT {
   }
 
   deleteTail(woman: TiedWoman): void {
-    this.saveStep(18, this.packageStepVars(null, woman));
+    this.saveStep(13, this.packageStepVars(null, woman));
     for (const reject of this.getTail(woman)) {
-      this.saveStep(19, this.packageStepVars(reject, woman));
+      this.saveStep(14, this.packageStepVars(reject, woman));
       this.delete(reject, woman);
     }
-    this.saveStep(20, this.packageStepVars(null, woman));
   }
 
   match(): void {
@@ -146,26 +143,24 @@ export class SMTSuperService extends SMT {
         this.saveStep(3, this.packageStepVars(man));
         this.applyToHead(man);
         this.selectedAgents.pop();
-        this.saveStep(12, this.packageStepVars(man));
       }
-      this.saveStep(13);
+
       for (const woman of this.group2Agents.values()) {
         if (woman.match.length < 2) continue;
         this.selectedAgents.push(this.utils.getAsChar(woman));
-        this.saveStep(14, this.packageStepVars(null, woman));
+        this.saveStep(10, this.packageStepVars(null, woman));
         this.breakAllAssignments(woman);
         this.deleteTail(woman);
         this.selectedAgents.pop();
       }
-      this.saveStep(21);
-      this.saveStep(22);
+      this.saveStep(15);
     } while (!this.canHalt());
-    this.saveStep(23);
 
+    this.saveStep(16);
     if (this.allEngaged()) {
-      this.saveStep(24);
+      this.saveStep(17);
     } else {
-      this.saveStep(26);
+      this.saveStep(18);
     }
   }
 }
