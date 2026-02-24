@@ -1,13 +1,12 @@
-import { AgentFactory, Person } from '../interfaces/Agents';
-import { AlgorithmData } from '../interfaces/AlgorithmData';
-import { MatchingAlgorithm } from './MatchingAlgorithm';
+import { AgentFactory, Person } from '../../../interfaces/Agents';
 import {
   unstable4,
   unstableInstances6,
   unstableInstances8,
 } from './SRUnstableInstances';
+import { UntiedMatchingAlgorithm } from '../../UntiedMatchingAlgorithm';
 
-export abstract class SR extends MatchingAlgorithm {
+export abstract class SR extends UntiedMatchingAlgorithm {
   group1Name = 'person';
   group2Name = 'Other';
 
@@ -80,16 +79,14 @@ export abstract class SR extends MatchingAlgorithm {
     for (const person of this.group1Agents.values()) {
       if (!person.lastProposed) continue; // if agent has no matches
 
-      const personRanking = this.originalPrefsGroup1.get(
-        this.utils.getAsChar(person),
-      );
+      const personRanking = this.origPrefsG1.get(person.name);
       for (const otherName of personRanking) {
-        const other = this.group1Agents.get(this.group1Name + otherName);
+        const other = this.group1Agents.get(otherName);
         if (this.isBlockingPair(person, other)) return false;
       }
     }
     return true;
   }
 
-  abstract match(): AlgorithmData;
+  abstract match(): void;
 }

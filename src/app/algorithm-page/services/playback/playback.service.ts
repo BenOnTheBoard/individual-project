@@ -46,14 +46,14 @@ export class PlaybackService {
   setAlgorithm(
     algorithm: string,
     numberOfAgents: number,
-    numberOfGroup2Agents: number = numberOfAgents,
+    numberOfG2Agents: number = numberOfAgents,
     SRstable: boolean = true,
   ): void {
     this.initialise();
     this.algorithmData = this.exeService.getExecutionFlow(
       algorithm,
       numberOfAgents,
-      numberOfGroup2Agents,
+      numberOfG2Agents,
       SRstable,
     );
     this.commandList = this.algorithmData.commands;

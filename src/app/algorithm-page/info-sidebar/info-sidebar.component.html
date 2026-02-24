@@ -473,6 +473,58 @@
       </div>
       }
 
+      <!-- STABLE MARRIAGE WITH TIES  -->
+      @if (algRetriever.currentAlgorithm.id == 'smt-super-man') {
+      <div>
+        <div>
+          <h2 id="title">Goal</h2>
+          <p>
+            The goal here is super-stability. This means that there is no man-woman pair which is not part of the
+            matching such that:</p>
+          <ul>
+            <li>The man prefers his partner to the woman or is indifferent between them.</li>
+            <li>The woman prefers her partner to the man or is indifferent between them.</li>
+          </ul>
+          <p>Such a pair is called a <strong>blocking pair</strong>.</p>
+        </div>
+
+        <div>
+          <h2>Agents</h2>
+          <p>Each agent has the following properties:</p>
+          <ul>
+            <li><strong>Preference List/Ranking</strong> - a list of ties. Each tie is represented with a pair of
+              brackets. The agent is indifferent between all the other agents collected by a pair of brackets. The
+              leftmost tie is the most preferable and the rightmost tie the least.</li>
+            <li><strong>Head / Tail</strong> - specific non-empty ties on the agent's list. The head is the leftmost
+              non-empty tie and the tail is the rightmost non-empty tie.</li>
+            <li><strong>Current Assignments</strong> - these are the provisional matching. We will add and remove pairs
+              from it as we proceede.</li>
+          </ul>
+          <p>Additionally, all men are initially <strong>free</strong>. Men are in this state whenever they are
+            unassigned and there are women left on their preference list.</p>
+        </div>
+
+        <div>
+          <h2>Operations</h2>
+          <h4><strong>Assign</strong></h4>
+          <p>
+            We add a line (pair) to our current matching. Notice that an agents might be assigned to many agents in the
+            other group during execution, although they can only be assigned to one in a super-stable matching.
+          </p>
+          <h4><strong>Break Assignment</strong></h4>
+          <p>
+            We remove a line (pair) from our current assignments because this assignment cannot be part of any
+            super-stable matching. See Irving's paper for details and proofs.
+          </p>
+          <h4><strong>Delete Pair</strong></h4>
+          <p>
+            This takes a woman and a man, then it removes the woman from the man's <strong>Preference Ranking</strong>,
+            and the man from the woman's <strong>Preference Ranking</strong>
+          </p>
+        </div>
+      </div>
+      }
+
     </div>
     }
   </div>

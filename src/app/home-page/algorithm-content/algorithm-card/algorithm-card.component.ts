@@ -37,19 +37,23 @@ export class AlgorithmCardComponent {
   protected router = inject(Router);
   protected utils = inject(UtilsService);
 
+  isFormValid(): boolean {
+    return !this.agentForm().isFormValid();
+  }
+
   async onGeneratePrefs(): Promise<void> {
     // change the global algorithm to the one passed into this dialog
     this.algRetriever.currentAlgorithm = this.algorithm();
 
     const isRoommates = this.algRetriever.currentAlgorithm.id == 'smp-room-irv';
-    this.algRetriever.numberOfGroup1Agents = isRoommates
+    this.algRetriever.numberOfG1Agents = isRoommates
       ? this.agentForm().getSRAgentCount()
-      : this.agentForm().getGroup1AgentCount();
+      : this.agentForm().getG1AgentCount();
 
-    const specifiesGroup2Count = !this.agentForm().getGroup2AgentCount();
-    this.algRetriever.numberOfGroup2Agents = specifiesGroup2Count
-      ? this.agentForm().getGroup1AgentCount()
-      : this.agentForm().getGroup2AgentCount();
+    const specifiesG2Count = !this.agentForm().getG2AgentCount();
+    this.algRetriever.numberOfG2Agents = specifiesG2Count
+      ? this.agentForm().getG1AgentCount()
+      : this.agentForm().getG2AgentCount();
 
     anime({
       targets: '.main-page',

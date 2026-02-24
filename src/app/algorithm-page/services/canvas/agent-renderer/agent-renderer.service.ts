@@ -66,7 +66,7 @@ export class AgentRendererService {
 
   public drawGroupOneAgents(): void {
     this.drawGroup(
-      this.algRetriever.numberOfGroup1Agents,
+      this.algRetriever.numberOfG1Agents,
       (i: number) => String(i + 1),
       this.colourHexService.getHex(this.#groupOneColour),
     );
@@ -74,7 +74,7 @@ export class AgentRendererService {
 
   public drawGroupTwoAgents(): void {
     this.drawGroup(
-      this.algRetriever.numberOfGroup2Agents,
+      this.algRetriever.numberOfG2Agents,
       (i: number) => String.fromCharCode(65 + i),
       this.colourHexService.getHex(this.#groupTwoColour),
     );

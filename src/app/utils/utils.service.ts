@@ -40,7 +40,7 @@ export class UtilsService {
     return name.slice(name.length - 1);
   }
 
-  getAsChar(agent: Agent): string {
+  getAsChar(agent: Agent<any>): string {
     return this.getLastChar(agent.name);
   }
 

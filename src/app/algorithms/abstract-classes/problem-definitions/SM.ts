@@ -1,8 +1,7 @@
-import { AgentFactory, Man, Woman } from '../interfaces/Agents';
-import { AlgorithmData } from '../interfaces/AlgorithmData';
-import { MatchingAlgorithm } from './MatchingAlgorithm';
+import { AgentFactory, Man, Woman } from '../../interfaces/Agents';
+import { UntiedMatchingAlgorithm } from '../UntiedMatchingAlgorithm';
 
-export abstract class SM extends MatchingAlgorithm {
+export abstract class SM extends UntiedMatchingAlgorithm {
   group1Name = 'man';
   group2Name = 'woman';
   freeAgents: Array<Man>;
@@ -53,7 +52,7 @@ export abstract class SM extends MatchingAlgorithm {
       this.freeAgents.push(agent);
     }
 
-    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
+    for (let i = 0; i < this.numberOfG2Agents; i++) {
       const currentLetter = String.fromCharCode(65 + i);
       const name = this.group2Name + currentLetter;
       const agent = AgentFactory.createWoman(name);
@@ -66,5 +65,5 @@ export abstract class SM extends MatchingAlgorithm {
     this.generateRandomRankings(this.group2Agents, this.group1Agents);
   }
 
-  abstract match(): AlgorithmData;
+  abstract match(): void;
 }

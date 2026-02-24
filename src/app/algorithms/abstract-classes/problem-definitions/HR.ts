@@ -1,8 +1,7 @@
-import { AgentFactory, Hospital, Resident } from '../interfaces/Agents';
-import { AlgorithmData } from '../interfaces/AlgorithmData';
-import { MatchingAlgorithm } from './MatchingAlgorithm';
+import { AgentFactory, Hospital, Resident } from '../../interfaces/Agents';
+import { UntiedMatchingAlgorithm } from '../UntiedMatchingAlgorithm';
 
-export abstract class HR extends MatchingAlgorithm {
+export abstract class HR extends UntiedMatchingAlgorithm {
   group1Name = 'resident';
   group2Name = 'hospital';
   group1Agents: Map<String, Resident> = new Map();
@@ -61,11 +60,10 @@ export abstract class HR extends MatchingAlgorithm {
       this.group1Agents.set(name, agent);
     }
 
-    for (let i = 0; i < this.numberOfGroup2Agents; i++) {
+    for (let i = 0; i < this.numberOfG2Agents; i++) {
       const letter = String.fromCharCode(65 + i);
       const name = this.group2Name + letter;
-      const randomCap = this.utils.getRandomInt(0, this.numberOfAgents);
-      const capacity = Math.max(2, randomCap);
+      const capacity = this.utils.getRandomInt(2, this.numberOfAgents / 2);
       const agent = AgentFactory.createHospital(name, capacity);
 
       this.group2Agents.set(name, agent);
@@ -116,5 +114,5 @@ export abstract class HR extends MatchingAlgorithm {
     hospital.match.push(resident);
   }
 
-  abstract match(): AlgorithmData;
+  abstract match(): void;
 }

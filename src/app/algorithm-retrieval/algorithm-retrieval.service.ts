@@ -6,6 +6,8 @@ import { GsStableMarriageService } from '../algorithms/algorithm-services/smp-ma
 import { StableRoomIrvService } from '../algorithms/algorithm-services/smp-room-irv/stable-room-irv.service';
 import { HrHospitalEgsService } from '../algorithms/algorithm-services/hr-hospital-egs/hr-hospital-egs.service';
 import { SpaStudentEgsService } from '../algorithms/algorithm-services/spa-stu-egs/spa-student-egs.service';
+import { SMTSuperService } from '../algorithms/algorithm-services/smt-super/smt-super.service';
+
 import { spasStudentConfig } from './algorithm-configs/spas-student.config';
 import { srPersonConfig } from './algorithm-configs/sr-person.config';
 import { hrHospitalConfig } from './algorithm-configs/hr-hospital.config';
@@ -19,8 +21,8 @@ import { smtSuperManConfig } from './algorithm-configs/smt-super-man.config';
 })
 export class AlgorithmRetrievalService {
   public currentAlgorithm: Algorithm;
-  public numberOfGroup1Agents: number = 5;
-  public numberOfGroup2Agents: number = 5;
+  public numberOfG1Agents = 5;
+  public numberOfG2Agents = 5;
 
   // Algorithm Injections
   protected gsStableMarriageService = inject(GsStableMarriageService);
@@ -29,6 +31,8 @@ export class AlgorithmRetrievalService {
   protected hrHospitalEgsService = inject(HrHospitalEgsService);
   protected stableRoomIrvService = inject(StableRoomIrvService);
   protected spaStudentEgsService = inject(SpaStudentEgsService);
+  //Ties
+  protected smtSuperService = inject(SMTSuperService);
 
   #mapOfAvailableAlgorithms = new Map<String, Algorithm>();
 
@@ -64,7 +68,10 @@ export class AlgorithmRetrievalService {
         'spa-stu-egs',
         spasStudentConfig.service(this.spaStudentEgsService).build(),
       )
-      .set('smt-super-man', smtSuperManConfig.build());
+      .set(
+        'smt-super-man',
+        smtSuperManConfig.service(this.smtSuperService).build(),
+      );
   }
 
   getListOfAlgorithms(): Array<Algorithm> {

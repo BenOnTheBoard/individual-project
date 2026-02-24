@@ -14,16 +14,12 @@ export class ExecutionService {
   getExecutionFlow(
     algorithm: string,
     numberOfAgents: number,
-    numberOfGroup2Agents: number = numberOfAgents,
+    numberOfG2Agents: number = numberOfAgents,
     SRstable: boolean = true,
   ): AlgorithmData {
     const { service, helpTextMap } = this.algRetriever.getAlgorithm(algorithm);
     this.#helpTextMap = helpTextMap;
-    this.#commandList = service.run(
-      numberOfAgents,
-      numberOfGroup2Agents,
-      SRstable,
-    );
+    this.#commandList = service.run(numberOfAgents, numberOfG2Agents, SRstable);
 
     this.#commandList.descriptions = this.#generateDescriptions();
     return this.#commandList;

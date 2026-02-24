@@ -10,8 +10,8 @@ describe('LayoutService', () => {
 
   beforeEach(() => {
     mockalgRetriever = {
-      numberOfGroup1Agents: 3,
-      numberOfGroup2Agents: 3,
+      numberOfG1Agents: 3,
+      numberOfG2Agents: 3,
     } as AlgorithmRetrievalService;
 
     TestBed.configureTestingModule({
@@ -55,8 +55,8 @@ describe('LayoutService', () => {
     });
 
     it('should handle zero agents gracefully', () => {
-      mockalgRetriever.numberOfGroup1Agents = 0;
-      mockalgRetriever.numberOfGroup2Agents = 0;
+      mockalgRetriever.numberOfG1Agents = 0;
+      mockalgRetriever.numberOfG2Agents = 0;
       const command = new StepBuilder().build();
 
       expect(() =>
@@ -65,7 +65,7 @@ describe('LayoutService', () => {
     });
 
     it('should use height offset map when group size matches', () => {
-      mockalgRetriever.numberOfGroup1Agents = 8;
+      mockalgRetriever.numberOfG1Agents = 8;
       const command = new StepBuilder().build();
       service.calculateBipartitePositions(mockCanvas, command);
 
@@ -75,7 +75,7 @@ describe('LayoutService', () => {
 
   describe('calculateSRPositions', () => {
     it('should place agents in a circular layout', () => {
-      mockalgRetriever.numberOfGroup1Agents = 4;
+      mockalgRetriever.numberOfG1Agents = 4;
       service.calculateSRPositions(mockCanvas);
 
       const positions = service.getPositions();
@@ -88,7 +88,7 @@ describe('LayoutService', () => {
     });
 
     it('should handle zero agents gracefully', () => {
-      mockalgRetriever.numberOfGroup1Agents = 0;
+      mockalgRetriever.numberOfG1Agents = 0;
       expect(() => service.calculateSRPositions(mockCanvas)).not.toThrow();
     });
   });

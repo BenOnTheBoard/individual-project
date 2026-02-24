@@ -54,9 +54,9 @@ export class PreferenceRendererService {
     this.#firstRun = false;
     this.textRenderer.setFontSize(this.#prefFontSize);
     this.#lineSizes = new Map();
-    for (let i = 1; i < this.algRetriever.numberOfGroup1Agents + 1; i++) {
+    for (let i = 1; i <= this.algRetriever.numberOfG1Agents; i++) {
       const lineSize = this.#ctx.measureText(
-        this.#cmd.currentPrefsGroup1.get(String(i)).join(', '),
+        this.#getPreferenceText(String(i)),
       ).width;
       this.#lineSizes.set(String(i), lineSize);
     }
@@ -64,9 +64,29 @@ export class PreferenceRendererService {
 
   #getPreferenceText(agent: string): string {
     const prefList = agent.match(/[A-Z]/i)
-      ? this.#cmd.currentPrefsGroup2.get(agent)
-      : this.#cmd.currentPrefsGroup1.get(agent);
-    return prefList.join(', ');
+      ? this.#cmd.styledPrefsG2.get(agent)
+      : this.#cmd.styledPrefsG1.get(agent);
+
+    const segments = new Array<String>();
+    let i = 0;
+    while (i < prefList.length) {
+      if (prefList[i] == '(') {
+        i++;
+        const group = new Array<String>();
+        while (i < prefList.length && prefList[i] != ')') {
+          group.push(prefList[i]);
+          i++;
+        }
+        segments.push(`(${group.join(', ')})`);
+      } else {
+        segments.push(`${prefList[i]}`);
+      }
+      if (i < prefList.length) {
+        segments.push(', ');
+      }
+      i++;
+    }
+    return segments.join('');
   }
 
   #getOffsetX(group: 'LHS' | 'RHS', agent?: string): number {
@@ -97,8 +117,8 @@ export class PreferenceRendererService {
 
   public drawBipartitePrefs(): void {
     this.textRenderer.setFontSize(this.#prefFontSize);
-    const lhsCount = this.algRetriever.numberOfGroup1Agents;
-    const rhsCount = this.algRetriever.numberOfGroup2Agents;
+    const lhsCount = this.algRetriever.numberOfG1Agents;
+    const rhsCount = this.algRetriever.numberOfG2Agents;
 
     this.#drawPreferenceList(lhsCount, (i) => String(i + 1), 'LHS');
     this.#drawPreferenceList(
@@ -113,7 +133,7 @@ export class PreferenceRendererService {
     // the first half should have their preferences on their left
     // and the second should have their preferences on their right
     this.textRenderer.setFontSize(this.#prefFontSize);
-    const numAgents = this.algRetriever.numberOfGroup1Agents;
+    const numAgents = this.algRetriever.numberOfG1Agents;
     const lhsCount = Math.ceil(numAgents / 2);
     const rhsCount = numAgents - lhsCount;
 
@@ -140,7 +160,7 @@ export class PreferenceRendererService {
     const capacityMap: Map<string, string> =
       this.#cmd.algorithmSpecificData['hospitalCapacity'];
 
-    for (let i = 0; i < this.algRetriever.numberOfGroup2Agents; i++) {
+    for (let i = 0; i < this.algRetriever.numberOfG2Agents; i++) {
       const letter = String.fromCharCode(65 + i);
       const capacity = capacityMap.get(letter);
       const pos = this.layoutService.getPositionOfAgent(`circle${letter}`);

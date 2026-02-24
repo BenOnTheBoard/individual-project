@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SR } from '../../abstract-classes/SR';
-import { AlgorithmData } from '../../interfaces/AlgorithmData';
+import { SR } from '../../abstract-classes/problem-definitions/SR/SR';
 import { Person } from '../../interfaces/Agents';
 
 @Injectable({
@@ -111,7 +110,7 @@ export class StableRoomIrvService extends SR {
     return s;
   }
 
-  match(): AlgorithmData {
+  match(): void {
     let free_agents: Map<String, Person> = new Map();
     free_agents = this.check_free_agents();
 
@@ -140,11 +139,7 @@ export class StableRoomIrvService extends SR {
 
           // if stable == true then regenerate
           if (this.SRstable) {
-            this.run(
-              this.numberOfAgents,
-              this.numberOfGroup2Agents,
-              this.SRstable,
-            );
+            this.run(this.numberOfAgents, this.numberOfG2Agents, this.SRstable);
           }
 
           return;
@@ -361,11 +356,7 @@ export class StableRoomIrvService extends SR {
           // if stable == true then regenerate
           if (this.SRstable) {
             // console.log("ReRun")
-            this.run(
-              this.numberOfAgents,
-              this.numberOfGroup2Agents,
-              this.SRstable,
-            );
+            this.run(this.numberOfAgents, this.numberOfG2Agents, this.SRstable);
           }
 
           return;

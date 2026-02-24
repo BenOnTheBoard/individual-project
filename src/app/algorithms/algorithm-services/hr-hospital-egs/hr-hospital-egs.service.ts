@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resident, Hospital } from '../../interfaces/Agents';
-import { AlgorithmData } from '../../interfaces/AlgorithmData';
-import { HR } from '../../abstract-classes/HR';
+import { HR } from '../../abstract-classes/problem-definitions/HR';
 
 @Injectable({
   providedIn: 'root',
@@ -55,7 +54,7 @@ export class HrHospitalEgsService extends HR {
     );
   }
 
-  match(): AlgorithmData {
+  match(): void {
     this.saveStep(1);
 
     while (this.freeAgents.length > 0) {
