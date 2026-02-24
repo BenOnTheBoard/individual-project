@@ -141,7 +141,6 @@ export class SMTSuperService extends SMT {
     this.saveStep(1);
     do {
       while (this.freeAgents.length > 0) {
-        console.log(this.freeAgents.map((a) => a.name));
         const man = this.getNextFreeAgent();
         this.selectedAgents.push(this.utils.getAsChar(man));
         this.saveStep(3, this.packageStepVars(man));

@@ -1,7 +1,8 @@
 import { Group, TiedAgent } from '../interfaces/Agents';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
 
-const TIEFREQ = 0.5;
+const TIEFREQ = 0.4;
+const MAXTIE = 3;
 
 export abstract class TiedMatchingAlgorithm extends MatchingAlgorithm {
   protected abstract group1Agents: Map<String, TiedAgent>;
@@ -35,7 +36,7 @@ export abstract class TiedMatchingAlgorithm extends MatchingAlgorithm {
     let curTie = new Array<TiedAgent>();
     for (const agent of list) {
       curTie.push(agent);
-      if (Math.random() > TIEFREQ) {
+      if (curTie.length >= MAXTIE || Math.random() > TIEFREQ) {
         tiedList.push([...curTie]);
         curTie = [];
       }
