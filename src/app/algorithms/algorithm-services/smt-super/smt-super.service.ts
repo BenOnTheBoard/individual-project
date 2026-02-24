@@ -85,6 +85,38 @@ export class SMTSuperService extends SMT {
     return someEmpty || this.allEngaged();
   }
 
+  removeSuccessors(man: TiedMan, woman: TiedWoman): void {
+    this.saveStep(6, this.packageStepVars(man, woman));
+    for (const reject of this.getStrictSuccessors(woman, man)) {
+      this.saveStep(7, this.packageStepVars(reject, woman));
+      if (woman.match.includes(reject)) {
+        this.saveStep(8, this.packageStepVars(reject, woman));
+        this.breakAssignment(reject, woman);
+      }
+      this.saveStep(10, this.packageStepVars(reject, woman));
+      this.delete(reject, woman);
+    }
+    this.saveStep(11, this.packageStepVars(null, woman));
+  }
+
+  breakAllAssignments(woman: TiedWoman) {
+    while (woman.match.length != 0) {
+      const match = woman.match[0];
+      this.saveStep(16, this.packageStepVars(match, woman));
+      this.breakAssignment(match, woman);
+    }
+    this.saveStep(17, this.packageStepVars(null, woman));
+  }
+
+  deleteTail(woman: TiedWoman) {
+    this.saveStep(18, this.packageStepVars(null, woman));
+    for (const reject of this.getTail(woman)) {
+      this.saveStep(19, this.packageStepVars(reject, woman));
+      this.delete(reject, woman);
+    }
+    this.saveStep(20, this.packageStepVars(null, woman));
+  }
+
   match(): void {
     this.saveStep(1);
     do {
@@ -98,18 +130,7 @@ export class SMTSuperService extends SMT {
         for (const woman of head) {
           this.saveStep(5, this.packageStepVars(man, woman));
           this.assign(man, woman);
-
-          this.saveStep(6, this.packageStepVars(man, woman));
-          for (const reject of this.getStrictSuccessors(woman, man)) {
-            this.saveStep(7, this.packageStepVars(reject, woman));
-            if (woman.match.includes(reject)) {
-              this.saveStep(8, this.packageStepVars(reject, woman));
-              this.breakAssignment(reject, woman);
-            }
-            this.saveStep(10, this.packageStepVars(reject, woman));
-            this.delete(reject, woman);
-          }
-          this.saveStep(11, this.packageStepVars(null, woman));
+          this.removeSuccessors(man, woman);
         }
         this.saveStep(12, this.packageStepVars(man));
       }
@@ -119,23 +140,14 @@ export class SMTSuperService extends SMT {
         if (woman.match.length < 2) continue;
         this.saveStep(14, this.packageStepVars(null, woman));
 
-        while (woman.match.length != 0) {
-          const match = woman.match[0];
-          this.saveStep(16, this.packageStepVars(match, woman));
-          this.breakAssignment(match, woman);
-        }
-        this.saveStep(17, this.packageStepVars(null, woman));
-        this.saveStep(18, this.packageStepVars(null, woman));
-        for (const reject of this.getTail(woman)) {
-          this.saveStep(19, this.packageStepVars(reject, woman));
-          this.delete(reject, woman);
-        }
-        this.saveStep(20, this.packageStepVars(null, woman));
+        this.breakAllAssignments(woman);
+        this.deleteTail(woman);
       }
       this.saveStep(21);
       this.saveStep(22);
     } while (!this.canHalt());
     this.saveStep(23);
+
     if (this.allEngaged()) {
       this.saveStep(24);
     } else {
