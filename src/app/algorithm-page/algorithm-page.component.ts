@@ -84,7 +84,7 @@ export class AlgorithmPageComponent implements OnInit {
   #setupPlaybackService(): void {
     const { currentAlgorithm, numberOfG1Agents, numberOfG2Agents } =
       this.algRetriever;
-    if (currentAlgorithm.name == 'Stable Roommates Problem') {
+    if (this.algRetriever.mayBeUnstable(currentAlgorithm.id)) {
       this.playback.setAlgorithm(
         currentAlgorithm.id,
         numberOfG1Agents,

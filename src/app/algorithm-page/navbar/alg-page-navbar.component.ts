@@ -37,15 +37,14 @@ export class AlgPageNavbarComponent {
   private navbar = viewChild<ElementRef>('algPageNavbar');
   // unlike sidebar width, navbar height won't change
   #isInAnimation = false;
-  protected readonly possiblyUnstableAlgs = ['smp-room-irv', 'smt-super-man'];
 
   protected algRetriever = inject(AlgorithmRetrievalService);
   protected drawService = inject(CanvasService);
   protected dialog = inject(MatDialog);
 
   protected possiblyUnstable(): boolean {
-    const algID = this.algRetriever.currentAlgorithm.id;
-    return this.possiblyUnstableAlgs.includes(algID);
+    const { id } = this.algRetriever.currentAlgorithm;
+    return this.algRetriever.mayBeUnstable(id);
   }
 
   protected updateTutorialStep(step: number): void {
