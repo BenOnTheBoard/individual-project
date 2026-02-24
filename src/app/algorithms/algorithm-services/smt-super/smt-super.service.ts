@@ -41,7 +41,7 @@ export class SMTSuperService extends SMT {
   getHead(man: TiedMan): Array<TiedWoman> {
     for (const tie of man.ranking) {
       if (tie.length > 0) {
-        return tie;
+        return tie.slice();
       }
     }
     throw Error(`tried to get head of empty list: ${man.name}`);
@@ -50,7 +50,7 @@ export class SMTSuperService extends SMT {
   getTail(woman: TiedWoman): Array<TiedMan> {
     for (const tie of woman.ranking.slice().reverse()) {
       if (tie.length > 0) {
-        return tie;
+        return tie.slice();
       }
     }
     throw Error(`tried to get tail of empty list: ${woman.name}`);
