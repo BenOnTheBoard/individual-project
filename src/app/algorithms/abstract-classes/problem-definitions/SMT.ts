@@ -8,6 +8,13 @@ export abstract class SMT extends TiedMatchingAlgorithm {
   group1Agents: Map<String, TiedMan> = new Map();
   group2Agents: Map<String, TiedWoman> = new Map();
 
+  protected packageStepVars(man?: TiedMan, woman?: TiedWoman): Object {
+    const placeholderValues = new Object();
+    if (man) placeholderValues['%man%'] = man.name;
+    if (woman) placeholderValues['%woman%'] = woman.name;
+    return placeholderValues;
+  }
+
   // We assume that all lists are complete
   // i.e. an agent always prefers to be matched over not.
   isBlockingPair(man: TiedMan, woman: TiedWoman): boolean {

@@ -24,7 +24,7 @@ export const smtSuperManConfig = new AlgorithmBuilder()
     12: "There are no more women in %man%'s head that we may assign him to.",
     13: 'There are no more free men.',
     14: '%woman% is assigned to more than one man.',
-    15: 'We take %man% who is assigned to %woman%.',
+    15: '',
     16: "Remove %man% from %woman%'s preference list and vice versa.",
     17: '%woman% has no more assigned men.',
     18: "We loop over the last non-empty tie in %woman%'s list.",

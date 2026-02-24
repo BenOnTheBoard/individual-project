@@ -57,7 +57,12 @@ export class SMTSuperService extends SMT {
   }
 
   getStrictSuccessors(woman: TiedWoman, match: TiedMan): Array<TiedMan> {
-    return woman.ranking.slice(this.getRank(woman, match) + 1).flat();
+    return woman.ranking
+      .slice(this.getRank(woman, match) + 1)
+      .reduce(
+        (arr: Array<TiedMan>, tie: Array<TiedMan>) => arr.concat(...tie),
+        [],
+      );
   }
 
   isEmptyList(man: TiedMan): boolean {
@@ -69,41 +74,72 @@ export class SMTSuperService extends SMT {
     return true;
   }
 
+  allEngaged(): boolean {
+    return [...this.group1Agents.values()].every((man) => man.match.length > 0);
+  }
+
   canHalt(): boolean {
     const someEmpty = [...this.group1Agents.values()].some((man) =>
       this.isEmptyList(man),
     );
-    const allEngaged = [...this.group1Agents.values()].every(
-      (man) => man.match.length > 0,
-    );
-    return someEmpty || allEngaged;
+    return someEmpty || this.allEngaged();
   }
 
   match(): void {
+    this.saveStep(1);
     do {
       while (this.freeAgents.length > 0) {
         const man = this.getNextFreeAgent();
+        this.saveStep(3, this.packageStepVars(man));
+
         const head = this.getHead(man);
+        this.saveStep(4, this.packageStepVars(man));
+
         for (const woman of head) {
+          this.saveStep(5, this.packageStepVars(man, woman));
           this.assign(man, woman);
+
+          this.saveStep(6, this.packageStepVars(man, woman));
           for (const reject of this.getStrictSuccessors(woman, man)) {
+            this.saveStep(7, this.packageStepVars(reject, woman));
             if (woman.match.includes(reject)) {
+              this.saveStep(8, this.packageStepVars(reject, woman));
               this.breakAssignment(reject, woman);
             }
+            this.saveStep(10, this.packageStepVars(reject, woman));
             this.delete(reject, woman);
           }
+          this.saveStep(11, this.packageStepVars(null, woman));
         }
+        this.saveStep(12, this.packageStepVars(man));
       }
+      this.saveStep(13);
+
       for (const woman of this.group2Agents.values()) {
         if (woman.match.length < 2) continue;
+        this.saveStep(14, this.packageStepVars(null, woman));
+
         while (woman.match.length != 0) {
           const match = woman.match[0];
+          this.saveStep(16, this.packageStepVars(match, woman));
           this.breakAssignment(match, woman);
         }
+        this.saveStep(17, this.packageStepVars(null, woman));
+        this.saveStep(18, this.packageStepVars(null, woman));
         for (const reject of this.getTail(woman)) {
+          this.saveStep(19, this.packageStepVars(reject, woman));
           this.delete(reject, woman);
         }
+        this.saveStep(20, this.packageStepVars(null, woman));
       }
+      this.saveStep(21);
+      this.saveStep(22);
     } while (!this.canHalt());
+    this.saveStep(23);
+    if (this.allEngaged()) {
+      this.saveStep(24);
+    } else {
+      this.saveStep(26);
+    }
   }
 }
