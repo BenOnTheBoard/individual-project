@@ -34,7 +34,7 @@ export class AgentCountFormComponent {
 
   protected numberOfSRAgents = new FormControl<number | null>(null, [
     Validators.required,
-    Validators.min(1),
+    Validators.min(4),
     Validators.max(8),
     UtilsService.validateEven(),
   ]);

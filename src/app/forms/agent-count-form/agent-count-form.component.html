@@ -51,14 +51,14 @@
   <div class="row justify-content-start">
     <mat-form-field>
       <mat-label>Number of People</mat-label>
-      <input id={{algorithm().id}} [formControl]="numberOfSRAgents" type="number" matInput placeholder="4" value="4"
-        min="1" max="8" onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false"
+      <input id={{algorithm().id}} [formControl]="numberOfSRAgents" type="number" matInput placeholder="6" value="6"
+        min="4" max="8" onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false"
         onDrop="return false" onPaste="return false">
       @if (numberOfSRAgents.hasError('required')) {
       <mat-error>This field is <strong>required</strong></mat-error>
       }
       @if (numberOfSRAgents.hasError('min') || numberOfSRAgents.hasError('max')) {
-      <mat-error>Please input a number between 1 and 8</mat-error>
+      <mat-error>Please input a number between 4 and 8</mat-error>
       }
       @if (numberOfSRAgents.hasError('even')) {
       <mat-error>Please input an even number.</mat-error>
