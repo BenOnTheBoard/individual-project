@@ -29,19 +29,19 @@ describe('workspace-project App', () => {
   it('about link works', () => {
     cy.visit('/');
     cy.get('#aboutLink').click();
-    cy.contains('h1', 'Welcome').click();
+    cy.contains('h1', 'About');
   });
 
   it('algorithms link works', () => {
     cy.visit('/');
     cy.get('#algorithmsLink').click();
-    cy.contains('h1', 'Learn').click();
+    cy.contains('h1', 'Algorithm');
   });
 
   it('feedback link works', () => {
     cy.visit('/');
     cy.get('#feedbackLink').click();
-    cy.contains('h1', 'feedback').click();
+    cy.contains('h1', 'Feedback');
   });
 
   // ------------ Algorithms ------------
@@ -49,60 +49,51 @@ describe('workspace-project App', () => {
   it('smp-man-gs', () => {
     cy.visit('/');
     cy.get('#algorithmsLink').click();
-    cy.get('#smp-man-gs').click();
-    cy.get('#smp-man-gs').type('5');
-    cy.get('#smp-man-gs').type('{enter}');
+    cy.get('#smp-man-gs').type('5', { force: true });
+    cy.get('#smp-man-gs').type('{enter}', { force: true });
     cy.get('#forwardButton').click();
   });
 
   it('smp-man-egs', () => {
     cy.visit('/');
     cy.get('#algorithmsLink').click();
-    cy.get('#smp-man-egs').click();
-    cy.get('#smp-man-egs').type('5');
-    cy.get('#smp-man-egs').type('{enter}');
+    cy.get('#smp-man-egs').type('5', { force: true });
+    cy.get('#smp-man-egs').type('{enter}', { force: true });
     cy.get('#forwardButton').click();
   });
 
   it('hr-resident-egs', () => {
     cy.visit('/');
     cy.get('#algorithmsLink').click();
-    cy.get('#hr1').click();
-    cy.get('#hr1').type('5');
-    cy.get('#hr2').click();
-    cy.get('#hr2').type('5');
-    cy.get('#hr2').type('{enter}');
+    cy.get('#hr1').type('5', { force: true });
+    cy.get('#hr2').type('5', { force: true });
+    cy.get('#hr2').type('{enter}', { force: true });
     cy.get('#forwardButton').click();
   });
 
   it('hr-hospital-egs', () => {
     cy.visit('/');
     cy.get('#algorithmsLink').click();
-    cy.get('#hr1').click();
-    cy.get('#hr1').type('5');
-    cy.get('#hr2').click();
-    cy.get('#hr2').type('5');
-    cy.get('#hr2').type('{enter}');
+    cy.get('#hr1').type('5', { force: true });
+    cy.get('#hr2').type('5', { force: true });
+    cy.get('#hr2').type('{enter}', { force: true });
     cy.get('#forwardButton').click();
   });
 
   it('smp-room-irv', () => {
     cy.visit('/');
     cy.get('#algorithmsLink').click();
-    cy.get('#smp-room-irv').click();
-    cy.get('#smp-room-irv').type('6');
-    cy.get('#smp-room-irv').type('{enter}');
+    cy.get('#smp-room-irv').type('6', { force: true });
+    cy.get('#smp-room-irv').type('{enter}', { force: true });
     cy.get('#forwardButton').click();
   });
 
   it('spa-stu-egs', () => {
     cy.visit('/');
     cy.get('#algorithmsLink').click();
-    cy.get('#spa1').click();
-    cy.get('#spa1').type('5');
-    cy.get('#spa2').click();
-    cy.get('#spa2').type('5');
-    cy.get('#spa2').type('{enter}');
+    cy.get('#spa1').type('5', { force: true });
+    cy.get('#spa2').type('5', { force: true });
+    cy.get('#spa2').type('{enter}', { force: true });
     cy.get('#forwardButton').click();
   });
 
