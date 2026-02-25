@@ -26,7 +26,6 @@ export abstract class MatchingAlgorithm {
   protected algorithmSpecificData: Object;
   protected relevantPrefs: Array<string>;
 
-  protected generateStable: boolean = true;
   #stable: boolean = false;
   #algorithmRunData: AlgorithmData;
 
@@ -182,8 +181,6 @@ export abstract class MatchingAlgorithm {
       this.generateAgents();
       this.generatePrefs();
       this.initCurrentAndOriginalPrefs();
-      this.generateStable = generateStable;
-
       this.match();
       this.#stable = this.checkStability();
     } while (this.#stable != generateStable);

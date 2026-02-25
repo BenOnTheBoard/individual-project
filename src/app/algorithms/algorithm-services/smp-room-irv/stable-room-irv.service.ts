@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SR } from '../../abstract-classes/problem-definitions/SR/SR';
+import { SR } from '../../abstract-classes/problem-definitions/SR';
 import { Person } from '../../interfaces/Agents';
 
 @Injectable({
@@ -136,16 +136,6 @@ export class StableRoomIrvService extends SR {
         if (person.ranking.length < 1) {
           //end - no stable mathcing
           this.saveStep(4);
-
-          // if stable == true then regenerate
-          if (this.generateStable) {
-            this.run(
-              this.numberOfAgents,
-              this.numberOfG2Agents,
-              this.generateStable,
-            );
-          }
-
           return;
         }
 
@@ -357,16 +347,6 @@ export class StableRoomIrvService extends SR {
         if (this.check_pref_list_empty() == true) {
           // end - no stable matching
           this.saveStep(18);
-          // if stable == true then regenerate
-          if (this.generateStable) {
-            // console.log("ReRun")
-            this.run(
-              this.numberOfAgents,
-              this.numberOfG2Agents,
-              this.generateStable,
-            );
-          }
-
           return;
         }
         // needed to rest the for loop for the new values within the many_pref_list
