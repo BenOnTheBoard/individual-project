@@ -27,20 +27,26 @@ export abstract class SR extends UntiedMatchingAlgorithm {
   }
 
   isBlockingPair(person: Person, other: Person): boolean {
-    const personBlock = this.getOriginalRank(person, other, 'group1');
-    const personCur = this.getOriginalRank(
-      person,
-      person.lastProposed,
-      'group1',
-    );
-    const otherBlock = this.getOriginalRank(other, person, 'group1');
-    const otherCur = this.getOriginalRank(other, other.lastProposed, 'group1');
-    return personBlock < personCur && otherBlock < otherCur;
+    let personBlocks = true;
+    let otherBlocks = true;
+    if (person.lastProposed) {
+      const match = person.lastProposed;
+      const personBlock = this.getOriginalRank(person, other, 'group1');
+      const personCur = this.getOriginalRank(person, match, 'group1');
+      personBlocks = personBlock < personCur;
+    }
+    if (other.lastProposed) {
+      const match = other.lastProposed;
+      const otherBlock = this.getOriginalRank(other, person, 'group1');
+      const otherCur = this.getOriginalRank(other, match, 'group1');
+      otherBlocks = otherBlock < otherCur;
+    }
+    return personBlocks && otherBlocks;
   }
 
   checkStability(): boolean {
     for (const person of this.group1Agents.values()) {
-      if (!person.lastProposed) continue; // if agent has no matches
+      if (!person.lastProposed) return false; // if agent has no matches
 
       const personRanking = this.origPrefsG1.get(person.name);
       for (const otherName of personRanking) {
