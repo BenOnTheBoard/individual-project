@@ -40,8 +40,9 @@ export abstract class SR extends UntiedMatchingAlgorithm {
 
   checkStability(): boolean {
     for (const person of this.group1Agents.values()) {
-      if (!person.lastProposed) continue; // if agent has no matches
-
+      if (!person.lastProposed) return false;
+    }
+    for (const person of this.group1Agents.values()) {
       const personRanking = this.origPrefsG1.get(person.name);
       for (const otherName of personRanking) {
         const other = this.group1Agents.get(otherName);
