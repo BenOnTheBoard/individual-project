@@ -1,12 +1,7 @@
-import { AppPage } from './app.po';
-
 describe('workspace-project App', () => {
-  let page: AppPage;
   let consoleErrors = [];
 
   beforeEach(() => {
-    page = new AppPage();
-
     consoleErrors = [];
     cy.on('window:before:load', (win) => {
       cy.stub(win.console, 'error').callsFake((msg) => {
@@ -18,7 +13,7 @@ describe('workspace-project App', () => {
   // ------------ Home Page ------------
 
   it('navbar links should appear', () => {
-    page.navigateTo();
+    cy.visit('/');
     cy.get('#homeLink').should('exist');
     cy.get('#aboutLink').should('exist');
     cy.get('#algorithmsLink').should('exist');
@@ -26,25 +21,25 @@ describe('workspace-project App', () => {
   });
 
   it('social media icons should appear', () => {
-    page.navigateTo();
+    cy.visit('/');
     cy.get('#github-icon').should('exist');
     cy.get('#linkedin-icon').should('exist');
   });
 
   it('about link works', () => {
-    page.navigateTo();
+    cy.visit('/');
     cy.get('#aboutLink').click();
     cy.contains('h1', 'Welcome').click();
   });
 
   it('algorithms link works', () => {
-    page.navigateTo();
+    cy.visit('/');
     cy.get('#algorithmsLink').click();
     cy.contains('h1', 'Learn').click();
   });
 
   it('feedback link works', () => {
-    page.navigateTo();
+    cy.visit('/');
     cy.get('#feedbackLink').click();
     cy.contains('h1', 'feedback').click();
   });
@@ -52,7 +47,7 @@ describe('workspace-project App', () => {
   // ------------ Algorithms ------------
 
   it('smp-man-gs', () => {
-    page.navigateTo();
+    cy.visit('/');
     cy.get('#algorithmsLink').click();
     cy.get('#smp-man-gs').click();
     cy.get('#smp-man-gs').type('5');
@@ -61,7 +56,7 @@ describe('workspace-project App', () => {
   });
 
   it('smp-man-egs', () => {
-    page.navigateTo();
+    cy.visit('/');
     cy.get('#algorithmsLink').click();
     cy.get('#smp-man-egs').click();
     cy.get('#smp-man-egs').type('5');
@@ -70,7 +65,7 @@ describe('workspace-project App', () => {
   });
 
   it('hr-resident-egs', () => {
-    page.navigateTo();
+    cy.visit('/');
     cy.get('#algorithmsLink').click();
     cy.get('#hr1').click();
     cy.get('#hr1').type('5');
@@ -81,7 +76,7 @@ describe('workspace-project App', () => {
   });
 
   it('hr-hospital-egs', () => {
-    page.navigateTo();
+    cy.visit('/');
     cy.get('#algorithmsLink').click();
     cy.get('#hr1').click();
     cy.get('#hr1').type('5');
@@ -92,7 +87,7 @@ describe('workspace-project App', () => {
   });
 
   it('smp-room-irv', () => {
-    page.navigateTo();
+    cy.visit('/');
     cy.get('#algorithmsLink').click();
     cy.get('#smp-room-irv').click();
     cy.get('#smp-room-irv').type('6');
@@ -101,7 +96,7 @@ describe('workspace-project App', () => {
   });
 
   it('spa-stu-egs', () => {
-    page.navigateTo();
+    cy.visit('/');
     cy.get('#algorithmsLink').click();
     cy.get('#spa1').click();
     cy.get('#spa1').type('5');
