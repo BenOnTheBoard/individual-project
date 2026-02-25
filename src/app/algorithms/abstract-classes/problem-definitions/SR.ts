@@ -1,10 +1,5 @@
-import { AgentFactory, Person } from '../../../interfaces/Agents';
-import {
-  unstable4,
-  unstableInstances6,
-  unstableInstances8,
-} from './SRUnstableInstances';
-import { UntiedMatchingAlgorithm } from '../../UntiedMatchingAlgorithm';
+import { AgentFactory, Person } from '../../interfaces/Agents';
+import { UntiedMatchingAlgorithm } from '../UntiedMatchingAlgorithm';
 
 export abstract class SR extends UntiedMatchingAlgorithm {
   group1Name = 'person';
@@ -12,21 +7,6 @@ export abstract class SR extends UntiedMatchingAlgorithm {
 
   freeAgents: Array<Person> = [];
   group1Agents: Map<String, Person> = new Map();
-
-  selectUnstableInstance(): Array<Array<string>> {
-    switch (this.numberOfAgents) {
-      case 4:
-        return unstable4;
-      case 6:
-        return this.utils.selectRandomElement(unstableInstances6);
-      case 8:
-        return this.utils.selectRandomElement(unstableInstances8);
-      default:
-        throw new RangeError(
-          'selectUnstableInstance called while number of agents is not in {4,6,8}',
-        );
-    }
-  }
 
   generateAgents(): void {
     for (let i = 1; i < this.numberOfAgents + 1; i++) {
@@ -39,27 +19,10 @@ export abstract class SR extends UntiedMatchingAlgorithm {
   }
 
   generatePrefs(): void {
-    if (this.numberOfAgents == 2) {
-      this.generateStable = true;
-    }
-
-    if (this.generateStable) {
-      this.generateRandomRankings(this.group1Agents, this.group1Agents);
-      for (const agent of Array.from(this.group1Agents.values())) {
-        const selfRank = agent.ranking.indexOf(agent);
-        agent.ranking.splice(selfRank, 1);
-      }
-    } else {
-      let count = 0;
-      const instance = this.selectUnstableInstance();
-      for (const person of this.group1Agents.values()) {
-        for (let i = 0; i < this.group1Agents.size - 1; i++) {
-          person.ranking[i] = this.group1Agents.get(
-            this.group1Name + String(instance[count][i]),
-          );
-        }
-        count++;
-      }
+    this.generateRandomRankings(this.group1Agents, this.group1Agents);
+    for (const agent of Array.from(this.group1Agents.values())) {
+      const selfRank = agent.ranking.indexOf(agent);
+      agent.ranking.splice(selfRank, 1);
     }
   }
 
