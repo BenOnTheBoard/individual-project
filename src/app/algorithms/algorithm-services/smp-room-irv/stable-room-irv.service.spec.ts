@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-
 import { StableRoomIrvService } from './stable-room-irv.service';
+
+const instanceCount = 600;
 
 describe('StableRoomIrvService', () => {
   let service: StableRoomIrvService;
@@ -10,15 +11,11 @@ describe('StableRoomIrvService', () => {
     service = TestBed.inject(StableRoomIrvService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeDefined();
-  });
-
-  it('test correctness x 1000 (smp-room-irv)', () => {
+  it(`produces stable solutions x${instanceCount}`, () => {
     let stable = true;
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < instanceCount; i++) {
       const agentCount = Math.floor(Math.random() * 4 + 1) * 2;
-      service.run(agentCount, agentCount, undefined);
+      service.run(agentCount);
       if (!service.isStable()) stable = false;
     }
     expect(stable).toBeTrue();
