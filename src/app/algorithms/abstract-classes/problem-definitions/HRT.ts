@@ -70,11 +70,6 @@ export abstract class HRT extends TiedMatchingAlgorithm {
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
   }
 
-  generatePrefs(): void {
-    this.generateRandomRankings(this.group1Agents, this.group2Agents);
-    this.generateRandomRankings(this.group2Agents, this.group1Agents);
-  }
-
   getWorstResident(hospital: TiedHospital): TiedResident {
     throw Error('not implemented');
   }

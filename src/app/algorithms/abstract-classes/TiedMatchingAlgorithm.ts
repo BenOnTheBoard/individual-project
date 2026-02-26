@@ -56,6 +56,11 @@ export abstract class TiedMatchingAlgorithm extends MatchingAlgorithm {
     }
   }
 
+  generatePrefs(): void {
+    this.generateRandomRankings(this.group1Agents, this.group2Agents);
+    this.generateRandomRankings(this.group2Agents, this.group1Agents);
+  }
+
   packageTiedList(list: Array<Array<TiedAgent>>): Array<String> {
     const textRanking = new Array<String>();
     for (const tie of list) {

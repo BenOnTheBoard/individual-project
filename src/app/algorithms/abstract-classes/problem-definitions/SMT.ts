@@ -65,10 +65,5 @@ export abstract class SMT extends TiedMatchingAlgorithm {
     }
   }
 
-  generatePrefs(): void {
-    this.generateRandomRankings(this.group1Agents, this.group2Agents);
-    this.generateRandomRankings(this.group2Agents, this.group1Agents);
-  }
-
   abstract match(): void;
 }
