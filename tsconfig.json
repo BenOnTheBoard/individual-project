@@ -14,6 +14,7 @@
     "lib": ["es2018", "dom"],
     "noUnusedLocals": true
   },
+  "exclude": ["./cypress.config.ts"],
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true,

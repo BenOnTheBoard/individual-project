@@ -37,6 +37,11 @@ describe('AlgorithmPageComponent', () => {
             mapOfAvailableAlgorithms: new Map(),
             getSide: jasmine.createSpy('getSide'),
             getAlgorithm: jasmine.createSpy('getAlgorithm'),
+            mayBeUnstable: jasmine
+              .createSpy('mayBeUnstable')
+              .and.callFake((id: string) => {
+                true;
+              }),
           },
         },
         {
