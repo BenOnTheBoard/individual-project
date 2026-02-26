@@ -1,4 +1,4 @@
-describe('workspace-project App', () => {
+describe('individual-project', () => {
   let consoleErrors = [];
 
   beforeEach(() => {
@@ -46,12 +46,22 @@ describe('workspace-project App', () => {
 
   // ------------ Algorithms ------------
 
+  function buttonTests(): void {
+    cy.get('#forwardButton').click();
+    cy.get('#backButton').click();
+    cy.get('#endButton').click();
+    cy.get('#restartButton').click();
+    cy.get('#playButton').click();
+    cy.wait(1000);
+    cy.get('#playButton').click();
+  }
+
   it('smp-man-gs', () => {
     cy.visit('/');
     cy.get('#algorithmsLink').click();
     cy.get('#smp-man-gs').type('5', { force: true });
     cy.get('#smp-man-gs').type('{enter}', { force: true });
-    cy.get('#forwardButton').click();
+    buttonTests();
   });
 
   it('smp-man-egs', () => {
@@ -59,7 +69,7 @@ describe('workspace-project App', () => {
     cy.get('#algorithmsLink').click();
     cy.get('#smp-man-egs').type('5', { force: true });
     cy.get('#smp-man-egs').type('{enter}', { force: true });
-    cy.get('#forwardButton').click();
+    buttonTests();
   });
 
   it('hr-resident-egs', () => {
@@ -68,7 +78,7 @@ describe('workspace-project App', () => {
     cy.get('#hr1').type('5', { force: true });
     cy.get('#hr2').type('5', { force: true });
     cy.get('#hr2').type('{enter}', { force: true });
-    cy.get('#forwardButton').click();
+    buttonTests();
   });
 
   it('hr-hospital-egs', () => {
@@ -77,7 +87,7 @@ describe('workspace-project App', () => {
     cy.get('#hr1').type('5', { force: true });
     cy.get('#hr2').type('5', { force: true });
     cy.get('#hr2').type('{enter}', { force: true });
-    cy.get('#forwardButton').click();
+    buttonTests();
   });
 
   it('smp-room-irv', () => {
@@ -85,7 +95,7 @@ describe('workspace-project App', () => {
     cy.get('#algorithmsLink').click();
     cy.get('#smp-room-irv').type('6', { force: true });
     cy.get('#smp-room-irv').type('{enter}', { force: true });
-    cy.get('#forwardButton').click();
+    buttonTests();
   });
 
   it('spa-stu-egs', () => {
@@ -94,7 +104,7 @@ describe('workspace-project App', () => {
     cy.get('#spa1').type('5', { force: true });
     cy.get('#spa2').type('5', { force: true });
     cy.get('#spa2').type('{enter}', { force: true });
-    cy.get('#forwardButton').click();
+    buttonTests();
   });
 
   afterEach(() => {
