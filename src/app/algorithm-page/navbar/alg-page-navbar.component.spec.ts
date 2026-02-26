@@ -22,6 +22,11 @@ describe('Navbar', () => {
               .and.callFake((proposing: boolean, plural: boolean) => {
                 'man';
               }),
+            mayBeUnstable: jasmine
+              .createSpy('mayBeUnstable')
+              .and.callFake((id: string) => {
+                true;
+              }),
           },
         },
       ],

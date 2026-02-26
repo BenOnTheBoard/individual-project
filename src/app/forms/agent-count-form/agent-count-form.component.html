@@ -20,7 +20,7 @@
   <div class="row justify-content-start">
     <mat-form-field class="mr-1">
       <mat-label>Number of Residents</mat-label>
-      <input [formControl]="numberOfG1Agents" type="number" matInput placeholder="5" value="5" min="2" max="9"
+      <input id='hr1' [formControl]="numberOfG1Agents" type="number" matInput placeholder="5" value="5" min="2" max="9"
         onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false" onDrop="return false"
         onPaste="return false">
       @if (numberOfG1Agents.hasError('required')) {
@@ -33,7 +33,7 @@
 
     <mat-form-field class="ml-1">
       <mat-label>Number of Hospitals</mat-label>
-      <input [formControl]="numberOfG2Agents" type="number" matInput placeholder="5" value="5" min="2" max="9"
+      <input id='hr2' [formControl]="numberOfG2Agents" type="number" matInput placeholder="5" value="5" min="2" max="9"
         onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false" onDrop="return false"
         onPaste="return false">
       @if (numberOfG2Agents.hasError('required')) {
@@ -71,7 +71,7 @@
   <div class="row justify-content-start">
     <mat-form-field class="mr-1">
       <mat-label>Number of Students</mat-label>
-      <input [formControl]="numberOfG1Agents" type="number" matInput placeholder="5" value="5" min="2" max="9"
+      <input id='spa1' [formControl]="numberOfG1Agents" type="number" matInput placeholder="5" value="5" min="2" max="9"
         onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false" onDrop="return false"
         onPaste="return false">
       @if (numberOfG1Agents.hasError('required')) {
@@ -84,7 +84,7 @@
 
     <mat-form-field class="ml-1">
       <mat-label>Number of Projects</mat-label>
-      <input [formControl]="numberOfG2Agents" type="number" matInput placeholder="5" value="5" min="2" max="9"
+      <input id='spa2' [formControl]="numberOfG2Agents" type="number" matInput placeholder="5" value="5" min="2" max="9"
         onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false" onDrop="return false"
         onPaste="return false">
       @if (numberOfG2Agents.hasError('required')) {

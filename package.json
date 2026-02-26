@@ -8,8 +8,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "ftest": "npm run test -- --no-watch --browsers=ChromeHeadlessCI & npm run e2e -- --protractor-config=e2e/protractor-ci.conf.js --port 4201",
-    "deploy": "ng build --output-path docs --configuration=production --base-href /individual-project/"
+    "deploy": "ng build --output-path docs --configuration=production --base-href /individual-project/",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "private": true,
   "dependencies": {
@@ -33,6 +34,7 @@
     "@angular-devkit/build-angular": "^20.3.10",
     "@angular/cli": "^20.3.10",
     "@angular/compiler-cli": "^20.3.12",
+    "@cypress/schematic": "^5.0.0",
     "@types/animejs": "^3.1.13",
     "@types/jasmine": "~5.1.13",
     "@types/jasminewd2": "~2.0.13",
@@ -50,6 +52,7 @@
     "karma-jasmine-html-reporter": "^2.1.0",
     "ts-node": "~10.9.2",
     "typescript": "~5.9.3",
-    "typescript-eslint": "8.46.4"
+    "typescript-eslint": "8.46.4",
+    "cypress": "15.10.0"
   }
 }
