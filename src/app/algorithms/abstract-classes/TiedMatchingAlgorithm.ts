@@ -96,33 +96,29 @@ export abstract class TiedMatchingAlgorithm extends MatchingAlgorithm {
     return ranking.findIndex((tie) => tie.includes(target.name));
   }
 
-  // Algorithm Utilities
+  // ------ Algorithm Utilities ------
 
-  getHead(agent: TiedAgent): Array<TiedAgent> {
+  getHead<T>(agent: TiedAgent): Array<T> {
     for (const tie of agent.ranking) {
-      if (tie.length > 0) {
-        return tie.slice();
-      }
+      if (tie.length > 0) return tie.slice() as Array<T>;
     }
     throw Error(`tried to get head of empty list: ${agent.name}`);
   }
 
-  getTail(agent: TiedAgent): Array<TiedAgent> {
+  getTail<T>(agent: TiedAgent): Array<T> {
     for (const tie of agent.ranking.slice().reverse()) {
-      if (tie.length > 0) {
-        return tie.slice();
-      }
+      if (tie.length > 0) return tie.slice() as Array<T>;
     }
     throw Error(`tried to get tail of empty list: ${agent.name}`);
   }
 
-  getStrictSuccessors(agent: TiedAgent, match: TiedAgent): Array<TiedAgent> {
+  getStrictSuccessors<T>(agent: TiedAgent, match: TiedAgent): Array<T> {
     return agent.ranking
       .slice(this.getRank(agent, match) + 1)
       .reduce(
         (arr: Array<TiedAgent>, tie: Array<TiedAgent>) => arr.concat(...tie),
         [],
-      );
+      ) as Array<T>;
   }
 
   hasEmptyList(agent: TiedAgent): boolean {

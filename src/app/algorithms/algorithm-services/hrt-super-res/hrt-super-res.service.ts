@@ -50,7 +50,7 @@ export class HrtSuperResService extends HRT {
   }
 
   deleteTail(hos: TiedHospital) {
-    const tail = this.getTail(hos) as Array<TiedResident>;
+    const tail = this.getTail<TiedResident>(hos);
     for (const reject of tail) {
       if (hos.match.includes(reject)) {
         this.breakAssignment(reject, hos);
@@ -61,7 +61,7 @@ export class HrtSuperResService extends HRT {
 
   deleteBelowWorst(hos: TiedHospital) {
     const worst = this.getWorstResident(hos);
-    const succ = this.getStrictSuccessors(hos, worst) as Array<TiedResident>;
+    const succ = this.getStrictSuccessors<TiedResident>(hos, worst);
     for (const reject of succ) {
       this.delete(reject, hos);
     }
@@ -70,7 +70,7 @@ export class HrtSuperResService extends HRT {
   match(): void {
     while (this.freeAgents.length > 0) {
       const res = this.getNextFreeAgent();
-      const head = this.getHead(res) as Array<TiedHospital>;
+      const head = this.getHead<TiedHospital>(res);
       for (const hos of head) {
         this.assign(res, hos);
         if (hos.match.length > hos.capacity) {

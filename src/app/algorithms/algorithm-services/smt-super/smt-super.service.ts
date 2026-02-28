@@ -59,7 +59,7 @@ export class SMTSuperService extends SMT {
 
   removeSuccessors(man: TiedMan, woman: TiedWoman): void {
     this.saveStep(6, this.packageStepVars(man, woman));
-    const succ = this.getStrictSuccessors(woman, man) as Array<TiedMan>;
+    const succ = this.getStrictSuccessors<TiedMan>(woman, man);
     for (const reject of succ) {
       this.saveStep(7, this.packageStepVars(reject, woman));
       if (woman.match.includes(reject)) {
@@ -80,7 +80,7 @@ export class SMTSuperService extends SMT {
   }
 
   applyToHead(man: TiedMan): void {
-    const head = this.getHead(man) as Array<TiedWoman>;
+    const head = this.getHead<TiedWoman>(man);
     this.saveStep(4, this.packageStepVars(man));
 
     for (const woman of head) {
@@ -93,7 +93,7 @@ export class SMTSuperService extends SMT {
 
   deleteTail(woman: TiedWoman): void {
     this.saveStep(13, this.packageStepVars(null, woman));
-    const tail = this.getTail(woman) as Array<TiedMan>;
+    const tail = this.getTail<TiedMan>(woman);
     for (const reject of tail) {
       this.saveStep(14, this.packageStepVars(reject, woman));
       this.delete(reject, woman);
