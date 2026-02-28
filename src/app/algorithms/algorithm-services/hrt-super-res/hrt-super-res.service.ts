@@ -12,20 +12,12 @@ export class HrtSuperResService extends HRT {
   assign(res: TiedResident, hos: TiedHospital): void {
     this.changeLineColour(res, hos, 'red', 'green');
     this.stylePrefsMutual(res, hos, 'green');
-    hos.match.push(res);
-    res.match.push(hos);
+    super.assign(res, hos);
   }
 
   breakAssignment(res: TiedResident, hos: TiedHospital): void {
     this.removeLine(res, hos, 'green');
-    const hosIdx = hos.match.indexOf(res);
-    const resIdx = res.match.indexOf(hos);
-    if (hosIdx == -1 || resIdx == -1) {
-      throw Error(`assignment d.n.e. : ${res.name}, ${hos.name}`);
-    }
-    hos.match.splice(hosIdx, 1);
-    res.match.splice(resIdx, 1);
-
+    super.breakAssignment(res, hos);
     if (res.match.length == 0 && !this.freeAgents.includes(res)) {
       this.freeAgents.push(res);
     }
@@ -33,11 +25,7 @@ export class HrtSuperResService extends HRT {
 
   delete(res: TiedResident, hos: TiedHospital): void {
     this.stylePrefsMutual(res, hos, 'grey');
-    const resTie = hos.ranking[this.getRank(hos, res)];
-    const hosTie = res.ranking[this.getRank(res, hos)];
-    resTie.splice(this.getIdxInTie(resTie, res), 1);
-    hosTie.splice(this.getIdxInTie(hosTie, hos), 1);
-
+    super.delete(res, hos);
     if (this.freeAgents.includes(res) && this.hasEmptyList(res)) {
       this.freeAgents.splice(this.freeAgents.indexOf(res), 1);
     }

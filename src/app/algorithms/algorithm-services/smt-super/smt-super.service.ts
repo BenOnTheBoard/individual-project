@@ -9,20 +9,12 @@ export class SMTSuperService extends SMT {
   assign(man: TiedMan, woman: TiedWoman): void {
     this.changeLineColour(man, woman, 'red', 'green');
     this.stylePrefsMutual(man, woman, 'green');
-    woman.match.push(man);
-    man.match.push(woman);
+    super.assign(man, woman);
   }
 
   breakAssignment(man: TiedMan, woman: TiedWoman): void {
     this.removeLine(man, woman, 'green');
-    const womanIdx = woman.match.indexOf(man);
-    const manIdx = man.match.indexOf(woman);
-    if (womanIdx == -1 || manIdx == -1) {
-      throw Error(`assignment d.n.e. : ${man.name}, ${woman.name}`);
-    }
-    woman.match.splice(womanIdx, 1);
-    man.match.splice(manIdx, 1);
-
+    super.breakAssignment(man, woman);
     if (man.match.length == 0 && !this.freeAgents.includes(man)) {
       this.freeAgents.push(man);
     }
@@ -30,11 +22,7 @@ export class SMTSuperService extends SMT {
 
   delete(man: TiedMan, woman: TiedWoman): void {
     this.stylePrefsMutual(man, woman, 'grey');
-    const manTie = woman.ranking[this.getRank(woman, man)];
-    const womanTie = man.ranking[this.getRank(man, woman)];
-    manTie.splice(this.getIdxInTie(manTie, man), 1);
-    womanTie.splice(this.getIdxInTie(womanTie, woman), 1);
-
+    super.delete(man, woman);
     if (this.freeAgents.includes(man) && this.hasEmptyList(man)) {
       this.freeAgents.splice(this.freeAgents.indexOf(man), 1);
     }
