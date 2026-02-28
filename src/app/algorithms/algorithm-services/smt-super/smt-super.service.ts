@@ -6,14 +6,14 @@ import { TiedMan, TiedWoman } from '../../interfaces/Agents';
   providedIn: 'root',
 })
 export class SMTSuperService extends SMT {
-  assign(man: TiedMan, woman: TiedWoman) {
+  assign(man: TiedMan, woman: TiedWoman): void {
     this.changeLineColour(man, woman, 'red', 'green');
     this.stylePrefsMutual(man, woman, 'green');
     woman.match.push(man);
     man.match.push(woman);
   }
 
-  breakAssignment(man: TiedMan, woman: TiedWoman) {
+  breakAssignment(man: TiedMan, woman: TiedWoman): void {
     this.removeLine(man, woman, 'green');
     const womanIdx = woman.match.indexOf(man);
     const manIdx = man.match.indexOf(woman);
@@ -28,7 +28,7 @@ export class SMTSuperService extends SMT {
     }
   }
 
-  delete(man: TiedMan, woman: TiedWoman) {
+  delete(man: TiedMan, woman: TiedWoman): void {
     this.stylePrefsMutual(man, woman, 'grey');
     const manTie = woman.ranking[this.getRank(woman, man)];
     const womanTie = man.ranking[this.getRank(man, woman)];
@@ -46,42 +46,6 @@ export class SMTSuperService extends SMT {
     return man;
   }
 
-  getHead(man: TiedMan): Array<TiedWoman> {
-    for (const tie of man.ranking) {
-      if (tie.length > 0) {
-        return tie.slice();
-      }
-    }
-    throw Error(`tried to get head of empty list: ${man.name}`);
-  }
-
-  getTail(woman: TiedWoman): Array<TiedMan> {
-    for (const tie of woman.ranking.slice().reverse()) {
-      if (tie.length > 0) {
-        return tie.slice();
-      }
-    }
-    throw Error(`tried to get tail of empty list: ${woman.name}`);
-  }
-
-  getStrictSuccessors(woman: TiedWoman, match: TiedMan): Array<TiedMan> {
-    return woman.ranking
-      .slice(this.getRank(woman, match) + 1)
-      .reduce(
-        (arr: Array<TiedMan>, tie: Array<TiedMan>) => arr.concat(...tie),
-        [],
-      );
-  }
-
-  hasEmptyList(man: TiedMan): boolean {
-    for (const tie of man.ranking) {
-      if (tie.length > 0) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   allEngaged(): boolean {
     return [...this.group1Agents.values()].every((man) => man.match.length > 0);
   }
@@ -95,7 +59,8 @@ export class SMTSuperService extends SMT {
 
   removeSuccessors(man: TiedMan, woman: TiedWoman): void {
     this.saveStep(6, this.packageStepVars(man, woman));
-    for (const reject of this.getStrictSuccessors(woman, man)) {
+    const succ = this.getStrictSuccessors(woman, man) as Array<TiedMan>;
+    for (const reject of succ) {
       this.saveStep(7, this.packageStepVars(reject, woman));
       if (woman.match.includes(reject)) {
         this.saveStep(8, this.packageStepVars(reject, woman));
@@ -115,7 +80,7 @@ export class SMTSuperService extends SMT {
   }
 
   applyToHead(man: TiedMan): void {
-    const head = this.getHead(man);
+    const head = this.getHead(man) as Array<TiedWoman>;
     this.saveStep(4, this.packageStepVars(man));
 
     for (const woman of head) {
@@ -128,7 +93,8 @@ export class SMTSuperService extends SMT {
 
   deleteTail(woman: TiedWoman): void {
     this.saveStep(13, this.packageStepVars(null, woman));
-    for (const reject of this.getTail(woman)) {
+    const tail = this.getTail(woman) as Array<TiedMan>;
+    for (const reject of tail) {
       this.saveStep(14, this.packageStepVars(reject, woman));
       this.delete(reject, woman);
     }

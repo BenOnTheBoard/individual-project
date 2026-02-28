@@ -49,48 +49,9 @@ export class HrtSuperResService extends HRT {
     return man;
   }
 
-  getHead(res: TiedResident): Array<TiedHospital> {
-    for (const tie of res.ranking) {
-      if (tie.length > 0) {
-        return tie.slice();
-      }
-    }
-    throw Error(`tried to get head of empty list: ${res.name}`);
-  }
-
-  getTail(hos: TiedHospital): Array<TiedResident> {
-    for (const tie of hos.ranking.slice().reverse()) {
-      if (tie.length > 0) {
-        return tie.slice();
-      }
-    }
-    throw Error(`tried to get tail of empty list: ${hos.name}`);
-  }
-
-  getStrictSuccessors(
-    hos: TiedHospital,
-    match: TiedResident,
-  ): Array<TiedResident> {
-    return hos.ranking
-      .slice(this.getRank(hos, match) + 1)
-      .reduce(
-        (arr: Array<TiedResident>, tie: Array<TiedResident>) =>
-          arr.concat(...tie),
-        [],
-      );
-  }
-
-  hasEmptyList(res: TiedResident): boolean {
-    for (const tie of res.ranking) {
-      if (tie.length > 0) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   deleteTail(hos: TiedHospital) {
-    for (const reject of this.getTail(hos)) {
+    const tail = this.getTail(hos) as Array<TiedResident>;
+    for (const reject of tail) {
       if (hos.match.includes(reject)) {
         this.breakAssignment(reject, hos);
       }
@@ -100,7 +61,8 @@ export class HrtSuperResService extends HRT {
 
   deleteBelowWorst(hos: TiedHospital) {
     const worst = this.getWorstResident(hos);
-    for (const reject of this.getStrictSuccessors(hos, worst)) {
+    const succ = this.getStrictSuccessors(hos, worst) as Array<TiedResident>;
+    for (const reject of succ) {
       this.delete(reject, hos);
     }
   }
@@ -108,7 +70,8 @@ export class HrtSuperResService extends HRT {
   match(): void {
     while (this.freeAgents.length > 0) {
       const res = this.getNextFreeAgent();
-      for (const hos of this.getHead(res)) {
+      const head = this.getHead(res) as Array<TiedHospital>;
+      for (const hos of head) {
         this.assign(res, hos);
         if (hos.match.length > hos.capacity) {
           this.deleteTail(hos);
