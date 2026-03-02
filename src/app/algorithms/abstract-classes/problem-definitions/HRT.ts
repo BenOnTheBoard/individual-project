@@ -64,6 +64,7 @@ export abstract class HRT extends TiedMatchingAlgorithm {
       const name = this.group1Name + i;
       const agent = AgentFactory.createTiedResident(name);
       this.group1Agents.set(name, agent);
+      this.freeAgents.push(agent);
     }
 
     for (let i = 0; i < this.numberOfG2Agents; i++) {
