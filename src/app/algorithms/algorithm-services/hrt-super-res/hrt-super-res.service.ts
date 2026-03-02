@@ -67,10 +67,12 @@ export class HrtSuperResService extends HRT {
     this.saveStep(1);
     while (this.freeAgents.length > 0) {
       const res = this.getNextFreeAgent();
+      this.selectedAgents.push(this.utils.getAsChar(res));
       this.saveStep(3, this.packageStepVars(res));
       const head = this.getHead<TiedHospital>(res);
       this.saveStep(4, this.packageStepVars(res));
       for (const hos of head) {
+        this.selectedAgents.push(this.utils.getAsChar(hos));
         this.addLine(res, hos, 'red');
         this.saveStep(5, this.packageStepVars(res, hos));
         this.assign(res, hos);
@@ -84,7 +86,9 @@ export class HrtSuperResService extends HRT {
           this.saveStep(12, this.packageStepVars(null, hos));
           this.deleteBelowWorst(hos);
         }
+        this.selectedAgents.pop();
       }
+      this.selectedAgents.pop();
     }
     for (const res of this.group1Agents.values()) {
       if (res.match.length > 2) {

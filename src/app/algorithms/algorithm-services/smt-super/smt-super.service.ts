@@ -42,7 +42,6 @@ export class SMTSuperService extends SMT {
     const someEmpty = [...this.group1Agents.values()].some((man) =>
       this.hasEmptyList(man),
     );
-    console.log(someEmpty, this.allEngaged());
     return someEmpty || this.allEngaged();
   }
 
@@ -70,10 +69,6 @@ export class SMTSuperService extends SMT {
 
   applyToHead(man: TiedMan): void {
     const head = this.getHead<TiedWoman>(man);
-    console.log(head);
-    for (const f of head) {
-      console.log(man, f);
-    }
     this.saveStep(4, this.packageStepVars(man));
 
     for (const woman of head) {
