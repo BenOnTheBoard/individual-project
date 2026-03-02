@@ -9,6 +9,7 @@ import { PseudocodeComponent } from './pseudocode/pseudocode.component';
 import { ExecutionLogComponent } from './execution-log/execution-log.component';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 import { PlaybackService } from '../services/playback/playback.service';
+import { AgentFactory } from 'src/app/algorithms/interfaces/Agents';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
@@ -30,7 +31,12 @@ describe('SidebarComponent', () => {
         {
           provide: PlaybackService,
           useValue: {
-            commandList: [{ freeAgents: [] }],
+            commandList: [
+              {
+                freeAgents: [],
+                markedAgents: [AgentFactory.createTiedHospital('hospitalA', 2)],
+              },
+            ],
             algorithmData: {
               descriptions: [],
             },

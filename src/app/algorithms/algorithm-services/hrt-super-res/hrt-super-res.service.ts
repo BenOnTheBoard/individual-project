@@ -47,6 +47,11 @@ export class HrtSuperResService extends HRT {
     return man;
   }
 
+  markFullHospital(hos: TiedHospital): void {
+    if (this.fullHospitals.includes(hos)) return;
+    this.fullHospitals.push(hos);
+  }
+
   deleteTail(hos: TiedHospital) {
     const tail = this.getTail<TiedResident>(hos);
     this.saveStep(7, this.packageStepVars(null, hos));
@@ -72,8 +77,25 @@ export class HrtSuperResService extends HRT {
     }
   }
 
+  stabilityConditions(): void {
+    for (const res of this.group1Agents.values()) {
+      if (res.match.length >= 2) {
+        this.saveStep(17, this.packageStepVars(res));
+        return;
+      }
+    }
+    for (const hos of this.fullHospitals) {
+      if (hos.match.length < hos.capacity) {
+        this.saveStep(19, this.packageStepVars(null, hos));
+        return;
+      }
+    }
+    this.saveStep(20);
+  }
+
   match(): void {
     this.fullHospitals = [];
+    this.algorithmSpecificData['markedAgents'] = this.fullHospitals;
     this.saveStep(1);
     while (this.freeAgents.length > 0) {
       const res = this.getNextFreeAgent();
@@ -92,7 +114,7 @@ export class HrtSuperResService extends HRT {
         }
         this.saveStep(11, this.packageStepVars(null, hos));
         if (hos.match.length == hos.capacity) {
-          this.fullHospitals.push(hos);
+          this.markFullHospital(hos);
           this.saveStep(12, this.packageStepVars(null, hos));
           this.deleteBelowWorst(hos);
         }
@@ -100,18 +122,6 @@ export class HrtSuperResService extends HRT {
       }
       this.selectedAgents.pop();
     }
-    for (const res of this.group1Agents.values()) {
-      if (res.match.length >= 2) {
-        this.saveStep(17, this.packageStepVars(res));
-        return;
-      }
-    }
-    for (const hos of this.fullHospitals) {
-      if (hos.match.length < hos.capacity) {
-        this.saveStep(19, this.packageStepVars(null, hos));
-        return;
-      }
-    }
-    this.saveStep(20);
+    this.stabilityConditions();
   }
 }
