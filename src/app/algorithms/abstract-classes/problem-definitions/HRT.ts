@@ -48,6 +48,9 @@ export abstract class HRT extends TiedMatchingAlgorithm {
   }
 
   checkStability(): boolean {
+    for (const res of this.group1Agents.values()) {
+      if (res.match.length != 1) return false;
+    }
     for (const hos of this.group2Agents.values()) {
       for (const tie of hos.ranking) {
         for (const res of tie) {

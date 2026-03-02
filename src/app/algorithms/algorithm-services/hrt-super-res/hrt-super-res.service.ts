@@ -91,7 +91,7 @@ export class HrtSuperResService extends HRT {
       this.selectedAgents.pop();
     }
     for (const res of this.group1Agents.values()) {
-      if (res.match.length > 2) {
+      if (res.match.length >= 2) {
         this.saveStep(17, this.packageStepVars(res));
         return;
       }
