@@ -39,36 +39,64 @@ export class HrtSuperResService extends HRT {
 
   deleteTail(hos: TiedHospital) {
     const tail = this.getTail<TiedResident>(hos);
+    this.saveStep(7, this.packageStepVars(null, hos));
     for (const reject of tail) {
+      this.saveStep(8, this.packageStepVars(reject, hos));
       if (hos.match.includes(reject)) {
+        this.saveStep(9, this.packageStepVars(reject, hos));
         this.breakAssignment(reject, hos);
       }
+      this.saveStep(10, this.packageStepVars(reject, hos));
       this.delete(reject, hos);
     }
   }
 
   deleteBelowWorst(hos: TiedHospital) {
     const worst = this.getWorstResident(hos);
+    this.saveStep(13, this.packageStepVars(worst, hos));
     const succ = this.getStrictSuccessors<TiedResident>(hos, worst);
+    this.saveStep(14, this.packageStepVars(worst, hos));
     for (const reject of succ) {
+      this.saveStep(15, this.packageStepVars(reject, hos));
       this.delete(reject, hos);
     }
   }
 
   match(): void {
+    this.saveStep(1);
     while (this.freeAgents.length > 0) {
       const res = this.getNextFreeAgent();
+      this.saveStep(3, this.packageStepVars(res));
       const head = this.getHead<TiedHospital>(res);
+      this.saveStep(4, this.packageStepVars(res));
       for (const hos of head) {
+        this.addLine(res, hos, 'red');
+        this.saveStep(5, this.packageStepVars(res, hos));
         this.assign(res, hos);
+        this.saveStep(6, this.packageStepVars(null, hos));
         if (hos.match.length > hos.capacity) {
           this.deleteTail(hos);
         }
+        this.saveStep(11, this.packageStepVars(null, hos));
         if (hos.match.length == hos.capacity) {
           this.fullHospitals.push(hos);
+          this.saveStep(12, this.packageStepVars(null, hos));
           this.deleteBelowWorst(hos);
         }
       }
     }
+    for (const res of this.group1Agents.values()) {
+      if (res.match.length > 2) {
+        this.saveStep(17, this.packageStepVars(res));
+        return;
+      }
+    }
+    for (const hos of this.fullHospitals) {
+      if (hos.match.length < hos.capacity) {
+        this.saveStep(19, this.packageStepVars(null, hos));
+        return;
+      }
+    }
+    this.saveStep(20);
   }
 }

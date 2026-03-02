@@ -28,7 +28,7 @@ export const hrtSuperResConfig = new AlgorithmBuilder()
     16: '',
     17: 'Due to %resident%, we can be sure there was no super-stable matching. ',
     18: '',
-    19: 'Due to %hospital%, is undersso we can be sure there was no super-stable matching. ',
+    19: 'Due to %hospital%, is undersubscribed we can be sure there was no super-stable matching. ',
     20: 'We have a super-stable matching.',
   })
   .code([
