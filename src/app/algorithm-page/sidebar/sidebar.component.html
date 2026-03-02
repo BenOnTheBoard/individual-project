@@ -3,6 +3,9 @@
     <div class="grid-container-algorithm" id="sidebarContent">
       <alg-description />
       <free-agents />
+      @if (algRetriever.marksAgents(algRetriever.currentAlgorithm.id)) {
+      <marked-agents />
+      }
       <pseudocode />
       <execution-log style="overflow: auto;" />
     </div>
