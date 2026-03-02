@@ -16,6 +16,7 @@ import { smManEGSConfig } from './algorithm-configs/sm-man-egs.config';
 import { smManGSConfig } from './algorithm-configs/sm-man-gs.config';
 import { smtSuperManConfig } from './algorithm-configs/smt-super-man.config';
 import { hrtSuperResConfig } from './algorithm-configs/hrt-super-res.config';
+import { HrtSuperResService } from '../algorithms/algorithm-services/hrt-super-res/hrt-super-res.service';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +35,7 @@ export class AlgorithmRetrievalService {
   protected spaStudentEgsService = inject(SpaStudentEgsService);
   //Ties
   protected smtSuperService = inject(SMTSuperService);
+  protected hrtSuperResService = inject(HrtSuperResService);
 
   #mapOfAvailableAlgorithms = new Map<String, Algorithm>();
   #possiblyUnstableAlgs = ['smp-room-irv', 'smt-super-man'];
@@ -74,7 +76,10 @@ export class AlgorithmRetrievalService {
         'smt-super-man',
         smtSuperManConfig.service(this.smtSuperService).build(),
       )
-      .set('hrt-super-res', hrtSuperResConfig.build());
+      .set(
+        'hrt-super-res',
+        hrtSuperResConfig.service(this.hrtSuperResService).build(),
+      );
   }
 
   getListOfAlgorithms(): Array<Algorithm> {
