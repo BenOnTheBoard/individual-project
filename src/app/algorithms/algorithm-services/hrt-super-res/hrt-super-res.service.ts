@@ -63,6 +63,8 @@ export class HrtSuperResService extends HRT {
   }
 
   match(): void {
+    this.freeAgents = [];
+    this.fullHospitals = [];
     this.saveStep(1);
     while (this.freeAgents.length > 0) {
       const res = this.getNextFreeAgent();

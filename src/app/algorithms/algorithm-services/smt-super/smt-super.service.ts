@@ -89,6 +89,7 @@ export class SMTSuperService extends SMT {
   }
 
   match(): void {
+    this.freeAgents = [];
     this.saveStep(1);
     do {
       while (this.freeAgents.length > 0) {
