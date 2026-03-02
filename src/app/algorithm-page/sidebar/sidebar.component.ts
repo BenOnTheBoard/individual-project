@@ -34,4 +34,8 @@ export class SidebarComponent extends AbstractSidebarComponent {
   getIsShowing(): boolean {
     return this.isCodeShowing();
   }
+
+  marksAgent(): boolean {
+    return this.algRetriever.marksAgents(this.algRetriever.currentAlgorithm.id);
+  }
 }
