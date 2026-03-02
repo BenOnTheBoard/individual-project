@@ -23,12 +23,12 @@ export abstract class SMT extends TiedMatchingAlgorithm {
     if (man.match.length > 0) {
       const manBlock = this.getOriginalRank(man, woman, 'group1');
       const manMatch = this.getOriginalRank(man, man.match[0], 'group1');
-      manBlocks = manBlock < manMatch;
+      manBlocks = manBlock <= manMatch;
     }
     if (woman.match.length > 0) {
       const womanBlock = this.getOriginalRank(woman, man, 'group2');
       const womanMatch = this.getOriginalRank(woman, woman.match[0], 'group2');
-      womanBlocks = womanBlock < womanMatch;
+      womanBlocks = womanBlock <= womanMatch;
     }
     return manBlocks && womanBlocks;
   }
@@ -63,11 +63,6 @@ export abstract class SMT extends TiedMatchingAlgorithm {
       const agent = AgentFactory.createTiedWoman(name);
       this.group2Agents.set(name, agent);
     }
-  }
-
-  generatePrefs(): void {
-    this.generateRandomRankings(this.group1Agents, this.group2Agents);
-    this.generateRandomRankings(this.group2Agents, this.group1Agents);
   }
 
   abstract match(): void;

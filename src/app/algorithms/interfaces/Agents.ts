@@ -36,12 +36,18 @@ export type Person = AbstractUntiedAgent<Person> & {
 interface AbstractTiedAgent<T> extends Agent<T> {
   ranking: Array<Array<T>>;
 }
+interface TiedCapAgent<T> extends AbstractTiedAgent<T> {
+  capacity: number;
+}
 
 // We cast the other agents to this one as a generic type
 export type TiedAgent = AbstractTiedAgent<TiedAgent>;
 
 export type TiedWoman = AbstractTiedAgent<TiedMan>;
 export type TiedMan = AbstractTiedAgent<TiedWoman>;
+
+export type TiedResident = AbstractTiedAgent<TiedHospital>;
+export type TiedHospital = TiedCapAgent<TiedResident>;
 
 export class AgentFactory {
   static #createBaseAgent(name: string, extras?: Object): Object {
@@ -95,5 +101,13 @@ export class AgentFactory {
 
   static createTiedMan(name: string): TiedMan {
     return this.#createBaseAgent(name, { lastProposed: null }) as TiedMan;
+  }
+
+  static createTiedResident(name: string): TiedResident {
+    return this.#createBaseAgent(name) as TiedResident;
+  }
+
+  static createTiedHospital(name: string, capacity: number): TiedHospital {
+    return this.#createBaseAgent(name, { capacity }) as TiedHospital;
   }
 }

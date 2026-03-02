@@ -1,7 +1,7 @@
 import { Group, TiedAgent } from '../interfaces/Agents';
 import { MatchingAlgorithm } from './MatchingAlgorithm';
 
-const TIEFREQ = 0.4;
+const TIEFREQ = 0.5;
 const MAXTIE = 3;
 
 export abstract class TiedMatchingAlgorithm extends MatchingAlgorithm {
@@ -56,6 +56,11 @@ export abstract class TiedMatchingAlgorithm extends MatchingAlgorithm {
     }
   }
 
+  generatePrefs(): void {
+    this.generateRandomRankings(this.group1Agents, this.group2Agents);
+    this.generateRandomRankings(this.group2Agents, this.group1Agents);
+  }
+
   packageTiedList(list: Array<Array<TiedAgent>>): Array<String> {
     const textRanking = new Array<String>();
     for (const tie of list) {
@@ -89,5 +94,59 @@ export abstract class TiedMatchingAlgorithm extends MatchingAlgorithm {
     const prefs = group == 'group1' ? this.origPrefsG1 : this.origPrefsG2;
     const ranking = prefs.get(agent.name);
     return ranking.findIndex((tie) => tie.includes(target.name));
+  }
+
+  // ------ Algorithm Utilities ------
+
+  assign(a1: TiedAgent, a2: TiedAgent): void {
+    a1.match.push(a2);
+    a2.match.push(a1);
+  }
+
+  breakAssignment(a1: TiedAgent, a2: TiedAgent): void {
+    const a1Idx = a1.match.indexOf(a2);
+    const a2Idx = a2.match.indexOf(a1);
+    if (a1Idx == -1 || a2Idx == -1) {
+      throw Error(`assignment d.n.e. : ${a1.name}, ${a2.name}`);
+    }
+    a1.match.splice(a1Idx, 1);
+    a2.match.splice(a2Idx, 1);
+  }
+
+  delete(a1: TiedAgent, a2: TiedAgent): void {
+    const a1Tie = a1.ranking[this.getRank(a1, a2)];
+    const a2Tie = a2.ranking[this.getRank(a2, a1)];
+    a1Tie.splice(this.getIdxInTie(a1Tie, a2), 1);
+    a2Tie.splice(this.getIdxInTie(a2Tie, a1), 1);
+  }
+
+  getHead<T>(agent: TiedAgent): Array<T> {
+    for (const tie of agent.ranking) {
+      if (tie.length > 0) return tie.slice() as Array<T>;
+    }
+    throw Error(`tried to get head of empty list: ${agent.name}`);
+  }
+
+  getTail<T>(agent: TiedAgent): Array<T> {
+    for (const tie of agent.ranking.slice().reverse()) {
+      if (tie.length > 0) return tie.slice() as Array<T>;
+    }
+    throw Error(`tried to get tail of empty list: ${agent.name}`);
+  }
+
+  getStrictSuccessors<T>(agent: TiedAgent, match: TiedAgent): Array<T> {
+    return agent.ranking
+      .slice(this.getRank(agent, match) + 1)
+      .reduce(
+        (arr: Array<TiedAgent>, tie: Array<TiedAgent>) => arr.concat(...tie),
+        [],
+      ) as Array<T>;
+  }
+
+  hasEmptyList(agent: TiedAgent): boolean {
+    for (const tie of agent.ranking) {
+      if (tie.length > 0) return false;
+    }
+    return true;
   }
 }

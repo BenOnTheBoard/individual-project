@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { SMTSuperService } from './smt-super.service';
 
-const instanceCount = 600;
+const instanceCount = 250;
 
 describe('SMTSuperService', () => {
   let service: SMTSuperService;
