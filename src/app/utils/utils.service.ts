@@ -32,6 +32,13 @@ export class UtilsService {
     return arr[Math.floor(Math.random() * arr.length)];
   }
 
+  argMax<T>(items: Array<T>, score: (x: T) => number): T {
+    if (items.length === 0) throw Error('empty list in argMax');
+    return items.reduce((best, current) =>
+      score(current) > score(best) ? current : best,
+    );
+  }
+
   cloneList<T>(list: Array<T>): Array<T> {
     return [...list];
   }
@@ -64,9 +71,7 @@ export class UtilsService {
   static validateEven(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const { value } = control;
-      if (value == null || value % 2 === 0) {
-        return null;
-      }
+      if (value == null || value % 2 === 0) return null;
       return { even: { value: control.value, requiredEven: true } };
     };
   }

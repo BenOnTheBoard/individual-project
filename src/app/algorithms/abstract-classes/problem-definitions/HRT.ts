@@ -78,8 +78,9 @@ export abstract class HRT extends TiedMatchingAlgorithm {
     this.algorithmSpecificData['hospitalCapacity'] = this.hospitalCapacity;
   }
 
-  getWorstResident(hospital: TiedHospital): TiedResident {
-    throw Error('not implemented');
+  getWorstResident(hos: TiedHospital): TiedResident {
+    const rankFunc = (res: TiedResident) => this.getRank(hos, res);
+    return this.utils.argMax(hos.match, rankFunc);
   }
 
   provisionallyAssign(resident: TiedResident, hospital: TiedHospital) {

@@ -77,12 +77,9 @@ export abstract class HR extends UntiedMatchingAlgorithm {
     this.generateRandomRankings(this.group2Agents, this.group1Agents);
   }
 
-  getWorstResident(hospital: Hospital): Resident {
-    const positionMap: Map<number, Resident> = new Map();
-    for (const resident of hospital.match) {
-      positionMap.set(this.getRank(hospital, resident), resident);
-    }
-    return positionMap.get(Math.max(...Array.from(positionMap.keys())));
+  getWorstResident(hos: Hospital): Resident {
+    const rankFunc = (res: Resident) => this.getRank(hos, res);
+    return this.utils.argMax(hos.match, rankFunc);
   }
 
   assignmentBreakStyling(resident: Resident, hospital: Hospital): void {
