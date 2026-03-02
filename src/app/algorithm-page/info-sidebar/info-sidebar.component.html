@@ -482,8 +482,8 @@
             The goal here is super-stability. This means that there is no man-woman pair which is not part of the
             matching such that:</p>
           <ul>
-            <li>The man prefers his partner to the woman or is indifferent between them.</li>
-            <li>The woman prefers her partner to the man or is indifferent between them.</li>
+            <li>The man prefers his partner (or lack thereof) to the woman or is indifferent between them.</li>
+            <li>The woman prefers her partner (or lack thereof) to the man or is indifferent between them.</li>
           </ul>
           <p>Such a pair is called a <strong>blocking pair</strong>.</p>
         </div>
@@ -520,6 +520,69 @@
           <p>
             We remove the woman from the man's preference list and the man from the woman's preference list. We
             represent deletions in grey. These two agents can no longer be assigned.
+          </p>
+        </div>
+      </div>
+      }
+
+      <!-- STABLE MARRIAGE WITH TIES  -->
+      @if (algRetriever.currentAlgorithm.id == 'hrt-super-res') {
+      <div>
+        <div>
+          <h2 id="title">Goal</h2>
+          <p>
+            The goal here is super-stability. This means that there is no resident-hospital pair <strong>(r,h)</strong>
+            which is not part of the matching such that:</p>
+          <ul>
+            <li><strong>r</strong> prefers their current hospital (or lack thereof) to <strong>h</strong> or is
+              indifferent between them.</li>
+            <li>Either:
+              <ul>
+                <li><strong>h</strong> is undersubscribed</li>
+                <li><strong>h</strong> prefers their worst existing resident to <strong>r</strong> or is indifferent
+                  between them.
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <p>Such a pair is called a <strong>blocking pair</strong>.</p>
+        </div>
+
+        <div>
+          <h2>Agents</h2>
+          <p>Each agent has the following properties:</p>
+          <ul>
+            <li><strong>Preference List/Ranking</strong> - a list of ties. Each tie is represented with a pair of
+              brackets. The agent is indifferent between all the other agents collected by a pair of brackets. The
+              leftmost tie is the most preferable and the rightmost tie the least.</li>
+            <li><strong>Head / Tail</strong> - specific non-empty ties on the agent's list. The head is the leftmost
+              non-empty tie and the tail is the rightmost non-empty tie.</li>
+            <li><strong>Current Assignments</strong> - these are the provisional matching. We will add and remove pairs
+              from it as we proceede.</li>
+          </ul>
+          <p>All residents are initially <strong>free</strong>. Residents are in this state whenever they
+            are unassigned and there are hospitals left on their preference list.</p>
+          <p>Hospitals additionally have a <strong>capacity</strong> which dictates the maximum number of residents that
+            may be assigned to them. If the number of residents assigned to a hospital is less than, equal to, or
+            greater than this capacity we refer to it as undersubscribed, full, or oversubscribed respectively.</p>
+        </div>
+
+        <div>
+          <h2>Operations</h2>
+          <h4><strong>Assign</strong></h4>
+          <p>
+            We add a line (pair) to our current matching. Notice that residents might be assigned to many hospitals in
+            the during execution, although they can only be assigned to one in a super-stable matching.
+          </p>
+          <h4><strong>Break Assignment</strong></h4>
+          <p>
+            We remove a line (pair) from our current assignments because this assignment cannot be part of any
+            super-stable matching. See Irving, Manlove, and Scott's paper for proofs.
+          </p>
+          <h4><strong>Delete Pair</strong></h4>
+          <p>
+            We remove the hospital from the resident's preference list and the residents from the hospital's preference
+            list. We represent deletions in grey. These two agents can no longer be assigned.
           </p>
         </div>
       </div>
