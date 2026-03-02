@@ -36,19 +36,27 @@ export abstract class HRT extends TiedMatchingAlgorithm {
     if (res.match.length > 0) {
       const resBlock = this.getOriginalRank(res, hos, 'group1');
       const resMatch = this.getOriginalRank(res, res.match[0], 'group1');
-      resBlocks = resBlock < resMatch;
+      resBlocks = resBlock <= resMatch;
     }
     if (hos.match.length >= hos.capacity) {
       const worstRes = this.getWorstResident(hos);
       const hosBlock = this.getOriginalRank(hos, res, 'group2');
       const hosWorst = this.getOriginalRank(hos, worstRes, 'group2');
-      hosBlocks = hosBlock < hosWorst;
+      hosBlocks = hosBlock <= hosWorst;
     }
     return resBlocks && hosBlocks;
   }
 
   checkStability(): boolean {
-    throw Error('not implemented');
+    for (const hos of this.group2Agents.values()) {
+      for (const tie of hos.ranking) {
+        for (const res of tie) {
+          if (hos.match.includes(res)) continue;
+          if (this.isBlockingPair(res, hos)) return false;
+        }
+      }
+    }
+    return true;
   }
 
   generateAgents(): void {
