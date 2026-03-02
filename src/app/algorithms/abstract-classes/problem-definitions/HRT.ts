@@ -87,6 +87,10 @@ export abstract class HRT extends TiedMatchingAlgorithm {
     return this.utils.argMax(hos.match, rankFunc);
   }
 
+  isFree(res: TiedResident): boolean {
+    return res.match.length == 0 && !this.hasEmptyList(res);
+  }
+
   provisionallyAssign(resident: TiedResident, hospital: TiedHospital) {
     resident.match.push(hospital);
     hospital.match.push(resident);

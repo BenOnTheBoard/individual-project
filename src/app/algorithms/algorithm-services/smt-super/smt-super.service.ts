@@ -10,28 +10,32 @@ export class SMTSuperService extends SMT {
     this.changeLineColour(man, woman, 'red', 'green');
     this.stylePrefsMutual(man, woman, 'green');
     super.assign(man, woman);
+    this.recalculateFreeAgents();
   }
 
   breakAssignment(man: TiedMan, woman: TiedWoman): void {
     this.removeLine(man, woman, 'green');
     super.breakAssignment(man, woman);
-    if (man.match.length == 0 && !this.freeAgents.includes(man)) {
-      this.freeAgents.push(man);
-    }
+    this.recalculateFreeAgents();
   }
 
   delete(man: TiedMan, woman: TiedWoman): void {
     this.stylePrefsMutual(man, woman, 'grey');
     super.delete(man, woman);
-    if (this.freeAgents.includes(man) && this.hasEmptyList(man)) {
-      this.freeAgents.splice(this.freeAgents.indexOf(man), 1);
-    }
+    this.recalculateFreeAgents();
   }
 
   getNextFreeAgent(): TiedMan {
     const man = this.freeAgents[0];
     this.freeAgents.shift();
     return man;
+  }
+
+  recalculateFreeAgents(): void {
+    this.freeAgents = [];
+    for (const res of this.group1Agents.values()) {
+      if (this.isFree(res)) this.freeAgents.push(res);
+    }
   }
 
   allEngaged(): boolean {

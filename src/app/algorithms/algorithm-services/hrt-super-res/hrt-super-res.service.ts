@@ -9,26 +9,36 @@ export class HrtSuperResService extends HRT {
   freeAgents: Array<TiedResident>;
   fullHospitals: Array<TiedHospital>;
 
+  recalculateFreeAgents(): void {
+    this.freeAgents = [];
+    for (const res of this.group1Agents.values()) {
+      if (this.isFree(res)) this.freeAgents.push(res);
+    }
+  }
+
   assign(res: TiedResident, hos: TiedHospital): void {
     this.changeLineColour(res, hos, 'red', 'green');
     this.stylePrefsMutual(res, hos, 'green');
     super.assign(res, hos);
+    this.recalculateFreeAgents();
+    if (hos.match.length >= hos.capacity) {
+      this.setCapacityStyle(hos, 'green');
+    }
   }
 
   breakAssignment(res: TiedResident, hos: TiedHospital): void {
     this.removeLine(res, hos, 'green');
     super.breakAssignment(res, hos);
-    if (res.match.length == 0 && !this.freeAgents.includes(res)) {
-      this.freeAgents.push(res);
+    this.recalculateFreeAgents();
+    if (hos.match.length < hos.capacity) {
+      this.setCapacityStyle(hos, 'black');
     }
   }
 
   delete(res: TiedResident, hos: TiedHospital): void {
     this.stylePrefsMutual(res, hos, 'grey');
     super.delete(res, hos);
-    if (this.freeAgents.includes(res) && this.hasEmptyList(res)) {
-      this.freeAgents.splice(this.freeAgents.indexOf(res), 1);
-    }
+    this.recalculateFreeAgents();
   }
 
   getNextFreeAgent(): TiedResident {

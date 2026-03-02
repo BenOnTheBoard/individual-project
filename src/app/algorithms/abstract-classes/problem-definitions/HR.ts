@@ -85,7 +85,9 @@ export abstract class HR extends UntiedMatchingAlgorithm {
   assignmentBreakStyling(resident: Resident, hospital: Hospital): void {
     this.removeLine(resident, hospital, 'green');
     this.stylePrefsMutual(resident, hospital, 'grey');
-    this.setCapacityStyle(hospital, 'black');
+    if (hospital.match.length < hospital.capacity) {
+      this.setCapacityStyle(hospital, 'black');
+    }
   }
 
   breakAssignment(resident: Resident, hospital: Hospital): void {
