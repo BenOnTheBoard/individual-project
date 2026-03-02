@@ -38,7 +38,7 @@ export class AlgorithmRetrievalService {
   protected hrtSuperResService = inject(HrtSuperResService);
 
   #mapOfAvailableAlgorithms = new Map<String, Algorithm>();
-  #possiblyUnstableAlgs = ['smp-room-irv', 'smt-super-man'];
+  #possiblyUnstableAlgs = ['smp-room-irv', 'smt-super-man', 'hrt-super-res'];
 
   #irregularPluralMap: Map<string, string> = new Map([
     ['Man', 'Men'],
