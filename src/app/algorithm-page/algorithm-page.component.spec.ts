@@ -14,6 +14,11 @@ import { mockAlgorithmRetrievalService } from '../mock-services/algorithm-retrie
 describe('AlgorithmPageComponent', () => {
   let component: AlgorithmPageComponent;
   let fixture: ComponentFixture<AlgorithmPageComponent>;
+  const mockCanvasService = jasmine.createSpyObj<CanvasService>([
+    'initialise',
+    'redrawCanvas',
+    'setCanvas',
+  ]);
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -29,11 +34,7 @@ describe('AlgorithmPageComponent', () => {
         mockAlgorithmRetrievalService,
         {
           provide: CanvasService,
-          useValue: {
-            initialise: jasmine.createSpy('initialise'),
-            redrawCanvas: jasmine.createSpy('redrawCanvas'),
-            setCanvas: jasmine.createSpy('setCanvas'),
-          },
+          useValue: mockCanvasService,
         },
         GsStableMarriageService,
       ],
