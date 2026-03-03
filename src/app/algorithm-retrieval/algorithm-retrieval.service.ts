@@ -39,6 +39,7 @@ export class AlgorithmRetrievalService {
 
   #mapOfAvailableAlgorithms = new Map<String, Algorithm>();
   #possiblyUnstableAlgs = ['smp-room-irv', 'smt-super-man', 'hrt-super-res'];
+  #marksAgents = ['hrt-super-res'];
 
   #irregularPluralMap: Map<string, string> = new Map([
     ['Man', 'Men'],
@@ -98,5 +99,9 @@ export class AlgorithmRetrievalService {
 
   mayBeUnstable(id: string) {
     return this.#possiblyUnstableAlgs.includes(id);
+  }
+
+  marksAgents(id: string) {
+    return this.#marksAgents.includes(id);
   }
 }

@@ -39,6 +39,7 @@ import { AgentTitlesComponent } from './algorithm-page/agent-titles/agent-titles
 import { InfoSidebarComponent } from './algorithm-page/info-sidebar/info-sidebar.component';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { AgentCountFormComponent } from './forms/agent-count-form/agent-count-form.component';
+import { MarkedAgentsComponent } from './algorithm-page/sidebar/marked-agents/marked-agents.component';
 
 @NgModule({
   imports: [
@@ -59,6 +60,7 @@ import { AgentCountFormComponent } from './forms/agent-count-form/agent-count-fo
     SidebarComponent,
     AlgDescriptionComponent,
     FreeAgentsComponent,
+    MarkedAgentsComponent,
     PseudocodeComponent,
     ExecutionLogComponent,
     AgentTitlesComponent,

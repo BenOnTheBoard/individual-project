@@ -1,8 +1,12 @@
 <nav #sidebarContainer class="sidebar col-md-3 d-md-block" [ngClass]="{'moveContentToTop': tutorialStep() == 2}">
   <div class="sidebar-sticky shadow-lg">
-    <div class="grid-container-algorithm" id="sidebarContent">
+    <div class="grid-container-algorithm"
+      [ngClass]="{'sidebarContentWithMarked' : marksAgent(), 'sidebarContentNoMarked': !marksAgent()}">
       <alg-description />
       <free-agents />
+      @if (marksAgent()) {
+      <marked-agents />
+      }
       <pseudocode />
       <execution-log style="overflow: auto;" />
     </div>

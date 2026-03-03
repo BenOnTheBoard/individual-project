@@ -1,26 +1,27 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { FreeAgentsComponent } from './free-agents.component';
+import { MarkedAgentsComponent } from './marked-agents.component';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 import { PlaybackService } from '../../services/playback/playback.service';
 import { AgentFactory } from 'src/app/algorithms/interfaces/Agents';
 
-describe('FreeAgentsComponent', () => {
-  let component: FreeAgentsComponent;
-  let fixture: ComponentFixture<FreeAgentsComponent>;
+describe('MarkedAgentsComponent', () => {
+  let component: MarkedAgentsComponent;
+  let fixture: ComponentFixture<MarkedAgentsComponent>;
   const mockAgent = AgentFactory.createTiedHospital('hospitalA', 2);
   const mockStep = {
-    freeAgents: [mockAgent],
+    algorithmSpecificData: {
+      markedAgents: [mockAgent],
+    },
   };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FreeAgentsComponent],
+      imports: [MarkedAgentsComponent],
       providers: [
         {
           provide: PlaybackService,
           useValue: {
-            commandList: [{ freeAgents: [] }],
+            commandList: [mockStep],
             stepCounter: 0,
             getCurrentStep: jasmine
               .createSpy('getCurrentStep')
@@ -45,7 +46,7 @@ describe('FreeAgentsComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FreeAgentsComponent);
+    fixture = TestBed.createComponent(MarkedAgentsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

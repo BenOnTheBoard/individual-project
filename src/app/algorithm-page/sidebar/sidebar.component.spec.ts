@@ -9,10 +9,18 @@ import { PseudocodeComponent } from './pseudocode/pseudocode.component';
 import { ExecutionLogComponent } from './execution-log/execution-log.component';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 import { PlaybackService } from '../services/playback/playback.service';
+import { AgentFactory } from 'src/app/algorithms/interfaces/Agents';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
   let fixture: ComponentFixture<SidebarComponent>;
+  const mockAgent = AgentFactory.createTiedHospital('hospitalA', 2);
+  const mockStep = {
+    freeAgents: [mockAgent],
+    algorithmSpecificData: {
+      markedAgents: [mockAgent],
+    },
+  };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -30,11 +38,14 @@ describe('SidebarComponent', () => {
         {
           provide: PlaybackService,
           useValue: {
-            commandList: [{ freeAgents: [] }],
+            commandList: [mockStep],
             algorithmData: {
               descriptions: [],
             },
             stepCounter: 0,
+            getCurrentStep: jasmine
+              .createSpy('getCurrentStep')
+              .and.returnValue(mockStep),
           },
         },
         {
@@ -48,6 +59,7 @@ describe('SidebarComponent', () => {
               ['Woman', 'Women'],
             ]),
             getSide: jasmine.createSpy('getSide'),
+            marksAgents: jasmine.createSpy('marksAgents').and.returnValue(true),
           },
         },
       ],

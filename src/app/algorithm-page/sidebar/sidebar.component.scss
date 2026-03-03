@@ -52,10 +52,17 @@ Sidebar
   text-transform: uppercase;
 }
 
-#sidebarContent {
+.sidebarContentNoMarked {
   height: 100%;
   display: grid;
   grid-template-rows: 0.2fr 0.15fr 0.1fr 2fr;
+  grid-auto-rows: minmax(100px, auto);
+}
+
+.sidebarContentWithMarked {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 0.2fr 0.15fr 0.15fr 0.1fr 2fr;
   grid-auto-rows: minmax(100px, auto);
 }
 

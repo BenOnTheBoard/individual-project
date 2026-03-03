@@ -106,6 +106,10 @@ export class PlaybackService {
     this.updateCurrentCommand();
   }
 
+  getCurrentStep(): Step {
+    return this.commandList[this.stepCounter];
+  }
+
   async toggle() {
     if (this.firstRun || this.pause) {
       this.firstRun = false;
