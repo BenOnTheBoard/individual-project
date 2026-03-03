@@ -107,6 +107,23 @@ describe('individual-project', () => {
     buttonTests();
   });
 
+  it('smt-super-man', () => {
+    cy.visit('/');
+    cy.get('#algorithmsLink').click();
+    cy.get('#smt-super-man').type('5', { force: true });
+    cy.get('#smt-super-man').type('{enter}', { force: true });
+    buttonTests();
+  });
+
+  it('hrt-super-res', () => {
+    cy.visit('/');
+    cy.get('#algorithmsLink').click();
+    cy.get('#hrt-super-res1').type('5', { force: true });
+    cy.get('#hrt-super-res2').type('5', { force: true });
+    cy.get('#hrt-super-res2').type('{enter}', { force: true });
+    buttonTests();
+  });
+
   afterEach(() => {
     cy.wrap(consoleErrors, { log: false }).should('have.length', 0);
   });
