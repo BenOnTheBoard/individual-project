@@ -1,14 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 import { LayoutService } from '../layout/layout.service';
 import { TextRendererService } from '../text-renderer/text-renderer.service';
 import { ColourHexService } from 'src/app/utils/colour-hex.service';
 import { AgentRendererService } from './agent-renderer.service';
+import { mockAlgorithmRetrievalService } from 'src/app/mock-services/algorithm-retrieval.mock';
 
 describe('AgentRendererService', () => {
   let service: AgentRendererService;
   let mockCtx: jasmine.SpyObj<CanvasRenderingContext2D>;
-  let mockalgRetriever: Partial<AlgorithmRetrievalService>;
   let mockLayoutService: jasmine.SpyObj<LayoutService>;
   let mockTextRenderer: jasmine.SpyObj<TextRendererService>;
   let mockColourHex: jasmine.SpyObj<ColourHexService>;
@@ -32,10 +31,6 @@ describe('AgentRendererService', () => {
           .and.returnValue({ width: 0 }),
       },
     );
-    mockalgRetriever = {
-      numberOfG1Agents: 2,
-      numberOfG2Agents: 2,
-    } as AlgorithmRetrievalService;
     mockLayoutService = jasmine.createSpyObj('LayoutService', [
       'getPositionOfAgent',
     ]);
@@ -51,7 +46,7 @@ describe('AgentRendererService', () => {
     TestBed.configureTestingModule({
       providers: [
         AgentRendererService,
-        { provide: AlgorithmRetrievalService, useValue: mockalgRetriever },
+        mockAlgorithmRetrievalService,
         { provide: LayoutService, useValue: mockLayoutService },
         { provide: TextRendererService, useValue: mockTextRenderer },
         { provide: ColourHexService, useValue: mockColourHex },

@@ -1,12 +1,9 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
-
 import { InfoSidebarComponent } from './info-sidebar.component';
-
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
+import { mockAlgorithmRetrievalService } from 'src/app/mock-services/algorithm-retrieval.mock';
 
 describe('InfoSidebarComponent', () => {
   let component: InfoSidebarComponent;
@@ -20,16 +17,7 @@ describe('InfoSidebarComponent', () => {
         FormsModule,
         InfoSidebarComponent,
       ],
-      providers: [
-        {
-          provide: AlgorithmRetrievalService,
-          useValue: {
-            currentAlgorithm: {
-              name: '',
-            },
-          },
-        },
-      ],
+      providers: [mockAlgorithmRetrievalService],
     }).compileComponents();
   }));
 

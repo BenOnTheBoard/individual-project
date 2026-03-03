@@ -7,20 +7,12 @@ import { AlgDescriptionComponent } from './alg-description/alg-description.compo
 import { FreeAgentsComponent } from './free-agents/free-agents.component';
 import { PseudocodeComponent } from './pseudocode/pseudocode.component';
 import { ExecutionLogComponent } from './execution-log/execution-log.component';
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
-import { PlaybackService } from '../services/playback/playback.service';
-import { AgentFactory } from 'src/app/algorithms/interfaces/Agents';
+import { mockPlaybackService } from 'src/app/mock-services/playback.mock';
+import { mockAlgorithmRetrievalService } from 'src/app/mock-services/algorithm-retrieval.mock';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
   let fixture: ComponentFixture<SidebarComponent>;
-  const mockAgent = AgentFactory.createTiedHospital('hospitalA', 2);
-  const mockStep = {
-    freeAgents: [mockAgent],
-    algorithmSpecificData: {
-      markedAgents: [mockAgent],
-    },
-  };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -34,35 +26,7 @@ describe('SidebarComponent', () => {
         PseudocodeComponent,
         ExecutionLogComponent,
       ],
-      providers: [
-        {
-          provide: PlaybackService,
-          useValue: {
-            commandList: [mockStep],
-            algorithmData: {
-              descriptions: [],
-            },
-            stepCounter: 0,
-            getCurrentStep: jasmine
-              .createSpy('getCurrentStep')
-              .and.returnValue(mockStep),
-          },
-        },
-        {
-          provide: AlgorithmRetrievalService,
-          useValue: {
-            currentAlgorithm: {
-              orientation: ['Man', 'Woman'],
-            },
-            irregularPluralMap: new Map([
-              ['Man', 'Men'],
-              ['Woman', 'Women'],
-            ]),
-            getSide: jasmine.createSpy('getSide'),
-            marksAgents: jasmine.createSpy('marksAgents').and.returnValue(true),
-          },
-        },
-      ],
+      providers: [mockPlaybackService, mockAlgorithmRetrievalService],
     }).compileComponents();
   }));
 
