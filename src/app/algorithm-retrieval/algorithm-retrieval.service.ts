@@ -91,8 +91,9 @@ export class AlgorithmRetrievalService {
     return this.#mapOfAvailableAlgorithms.get(name);
   }
 
-  getSide(proposing: boolean, plural: boolean): string {
-    const side = this.currentAlgorithm.orientation[proposing ? 0 : 1];
+  getSide(proposing: boolean, plural: boolean, id?: string): string {
+    const alg = id ? this.getAlgorithm(id) : this.currentAlgorithm;
+    const side = alg.orientation[proposing ? 0 : 1];
     if (!plural) return side;
     return this.#irregularPluralMap.get(side) ?? `${side}s`;
   }

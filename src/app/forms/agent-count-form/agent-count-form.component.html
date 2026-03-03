@@ -1,9 +1,9 @@
 <form class="example-form pl-3">
-  @if (algorithm().name == 'Stable Marriage Problem') {
+  @if (getFormType() == 'single') {
   <div class="row justify-content-start">
     <mat-form-field>
-      <mat-label>Number of Men/Women</mat-label>
-      <input id={{algorithm().id}} [formControl]="numberOfG1Agents" type="number" matInput placeholder="5" value="5"
+      <mat-label>Number of {{getSide(true)}}/{{getSide(false)}}</mat-label>
+      <input id='{{algorithm().id}}' [formControl]="numberOfG1Agents" type="number" matInput placeholder="5" value="5"
         min="1" max="9" onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false"
         onDrop="return false" onPaste="return false">
       @if (numberOfG1Agents.hasError('required')) {
@@ -16,41 +16,10 @@
   </div>
   }
 
-  @if (algorithm().name == 'Hospitals/Residents Problem') {
-  <div class="row justify-content-start">
-    <mat-form-field class="mr-1">
-      <mat-label>Number of Residents</mat-label>
-      <input id='hr1' [formControl]="numberOfG1Agents" type="number" matInput placeholder="5" value="5" min="2" max="9"
-        onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false" onDrop="return false"
-        onPaste="return false">
-      @if (numberOfG1Agents.hasError('required')) {
-      <mat-error>This field is <strong>required</strong></mat-error>
-      }
-      @if (numberOfG1Agents.hasError('min') || numberOfG1Agents.hasError('max')) {
-      <mat-error>Please input a number between 1 and 9</mat-error>
-      }
-    </mat-form-field>
-
-    <mat-form-field class="ml-1">
-      <mat-label>Number of Hospitals</mat-label>
-      <input id='hr2' [formControl]="numberOfG2Agents" type="number" matInput placeholder="5" value="5" min="2" max="9"
-        onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false" onDrop="return false"
-        onPaste="return false">
-      @if (numberOfG2Agents.hasError('required')) {
-      <mat-error>This field is <strong>required</strong></mat-error>
-      }
-      @if (numberOfG2Agents.hasError('min') || numberOfG2Agents.hasError('max')) {
-      <mat-error>Please input a number between 1 and 9</mat-error>
-      }
-    </mat-form-field>
-  </div>
-  }
-
-  <!-- Roommates -->
-  @if (algorithm().name == 'Stable Roommates Problem') {
+  @if (getFormType() == 'SR') {
   <div class="row justify-content-start">
     <mat-form-field>
-      <mat-label>Number of People</mat-label>
+      <mat-label>Number of {{getSide(true)}}</mat-label>
       <input id={{algorithm().id}} [formControl]="numberOfSRAgents" type="number" matInput placeholder="6" value="6"
         min="4" max="8" onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false"
         onDrop="return false" onPaste="return false">
@@ -67,13 +36,13 @@
   </div>
   }
 
-  @if (algorithm().name == 'Student-Project Allocation') {
+  @if (getFormType() == 'double') {
   <div class="row justify-content-start">
     <mat-form-field class="mr-1">
-      <mat-label>Number of Students</mat-label>
-      <input id='spa1' [formControl]="numberOfG1Agents" type="number" matInput placeholder="5" value="5" min="2" max="9"
-        onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false" onDrop="return false"
-        onPaste="return false">
+      <mat-label>Number of {{getSide(true)}}</mat-label>
+      <input id='{{algorithm().id}}1' [formControl]="numberOfG1Agents" type="number" matInput placeholder="5" value="5"
+        min="2" max="9" onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false"
+        onDrop="return false" onPaste="return false">
       @if (numberOfG1Agents.hasError('required')) {
       <mat-error>This field is <strong>required</strong></mat-error>
       }
@@ -81,12 +50,11 @@
       <mat-error>Please input a number between 1 and 9</mat-error>
       }
     </mat-form-field>
-
     <mat-form-field class="ml-1">
-      <mat-label>Number of Projects</mat-label>
-      <input id='spa2' [formControl]="numberOfG2Agents" type="number" matInput placeholder="5" value="5" min="2" max="9"
-        onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false" onDrop="return false"
-        onPaste="return false">
+      <mat-label>Number of {{getSide(false)}}</mat-label>
+      <input id='{{algorithm().id}}2' [formControl]="numberOfG2Agents" type="number" matInput placeholder="5" value="5"
+        min="2" max="9" onkeydown="if(event.key==='.'){event.preventDefault();}" onDrag="return false"
+        onDrop="return false" onPaste="return false">
       @if (numberOfG2Agents.hasError('required')) {
       <mat-error>This field is <strong>required</strong></mat-error>
       }
