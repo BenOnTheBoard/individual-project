@@ -10,7 +10,9 @@ describe('AgentCountForm', () => {
   let component: AgentCountFormComponent;
   let fixture: ComponentFixture<AgentCountFormComponent>;
 
-  const mockAlgorithm: Algorithm = new AlgorithmBuilder().build();
+  const mockAlgorithm: Algorithm = new AlgorithmBuilder()
+    .id('smp-man-gs')
+    .build();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

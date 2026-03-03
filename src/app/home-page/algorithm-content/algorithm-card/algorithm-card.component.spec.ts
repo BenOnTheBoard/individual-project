@@ -1,9 +1,15 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AlgorithmCardComponent } from './algorithm-card.component';
+import { AlgorithmBuilder } from 'src/app/algorithm-retrieval/Algorithm';
 
 describe('AlgorithmCardComponent', () => {
   let component: AlgorithmCardComponent;
   let fixture: ComponentFixture<AlgorithmCardComponent>;
+
+  const mockAlgorithm: Algorithm = new AlgorithmBuilder()
+    .id('smp-man-gs')
+    .orientation(['Man', 'Woman'])
+    .build();
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -14,17 +20,7 @@ describe('AlgorithmCardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AlgorithmCardComponent);
     component = fixture.componentInstance;
-    fixture.componentRef.setInput('algorithm', {
-      id: '',
-      name: '',
-      orientation: ['', ''],
-      equalGroups: true,
-      algorithm: '',
-      service: null,
-      description: '',
-      helpTextMap: {},
-      code: [],
-    });
+    fixture.componentRef.setInput('algorithm', mockAlgorithm);
     fixture.detectChanges();
   });
 
