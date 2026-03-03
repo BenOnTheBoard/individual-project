@@ -4,6 +4,7 @@ import {
   Algorithm,
   AlgorithmBuilder,
 } from 'src/app/algorithm-retrieval/Algorithm';
+import { mockAlgorithmRetrievalService } from 'src/app/mock-services/algorithm-retrieval.mock';
 
 describe('AgentCountForm', () => {
   let component: AgentCountFormComponent;
@@ -14,6 +15,7 @@ describe('AgentCountForm', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AgentCountFormComponent],
+      providers: [mockAlgorithmRetrievalService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AgentCountFormComponent);
