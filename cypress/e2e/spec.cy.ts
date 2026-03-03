@@ -75,18 +75,18 @@ describe('individual-project', () => {
   it('hr-resident-egs', () => {
     cy.visit('/');
     cy.get('#algorithmsLink').click();
-    cy.get('#hr1').type('5', { force: true });
-    cy.get('#hr2').type('5', { force: true });
-    cy.get('#hr2').type('{enter}', { force: true });
+    cy.get('#hr-resident-egs1').type('5', { force: true });
+    cy.get('#hr-resident-egs2').type('5', { force: true });
+    cy.get('#hr-resident-egs2').type('{enter}', { force: true });
     buttonTests();
   });
 
   it('hr-hospital-egs', () => {
     cy.visit('/');
     cy.get('#algorithmsLink').click();
-    cy.get('#hr1').type('5', { force: true });
-    cy.get('#hr2').type('5', { force: true });
-    cy.get('#hr2').type('{enter}', { force: true });
+    cy.get('#hr-hospital-egs1').type('5', { force: true });
+    cy.get('#hr-hospital-egs2').type('5', { force: true });
+    cy.get('#hr-hospital-egs2').type('{enter}', { force: true });
     buttonTests();
   });
 
@@ -101,9 +101,9 @@ describe('individual-project', () => {
   it('spa-stu-egs', () => {
     cy.visit('/');
     cy.get('#algorithmsLink').click();
-    cy.get('#spa1').type('5', { force: true });
-    cy.get('#spa2').type('5', { force: true });
-    cy.get('#spa2').type('{enter}', { force: true });
+    cy.get('#spa-stu-egs1').type('5', { force: true });
+    cy.get('#spa-stu-egs2').type('5', { force: true });
+    cy.get('#spa-stu-egs2').type('{enter}', { force: true });
     buttonTests();
   });
 
