@@ -8,7 +8,7 @@ import { AlgorithmRetrievalService } from '../algorithm-retrieval/algorithm-retr
 import { CanvasService } from './services/canvas/canvas.service';
 import { GsStableMarriageService } from '../algorithms/algorithm-services/smp-man-gs/gs-stable-marriage.service';
 import { AlgorithmBuilder } from '../algorithm-retrieval/Algorithm';
-import { mockPlaybackService } from './services/playback/playback.mock';
+import { mockPlaybackService } from 'src/app/mock-services/playback.mock';
 
 describe('AlgorithmPageComponent', () => {
   let component: AlgorithmPageComponent;

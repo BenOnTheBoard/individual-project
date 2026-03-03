@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
 
 import { PlaybackControlsComponent } from './playback-controls.component';
-import { mockPlaybackService } from '../services/playback/playback.mock';
+import { mockPlaybackService } from 'src/app/mock-services/playback.mock';
 
 describe('PlaybackControlsComponent', () => {
   let component: PlaybackControlsComponent;

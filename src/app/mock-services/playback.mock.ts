@@ -1,5 +1,5 @@
 import { AgentFactory } from 'src/app/algorithms/interfaces/Agents';
-import { PlaybackService } from './playback.service';
+import { PlaybackService } from '../algorithm-page/services/playback/playback.service';
 import { StepBuilder } from 'src/app/algorithms/interfaces/Step';
 
 const mockAgent = AgentFactory.createTiedHospital('hospitalA', 2);

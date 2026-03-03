@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MarkedAgentsComponent } from './marked-agents.component';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
-import { mockPlaybackService } from '../../services/playback/playback.mock';
+import { mockPlaybackService } from 'src/app/mock-services/playback.mock';
 
 describe('MarkedAgentsComponent', () => {
   let component: MarkedAgentsComponent;

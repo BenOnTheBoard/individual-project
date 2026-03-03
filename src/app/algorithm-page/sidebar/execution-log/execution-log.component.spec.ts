@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ExecutionLogComponent } from './execution-log.component';
-import { mockPlaybackService } from '../../services/playback/playback.mock';
+import { mockPlaybackService } from 'src/app/mock-services/playback.mock';
 
 describe('ExecutionLogComponent', () => {
   let component: ExecutionLogComponent;

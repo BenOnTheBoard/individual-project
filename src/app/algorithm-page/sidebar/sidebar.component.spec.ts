@@ -8,7 +8,7 @@ import { FreeAgentsComponent } from './free-agents/free-agents.component';
 import { PseudocodeComponent } from './pseudocode/pseudocode.component';
 import { ExecutionLogComponent } from './execution-log/execution-log.component';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
-import { mockPlaybackService } from '../services/playback/playback.mock';
+import { mockPlaybackService } from 'src/app/mock-services/playback.mock';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
