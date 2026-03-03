@@ -24,6 +24,15 @@ const mockStep = new StepBuilder()
   })
   .build();
 
+const playbackMethodSpies = jasmine.createSpyObj<PlaybackService>([
+  'restart',
+  'backStep',
+  'toggle',
+  'forwardStep',
+  'onSliderChange',
+  'setAlgorithm',
+]);
+
 export const mockPlaybackService = {
   provide: PlaybackService,
   useValue: {
@@ -46,14 +55,9 @@ export const mockPlaybackService = {
     stepCounter: 0,
     previousStepCounter: 0,
     pause: true,
-    restart: jasmine.createSpy('restart'),
-    backStep: jasmine.createSpy('backStep'),
-    toggle: jasmine.createSpy('toggle'),
-    forwardStep: jasmine.createSpy('forwardStep'),
-    onSliderChange: jasmine.createSpy('onSliderChange'),
     getCurrentStep: jasmine
       .createSpy('getCurrentStep')
       .and.returnValue(mockStep),
-    setAlgorithm: jasmine.createSpy('setAlgorithm'),
+    ...playbackMethodSpies,
   },
 };
