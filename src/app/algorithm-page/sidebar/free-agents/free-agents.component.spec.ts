@@ -3,10 +3,15 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FreeAgentsComponent } from './free-agents.component';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 import { PlaybackService } from '../../services/playback/playback.service';
+import { AgentFactory } from 'src/app/algorithms/interfaces/Agents';
 
 describe('FreeAgentsComponent', () => {
   let component: FreeAgentsComponent;
   let fixture: ComponentFixture<FreeAgentsComponent>;
+  const mockAgent = AgentFactory.createTiedHospital('hospitalA', 2);
+  const mockStep = {
+    freeAgents: [mockAgent],
+  };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -17,6 +22,9 @@ describe('FreeAgentsComponent', () => {
           useValue: {
             commandList: [{ freeAgents: [] }],
             stepCounter: 0,
+            getCurrentStep: jasmine
+              .createSpy('getCurrentStep')
+              .and.returnValue(mockStep),
           },
         },
         {

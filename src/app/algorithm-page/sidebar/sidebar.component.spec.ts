@@ -14,6 +14,13 @@ import { AgentFactory } from 'src/app/algorithms/interfaces/Agents';
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
   let fixture: ComponentFixture<SidebarComponent>;
+  const mockAgent = AgentFactory.createTiedHospital('hospitalA', 2);
+  const mockStep = {
+    freeAgents: [mockAgent],
+    algorithmSpecificData: {
+      markedAgents: [mockAgent],
+    },
+  };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -31,16 +38,14 @@ describe('SidebarComponent', () => {
         {
           provide: PlaybackService,
           useValue: {
-            commandList: [
-              {
-                freeAgents: [],
-                markedAgents: [AgentFactory.createTiedHospital('hospitalA', 2)],
-              },
-            ],
+            commandList: [mockStep],
             algorithmData: {
               descriptions: [],
             },
             stepCounter: 0,
+            getCurrentStep: jasmine
+              .createSpy('getCurrentStep')
+              .and.returnValue(mockStep),
           },
         },
         {
@@ -54,6 +59,7 @@ describe('SidebarComponent', () => {
               ['Woman', 'Women'],
             ]),
             getSide: jasmine.createSpy('getSide'),
+            marksAgents: jasmine.createSpy('marksAgents').and.returnValue(true),
           },
         },
       ],

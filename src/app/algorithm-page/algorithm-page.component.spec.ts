@@ -8,10 +8,19 @@ import { AlgorithmRetrievalService } from '../algorithm-retrieval/algorithm-retr
 import { CanvasService } from './services/canvas/canvas.service';
 import { GsStableMarriageService } from '../algorithms/algorithm-services/smp-man-gs/gs-stable-marriage.service';
 import { AlgorithmBuilder } from '../algorithm-retrieval/Algorithm';
+import { AgentFactory } from '../algorithms/interfaces/Agents';
+import { PlaybackService } from './services/playback/playback.service';
 
 describe('AlgorithmPageComponent', () => {
   let component: AlgorithmPageComponent;
   let fixture: ComponentFixture<AlgorithmPageComponent>;
+  const mockAgent = AgentFactory.createTiedHospital('hospitalA', 2);
+  const mockStep = {
+    freeAgents: [mockAgent],
+    algorithmSpecificData: {
+      markedAgents: [mockAgent],
+    },
+  };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -23,6 +32,20 @@ describe('AlgorithmPageComponent', () => {
         AlgorithmPageComponent,
       ],
       providers: [
+        {
+          provide: PlaybackService,
+          useValue: {
+            commandList: [mockStep],
+            algorithmData: {
+              descriptions: [],
+            },
+            stepCounter: 0,
+            getCurrentStep: jasmine
+              .createSpy('getCurrentStep')
+              .and.returnValue(mockStep),
+            setAlgorithm: jasmine.createSpy('setAlgorithm'),
+          },
+        },
         {
           provide: AlgorithmRetrievalService,
           useValue: {
@@ -39,9 +62,8 @@ describe('AlgorithmPageComponent', () => {
             getAlgorithm: jasmine.createSpy('getAlgorithm'),
             mayBeUnstable: jasmine
               .createSpy('mayBeUnstable')
-              .and.callFake((id: string) => {
-                true;
-              }),
+              .and.returnValue(true),
+            marksAgents: jasmine.createSpy('marksAgents').and.returnValue(true),
           },
         },
         {
