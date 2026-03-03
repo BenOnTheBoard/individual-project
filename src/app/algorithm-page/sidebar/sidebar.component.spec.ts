@@ -7,8 +7,8 @@ import { AlgDescriptionComponent } from './alg-description/alg-description.compo
 import { FreeAgentsComponent } from './free-agents/free-agents.component';
 import { PseudocodeComponent } from './pseudocode/pseudocode.component';
 import { ExecutionLogComponent } from './execution-log/execution-log.component';
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 import { mockPlaybackService } from 'src/app/mock-services/playback.mock';
+import { mockAlgorithmRetrievalService } from 'src/app/mock-services/algorithm-retrieval.mock';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
@@ -26,24 +26,7 @@ describe('SidebarComponent', () => {
         PseudocodeComponent,
         ExecutionLogComponent,
       ],
-      providers: [
-        mockPlaybackService,
-
-        {
-          provide: AlgorithmRetrievalService,
-          useValue: {
-            currentAlgorithm: {
-              orientation: ['Man', 'Woman'],
-            },
-            irregularPluralMap: new Map([
-              ['Man', 'Men'],
-              ['Woman', 'Women'],
-            ]),
-            getSide: jasmine.createSpy('getSide'),
-            marksAgents: jasmine.createSpy('marksAgents').and.returnValue(true),
-          },
-        },
-      ],
+      providers: [mockPlaybackService, mockAlgorithmRetrievalService],
     }).compileComponents();
   }));
 

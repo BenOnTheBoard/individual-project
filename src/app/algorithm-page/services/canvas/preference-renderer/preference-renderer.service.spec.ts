@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { AlgorithmRetrievalService } from '../../../../algorithm-retrieval/algorithm-retrieval.service';
 import { LayoutService } from '../layout/layout.service';
 import { TextRendererService } from '../text-renderer/text-renderer.service';
 import { ColourHexService } from '../../../../utils/colour-hex.service';
@@ -7,11 +6,11 @@ import { AgentRendererService } from '../agent-renderer/agent-renderer.service';
 import { PreferenceRendererService } from './preference-renderer.service';
 import { Step, StepBuilder } from 'src/app/algorithms/interfaces/Step';
 import { AgentFactory } from 'src/app/algorithms/interfaces/Agents';
+import { mockAlgorithmRetrievalService } from 'src/app/mock-services/algorithm-retrieval.mock';
 
 describe('PreferenceRendererService', () => {
   let service: PreferenceRendererService;
   let mockCtx: jasmine.SpyObj<CanvasRenderingContext2D>;
-  let mockalgRetriever: Partial<AlgorithmRetrievalService>;
   let mockAgentRenderer: jasmine.SpyObj<AgentRendererService>;
   let mockLayoutService: jasmine.SpyObj<LayoutService>;
   let mockTextRenderer: jasmine.SpyObj<TextRendererService>;
@@ -31,10 +30,6 @@ describe('PreferenceRendererService', () => {
       'moveTo',
       'lineTo',
     ]);
-    mockalgRetriever = {
-      numberOfG1Agents: 2,
-      numberOfG2Agents: 2,
-    } as AlgorithmRetrievalService;
     mockAgentRenderer = jasmine.createSpyObj('AgentRendererService', [
       'getRadiusOfCircles',
     ]);
@@ -71,7 +66,7 @@ describe('PreferenceRendererService', () => {
     TestBed.configureTestingModule({
       providers: [
         PreferenceRendererService,
-        { provide: AlgorithmRetrievalService, useValue: mockalgRetriever },
+        mockAlgorithmRetrievalService,
         { provide: AgentRendererService, useValue: mockAgentRenderer },
         { provide: LayoutService, useValue: mockLayoutService },
         { provide: TextRendererService, useValue: mockTextRenderer },

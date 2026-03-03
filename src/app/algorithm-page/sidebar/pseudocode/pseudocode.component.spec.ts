@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { PseudocodeComponent } from './pseudocode.component';
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
+import { mockAlgorithmRetrievalService } from 'src/app/mock-services/algorithm-retrieval.mock';
 
 describe('PseudocodeComponent', () => {
   let component: PseudocodeComponent;
@@ -10,16 +9,7 @@ describe('PseudocodeComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [PseudocodeComponent],
-      providers: [
-        {
-          provide: AlgorithmRetrievalService,
-          useValue: {
-            currentAlgorithm: {
-              id: 'smp-man-egs',
-            },
-          },
-        },
-      ],
+      providers: [mockAlgorithmRetrievalService],
     }).compileComponents();
   }));
 

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FreeAgentsComponent } from './free-agents.component';
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 import { mockPlaybackService } from 'src/app/mock-services/playback.mock';
+import { mockAlgorithmRetrievalService } from 'src/app/mock-services/algorithm-retrieval.mock';
 
 describe('FreeAgentsComponent', () => {
   let component: FreeAgentsComponent;
@@ -10,22 +10,7 @@ describe('FreeAgentsComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [FreeAgentsComponent],
-      providers: [
-        mockPlaybackService,
-        {
-          provide: AlgorithmRetrievalService,
-          useValue: {
-            currentAlgorithm: {
-              orientation: ['Man', 'Woman'],
-            },
-            irregularPluralMap: new Map([
-              ['Man', 'Men'],
-              ['Woman', 'Women'],
-            ]),
-            getSide: jasmine.createSpy('getSide'),
-          },
-        },
-      ],
+      providers: [mockPlaybackService, mockAlgorithmRetrievalService],
     }).compileComponents();
   }));
 

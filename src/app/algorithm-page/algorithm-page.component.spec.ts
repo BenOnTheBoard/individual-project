@@ -9,6 +9,7 @@ import { CanvasService } from './services/canvas/canvas.service';
 import { GsStableMarriageService } from '../algorithms/algorithm-services/smp-man-gs/gs-stable-marriage.service';
 import { AlgorithmBuilder } from '../algorithm-retrieval/Algorithm';
 import { mockPlaybackService } from 'src/app/mock-services/playback.mock';
+import { mockAlgorithmRetrievalService } from '../mock-services/algorithm-retrieval.mock';
 
 describe('AlgorithmPageComponent', () => {
   let component: AlgorithmPageComponent;
@@ -25,26 +26,7 @@ describe('AlgorithmPageComponent', () => {
       ],
       providers: [
         mockPlaybackService,
-        {
-          provide: AlgorithmRetrievalService,
-          useValue: {
-            currentAlgorithm: {
-              id: 'smp-man-gs',
-              orientation: ['Man', 'Woman'],
-            },
-            irregularPluralMap: new Map([
-              ['Man', 'Men'],
-              ['Woman', 'Women'],
-            ]),
-            mapOfAvailableAlgorithms: new Map(),
-            getSide: jasmine.createSpy('getSide'),
-            getAlgorithm: jasmine.createSpy('getAlgorithm'),
-            mayBeUnstable: jasmine
-              .createSpy('mayBeUnstable')
-              .and.returnValue(true),
-            marksAgents: jasmine.createSpy('marksAgents').and.returnValue(true),
-          },
-        },
+        mockAlgorithmRetrievalService,
         {
           provide: CanvasService,
           useValue: {

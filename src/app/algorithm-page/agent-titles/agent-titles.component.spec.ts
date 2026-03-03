@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { AgentTitlesComponent } from './agent-titles.component';
-import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
+import { mockAlgorithmRetrievalService } from 'src/app/mock-services/algorithm-retrieval.mock';
 
 describe('AgentTitlesComponent', () => {
   let component: AgentTitlesComponent;
@@ -10,26 +9,7 @@ describe('AgentTitlesComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [AgentTitlesComponent],
-      providers: [
-        {
-          provide: AlgorithmRetrievalService,
-          useValue: {
-            numberOfG1Agents: 3,
-            numberOfG2Agents: 3,
-            currentAlgorithm: {
-              id: 'smp-man-egs',
-              name: 'Stable Marriage Problem',
-              orientation: ['Man', 'Woman'],
-              equalGroups: true,
-            },
-            irregularPluralMap: new Map([
-              ['Man', 'Men'],
-              ['Woman', 'Women'],
-            ]),
-            getSide: jasmine.createSpy('getSide'),
-          },
-        },
-      ],
+      providers: [mockAlgorithmRetrievalService],
     }).compileComponents();
   }));
 
