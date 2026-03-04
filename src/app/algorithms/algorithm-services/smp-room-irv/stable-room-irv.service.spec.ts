@@ -20,10 +20,8 @@ describe('StableRoomIrvService', () => {
     while (i < instanceCount) {
       const agentCounts = utils.getRandomAgentCounts(true);
       service.runSingleInstance(...agentCounts);
-      if (service.isStable()) {
-        if (!service.checkStability()) pass = false;
-        i++;
-      }
+      if (service.isStable() && !service.checkStability()) pass = false;
+      i++;
     }
     expect(pass).toBeTrue();
   });
