@@ -68,45 +68,29 @@ export class StableRoomIrvService extends SR {
   }
 
   getFreeAgents(): Map<String, Person> {
-    const freeAgents = new Map<String, Person>();
-    for (let [key, person] of this.group1Agents.entries()) {
-      if (person.lastProposed == null) {
-        freeAgents.set(key, person);
-      }
-    }
-    return freeAgents;
+    return new Map(
+      Array.from(this.group1Agents.entries()).filter(
+        ([_, person]) => person.lastProposed == null,
+      ),
+    );
   }
 
   getAgentsWithMultiplePrefs(): Map<String, Person> {
-    const multiplePrefsAgents = new Map<String, Person>();
-    for (let [key, person] of this.group1Agents.entries()) {
-      if (person.ranking.length > 1) {
-        multiplePrefsAgents.set(key, person);
-      }
-    }
-    return multiplePrefsAgents;
+    return new Map(
+      Array.from(this.group1Agents.entries()).filter(
+        ([_, person]) => person.ranking.length > 1,
+      ),
+    );
   }
 
   existsEmptyList(): boolean {
-    for (const person of this.group1Agents.values()) {
-      if (person.ranking.length < 1) return true;
-    }
-    return false;
+    return Array.from(this.group1Agents.values()).some(
+      (person) => person.ranking.length == 0,
+    );
   }
 
-  // returns a persons ranking as a string
   rankingToString(ranking: Array<Person>): string {
-    let s = '';
-
-    // go through each ranking and add to string
-    for (const person of ranking) {
-      s += person.name;
-      s += ', ';
-    }
-
-    // remove extra comma added before
-    s = s.slice(0, -2);
-    return s;
+    return ranking.map((person) => person.name).join(', ');
   }
 
   match(): void {
