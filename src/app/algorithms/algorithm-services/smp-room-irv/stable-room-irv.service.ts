@@ -205,9 +205,7 @@ export class StableRoomIrvService extends SR {
           rotationPairs.push([prevPref, secondPref]);
         }
 
-        this.saveStep(13, {
-          '%rotation%': this.rankingToString(rotationPairs),
-        }); // temp remove %rotation%
+        this.saveStep(13);
 
         const deletedPairs = [];
         for (const pair of rotationPairs) {

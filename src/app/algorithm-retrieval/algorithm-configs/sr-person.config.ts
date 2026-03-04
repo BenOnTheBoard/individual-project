@@ -22,7 +22,7 @@ export const srPersonConfig = new AlgorithmBuilder()
     10: "We remove %removee% from %person% from each other's lists.",
     11: '%person% has more than one person left in their preference list.',
     12: "We look for rotations within %person%'s preference list, that is a cycle of ordered pairs through preference lists.",
-    13: 'If we can find a rotation...', //%rotation%
+    13: 'If we can find a rotation...',
     14: "We delete pairs in rotation, removing %removee% from %person% from each other's lists.",
     15: 'We check whether any person has a preference list of length one.',
     16: 'We assign %person% to %preference%, the last person in their preference list.',
