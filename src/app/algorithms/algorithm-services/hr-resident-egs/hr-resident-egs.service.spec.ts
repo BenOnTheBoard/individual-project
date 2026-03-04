@@ -20,10 +20,8 @@ describe('HrResidentEgsService', () => {
     while (i < instanceCount) {
       const agentCounts = utils.getRandomAgentCounts(false);
       service.runSingleInstance(...agentCounts);
-      if (service.isStable()) {
-        if (!service.checkStability()) pass = false;
-        i++;
-      }
+      if (!service.checkStability()) pass = false;
+      i++;
     }
     expect(pass).toBeTrue();
   });
