@@ -148,19 +148,15 @@ export class StableRoomIrvService extends SR {
           '%list%': this.rankingToString(pref.ranking),
         });
 
-        while (true) {
-          const remove = pref.ranking.slice(-1)[0];
-
-          if (remove.name == person.name) {
-            break;
-          }
-
+        let remove: Person;
+        do {
+          remove = pref.ranking.slice(-1)[0];
           this.deletePair(pref, remove);
           this.saveStep(10, {
             '%person%': person.name,
             '%removee%': remove.name,
           });
-        }
+        } while (remove.name != person.name);
 
         freeAgents = this.getFreeAgents();
       }
@@ -257,9 +253,7 @@ export class StableRoomIrvService extends SR {
 
         // conditions to end if stable matching is found
         multiplePrefsAgents = this.getAgentsWithMultiplePrefs();
-        if (multiplePrefsAgents.size < 1) {
-          break;
-        }
+        if (multiplePrefsAgents.size < 1) break;
 
         this.saveStep(15);
 
