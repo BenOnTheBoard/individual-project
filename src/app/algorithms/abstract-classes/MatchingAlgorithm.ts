@@ -169,15 +169,14 @@ export abstract class MatchingAlgorithm {
   abstract checkStability(): boolean;
   abstract generateAgents(): void;
   abstract generatePrefs(): void;
-  abstract match(): void;
+  abstract match(): boolean;
 
   runSingleInstance(numAgents: number, numG2Agents = numAgents) {
     this.initialise(numAgents, numG2Agents);
     this.generateAgents();
     this.generatePrefs();
     this.initCurrentAndOriginalPrefs();
-    this.match();
-    this.#stable = this.checkStability();
+    this.#stable = this.match();
   }
 
   run(

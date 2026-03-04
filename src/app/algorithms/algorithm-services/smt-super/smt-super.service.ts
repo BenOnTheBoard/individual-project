@@ -92,7 +92,7 @@ export class SMTSuperService extends SMT {
     }
   }
 
-  match(): void {
+  match(): boolean {
     this.saveStep(1);
     do {
       while (this.freeAgents.length > 0) {
@@ -117,8 +117,10 @@ export class SMTSuperService extends SMT {
     this.saveStep(16);
     if (this.allEngaged()) {
       this.saveStep(17);
+      return true;
     } else {
       this.saveStep(18);
+      return false;
     }
   }
 }

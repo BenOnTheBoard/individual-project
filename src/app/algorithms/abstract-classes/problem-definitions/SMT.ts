@@ -69,5 +69,5 @@ export abstract class SMT extends TiedMatchingAlgorithm {
     return man.match.length == 0 && !this.hasEmptyList(man);
   }
 
-  abstract match(): void;
+  abstract match(): boolean;
 }

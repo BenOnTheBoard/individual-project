@@ -54,7 +54,7 @@ export class HrHospitalEgsService extends HR {
     );
   }
 
-  match(): void {
+  match(): boolean {
     this.saveStep(1);
 
     while (this.freeAgents.length > 0) {
@@ -78,7 +78,7 @@ export class HrHospitalEgsService extends HR {
     }
 
     this.saveStep(9);
-    return;
+    return true;
   }
 }
 

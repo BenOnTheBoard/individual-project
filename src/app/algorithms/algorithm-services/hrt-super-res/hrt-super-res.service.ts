@@ -77,23 +77,24 @@ export class HrtSuperResService extends HRT {
     }
   }
 
-  stabilityConditions(): void {
+  stabilityConditions(): boolean {
     for (const res of this.group1Agents.values()) {
       if (res.match.length >= 2) {
         this.saveStep(17, this.packageStepVars(res));
-        return;
+        return false;
       }
     }
     for (const hos of this.fullHospitals) {
       if (hos.match.length < hos.capacity) {
         this.saveStep(19, this.packageStepVars(null, hos));
-        return;
+        return false;
       }
     }
     this.saveStep(20);
+    return true;
   }
 
-  match(): void {
+  match(): boolean {
     this.fullHospitals = [];
     this.algorithmSpecificData['markedAgents'] = this.fullHospitals;
     this.saveStep(1);
@@ -122,6 +123,6 @@ export class HrtSuperResService extends HRT {
       }
       this.selectedAgents.pop();
     }
-    this.stabilityConditions();
+    return this.stabilityConditions();
   }
 }

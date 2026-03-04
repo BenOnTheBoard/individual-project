@@ -96,5 +96,5 @@ export abstract class HRT extends TiedMatchingAlgorithm {
     hospital.match.push(resident);
   }
 
-  abstract match(): void;
+  abstract match(): boolean;
 }
