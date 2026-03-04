@@ -21,10 +21,10 @@ export class StableRoomIrvService extends SR {
   }
 
   // checks is anyone is assigned to a person, returns assigned person if true, null otherwise
-  assign_check(assinged: String) {
+  assign_check(assigned: String) {
     for (let [key, person] of this.group1Agents.entries()) {
       // if assigned then
-      if (person.lastProposed != null && person.lastProposed.name == assinged) {
+      if (person.lastProposed != null && person.lastProposed.name == assigned) {
         return key;
       }
     }
@@ -81,7 +81,7 @@ export class StableRoomIrvService extends SR {
     return free_agents;
   }
 
-  // returns a list of the agent keys that have more than one preferance
+  // returns a list of the agent keys that have more than one preference
   check_pref_count() {
     const agents_multiple_prefs: Map<String, Person> = new Map();
 
@@ -94,7 +94,7 @@ export class StableRoomIrvService extends SR {
     return agents_multiple_prefs;
   }
 
-  // checks if any preferance lists are empty
+  // checks if any preference lists are empty
   check_pref_list_empty() {
     for (const person of this.group1Agents.values()) {
       if (person.ranking.length < 1) {
@@ -138,10 +138,10 @@ export class StableRoomIrvService extends SR {
         //While some person p is free (not assigned to someone)
         this.saveStep(2, { '%person%': person.name });
 
-        //if person p has a empty preferance list
+        //if person p has a empty preference list
         this.saveStep(3, { '%person%': person.name });
 
-        // if there is no more preferances for a agent - no stable matchong exists
+        // if there is no more preferences for a agent - no stable matchong exists
         if (person.ranking.length < 1) {
           //end - no stable mathcing
           this.saveStep(4);
@@ -159,7 +159,7 @@ export class StableRoomIrvService extends SR {
         //highlight pref in persons list
         this.stylePrefs('group1', person, person.ranking[0], 'red');
 
-        //person b := first preferance on p's list
+        //person b := first preference on p's list
         this.saveStep(5, {
           '%person%': person.name,
           '%selected%': person.ranking[0].name,
@@ -174,7 +174,7 @@ export class StableRoomIrvService extends SR {
         //assign p to b
         this.saveStep(6, { '%person%': person.name, '%selected%': pref.name });
 
-        //if someone is assigned to their most prefered person, then unassign them and assign current agent to them
+        //if someone is assigned to their most preferred person, then unassign them and assign current agent to them
         const check = this.assign_check(pref.name);
 
         // if any person a is assigned to person b
@@ -193,7 +193,7 @@ export class StableRoomIrvService extends SR {
         });
         // loop through ranking
         while (true) {
-          //get last elm of ranking
+          // get last elm of ranking
           const remove = pref.ranking.slice(-1)[0];
 
           // if elm is the current person then stop
@@ -201,11 +201,9 @@ export class StableRoomIrvService extends SR {
             break;
           }
 
-          //delele elm from pref ranking list
-          // delete perd from elm ranking list
           this.delete_pair(pref, remove);
 
-          // for each person c less preferded than p on b's, preferance list
+          // for each person c less preferred than p on b's, preference list
           this.saveStep(10, {
             '%person%': person.name,
             '%removee%': remove.name,
@@ -221,27 +219,27 @@ export class StableRoomIrvService extends SR {
 
     let agents_multiple_prefs = this.check_pref_count();
 
-    ////// PAHSE 2
+    ////// PHASE 2
 
-    // while there are agents that have more than 1 person in their prefrance list
+    // while there are agents that have more than 1 person in their preference list
     const finished_people = [];
 
     while (agents_multiple_prefs.size > 0) {
       //loop through those^ agents
       for (const person of agents_multiple_prefs.values()) {
-        // While some person p has more than 1 preferance left
+        // While some person p has more than 1 preference left
         this.saveStep(11, {
           '%person%': person.name,
           '%list%': this.objs_toString(person.ranking),
         });
 
-        // look for rotations in perosn p's preferance list
+        // look for rotations in perosn p's preference list
         this.saveStep(12, { '%person%': person.name });
 
         const rotation_pairs = [];
 
-        let second_pref = person.ranking[1]; //the starting persons second prefered person
-        let last_pref = second_pref.ranking.slice(-1)[0]; //the second preferned persons last preferd person
+        let second_pref = person.ranking[1]; //the starting persons second preferred person
+        let last_pref = second_pref.ranking.slice(-1)[0]; //the second preferned persons last preferred person
 
         // list of pairs to call delete on
         rotation_pairs.push([last_pref, second_pref]);
@@ -325,12 +323,12 @@ export class StableRoomIrvService extends SR {
         // if a person b has 1 perferance left
         this.saveStep(15);
 
-        // update preferancees
+        // update preferences
         for (const person_inner of this.group1Agents.values()) {
           if (person_inner.ranking.length == 1) {
             person_inner.lastProposed = person_inner.ranking.slice(0)[0];
 
-            // person b := last preferance
+            // person b := last preference
             this.saveStep(16, {
               '%person%': person_inner.name,
               '%preference%': person_inner.lastProposed.name,
@@ -338,7 +336,7 @@ export class StableRoomIrvService extends SR {
           }
         }
 
-        // if any people have empty preferance lists - no mathcong
+        // if any people have empty preference lists - no mathcong
         this.saveStep(17, { '%person%': person.name });
 
         if (this.check_pref_list_empty() == true) {
@@ -347,7 +345,7 @@ export class StableRoomIrvService extends SR {
           return;
         }
         // needed to rest the for loop for the new values within the many_pref_list
-        // this list is updated to remove people that no longer have many preferances
+        // this list is updated to remove people that no longer have many preferences
         break;
       }
     }
