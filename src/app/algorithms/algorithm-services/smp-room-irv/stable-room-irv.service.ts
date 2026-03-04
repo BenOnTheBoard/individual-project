@@ -94,46 +94,32 @@ export class StableRoomIrvService extends SR {
   }
 
   match(): boolean {
-    let freeAgents: Map<String, Person> = new Map();
-    freeAgents = this.getFreeAgents();
-
-    // Set each person to be free
-    this.saveStep(1);
-
+    let freeAgents = this.getFreeAgents();
     let prevPerson: Person;
     let prevPref: Person;
+    this.saveStep(1);
 
     while (freeAgents.size > 0) {
       this.selectedAgents = [];
       this.relevantPrefs = [];
 
-      //loop through each agent in the list
       for (const person of freeAgents.values()) {
-        //While some person p is free (not assigned to someone)
         this.saveStep(2, { '%person%': person.name });
-
-        //if person p has a empty preference list
         this.saveStep(3, { '%person%': person.name });
 
-        // if there is no more preferences for a agent - no stable matchong exists
         if (person.ranking.length < 1) {
-          //end - no stable mathcing
           this.saveStep(4);
           return false;
         }
 
-        // change prevouis highlights back to black
         if (prevPerson != null) {
           this.stylePrefs('group1', prevPerson, prevPref, 'black');
         }
 
-        // store prevouis person
         prevPerson = person;
         prevPref = person.ranking[0];
-        //highlight pref in persons list
-        this.stylePrefs('group1', person, person.ranking[0], 'red');
 
-        //person b := first preference on p's list
+        this.stylePrefs('group1', person, person.ranking[0], 'red');
         this.saveStep(5, {
           '%person%': person.name,
           '%selected%': person.ranking[0].name,
@@ -142,16 +128,12 @@ export class StableRoomIrvService extends SR {
         const pref = person.ranking[0];
         this.addLine(person, pref, 'red');
 
-        // update free agents - remove first elm
         this.freeAgents.shift();
 
-        //assign p to b
         this.saveStep(6, { '%person%': person.name, '%selected%': pref.name });
 
-        //if someone is assigned to their most preferred person, then unassign them and assign current agent to them
         const check = this.assignCheck(pref.name);
 
-        // if any person a is assigned to person b
         this.saveStep(7, { '%person%': person.name, '%selected%': pref.name });
 
         if (check != null) {
@@ -165,19 +147,15 @@ export class StableRoomIrvService extends SR {
           '%selected%': pref.name,
           '%list%': this.rankingToString(pref.ranking),
         });
-        // loop through ranking
+
         while (true) {
-          // get last elm of ranking
           const remove = pref.ranking.slice(-1)[0];
 
-          // if elm is the current person then stop
           if (remove.name == person.name) {
             break;
           }
 
           this.deletePair(pref, remove);
-
-          // for each person c less preferred than p on b's, preference list
           this.saveStep(10, {
             '%person%': person.name,
             '%removee%': remove.name,
@@ -193,33 +171,26 @@ export class StableRoomIrvService extends SR {
 
     let multiplePrefsAgents = this.getAgentsWithMultiplePrefs();
 
-    ////// PHASE 2
+    // PHASE 2
 
-    // while there are agents that have more than 1 person in their preference list
     const finishedPeople = [];
 
     while (multiplePrefsAgents.size > 0) {
-      //loop through those^ agents
       for (const person of multiplePrefsAgents.values()) {
-        // While some person p has more than 1 preference left
         this.saveStep(11, {
           '%person%': person.name,
           '%list%': this.rankingToString(person.ranking),
         });
 
-        // look for rotations in perosn p's preference list
         this.saveStep(12, { '%person%': person.name });
 
         const rotationPairs = [];
 
         let secondPref = person.ranking[1]; //the starting persons second preferred person
         let prevPref = secondPref.ranking.slice(-1)[0]; //the second preferned persons last preferred person
-
-        // list of pairs to call delete on
         rotationPairs.push([prevPref, secondPref]);
 
         // Loop until there is a loop through people until back to the starting person
-
         let counter = 0;
         while (person != secondPref) {
           counter++;
@@ -235,18 +206,15 @@ export class StableRoomIrvService extends SR {
           secondPref = multiplePrefsAgents.get(prevPref.name).ranking[1]; // update to be second pref of prevPref
           prevPref = secondPref.ranking.slice(-1)[0]; // update like above with new secondPref
 
-          // add to list
           rotationPairs.push([prevPref, secondPref]);
         }
 
-        // if rotation r is found
         this.saveStep(13, {
           '%rotation%': this.rankingToString(rotationPairs),
         }); // temp remove %rotation%
 
         const deletedPairs = [];
         for (const pair of rotationPairs) {
-          // if pair not already deleted
           if (deletedPairs.includes(pair)) {
             // everything deleted
             break;
@@ -254,13 +222,11 @@ export class StableRoomIrvService extends SR {
             this.deletePair(pair[0], pair[1]);
             deletedPairs.push(pair);
 
-            // delete pairs in rotation r
             this.saveStep(14, {
               '%person%': pair[1].name,
               '%removee%': pair[0].name,
             });
 
-            // update lines
             for (const innerPerson of this.group1Agents.values()) {
               if (
                 innerPerson.ranking.length == 1 &&
@@ -291,15 +257,12 @@ export class StableRoomIrvService extends SR {
 
         // conditions to end if stable matching is found
         multiplePrefsAgents = this.getAgentsWithMultiplePrefs();
-
         if (multiplePrefsAgents.size < 1) {
           break;
         }
 
-        // if a person b has 1 perferance left
         this.saveStep(15);
 
-        // update preferences
         for (const innerPerson of this.group1Agents.values()) {
           if (innerPerson.ranking.length == 1) {
             innerPerson.lastProposed = innerPerson.ranking.slice(0)[0];
@@ -312,11 +275,9 @@ export class StableRoomIrvService extends SR {
           }
         }
 
-        // if any people have empty preference lists - no mathcong
         this.saveStep(17, { '%person%': person.name });
 
-        if (this.existsEmptyList() == true) {
-          // end - no stable matching
+        if (this.existsEmptyList()) {
           this.saveStep(18);
           return false;
         }
