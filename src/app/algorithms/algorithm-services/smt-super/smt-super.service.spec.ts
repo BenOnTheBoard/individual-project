@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-import { HrtSuperResService } from './hrt-super-res.service';
+import { SMTSuperService } from './smt-super.service';
 import { UtilsService } from 'src/app/utils/utils.service';
 
 const instanceCount = 600;
 
 describe('HrHospitalEgsService', () => {
-  let service: HrtSuperResService;
+  let service: SMTSuperService;
   let utils: UtilsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(HrtSuperResService);
+    service = TestBed.inject(SMTSuperService);
     utils = TestBed.inject(UtilsService);
   });
 
