@@ -171,18 +171,22 @@ export abstract class MatchingAlgorithm {
   abstract generatePrefs(): void;
   abstract match(): void;
 
+  runSingleInstance(numAgents: number, numG2Agents = numAgents) {
+    this.initialise(numAgents, numG2Agents);
+    this.generateAgents();
+    this.generatePrefs();
+    this.initCurrentAndOriginalPrefs();
+    this.match();
+    this.#stable = this.checkStability();
+  }
+
   run(
-    numberOfAgents: number,
-    numberOfG2Agents: number = numberOfAgents,
-    generateStable: boolean = true,
+    numAgents: number,
+    numG2Agents = numAgents,
+    generateStable = true,
   ): AlgorithmData {
     do {
-      this.initialise(numberOfAgents, numberOfG2Agents);
-      this.generateAgents();
-      this.generatePrefs();
-      this.initCurrentAndOriginalPrefs();
-      this.match();
-      this.#stable = this.checkStability();
+      this.runSingleInstance(numAgents, numG2Agents);
     } while (this.#stable != generateStable);
     return this.#algorithmRunData;
   }
