@@ -39,6 +39,17 @@ export class UtilsService {
     );
   }
 
+  randInt(lb: number, ub: number): number {
+    return Math.floor(Math.random() * (ub - lb) + lb);
+  }
+
+  getRandomAgentCounts(equalGroups: boolean): [number, number] {
+    const numG1Agent = this.randInt(2, 9);
+    if (equalGroups) return [numG1Agent, numG1Agent];
+    const numG2Agent = this.randInt(2, numG1Agent);
+    return [numG1Agent, numG2Agent];
+  }
+
   cloneList<T>(list: Array<T>): Array<T> {
     return [...list];
   }

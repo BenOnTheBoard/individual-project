@@ -113,5 +113,5 @@ export abstract class HR extends UntiedMatchingAlgorithm {
     hospital.match.push(resident);
   }
 
-  abstract match(): void;
+  abstract match(): boolean;
 }

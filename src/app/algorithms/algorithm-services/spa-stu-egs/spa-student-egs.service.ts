@@ -170,7 +170,7 @@ export class SpaStudentEgsService extends SPAS {
     }
   }
 
-  match(): void {
+  match(): boolean {
     this.saveStep(1);
 
     let availableStudents = this.availableStudents();
@@ -301,6 +301,6 @@ export class SpaStudentEgsService extends SPAS {
 
     // END - Stable matching found
     this.saveStep(23);
-    return;
+    return true;
   }
 }

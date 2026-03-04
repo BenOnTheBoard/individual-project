@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-import { HrHospitalEgsService } from './hr-hospital-egs.service';
+import { SMTSuperService } from './smt-super.service';
 import { UtilsService } from 'src/app/utils/utils.service';
 
 const instanceCount = 600;
 
-describe('HrHospitalEgsService', () => {
-  let service: HrHospitalEgsService;
+describe('SMTSuperService', () => {
+  let service: SMTSuperService;
   let utils: UtilsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(HrHospitalEgsService);
+    service = TestBed.inject(SMTSuperService);
     utils = TestBed.inject(UtilsService);
   });
 
@@ -18,9 +18,9 @@ describe('HrHospitalEgsService', () => {
     let pass = true;
     let i = 0;
     while (i < instanceCount) {
-      const agentCounts = utils.getRandomAgentCounts(false);
+      const agentCounts = utils.getRandomAgentCounts(true);
       service.runSingleInstance(...agentCounts);
-      if (!service.checkStability()) pass = false;
+      if (service.isStable() && !service.checkStability()) pass = false;
       i++;
     }
     expect(pass).toBeTrue();

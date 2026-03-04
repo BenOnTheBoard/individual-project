@@ -64,7 +64,7 @@ export class GsStableMarriageService extends SM {
     man.match[0] = woman;
   }
 
-  match(): void {
+  match(): boolean {
     for (const man of Array.from(this.group1Agents.values())) {
       man.lastProposed = man.ranking[0];
     }
@@ -106,6 +106,6 @@ export class GsStableMarriageService extends SM {
     this.selectedAgents = [];
     this.relevantPrefs = [];
     this.saveStep(11);
-    return;
+    return true;
   }
 }

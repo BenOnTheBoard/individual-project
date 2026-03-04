@@ -93,7 +93,7 @@ export class StableRoomIrvService extends SR {
     return ranking.map((person) => person.name).join(', ');
   }
 
-  match(): void {
+  match(): boolean {
     let freeAgents: Map<String, Person> = new Map();
     freeAgents = this.getFreeAgents();
 
@@ -119,7 +119,7 @@ export class StableRoomIrvService extends SR {
         if (person.ranking.length < 1) {
           //end - no stable mathcing
           this.saveStep(4);
-          return;
+          return false;
         }
 
         // change prevouis highlights back to black
@@ -318,7 +318,7 @@ export class StableRoomIrvService extends SR {
         if (this.existsEmptyList() == true) {
           // end - no stable matching
           this.saveStep(18);
-          return;
+          return false;
         }
         // needed to rest the for loop for the new values within the many_pref_list
         // this list is updated to remove people that no longer have many preferences
@@ -346,6 +346,6 @@ export class StableRoomIrvService extends SR {
     }
 
     this.saveStep(19);
-    return;
+    return true;
   }
 }
