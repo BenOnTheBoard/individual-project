@@ -131,12 +131,9 @@ export class StableRoomIrvService extends SR {
         this.freeAgents.shift();
 
         this.saveStep(6, { '%person%': person.name, '%selected%': pref.name });
-
-        const check = this.assignCheck(pref.name);
-
         this.saveStep(7, { '%person%': person.name, '%selected%': pref.name });
 
-        if (check != null) {
+        if (this.assignCheck(pref.name) != null) {
           this.free(pref.name);
         }
 
@@ -183,7 +180,7 @@ export class StableRoomIrvService extends SR {
         const rotationPairs = [];
 
         let secondPref = person.ranking[1]; //the starting persons second preferred person
-        let prevPref = secondPref.ranking.slice(-1)[0]; //the second preferned persons last preferred person
+        let prevPref = secondPref.ranking.slice(-1)[0]; //the second preferred person's last preferred person
         rotationPairs.push([prevPref, secondPref]);
 
         // Loop until there is a loop through people until back to the starting person
@@ -201,7 +198,6 @@ export class StableRoomIrvService extends SR {
 
           secondPref = multiplePrefsAgents.get(prevPref.name).ranking[1]; // update to be second pref of prevPref
           prevPref = secondPref.ranking.slice(-1)[0]; // update like above with new secondPref
-
           rotationPairs.push([prevPref, secondPref]);
         }
 
@@ -231,7 +227,7 @@ export class StableRoomIrvService extends SR {
                 this.removeEveryLineFrom(innerPerson);
 
                 // let innerPerson propose to their last remaining person
-                innerPerson.lastProposed = innerPerson.ranking.slice(0)[0];
+                innerPerson.lastProposed = innerPerson.ranking[0];
 
                 this.removeEveryLineTo(innerPerson.lastProposed);
                 this.removeEveryLineFrom(innerPerson.lastProposed);
@@ -258,7 +254,7 @@ export class StableRoomIrvService extends SR {
 
         for (const innerPerson of this.group1Agents.values()) {
           if (innerPerson.ranking.length == 1) {
-            innerPerson.lastProposed = innerPerson.ranking.slice(0)[0];
+            innerPerson.lastProposed = innerPerson.ranking[0];
             this.saveStep(16, {
               '%person%': innerPerson.name,
               '%preference%': innerPerson.lastProposed.name,
@@ -298,7 +294,7 @@ export class StableRoomIrvService extends SR {
           );
           this.removeEveryLineFrom(innerPerson);
           this.removeEveryLineTo(innerPerson.lastProposed);
-          innerPerson.lastProposed = innerPerson.ranking.slice(0)[0];
+          innerPerson.lastProposed = innerPerson.ranking[0];
           this.addLine(innerPerson, innerPerson.lastProposed, 'green');
         }
       }
