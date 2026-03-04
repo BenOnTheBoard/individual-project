@@ -4,7 +4,7 @@ import { UtilsService } from 'src/app/utils/utils.service';
 
 const instanceCount = 600;
 
-describe('HrHospitalEgsService', () => {
+describe('SMTSuperService', () => {
   let service: SMTSuperService;
   let utils: UtilsService;
 
