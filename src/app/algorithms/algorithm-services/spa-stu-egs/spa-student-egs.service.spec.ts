@@ -1,24 +1,28 @@
 import { TestBed } from '@angular/core/testing';
 import { SpaStudentEgsService } from './spa-student-egs.service';
+import { UtilsService } from 'src/app/utils/utils.service';
 
 const instanceCount = 600;
 
 describe('SpaStudentEgsService', () => {
   let service: SpaStudentEgsService;
+  let utils: UtilsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(SpaStudentEgsService);
+    utils = TestBed.inject(UtilsService);
   });
 
-  it(`produces stable solutions x${instanceCount}`, () => {
-    let stable = true;
-    for (let i = 0; i < instanceCount; i++) {
-      const agent1Count = Math.floor(Math.random() * (10 - 2) + 2);
-      const agent2Count = Math.floor(Math.random() * (10 - 2) + 2);
-      service.run(agent1Count, agent2Count);
-      if (!service.isStable()) stable = false;
+  it(`only outputs matching as stable if it is x${instanceCount}`, () => {
+    let pass = true;
+    let i = 0;
+    while (i < instanceCount) {
+      const agentCounts = utils.getRandomAgentCounts(false);
+      service.runSingleInstance(...agentCounts);
+      if (!service.checkStability()) pass = false;
+      i++;
     }
-    expect(stable).toBeTrue();
+    expect(pass).toBeTrue();
   });
 });

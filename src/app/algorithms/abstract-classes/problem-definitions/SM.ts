@@ -65,5 +65,5 @@ export abstract class SM extends UntiedMatchingAlgorithm {
     this.generateRandomRankings(this.group2Agents, this.group1Agents);
   }
 
-  abstract match(): void;
+  abstract match(): boolean;
 }

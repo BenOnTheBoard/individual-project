@@ -43,7 +43,7 @@ export class HrResidentEgsService extends HR {
     }
   }
 
-  match(): void {
+  match(): boolean {
     this.saveStep(1);
 
     while (this.freeAgents.length > 0) {
@@ -76,6 +76,6 @@ export class HrResidentEgsService extends HR {
     }
 
     this.saveStep(12);
-    return;
+    return true;
   }
 }

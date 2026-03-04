@@ -52,5 +52,5 @@ export abstract class SR extends UntiedMatchingAlgorithm {
     return true;
   }
 
-  abstract match(): void;
+  abstract match(): boolean;
 }

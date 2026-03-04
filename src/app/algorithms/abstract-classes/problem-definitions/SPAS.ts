@@ -229,5 +229,5 @@ export abstract class SPAS extends UntiedMatchingAlgorithm {
     return true;
   }
 
-  abstract match(): void;
+  abstract match(): boolean;
 }

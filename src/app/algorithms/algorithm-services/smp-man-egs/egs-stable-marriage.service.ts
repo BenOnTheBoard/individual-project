@@ -71,7 +71,7 @@ export class EgsStableMarriageService extends SM {
     return man.ranking[0];
   }
 
-  match(): void {
+  match(): boolean {
     this.saveStep(1);
 
     while (this.freeAgents.length > 0) {
@@ -97,6 +97,6 @@ export class EgsStableMarriageService extends SM {
     this.selectedAgents = [];
     this.relevantPrefs = [];
     this.saveStep(12);
-    return;
+    return true;
   }
 }
