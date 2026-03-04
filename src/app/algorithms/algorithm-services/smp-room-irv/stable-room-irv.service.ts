@@ -6,6 +6,14 @@ import { Person } from '../../interfaces/Agents';
   providedIn: 'root',
 })
 export class StableRoomIrvService extends SR {
+  styleAssignment(person: Person): void {
+    this.removeEveryLineFrom(person);
+    this.removeEveryLineTo(person.lastProposed);
+    this.removeEveryLineFrom(person.lastProposed);
+    this.stylePrefs('group1', person, person.ranking[0], 'green');
+    this.addLine(person, person.lastProposed, 'green');
+  }
+
   removeEveryLineFrom(person: Person): void {
     this.currentLines = this.removePerson(
       this.currentLines,
@@ -224,23 +232,9 @@ export class StableRoomIrvService extends SR {
                 innerPerson.ranking.length == 1 &&
                 !finishedPeople.includes(innerPerson.name)
               ) {
-                this.removeEveryLineFrom(innerPerson);
-
                 // let innerPerson propose to their last remaining person
                 innerPerson.lastProposed = innerPerson.ranking[0];
-
-                this.removeEveryLineTo(innerPerson.lastProposed);
-                this.removeEveryLineFrom(innerPerson.lastProposed);
-
-                // update value in list
-                this.stylePrefs(
-                  'group1',
-                  innerPerson,
-                  innerPerson.ranking[0],
-                  'green',
-                );
-                this.addLine(innerPerson, innerPerson.lastProposed, 'green');
-
+                this.styleAssignment(innerPerson);
                 finishedPeople.push(person);
               }
             }
