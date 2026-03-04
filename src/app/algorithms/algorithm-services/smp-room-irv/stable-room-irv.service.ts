@@ -6,6 +6,20 @@ import { Person } from '../../interfaces/Agents';
   providedIn: 'root',
 })
 export class StableRoomIrvService extends SR {
+  removeEveryLineFrom(person: Person) {
+    this.currentLines = this.removePerson(
+      this.currentLines,
+      this.utils.getAsChar(person),
+    );
+  }
+
+  removeEveryLineTo(person: Person) {
+    this.currentLines = this.removeTarget(
+      this.currentLines,
+      this.utils.getAsChar(person),
+    );
+  }
+
   // checks is anyone is assigned to a person, returns assigned person if true, null otherwise
   assign_check(assinged: String) {
     for (let [key, person] of this.group1Agents.entries()) {
@@ -31,12 +45,7 @@ export class StableRoomIrvService extends SR {
           '%old_person%': person.name,
           '%selected%': person_free,
         });
-
-        this.currentLines = this.removePerson(
-          this.currentLines,
-          this.utils.getAsChar(person),
-        );
-        // add new free person to list
+        this.removeEveryLineFrom(person);
         this.freeAgents.push(person);
         person.lastProposed = null;
       }
@@ -283,25 +292,13 @@ export class StableRoomIrvService extends SR {
                 person_inner.ranking.length == 1 &&
                 !finished_people.includes(person_inner.name)
               ) {
-                // remove lines starting from person_inner
-                this.currentLines = this.removePerson(
-                  this.currentLines,
-                  this.utils.getAsChar(person_inner),
-                );
+                this.removeEveryLineFrom(person_inner);
 
                 // let person_inner propose to their last remaining person
                 person_inner.lastProposed = person_inner.ranking.slice(0)[0];
 
-                // remove lines going to their new proposal
-                this.currentLines = this.removeTarget(
-                  this.currentLines,
-                  this.utils.getAsChar(person_inner.lastProposed),
-                );
-                // with lines are green early, without overlapping reds
-                this.currentLines = this.removePerson(
-                  this.currentLines,
-                  this.utils.getAsChar(person_inner.lastProposed),
-                );
+                this.removeEveryLineTo(person_inner.lastProposed);
+                this.removeEveryLineFrom(person_inner.lastProposed);
 
                 // update value in list
                 this.stylePrefs(
@@ -366,17 +363,8 @@ export class StableRoomIrvService extends SR {
             person_inner.ranking[0],
             'green',
           );
-
-          this.currentLines = this.removePerson(
-            this.currentLines,
-            this.utils.getAsChar(person_inner),
-          );
-
-          this.currentLines = this.removeTarget(
-            this.currentLines,
-            this.utils.getAsChar(person_inner.lastProposed),
-          );
-
+          this.removeEveryLineFrom(person_inner);
+          this.removeEveryLineTo(person_inner.lastProposed);
           person_inner.lastProposed = person_inner.ranking.slice(0)[0];
           this.addLine(person_inner, person_inner.lastProposed, 'green');
         }
