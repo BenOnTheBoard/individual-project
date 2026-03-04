@@ -126,18 +126,17 @@ export class StableRoomIrvService extends SR {
 
         prevPerson = person;
         prevPref = person.ranking[0];
+        const pref = person.ranking[0];
 
-        this.stylePrefs('group1', person, person.ranking[0], 'red');
+        this.stylePrefs('group1', person, pref, 'red');
         this.saveStep(5, {
           '%person%': person.name,
-          '%selected%': person.ranking[0].name,
+          '%selected%': pref.name,
         });
-
-        const pref = person.ranking[0];
-        this.addLine(person, pref, 'red');
 
         this.freeAgents.shift();
 
+        this.addLine(person, pref, 'red');
         this.saveStep(6, { '%person%': person.name, '%selected%': pref.name });
         this.saveStep(7, { '%person%': person.name, '%selected%': pref.name });
 
@@ -182,14 +181,11 @@ export class StableRoomIrvService extends SR {
           '%person%': person.name,
           '%list%': this.rankingToString(person.ranking),
         });
-
         this.saveStep(12, { '%person%': person.name });
-
-        const rotationPairs = [];
 
         let secondPref = person.ranking[1]; //the starting persons second preferred person
         let prevPref = secondPref.ranking.slice(-1)[0]; //the second preferred person's last preferred person
-        rotationPairs.push([prevPref, secondPref]);
+        const rotationPairs = [[prevPref, secondPref]];
 
         // Loop until there is a loop through people until back to the starting person
         let counter = 0;
