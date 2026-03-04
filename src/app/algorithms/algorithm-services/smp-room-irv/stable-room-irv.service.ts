@@ -22,7 +22,7 @@ export class StableRoomIrvService extends SR {
 
   // checks is anyone is assigned to a person, returns assigned person if true, null otherwise
   assignCheck(assigned: String): String | null {
-    for (let [key, person] of this.group1Agents.entries()) {
+    for (const [key, person] of this.group1Agents.entries()) {
       // if assigned then
       if (person.lastProposed != null && person.lastProposed.name == assigned) {
         return key;
@@ -93,7 +93,7 @@ export class StableRoomIrvService extends SR {
     return ranking.map((person) => person.name).join(', ');
   }
 
-  match(): boolean {
+  phaseOne(): boolean {
     let freeAgents = this.getFreeAgents();
     let prevPerson: Person;
     let prevPref: Person;
@@ -164,11 +164,11 @@ export class StableRoomIrvService extends SR {
 
     // fix last highlights number
     this.stylePrefs('group1', prevPerson, prevPref, 'black');
+    return true;
+  }
 
+  phaseTwo(): boolean {
     let multiplePrefsAgents = this.getAgentsWithMultiplePrefs();
-
-    // PHASE 2
-
     const finishedPeople = [];
 
     while (multiplePrefsAgents.size > 0) {
@@ -254,14 +254,11 @@ export class StableRoomIrvService extends SR {
         // conditions to end if stable matching is found
         multiplePrefsAgents = this.getAgentsWithMultiplePrefs();
         if (multiplePrefsAgents.size < 1) break;
-
         this.saveStep(15);
 
         for (const innerPerson of this.group1Agents.values()) {
           if (innerPerson.ranking.length == 1) {
             innerPerson.lastProposed = innerPerson.ranking.slice(0)[0];
-
-            // person b := last preference
             this.saveStep(16, {
               '%person%': innerPerson.name,
               '%preference%': innerPerson.lastProposed.name,
@@ -280,8 +277,15 @@ export class StableRoomIrvService extends SR {
         break;
       }
     }
+    return true;
+  }
 
-    // if PHASE 2 is not done - update viz
+  match(): boolean {
+    if (!this.phaseOne()) return false;
+    if (!this.phaseTwo()) return false;
+
+    // if PHASE 2 is didn't complete update viz
+    const multiplePrefsAgents = this.getAgentsWithMultiplePrefs();
     if (multiplePrefsAgents.size == 0) {
       for (const innerPerson of this.group1Agents.values()) {
         if (innerPerson.ranking.length == 1) {
