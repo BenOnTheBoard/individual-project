@@ -266,30 +266,23 @@ export class StableRoomIrvService extends SR {
     return true;
   }
 
-  match(): boolean {
-    if (!this.phaseOne()) return false;
-    if (!this.phaseTwo()) return false;
-
-    // if PHASE 2 is didn't complete update viz
-    const multiplePrefsAgents = this.getAgentsWithMultiplePrefs();
-    if (multiplePrefsAgents.size == 0) {
-      for (const innerPerson of this.group1Agents.values()) {
-        if (innerPerson.ranking.length == 1) {
-          // update value in list
-          this.stylePrefs(
-            'group1',
-            innerPerson,
-            innerPerson.ranking[0],
-            'green',
-          );
-          this.removeEveryLineFrom(innerPerson);
-          this.removeEveryLineTo(innerPerson.lastProposed);
-          innerPerson.lastProposed = innerPerson.ranking[0];
-          this.addLine(innerPerson, innerPerson.lastProposed, 'green');
-        }
-      }
+  finaliseMatching(): void {
+    for (const person of this.group1Agents.values()) {
+      if (person.ranking.length != 1) continue;
+      // update value in list
+      this.stylePrefs('group1', person, person.ranking[0], 'green');
+      this.removeEveryLineFrom(person);
+      this.removeEveryLineTo(person.lastProposed);
+      person.lastProposed = person.ranking[0];
+      this.addLine(person, person.lastProposed, 'green');
     }
+  }
 
+  match(): boolean {
+    if (!this.phaseOne() || !this.phaseTwo()) return false;
+    if (this.getAgentsWithMultiplePrefs().size == 0) {
+      this.finaliseMatching();
+    }
     this.saveStep(19);
     return true;
   }
