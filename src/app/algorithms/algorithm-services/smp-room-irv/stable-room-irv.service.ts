@@ -28,13 +28,13 @@ export class StableRoomIrvService extends SR {
     );
   }
 
-  // checks is anyone is assigned to a person, returns assigned person if true, null otherwise
-  assignCheck(assigned: String): String | null {
+  isAssigned(person: Person, name: String) {
+    return person.lastProposed != null && person.lastProposed.name == name;
+  }
+
+  getAssigned(assigned: String): String | null {
     for (const [key, person] of this.group1Agents.entries()) {
-      // if assigned then
-      if (person.lastProposed != null && person.lastProposed.name == assigned) {
-        return key;
-      }
+      if (this.isAssigned(person, assigned)) return key;
     }
     return null;
   }
@@ -79,10 +79,7 @@ export class StableRoomIrvService extends SR {
 
   freeUp(personToFree: String): void {
     for (const person of this.group1Agents.values()) {
-      if (
-        person.lastProposed != null &&
-        person.lastProposed.name == personToFree
-      ) {
+      if (this.isAssigned(person, personToFree)) {
         this.saveStep(8, {
           '%old_person%': person.name,
           '%selected%': personToFree,
@@ -133,7 +130,7 @@ export class StableRoomIrvService extends SR {
         this.saveStep(6, { '%person%': person.name, '%selected%': pref.name });
         this.saveStep(7, { '%person%': person.name, '%selected%': pref.name });
 
-        if (this.assignCheck(pref.name) != null) {
+        if (this.getAssigned(pref.name) != null) {
           this.freeUp(pref.name);
         }
 
