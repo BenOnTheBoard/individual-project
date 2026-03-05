@@ -155,11 +155,13 @@ export class StableRoomIrvService extends SR {
         let remove: Person;
         do {
           remove = pref.ranking.slice(-1)[0];
-          this.deletePair(pref, remove);
-          this.saveStep(10, {
-            '%person%': person.name,
-            '%removee%': remove.name,
-          });
+          if (remove.name != person.name) {
+            this.deletePair(pref, remove);
+            this.saveStep(10, {
+              '%person%': person.name,
+              '%removee%': remove.name,
+            });
+          }
         } while (remove.name != person.name);
 
         freeAgents = this.getFreeAgents();
