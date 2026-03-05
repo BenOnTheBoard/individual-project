@@ -39,40 +39,16 @@ export class StableRoomIrvService extends SR {
     return null;
   }
 
-  // makes sure noone is assigned to person "free"
-  // loop through all people - if they are - assign them to null
-  free(personToFree: String): void {
-    for (const person of this.group1Agents.values()) {
-      // if assigned then set to null
-      if (
-        person.lastProposed != null &&
-        person.lastProposed.name == personToFree
-      ) {
-        //free a
-        this.saveStep(8, {
-          '%old_person%': person.name,
-          '%selected%': personToFree,
-        });
-        this.removeEveryLineFrom(person);
-        this.freeAgents.push(person);
-        person.lastProposed = null;
-      }
-    }
+  delete(agent: Person, target: Person): void {
+    const rank = this.getRank(agent, target);
+    if (rank == -1) return;
+    agent.ranking.splice(rank, 1);
+    this.stylePrefs('group1', agent, target, 'grey');
   }
 
   deletePair(agent1: Person, agent2: Person): void {
-    const agent1Rank = this.getRank(agent2, agent1);
-    const agent2Rank = this.getRank(agent1, agent2);
-    if (agent1Rank != -1) {
-      agent2.ranking.splice(agent1Rank, 1);
-    }
-    if (agent2Rank != -1) {
-      agent1.ranking.splice(agent2Rank, 1);
-    }
-
-    // can't use stylePrefsMutual, because these are of the same group
-    this.stylePrefs('group1', agent1, agent2, 'grey');
-    this.stylePrefs('group1', agent2, agent1, 'grey');
+    this.delete(agent1, agent2);
+    this.delete(agent2, agent1);
   }
 
   getFreeAgents(): Map<String, Person> {
@@ -99,6 +75,23 @@ export class StableRoomIrvService extends SR {
 
   rankingToString(ranking: Array<Person>): string {
     return ranking.map((person) => person.name).join(', ');
+  }
+
+  freeUp(personToFree: String): void {
+    for (const person of this.group1Agents.values()) {
+      if (
+        person.lastProposed != null &&
+        person.lastProposed.name == personToFree
+      ) {
+        this.saveStep(8, {
+          '%old_person%': person.name,
+          '%selected%': personToFree,
+        });
+        this.removeEveryLineFrom(person);
+        this.freeAgents.push(person);
+        person.lastProposed = null;
+      }
+    }
   }
 
   phaseOne(): boolean {
@@ -141,7 +134,7 @@ export class StableRoomIrvService extends SR {
         this.saveStep(7, { '%person%': person.name, '%selected%': pref.name });
 
         if (this.assignCheck(pref.name) != null) {
-          this.free(pref.name);
+          this.freeUp(pref.name);
         }
 
         person.lastProposed = pref;
