@@ -9,6 +9,21 @@ export class HrtSuperResService extends HRT {
   freeAgents: Array<TiedResident>;
   fullHospitals: Array<TiedHospital>;
 
+  assignStyling(res: TiedResident, hos: TiedHospital): void {
+    this.changeLineColour(res, hos, 'red', 'green');
+    this.stylePrefsMutual(res, hos, 'green');
+    if (hos.match.length >= hos.capacity) {
+      this.setCapacityStyle(hos, 'green');
+    }
+  }
+
+  breakAssignmentStyling(res: TiedResident, hos: TiedHospital): void {
+    this.removeLine(res, hos, 'red');
+    if (hos.match.length < hos.capacity) {
+      this.setCapacityStyle(hos, 'black');
+    }
+  }
+
   recalculateFreeAgents(): void {
     this.freeAgents = [];
     for (const res of this.group1Agents.values()) {
@@ -17,22 +32,15 @@ export class HrtSuperResService extends HRT {
   }
 
   assign(res: TiedResident, hos: TiedHospital): void {
-    this.changeLineColour(res, hos, 'red', 'green');
-    this.stylePrefsMutual(res, hos, 'green');
     super.assign(res, hos);
     this.recalculateFreeAgents();
-    if (hos.match.length >= hos.capacity) {
-      this.setCapacityStyle(hos, 'green');
-    }
+    this.assignStyling(res, hos);
   }
 
   breakAssignment(res: TiedResident, hos: TiedHospital): void {
-    this.removeLine(res, hos, 'green');
     super.breakAssignment(res, hos);
     this.recalculateFreeAgents();
-    if (hos.match.length < hos.capacity) {
-      this.setCapacityStyle(hos, 'black');
-    }
+    this.breakAssignmentStyling(res, hos);
   }
 
   delete(res: TiedResident, hos: TiedHospital): void {
@@ -58,6 +66,7 @@ export class HrtSuperResService extends HRT {
     for (const reject of tail) {
       this.saveStep(8, this.packageStepVars(reject, hos));
       if (hos.match.includes(reject)) {
+        this.changeLineColour(reject, hos, 'green', 'red');
         this.saveStep(9, this.packageStepVars(reject, hos));
         this.breakAssignment(reject, hos);
       }
@@ -80,12 +89,18 @@ export class HrtSuperResService extends HRT {
   stabilityConditions(): boolean {
     for (const res of this.group1Agents.values()) {
       if (res.match.length >= 2) {
+        this.selectedAgents.push(this.utils.getAsChar(res));
+        for (const hos of res.match) {
+          this.changeLineColour(res, hos, 'green', 'red');
+        }
         this.saveStep(17, this.packageStepVars(res));
         return false;
       }
     }
     for (const hos of this.fullHospitals) {
+      this.selectedAgents.push(this.utils.getAsChar(hos));
       if (hos.match.length < hos.capacity) {
+        this.setCapacityStyle(hos, 'red');
         this.saveStep(19, this.packageStepVars(null, hos));
         return false;
       }
