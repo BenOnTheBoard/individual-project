@@ -89,12 +89,18 @@ export class HrtSuperResService extends HRT {
   stabilityConditions(): boolean {
     for (const res of this.group1Agents.values()) {
       if (res.match.length >= 2) {
+        this.selectedAgents.push(this.utils.getAsChar(res));
+        for (const hos of res.match) {
+          this.changeLineColour(res, hos, 'green', 'red');
+        }
         this.saveStep(17, this.packageStepVars(res));
         return false;
       }
     }
     for (const hos of this.fullHospitals) {
+      this.selectedAgents.push(this.utils.getAsChar(hos));
       if (hos.match.length < hos.capacity) {
+        this.setCapacityStyle(hos, 'red');
         this.saveStep(19, this.packageStepVars(null, hos));
         return false;
       }
