@@ -115,17 +115,14 @@ export class PlaybackService {
       this.firstRun = false;
       this.pause = false;
       this.play();
-      return;
+    } else {
+      this.pause = true;
     }
-    this.pause = true;
   }
 
   async play(): Promise<void> {
     while (this.stepCounter < this.numCommands) {
-      if (this.pause) {
-        break;
-      }
-
+      if (this.pause) break;
       await this.sleep(this.speed);
 
       if (!this.pause) {
@@ -146,11 +143,7 @@ export class PlaybackService {
     if (this.firstRun) {
       this.firstRun = false;
     }
-
-    if (this.previousStepCounter != this.stepCounter) {
-      this.previousStepCounter = this.stepCounter;
-    }
-
+    this.previousStepCounter = this.stepCounter;
     this.pause = true;
     this.stepCounter = val;
     this.updateCurrentCommand();
