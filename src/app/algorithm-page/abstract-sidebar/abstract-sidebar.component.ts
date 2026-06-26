@@ -1,7 +1,6 @@
 import {
   Component,
   ElementRef,
-  HostListener,
   input,
   Signal,
   ChangeDetectionStrategy,
@@ -12,6 +11,7 @@ import anime from 'animejs/lib/anime.es.js';
   selector: 'app-abstract-sidebar',
   changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './abstract-sidebar.component.html',
+  host: { '(window:resize)': 'onResize()' },
 })
 export abstract class AbstractSidebarComponent {
   protected tutorialStep = input<number>(undefined);
@@ -35,7 +35,6 @@ export abstract class AbstractSidebarComponent {
     return this.direction * this.sidebarWidth;
   }
 
-  @HostListener('window:resize')
   onResize(): void {
     this.updateSidebarWidth();
     this.fixCurrentPosition();

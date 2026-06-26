@@ -1,7 +1,6 @@
 import {
   Component,
   ElementRef,
-  HostListener,
   inject,
   OnInit,
   viewChild,
@@ -39,6 +38,7 @@ import anime from 'animejs/lib/anime.es.js';
     PlaybackControlsComponent,
     AlgPageNavbarComponent,
   ],
+  host: { '(document:keydown)': 'handleKeyboardEvent($event)' },
 })
 export class AlgorithmPageComponent implements OnInit {
   private canvas = viewChild<ElementRef<HTMLCanvasElement>>('canvas');
@@ -102,7 +102,6 @@ export class AlgorithmPageComponent implements OnInit {
     }
   }
 
-  @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
     if (this.dialogOpen || this.tutorialStep != 0) return;
 
