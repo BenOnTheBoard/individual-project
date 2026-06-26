@@ -6,7 +6,7 @@ import { Algorithm } from '../../../algorithm-retrieval/Algorithm';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
+
 import { UtilsService } from 'src/app/utils/utils.service';
 import { AgentCountFormComponent } from 'src/app/forms/agent-count-form/agent-count-form.component';
 import anime from 'animejs/lib/anime.es.js';
@@ -24,7 +24,6 @@ import anime from 'animejs/lib/anime.es.js';
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
-    CommonModule,
     FormsModule,
     AgentCountFormComponent,
   ],

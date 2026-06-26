@@ -4,6 +4,7 @@
     "paths": {
       "*": ["./*"]
     },
+    "esModuleInterop": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -15,7 +16,6 @@
     "target": "es2015",
     "types": ["node"],
     "strict": false,
-    "lib": ["es2018", "dom"],
     "noUnusedLocals": true
   },
   "exclude": ["./cypress.config.ts"],
