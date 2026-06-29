@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { simpleFadeAnimation } from 'src/app/animations/fadeAnimation';
 
 @Component({
@@ -9,6 +9,7 @@ import { simpleFadeAnimation } from 'src/app/animations/fadeAnimation';
     '../home-page.component.scss',
     '../home-content/home-content.component.scss',
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   animations: [simpleFadeAnimation],
 })
 export class FeedbackContentComponent {}

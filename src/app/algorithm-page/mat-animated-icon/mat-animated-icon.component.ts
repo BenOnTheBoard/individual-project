@@ -1,11 +1,12 @@
 import { NgClass } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'mat-animated-icon',
   templateUrl: './mat-animated-icon.component.html',
   styleUrls: ['./mat-animated-icon.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatIcon, NgClass],
 })
 export class MatAnimatedIconComponent {

@@ -1,10 +1,16 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 import { PlaybackService } from '../../services/playback/playback.service';
 
 @Component({
   selector: 'pseudocode',
   templateUrl: './pseudocode.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./pseudocode.component.scss', '../sidebar.component.scss'],
 })
 export class PseudocodeComponent implements OnInit {

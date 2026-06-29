@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { UtilsService } from 'src/app/utils/utils.service';
@@ -8,6 +8,7 @@ import anime from 'animejs/lib/anime.es.js';
   selector: 'navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgClass],
 })
 export class NavbarComponent {

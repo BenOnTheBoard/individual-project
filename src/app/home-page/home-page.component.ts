@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { IconBannerComponent } from './icon-banner/icon-banner.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -8,6 +8,7 @@ import anime from 'animejs/lib/anime.es.js';
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NavbarComponent, IconBannerComponent, RouterOutlet],
 })
 export class HomePageComponent {

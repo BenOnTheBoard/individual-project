@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, inject, input, output } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  output,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -15,7 +21,9 @@ import { UtilsService } from 'src/app/utils/utils.service';
     MatInputModule,
     ReactiveFormsModule,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './agent-count-form.component.html',
+  host: { '(document:keydown)': 'onEnter($event)' },
 })
 export class AgentCountFormComponent {
   readonly algorithm = input<Algorithm>(undefined);
@@ -50,8 +58,8 @@ export class AgentCountFormComponent {
     UtilsService.validateEven(),
   ]);
 
-  @HostListener('document:keydown.enter', ['$event'])
   onEnter(event: KeyboardEvent) {
+    if (event.key !== 'Enter') return;
     event.preventDefault();
     event.stopPropagation();
     if (this.isFormValid()) {

@@ -5,6 +5,7 @@ import {
   input,
   output,
   viewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
@@ -19,6 +20,7 @@ import anime from 'animejs/lib/anime.es.js';
   selector: 'alg-page-navbar',
   templateUrl: './alg-page-navbar.component.html',
   styleUrl: './alg-page-navbar.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatIconModule, MatTooltip, CommonModule],
 })
 export class AlgPageNavbarComponent {

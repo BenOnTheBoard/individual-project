@@ -1,10 +1,18 @@
-import { Component, ElementRef, viewChild, input, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  viewChild,
+  input,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 import { AbstractSidebarComponent } from '../abstract-sidebar/abstract-sidebar.component';
 
 @Component({
   selector: 'app-info-sidebar',
   templateUrl: './info-sidebar.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./info-sidebar.component.scss'],
 })
 export class InfoSidebarComponent extends AbstractSidebarComponent {

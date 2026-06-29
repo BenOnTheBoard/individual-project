@@ -8,8 +8,8 @@
   (dialogOpenEmitter)="dialogOpen=$event;" (tutorialStepEmitter)="tutorialUpdate($event)" />
 
 <!--- these are absolutely positioned-->
-<sidebar #leftSidebar [(isCodeShowing)]="isCodeShowing" [(tutorialStep)]="tutorialStep" />
-<app-info-sidebar #rightSidebar [(isInfoShowing)]="isInfoShowing" [(tutorialStep)]="tutorialStep" />
+<sidebar #leftSidebar [isCodeShowing]="isCodeShowing" [tutorialStep]="tutorialStep" />
+<app-info-sidebar #rightSidebar [isInfoShowing]="isInfoShowing" [tutorialStep]="tutorialStep" />
 
 <div class="container-fluid main row">
   <!-- sidebar -->
@@ -19,7 +19,7 @@
     style="background-color: white; height: 100%; display: grid; grid-template-rows: 0.39fr 3.4fr 0.8fr;"
     [ngClass]="{'col-md-6' : isCodeShowing && isInfoShowing, 'col-md-9' : isCodeShowing != isInfoShowing, 'col-md-12': !isCodeShowing && !isInfoShowing, 'moveContentToTop': tutorialStep == 3}">
 
-    <agent-titles [(isCodeShowing)]="isCodeShowing" />
+    <agent-titles [isCodeShowing]="isCodeShowing" />
 
     <div class="mainContentPopover" (window:resize)="drawService.redrawCanvas()" id="parent" style="min-height: 400px;"
       data-toggle="popover" data-placement="left" title="Algorithm Display"

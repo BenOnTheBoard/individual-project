@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 import { PlaybackService } from '../../services/playback/playback.service';
 import { UtilsService } from 'src/app/utils/utils.service';
@@ -6,6 +6,7 @@ import { UtilsService } from 'src/app/utils/utils.service';
 @Component({
   selector: 'free-agents',
   templateUrl: './free-agents.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./free-agents.component.scss', '../sidebar.component.scss'],
 })
 export class FreeAgentsComponent {

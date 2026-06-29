@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
 import { simpleFadeAnimation } from 'src/app/animations/fadeAnimation';
 import { AlgorithmCardComponent } from './algorithm-card/algorithm-card.component';
@@ -12,6 +12,7 @@ import { AlgorithmCardComponent } from './algorithm-card/algorithm-card.componen
     '../home-content/home-content.component.scss',
   ],
   animations: [simpleFadeAnimation],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [AlgorithmCardComponent],
 })
 export class AlgorithmContentComponent {

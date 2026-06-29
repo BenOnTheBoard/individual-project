@@ -1,10 +1,16 @@
-import { Component, ElementRef, viewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  viewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { simpleFadeAnimation } from 'src/app/animations/fadeAnimation';
 
 @Component({
   selector: 'home-content',
   templateUrl: './home-content.component.html',
   styleUrls: ['./home-content.component.scss', '../home-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   animations: [simpleFadeAnimation],
 })
 export class HomeContentComponent {

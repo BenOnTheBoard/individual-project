@@ -1,23 +1,27 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "paths": {
+      "*": ["./*"]
+    },
+    "esModuleInterop": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "downlevelIteration": true,
     "experimentalDecorators": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
+    "rootDir": "./",
     "target": "es2015",
-    "lib": ["es2018", "dom"],
-    "noUnusedLocals": true
+    "types": ["jasmine", "node"],
+    "strict": false,
+    "noUnusedLocals": true,
+    "skipLibCheck": true
   },
   "exclude": ["./cypress.config.ts"],
   "angularCompilerOptions": {
-    "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true,
-    "_enabledBlockTypes": ["if", "for"]
+    "strictTemplates": true,
+    "strictInjectionParameters": true
   }
 }

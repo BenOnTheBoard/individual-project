@@ -1,4 +1,9 @@
-import { Component, inject, input } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { PlaybackService } from '../services/playback/playback.service';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,6 +15,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'playback-controls',
   templateUrl: './playback-controls.component.html',
   styleUrls: ['./playback-controls.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatAnimatedIconComponent,
     MatIconModule,

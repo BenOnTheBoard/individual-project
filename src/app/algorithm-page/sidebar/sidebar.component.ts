@@ -1,4 +1,11 @@
-import { Component, ElementRef, viewChild, input, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  viewChild,
+  input,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { AlgDescriptionComponent } from './alg-description/alg-description.component';
 import { PseudocodeComponent } from './pseudocode/pseudocode.component';
 import { FreeAgentsComponent } from './free-agents/free-agents.component';
@@ -12,6 +19,7 @@ import { MarkedAgentsComponent } from './marked-agents/marked-agents.component';
   selector: 'sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ExecutionLogComponent,
     FreeAgentsComponent,

@@ -1,4 +1,10 @@
-import { Component, viewChild, input, inject } from '@angular/core';
+import {
+  Component,
+  viewChild,
+  input,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlgorithmRetrievalService } from 'src/app/algorithm-retrieval/algorithm-retrieval.service';
@@ -6,7 +12,7 @@ import { Algorithm } from '../../../algorithm-retrieval/Algorithm';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
+
 import { UtilsService } from 'src/app/utils/utils.service';
 import { AgentCountFormComponent } from 'src/app/forms/agent-count-form/agent-count-form.component';
 import anime from 'animejs/lib/anime.es.js';
@@ -19,12 +25,12 @@ import anime from 'animejs/lib/anime.es.js';
     '../../home-page.component.scss',
     '../../home-content/home-content.component.scss',
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
-    CommonModule,
     FormsModule,
     AgentCountFormComponent,
   ],
